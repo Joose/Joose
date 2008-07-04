@@ -1,0 +1,177 @@
+Module("block.ui", function (m) {
+    Class("Sync", {
+        
+        has: {
+            _maxVersion: {
+                is: "rw",
+                init: 0
+            },
+            _doc: {
+                is: "rw"
+            }
+        },
+        
+        methods: {
+        	
+        	startListening: function ()  {
+        		
+        	},
+            
+            update: function () {
+
+                var me = this
+                
+                this.fetchStates();
+               
+            },
+            
+            updateFromArray: function (updates) {
+            	var me = this;
+            	Joose.A.each(updates, function (update) {
+                	console.log("Update from version "+update.version)
+                    me.setMaxVersion(update.version);
+                    var doc = update.data
+                    
+                    me.updateDocument(doc)
+                })        
+                this.saveState()   
+                
+                // get new data in N milli seconds
+                var me = this;
+			 	//if(!$('#doSync') || $('#doSync').attr("checked")) {
+					window.setTimeout(function syncTimer () {
+						me.update()
+					}, 2000)
+				//} 
+            },
+            
+            updateDocument: function (doc) {
+                console.log("Got something new!")
+                var cur;
+                var state = doc.getBody()
+                
+                var newTitle = doc.getHeader().getTitle();
+                if(newTitle != null) {
+                	this.getDoc().getHeader().setTitle(newTitle)
+                }
+                
+                state.traverse(function updateDocVisitor (shape, container) {
+                    var map = document.manager.shapeByGuidMap
+                    var cur = map[shape.getGuid()]
+                    if(cur) {
+                        console.log("Update")
+                        if(!cur.isDeleted()) {
+                        	cur.updateFrom(shape)
+                        	// if we changed the hierarchy
+                        
+                        	if(cur.getContainer().getGuid() != container.getGuid()) {
+                        	    cur.getContainer().removeElement(cur)
+                        	    var dest = map[container.getGuid()];
+                        	    dest.add(cur)
+                        	}
+                        }
+                    } else {
+                    	console.log("Insert")
+                        var dest
+                        if(container === state) { // root
+                            dest = document.shapes
+                        } else {
+                            dest = map[container.getGuid()]
+                        }
+                        if(!shape.isDeleted()) {
+                        	shape.registerGuid()
+                        	dest.addAndDraw(shape)
+                        }
+                    }
+                });
+                
+                
+            },
+            
+            fetchStates: function () {
+                return m.SyncDocument.fetchNewData(this)
+            },
+            
+            _saveState: function () {
+                return m.SyncDocument.addData(this, false)
+            },
+            
+            saveState: function () {
+                if(document.manager.getDirty()) {
+                    this._saveState()
+                    document.manager.setDirty(false)
+                }
+            },
+            
+            savePermanent: function () {
+            	return m.SyncDocument.addData(this, true)
+            },
+            
+            syncedTime: function () {
+                return new Date().getTime()
+            }
+        }
+    });
+ 
+    
+    Class("SyncDocument", {
+        
+        classMethods: {
+            fetchNewData: function (sync) {
+            
+                var dataArray = [];
+                var rows      = []
+            
+                var doc = sync.getDoc()
+            
+                $.get("/fetch",
+					{
+						hash:        doc.getId(),
+                        max_version: (sync.getMaxVersion() || 0),
+                        session:	 document.paras.sessionId,
+                        no_cache:    Math.random()
+                    },
+                    function updateData (data) {
+                    	console.log("Got data "+data + data.data.length)
+                    	rows = data.data
+            
+                    	for(var i = 0; i < rows.length; i++) {
+                        	console.log("Row version "+rows[i].version)
+                            dataArray.push({
+                            	data:    JSON.parse(rows[i].data),
+                            	version: rows[i].version
+                        	});
+                    
+                        }
+                        sync.updateFromArray(dataArray)
+                    },
+                    "json")
+                
+                
+            },
+            
+            addData: function (sync, isSavePoint) {
+                var me   = new m.SyncDocument();
+                var doc  = sync.getDoc();
+                
+                var data = JSON.stringify(sync.getDoc());
+    
+                $.post("/add",
+                	{
+                    	hash:         doc.getId(),
+                        data:         data,
+                        is_savepoint: isSavePoint,
+                        name:         doc.getHeader().getTitle(),
+                        session:	  document.paras.sessionId
+                    },
+                    function () {
+                        console.log("save successful")
+                    }, 
+                    "json");
+            }
+        }
+        
+    });
+    
+
+});

@@ -1,0 +1,52 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Joose Class Browser</title>
+
+<script type="text/javascript" src="../lib/Joose.js"></script>
+<script type="text/javascript">
+joose.loadComponents("../lib")
+
+function $(id) {
+	return document.getElementById(id)
+}
+
+
+
+</script>
+<script type="text/javascript">
+
+Module("com.test.me", function () {
+	Class("TestClass", {
+		isa: Joose.Method,
+		does: Joose.Decorator,
+		methods: {
+			hello: function () { return "world" }
+		},
+		classMethods: {
+			foo: function () { alert("bar") }
+		}
+	})
+})
+
+</script>
+
+<script type="text/javascript" src="../tests/json2.js"></script>
+<link href="test.css" rel="stylesheet" type="text/css" />
+
+
+</head>
+
+<body>
+
+<script type="text/javascript">
+var request = new Joose.SimpleRequest();
+var html    = request.getText("class_browser_component.html");
+document.write(html)
+</script>
+<script type="text/javascript">
+window.cb = new JooseX.IDE.ClassBrowser()
+</script>
+
+</body>
+</html>

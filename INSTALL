@@ -1,0 +1,14 @@
+Copy the file joose.js or joose.mini.js to your application's JavaScript directory
+and include it in your html pages with 
+
+<script type="text/javascript" src="path/to/joose.js"></script>
+
+The file joose.mini.js is the same as the file joose.js. The only difference is
+removed white space and comments which reduces the file size and improves page
+loading time. We recommend using joose.js in development and joose.mini.js in
+production systems.
+
+For some functionality you will also need the JavaScript JSON library
+which you can obtain here:
+http://www.json.org/js.html
+

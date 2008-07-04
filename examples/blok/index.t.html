@@ -1,0 +1,290 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Loading...</title>
+
+
+<script type="text/javascript">
+
+document.paras = {
+	docId:      "{{ docId }}",
+	guidBase:   "{{ guidBase }}",
+	sessionId:  "{{ sessionId }}",
+	timeOffset: ({{ nowMilliseconds }} - new Date().getTime())
+}
+
+</script>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>
+<script type="text/javascript" src="static/jquery.ui.all.min.js"></script>
+<script type="text/javascript" src="static/jquery-cmenu.js"></script>
+
+<script type="text/javascript" src="static/ColorPicker.js"></script>
+
+<script type="text/javascript" src="static/jquery.hotkeys.js"></script>
+
+<script type="text/javascript" src="static/joose.js"></script>
+
+<script type="text/javascript" src="static/json2.js"></script>
+
+
+
+
+<script type="text/javascript" src="block/ui/Array.js"></script>
+<script type="text/javascript" src="block/ui/ElementMetaclass.js"></script>
+<script type="text/javascript" src="block/ui/role/Notification.js"></script>
+<script type="text/javascript" src="block/ui/role/Draggable.js"></script>
+<script type="text/javascript" src="block/ui/role/Resizable.js"></script>
+<script type="text/javascript" src="block/ui/role/Focusable.js"></script>
+<script type="text/javascript" src="block/ui/role/Editable.js"></script>
+<script type="text/javascript" src="block/ui/role/ShapeUI.js"></script>
+<script type="text/javascript" src="block/ui/role/Group.js"></script>
+<script type="text/javascript" src="block/ui/role/Stylable.js"></script>
+<script type="text/javascript" src="block/ui/role/Connectable.js"></script>
+<script type="text/javascript" src="block/ui/Manager.js"></script>
+<script type="text/javascript" src="block/ui/Query.js"></script>
+<script type="text/javascript" src="block/ui/Document.js"></script>
+<script type="text/javascript" src="block/ui/DocumentHeader.js"></script>
+<script type="text/javascript" src="block/ui/Element.js"></script>
+<script type="text/javascript" src="block/ui/Container.js"></script>
+<script type="text/javascript" src="block/ui/Undo.js"></script>
+
+<script type="text/javascript" src="block/ui/Shape.js"></script>
+<script type="text/javascript" src="block/ui/shape/Grid.js"></script>
+<script type="text/javascript" src="block/ui/shape/PropertiesPanel.js"></script>
+<script type="text/javascript" src="block/ui/shape/DragPoint.js"></script>
+<script type="text/javascript" src="block/ui/shape/Rectangle.js"></script>
+<script type="text/javascript" src="block/ui/shape/Image.js"></script>
+<script type="text/javascript" src="block/ui/shape/SelectionGroup.js"></script>
+<script type="text/javascript" src="block/ui/shape/Group.js"></script>
+<script type="text/javascript" src="block/ui/shape/MultiSelection.js"></script>
+<script type="text/javascript" src="block/ui/CustomShape.js"></script>
+<script type="text/javascript" src="block/ui/shape/Custom.js"></script>
+<script type="text/javascript" src="block/ui/shape/Connection.js"></script>
+
+<script type="text/javascript" src="block/ui/Sync.js"></script>
+
+
+<link href="static/block.css" rel="stylesheet" type="text/css" />
+<link href="static/ColorPicker.css" rel="stylesheet" type="text/css" />
+<link href="static/themes/flora/flora.all.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript">
+
+if(!window.console) {
+	window.console = {
+		log: function (msg) {
+			$("#stateDialog").html(""+msg+"<br>"+$("#stateDialog").html())
+		}
+	}
+}
+
+Joose.Storage.Unpacker.patchJSON();
+
+$(document).ready(function docReady () {
+
+	$("#leftMenu h2").click(function () {
+		$(this).parent().find('ul').toggle()
+	})
+
+	document.query   = new block.ui.Query();
+
+	document.manager = new block.ui.Manager();
+	document.manager.setupShortcuts()
+
+	document.grid = new block.ui.shape.Grid({ container: $("#grid") })
+	document.grid.draw();
+	
+	document.propPanel = new block.ui.shape.PropertiesPanel({  })
+	document.propPanel.draw()
+	
+	$('.colorPicker').attachColorPicker();
+	
+	$(window).resize(function () {
+		document.propPanel.redraw()
+		document.grid.redraw()
+	})
+	$(window).scroll(function () {
+		document.grid.redraw()
+	})
+	
+	$("#stateDialog").dialog()
+	$("#stateDialog").dialog("close")
+	
+	$("#share").focus(function () {
+		this.select()
+	})
+	
+	
+
+	document.shapes = new block.ui.Container({ $: $('#shapeArea')});
+
+	var doc         = new block.ui.Document({ body: document.shapes });
+	
+	document.sync   = new block.ui.Sync({ doc: doc })
+	document.sync.update();
+	
+	document.sync.startListening()
+	
+	document.undo   = new block.ui.Undo();
+	
+})
+
+function showState() {
+
+	var html = document.shapes.prettyPrint()
+
+	$('#stateDialog').html(html)
+	$('#stateDialog').dialog("open")
+}
+
+function read() {
+	$('#shapeArea').html("")
+	var json        = document.getElementById("outputArea").value
+	if(json != null && json != "") {
+		document.shapes = JSON.parse(json);
+		document.shapes.draw();
+		document.shapes.redraw();
+		
+		document.sync.getDoc().setBody(document.shapes)
+	}
+}
+
+function changeName() {
+	document.sync.getDoc().getHeader().setTitle(prompt('Please enter the name:'))
+	document.manager.setDirty(true)
+}
+
+function write() {
+	document.getElementById("outputArea").value = JSON.stringify(document.shapes)
+}
+
+
+</script>
+
+</head>
+
+<body>
+
+<div id="canvas">
+
+<div id="leftMenu">
+<ul>
+  <li>
+    <h2>Shapes</h2>
+    <ul>
+      <li><a href="javascript:void(block.ui.shape.Rectangle.addToDoc())">Rectangle</a></li>
+      <li><a href="javascript:void(block.ui.shape.Image.addToDoc())">Image</a></li>
+      <li>---</li>
+      <li><a href="javascript:void(block.ui.shape.Connector.connectFocused())">Connect Selected</a></li>
+    </ul>
+  </li>
+  <li>
+    <h2>Document</h2>
+    <ul>
+      <!-- <li><a href="javascript:document.sync.savePermanent()">Save</a></li> -->
+      <li><a href="/?id={{ newId }}">New Document</a></li>
+      <li>---</li>
+      <li><a href="javascript:changeName()">Change Name</a></li>
+      <li>Share this doc URL: <input value="http://blok.appspot.com/?id={{ docId }}" id="share" style="width: 100px; text-align: right"></li>
+    </ul>
+  </li>
+  <li>
+    <h2>Edit</h2>
+    <ul>
+      <li><a href="javascript:document.manager.copyFocused()">Copy</a></li>
+      <li><a href="javascript:document.manager.paste()">Paste</a></li>
+      <li><a href="javascript:document.undo.undo()">Undo</a></li>
+    </ul>
+  </li>
+  
+  <li>
+    <h2>About</h2>
+    <ul>
+      <li><a href="http://joose-js.blogspot.com" target="_blank">blok blog</a></li>
+      <li><a href="http://code.google.com/p/joose-js/" target="_blank">Joose JS</a></li>
+    </ul>
+  </li>
+  
+  {% if isTest %}
+  <li>
+    <h2>Debugging</h2>
+    <ul class="hidden">
+      <!-- <li><a href="javascript:void($('#browser').show())">Class Browser</a></li> -->
+      <li><a href="javascript:showState()">Show State</a></li>
+      <li>Sync<input type="checkbox" id="doSync" checked=true></li>
+    </ul>
+  </li>
+  {% endif %}
+</ul>
+</div>
+
+
+
+<div id="drawArea">
+  <div id="grid"></div>
+  <div id="shapeArea"></div>
+</div>
+
+
+<div id="properties">
+  <h1>Properties of <span id="shapeType"></span>
+  <table border=0 cellpadding=2>
+    <tr>
+      <th>X</th><td><input id="propx" style="width:50px" class="number"></td>
+      <th>Width</th><td><input id="propwidth" jooseDoes="block.ui.role.Resizable" style="width:50px" class="number"></td>
+      <th>Font Color</th><td><input id="propcss-color" class="text colorPicker"   style="width:70px"></td>
+      <th>Font Family</th>
+        <td>
+          <select id="propcss-fontFamily">
+            <option value="">Default</option>
+            <option value="Arial">Arial</option>
+            <option value="Courier">Courier</option>
+            <option value="Times">Times</option>
+            <option value="Verdana">Verdana</option>
+          </select>
+      <th>Text</th><td><input id="proptext" class="text" style="width:90px"></td>
+      <th>Border Width</th><td><input id="propcss-borderWidth" addPx=true class="text" style="width:40px"> px</td>
+      
+    </tr>
+    <tr>
+      <th>Y</th><td><input id="propy" style="width:50px" class="number"></td>
+      <th>Height</th><td><input id="propheight" jooseDoes="block.ui.role.Resizable"             style="width:50px" class="number"></td>
+      <th>Background Color</th><td><input id="propcss-backgroundColor" class="text colorPicker" style="width:70px"></td>
+      <th>Font Size</th><td><input id="propcss-fontSize" addPx=true class="text" style="width:40px"> px</td>
+      <th></th><td></td>
+      <th>Border Color</th><td><input id="propcss-borderColor" class="text colorPicker"   style="width:70px"></td>
+    </tr>
+  </table>
+</div>
+
+<div id="stateDialog" class="flora" title="Document State" style="font-size: 9px"></div>
+
+
+
+<div class="contextMenu" id="ShapeContextMenu">
+  <ul>
+    <li id="ctDelete">Delete</li>
+    <li id="ctCopy">Copy</li>
+    <li id="ctBringToFront">Bring to Front</li>
+    <li id="ctAsGroup">Group</li>
+    <li id="ctUnGroup">Un-Group</li>
+  </ul>
+</div>
+
+</div>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-340701-27");
+pageTracker._initData();
+pageTracker._trackPageview("/example/blok");
+</script>
+
+</body>
+</html>

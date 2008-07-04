@@ -1,0 +1,23 @@
+Tests
+- complete 01_util.js
+- Add many more tests
+- Add tests that include and use frameworks such as prototype.js, dojo or jquery.
+- refactor tests into sub directories
+
+Documentation
+- All
+
+Features
+- implement class versioning
+- Improve Implementation of Attribute meta classes
+- implement subtypes, then implement cookbook entries 4 and 5
+- Test object initialization with private attr and other edge cases
+- Demonstrate stringify in Role recipe
+- Test roles with method modifiers
+
+Done:
+- Implement attribute meta classes
+- Add an interface to Joose.Class to ask for instance vs. class methods
+  - joose.isInstance
+- execute every test file in its own iframe
+- make this work in IE :)
