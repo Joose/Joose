@@ -17,16 +17,13 @@ document.paras = {
 
 </script>
 
+
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>
 <script type="text/javascript" src="static/jquery.ui.all.min.js"></script>
 <script type="text/javascript" src="static/jquery-cmenu.js"></script>
-
 <script type="text/javascript" src="static/ColorPicker.js"></script>
-
 <script type="text/javascript" src="static/jquery.hotkeys.js"></script>
-
-<script type="text/javascript" src="static/joose.js"></script>
-
+<script type="text/javascript" src="static/joose.mini.js"></script>
 <script type="text/javascript" src="static/json2.js"></script>
 
 
@@ -75,7 +72,7 @@ document.paras = {
 
 if(!window.console) {
 	window.console = {
-		log: function (msg) {
+		log: function log (msg) {
 			$("#stateDialog").html(""+msg+"<br>"+$("#stateDialog").html())
 		}
 	}
@@ -102,11 +99,11 @@ $(document).ready(function docReady () {
 	
 	$('.colorPicker').attachColorPicker();
 	
-	$(window).resize(function () {
+	$(window).resize(function onResize () {
 		document.propPanel.redraw()
 		document.grid.redraw()
 	})
-	$(window).scroll(function () {
+	$(window).scroll(function onScroll () {
 		document.grid.redraw()
 	})
 	
@@ -116,8 +113,6 @@ $(document).ready(function docReady () {
 	$("#share").focus(function () {
 		this.select()
 	})
-	
-	
 
 	document.shapes = new block.ui.Container({ $: $('#shapeArea')});
 

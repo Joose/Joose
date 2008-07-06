@@ -17,7 +17,7 @@ Module("block.ui", function () {
                 }
             },
             call: function (method, paras) {
-                this.each(function (ele) {
+                this.each(function eachEle (ele) {
                     ele[method].apply(ele, paras)
                 })
             }

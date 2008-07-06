@@ -20,7 +20,7 @@ Module("block.ui.role", function () {
                 var top    = null;
                 var right  = null;
                 var bottom = null
-                Joose.A.each(this.getElements(), function (ele) {
+                Joose.A.each(this.getElements(), function drawGroupEle (ele) {
                     var myTop = ele.top();
                     if(top == null || myTop < top) {
                         top = myTop
@@ -70,7 +70,7 @@ Module("block.ui.role", function () {
                 		return
                		}
                 
-               		Joose.A.each(this.getElements(), function (ele) {
+               		Joose.A.each(this.getElements(), function updateChild (ele) {
                     
                 	    ele.x(ele.left() + deltaLeft)
                 	    ele.y(ele.top() + deltaTop)

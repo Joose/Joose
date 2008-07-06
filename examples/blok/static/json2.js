@@ -83,13 +83,13 @@
 
 if (!this.JSON) {
 
-    JSON = function () {
+    JSON = function JSON () {
 
         function f(n) {    // Format integers to have at least two digits.
             return n < 10 ? '0' + n : n;
         }
 
-        Date.prototype.toJSON = function () {
+        Date.prototype.toJSON = function toJSON () {
 
 // Eventually, this method will be based on the date.toISOString method.
 
@@ -128,7 +128,7 @@ if (!this.JSON) {
 // Otherwise we must also replace the offending characters with safe sequences.
 
                 return r.test(value) ?
-                    '"' + value.replace(r, function (a) {
+                    '"' + value.replace(r, function replace (a) {
                         var c = m[a];
                         if (c) {
                             return c;
@@ -216,7 +216,7 @@ if (!this.JSON) {
 
         return {
             stringify: stringify,
-            parse: function (text, filter) {
+            parse: function parse (text, filter) {
                 var j;
 
                 function walk(k, v) {

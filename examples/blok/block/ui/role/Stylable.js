@@ -30,7 +30,7 @@ Module("block.ui.role", function () {
         		var me    = this;
             	var style = this.getStyle()
             	
-                Joose.O.each(style, function (value, name) {
+                Joose.O.each(style, function eachCss (value, name) {
                 	if(!before || before[name] != value) {
                 		me.css(name, value)
                 	}

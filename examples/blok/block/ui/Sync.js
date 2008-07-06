@@ -1,3 +1,5 @@
+JooseGearsInitializeGears()
+
 Module("block.ui", function (m) {
     Class("Sync", {
         
@@ -18,22 +20,19 @@ Module("block.ui", function (m) {
         	},
             
             update: function () {
-
-                var me = this
-                
                 this.fetchStates();
-               
             },
             
             updateFromArray: function (updates) {
             	var me = this;
-            	Joose.A.each(updates, function (update) {
+            	for(var i = 0; i < updates.length; i++) {
+            		var update = updates[i];
                 	console.log("Update from version "+update.version)
                     me.setMaxVersion(update.version);
                     var doc = update.data
                     
                     me.updateDocument(doc)
-                })        
+                }    
                 this.saveState()   
                 
                 // get new data in N milli seconds
@@ -124,7 +123,7 @@ Module("block.ui", function (m) {
             
                 var doc = sync.getDoc()
             
-                $.get("/fetch",
+                this.request("GET", "/fetch",
 					{
 						hash:        doc.getId(),
                         max_version: (sync.getMaxVersion() || 0),
@@ -144,8 +143,7 @@ Module("block.ui", function (m) {
                     
                         }
                         sync.updateFromArray(dataArray)
-                    },
-                    "json")
+                    })
                 
                 
             },
@@ -156,7 +154,7 @@ Module("block.ui", function (m) {
                 
                 var data = JSON.stringify(sync.getDoc());
     
-                $.post("/add",
+                this.request("POST", "/add",
                 	{
                     	hash:         doc.getId(),
                         data:         data,
@@ -164,10 +162,15 @@ Module("block.ui", function (m) {
                         name:         doc.getHeader().getTitle(),
                         session:	  document.paras.sessionId
                     },
-                    function () {
+                    function saveMessage () {
                         console.log("save successful")
-                    }, 
-                    "json");
+                    });
+            },
+            
+            request: function (method, url, data, callback) {
+            	Joose.Gears.ajaxRequest(method, url, data, function receivedData (data) {
+            		callback(JSON.parse(data))
+            	})
             }
         }
         

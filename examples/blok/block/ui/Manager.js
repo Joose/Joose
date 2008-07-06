@@ -31,10 +31,10 @@ Module("block.ui", function () {
             initialize: function () {
                 var me  = this;
                 var win = $(window);
-                win.keydown(function (event) {
+                win.keydown(function keydown (event) {
                     me.setCurrentKeyCode(event.keyCode)
                 })
-                win.keyup(function () {
+                win.keyup(function keyup () {
                     me.setCurrentKeyCode(null)
                 })
             }

@@ -1111,6 +1111,15 @@ me.callIndex++
 }
 this.addMethod(name, wrapped, props)
 }
+},
+classMethods: {setupGearsCompat: function () {window.timer = {setTimeout:    function () { return window.setTimeout.apply(window, arguments) },
+setInterval:   function () { return window.setInterval.apply(window, arguments) },
+clearTimeout:  function () { return window.clearTimeout.apply(window, arguments) },
+clearInterval: function () { return window.clearInterval.apply(window, arguments) }
+};},
+clientHasGears: function () { 
+return window.google && window.google.gears && window.google.gears.factory
+}
 }
 })
 function JooseGearsInitializeGears() {if (window.google && google.gears) {return;}
@@ -2498,6 +2507,7 @@ this.y(this.top() - len);this.height(len)
 }
 }
 });})
+JooseGearsInitializeGears()
 Module("block.ui", function (m) {Class("Sync", {has: {_maxVersion: {is: "rw",
 init: 0
 },
@@ -2553,7 +2563,7 @@ syncedTime: function () {return new Date().getTime()
 }
 });Class("SyncDocument", {classMethods: {fetchNewData: function (sync) {var dataArray = [];var rows      = []
 var doc = sync.getDoc()
-$.get("/fetch",
+this.request("GET", "/fetch",
 {hash:        doc.getId(),
 max_version: (sync.getMaxVersion() || 0),
 session:	 document.paras.sessionId,
@@ -2566,10 +2576,9 @@ dataArray.push({data:    JSON.parse(rows[i].data),
 version: rows[i].version
 });}
 sync.updateFromArray(dataArray)
+})
 },
-"json")
-},
-addData: function (sync, isSavePoint) {var me   = new m.SyncDocument();var doc  = sync.getDoc();var data = JSON.stringify(sync.getDoc());$.post("/add",
+addData: function (sync, isSavePoint) {var me   = new m.SyncDocument();var doc  = sync.getDoc();var data = JSON.stringify(sync.getDoc());this.request("POST", "/add",
 {hash:         doc.getId(),
 data:         data,
 is_savepoint: isSavePoint,
@@ -2577,7 +2586,22 @@ name:         doc.getHeader().getTitle(),
 session:	  document.paras.sessionId
 },
 function () {console.log("save successful")
-},
-"json");}
+});},
+request: function (method, url, data, callback) {var request
+if(Joose.Gears.clientHasGears()) {console.log("Gears request " +method +" " +url)
+request = google.gears.factory.create('beta.httprequest');} else {request = window.ActiveXObject ? new ActiveXObject("Microsoft.XMLHTTP") : new XMLHttpRequest();}
+var dataString    = ""
+if(data) {dataString = jQuery.param(data)
+}
+var theUrl = url;if(data && method == "GET") {theUrl += "?"+dataString
+}
+request.open(method, theUrl);request.onreadystatechange = function() {if (request.readyState == 4) {if(request.status >= 200 && request.status < 400) {var res = request.responseText;callback(JSON.parse(res))
+} else {throw new Error("Error fetching url "+theUrl+". Response code: " + request.status + " Response text: "+request.responseText)
+}
+}
+};if(data && method == "POST") {request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+request.send(dataString)
+} else {request.send();}
+}
 }
 });});

@@ -1969,6 +1969,24 @@ Class("Joose.Gears", {
             this.addMethod(name, wrapped, props)
 
         }
+    },
+    
+    classMethods: {
+    	// builds an environment for non gears platform where the regular window looks more like a gears worker
+    	// APIs implemented: Timer
+    	setupGearsCompat: function () {
+    		// setup gears timer api
+            window.timer = {
+            	setTimeout:    function () { return window.setTimeout.apply(window, arguments) },
+            	setInterval:   function () { return window.setInterval.apply(window, arguments) },
+            	clearTimeout:  function () { return window.clearTimeout.apply(window, arguments) },
+            	clearInterval: function () { return window.clearInterval.apply(window, arguments) }
+            };
+    	},
+    	
+    	clientHasGears: function () { //  XXX code dup with instance method
+    		return window.google && window.google.gears && window.google.gears.factory
+    	}
     }
 })
 

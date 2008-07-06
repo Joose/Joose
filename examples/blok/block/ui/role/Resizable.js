@@ -17,7 +17,7 @@ Module("block.ui.role", function () {
                     minHeight: me.getMinHeight(),
                     minWidth:  me.getMinWidth(),
                     aspectRatio: this.maintainAspectRatio() ? "preserve" : null,
-                    stop:        function () { me.onResize() },
+                    stop:        function onResize () { me.onResize() },
                     grid:        document.grid.jQueryGridParameter()
                 })
         	},

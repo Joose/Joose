@@ -1,8 +1,8 @@
-// Generated: Fri Jul  4 21:27:25 2008
+// Generated: Sun Jul  6 17:03:30 2008
 
 
 // ##########################
-// File: /Users/malte/workspace/Joose/examples/blok/static/ColorPicker.js
+// File: /Users/malte/workspace/Joose2/examples/blok/static/ColorPicker.js
 // ##########################
 /* jQuery ColorPicker
    Written by Virgil Reboton(vreboton@gmail.com)
@@ -366,7 +366,7 @@ $(document).ready(function() {
 
 })(jQuery);
 // ##########################
-// File: /Users/malte/workspace/Joose/examples/blok/static/joose.js
+// File: /Users/malte/workspace/Joose2/examples/blok/static/joose.js
 // ##########################
 // Generated: Tue Jun 24 18:44:32 2008
 
@@ -2339,6 +2339,24 @@ Class("Joose.Gears", {
             this.addMethod(name, wrapped, props)
 
         }
+    },
+    
+    classMethods: {
+    	// builds an environment for non gears platform where the regular window looks more like a gears worker
+    	// APIs implemented: Timer
+    	setupGearsCompat: function () {
+    		// setup gears timer api
+            window.timer = {
+            	setTimeout:    function () { return window.setTimeout.apply(window, arguments) },
+            	setInterval:   function () { return window.setInterval.apply(window, arguments) },
+            	clearTimeout:  function () { return window.clearTimeout.apply(window, arguments) },
+            	clearInterval: function () { return window.clearInterval.apply(window, arguments) }
+            };
+    	},
+    	
+    	clientHasGears: function () { //  XXX code dup with instance method
+    		return window.google && window.google.gears && window.google.gears.factory
+    	}
     }
 })
 
@@ -2917,7 +2935,7 @@ Class("Joose.TypeCoercion", {
     }
 })
 // ##########################
-// File: /Users/malte/workspace/Joose/examples/blok/static/json2.js
+// File: /Users/malte/workspace/Joose2/examples/blok/static/json2.js
 // ##########################
 // Downloaded unchanged from http://www.json.org/json2.js
 
@@ -3198,7 +3216,7 @@ replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
 }
 
 // ##########################
-// File: /Users/malte/workspace/Joose/examples/blok/block/ui/Array.js
+// File: /Users/malte/workspace/Joose2/examples/blok/block/ui/Array.js
 // ##########################
 Module("block.ui", function () {
     Class("Array", {
@@ -3231,7 +3249,7 @@ function $A(array) {
     return new block.ui.Array(array)
 }
 // ##########################
-// File: /Users/malte/workspace/Joose/examples/blok/block/ui/ElementMetaclass.js
+// File: /Users/malte/workspace/Joose2/examples/blok/block/ui/ElementMetaclass.js
 // ##########################
 Module("block.ui", function (m) {
     Class("ElementMetaclass", {
@@ -3262,7 +3280,7 @@ Module("block.ui", function (m) {
     })
 })
 // ##########################
-// File: /Users/malte/workspace/Joose/examples/blok/block/ui/role/Notification.js
+// File: /Users/malte/workspace/Joose2/examples/blok/block/ui/role/Notification.js
 // ##########################
 Module("block.ui.role", function () {
     Role("Notification", {
@@ -3294,7 +3312,7 @@ Module("block.ui.role", function () {
     })
 })
 // ##########################
-// File: /Users/malte/workspace/Joose/examples/blok/block/ui/role/Draggable.js
+// File: /Users/malte/workspace/Joose2/examples/blok/block/ui/role/Draggable.js
 // ##########################
 Module("block.ui.role", function () {
     Role("Draggable", {
@@ -3315,7 +3333,7 @@ Module("block.ui.role", function () {
     })
 })
 // ##########################
-// File: /Users/malte/workspace/Joose/examples/blok/block/ui/role/Resizable.js
+// File: /Users/malte/workspace/Joose2/examples/blok/block/ui/role/Resizable.js
 // ##########################
 Module("block.ui.role", function () {
     Role("Resizable", {
@@ -3354,7 +3372,7 @@ Module("block.ui.role", function () {
     })
 })
 // ##########################
-// File: /Users/malte/workspace/Joose/examples/blok/block/ui/role/Focusable.js
+// File: /Users/malte/workspace/Joose2/examples/blok/block/ui/role/Focusable.js
 // ##########################
 Module("block.ui.role", function () {
     Role("Focusable", {
@@ -3377,7 +3395,7 @@ Module("block.ui.role", function () {
     })
 })
 // ##########################
-// File: /Users/malte/workspace/Joose/examples/blok/block/ui/role/Editable.js
+// File: /Users/malte/workspace/Joose2/examples/blok/block/ui/role/Editable.js
 // ##########################
 // XXX Refactor to elimate updateState (directly set upon action)
 Module("block.ui.role", function () {
@@ -3422,7 +3440,7 @@ Module("block.ui.role", function () {
     })
 })
 // ##########################
-// File: /Users/malte/workspace/Joose/examples/blok/block/ui/role/ShapeUI.js
+// File: /Users/malte/workspace/Joose2/examples/blok/block/ui/role/ShapeUI.js
 // ##########################
 Module("block.ui.role", function () {
     Role("ShapeUI", {
@@ -3461,7 +3479,7 @@ Module("block.ui.role", function () {
     })
 })
 // ##########################
-// File: /Users/malte/workspace/Joose/examples/blok/block/ui/role/Group.js
+// File: /Users/malte/workspace/Joose2/examples/blok/block/ui/role/Group.js
 // ##########################
 Module("block.ui.role", function () {
     Role("Group", {
@@ -3564,7 +3582,7 @@ Module("block.ui.role", function () {
     })
 })
 // ##########################
-// File: /Users/malte/workspace/Joose/examples/blok/block/ui/role/Stylable.js
+// File: /Users/malte/workspace/Joose2/examples/blok/block/ui/role/Stylable.js
 // ##########################
 Module("block.ui.role", function () {
     Role("Stylable", {
@@ -3617,7 +3635,7 @@ Module("block.ui.role", function () {
     })
 })
 // ##########################
-// File: /Users/malte/workspace/Joose/examples/blok/block/ui/role/Connectable.js
+// File: /Users/malte/workspace/Joose2/examples/blok/block/ui/role/Connectable.js
 // ##########################
 Module("block.ui.role", function () {
     Role("Connectable", {
@@ -3625,7 +3643,7 @@ Module("block.ui.role", function () {
     })
 })
 // ##########################
-// File: /Users/malte/workspace/Joose/examples/blok/block/ui/Manager.js
+// File: /Users/malte/workspace/Joose2/examples/blok/block/ui/Manager.js
 // ##########################
 Module("block.ui", function () {
 	
@@ -3827,7 +3845,7 @@ Module("block.ui", function () {
     })
 })
 // ##########################
-// File: /Users/malte/workspace/Joose/examples/blok/block/ui/Query.js
+// File: /Users/malte/workspace/Joose2/examples/blok/block/ui/Query.js
 // ##########################
 Module("block.ui", function (m) {
     Class("Query", {
@@ -3870,7 +3888,7 @@ Module("block.ui", function (m) {
     })
 });
 // ##########################
-// File: /Users/malte/workspace/Joose/examples/blok/block/ui/Document.js
+// File: /Users/malte/workspace/Joose2/examples/blok/block/ui/Document.js
 // ##########################
 Module("block.ui", function (m) {
     Class("Document", {
@@ -3902,7 +3920,7 @@ Module("block.ui", function (m) {
     })
 })
 // ##########################
-// File: /Users/malte/workspace/Joose/examples/blok/block/ui/DocumentHeader.js
+// File: /Users/malte/workspace/Joose2/examples/blok/block/ui/DocumentHeader.js
 // ##########################
 Module("block.ui", function (m) {
 	
@@ -3933,7 +3951,7 @@ Module("block.ui", function (m) {
     })
 })
 // ##########################
-// File: /Users/malte/workspace/Joose/examples/blok/block/ui/Element.js
+// File: /Users/malte/workspace/Joose2/examples/blok/block/ui/Element.js
 // ##########################
 Module("block.ui", function (m) {
     Class("Element", {
@@ -4005,7 +4023,7 @@ Module("block.ui", function (m) {
 })
 
 // ##########################
-// File: /Users/malte/workspace/Joose/examples/blok/block/ui/Container.js
+// File: /Users/malte/workspace/Joose2/examples/blok/block/ui/Container.js
 // ##########################
 Module("block.ui", function (m) {
     Class("Container", {
@@ -4105,7 +4123,7 @@ Module("block.ui", function (m) {
     })
 })
 // ##########################
-// File: /Users/malte/workspace/Joose/examples/blok/block/ui/Undo.js
+// File: /Users/malte/workspace/Joose2/examples/blok/block/ui/Undo.js
 // ##########################
 Module("block.ui", function (m) {
     Class("Undo", {
@@ -4165,7 +4183,7 @@ Module("block.ui", function (m) {
     })
 });
 // ##########################
-// File: /Users/malte/workspace/Joose/examples/blok/block/ui/Shape.js
+// File: /Users/malte/workspace/Joose2/examples/blok/block/ui/Shape.js
 // ##########################
 Module("block.ui", function (m) {
     Class("Shape", {
@@ -4481,7 +4499,7 @@ Module("block.ui", function (m) {
     })
 })
 // ##########################
-// File: /Users/malte/workspace/Joose/examples/blok/block/ui/shape/Grid.js
+// File: /Users/malte/workspace/Joose2/examples/blok/block/ui/shape/Grid.js
 // ##########################
 Module("block.ui.shape", function (m) {
     Class("Grid", {
@@ -4601,7 +4619,7 @@ Module("block.ui.shape", function (m) {
     })
 })
 // ##########################
-// File: /Users/malte/workspace/Joose/examples/blok/block/ui/shape/PropertiesPanel.js
+// File: /Users/malte/workspace/Joose2/examples/blok/block/ui/shape/PropertiesPanel.js
 // ##########################
 Module("block.ui.shape", function (m) {
     Class("PropertiesPanel", {
@@ -4707,7 +4725,7 @@ Module("block.ui.shape", function (m) {
     })
 })
 // ##########################
-// File: /Users/malte/workspace/Joose/examples/blok/block/ui/shape/DragPoint.js
+// File: /Users/malte/workspace/Joose2/examples/blok/block/ui/shape/DragPoint.js
 // ##########################
 Module("block.ui.shape", function (m) {
     
@@ -4744,7 +4762,7 @@ Module("block.ui.shape", function (m) {
     })
 })
 // ##########################
-// File: /Users/malte/workspace/Joose/examples/blok/block/ui/shape/Rectangle.js
+// File: /Users/malte/workspace/Joose2/examples/blok/block/ui/shape/Rectangle.js
 // ##########################
 Module("block.ui.shape", function (m) {
     Class("Rectangle", {
@@ -4772,7 +4790,7 @@ Module("block.ui.shape", function (m) {
     });
 })
 // ##########################
-// File: /Users/malte/workspace/Joose/examples/blok/block/ui/shape/Image.js
+// File: /Users/malte/workspace/Joose2/examples/blok/block/ui/shape/Image.js
 // ##########################
 Module("block.ui.shape", function (m) {
     Class("Image", {
@@ -4851,7 +4869,7 @@ Module("block.ui.shape", function (m) {
     });
 })
 // ##########################
-// File: /Users/malte/workspace/Joose/examples/blok/block/ui/shape/SelectionGroup.js
+// File: /Users/malte/workspace/Joose2/examples/blok/block/ui/shape/SelectionGroup.js
 // ##########################
 Module("block.ui.shape", function (m) {
     Class("SelectionGroup", {
@@ -4898,7 +4916,7 @@ Module("block.ui.shape", function (m) {
 });
 
 // ##########################
-// File: /Users/malte/workspace/Joose/examples/blok/block/ui/shape/Group.js
+// File: /Users/malte/workspace/Joose2/examples/blok/block/ui/shape/Group.js
 // ##########################
 Module("block.ui.shape", function (m) {
     Class("Group", {
@@ -4927,7 +4945,7 @@ Module("block.ui.shape", function (m) {
     });
 })
 // ##########################
-// File: /Users/malte/workspace/Joose/examples/blok/block/ui/shape/MultiSelection.js
+// File: /Users/malte/workspace/Joose2/examples/blok/block/ui/shape/MultiSelection.js
 // ##########################
 Module("block.ui.shape", function (m) {
     Class("MultiSelection", {
@@ -4972,7 +4990,7 @@ Module("block.ui.shape", function (m) {
     });
 })
 // ##########################
-// File: /Users/malte/workspace/Joose/examples/blok/block/ui/CustomShape.js
+// File: /Users/malte/workspace/Joose2/examples/blok/block/ui/CustomShape.js
 // ##########################
 Module("block.ui", function (m) {
     Class("CustomShape", {
@@ -4991,7 +5009,7 @@ Module("block.ui", function (m) {
 })
 
 // ##########################
-// File: /Users/malte/workspace/Joose/examples/blok/block/ui/shape/Custom.js
+// File: /Users/malte/workspace/Joose2/examples/blok/block/ui/shape/Custom.js
 // ##########################
 Module("block.ui.shape", function (m) {
     Class("Custom", {
@@ -5071,7 +5089,7 @@ Module("block.ui.shape", function (m) {
     });
 })
 // ##########################
-// File: /Users/malte/workspace/Joose/examples/blok/block/ui/shape/Connection.js
+// File: /Users/malte/workspace/Joose2/examples/blok/block/ui/shape/Connection.js
 // ##########################
 var c0, c1
 function testConnection() {
@@ -5353,8 +5371,10 @@ Module("block.ui.shape", function (m) {
     });
 })
 // ##########################
-// File: /Users/malte/workspace/Joose/examples/blok/block/ui/Sync.js
+// File: /Users/malte/workspace/Joose2/examples/blok/block/ui/Sync.js
 // ##########################
+JooseGearsInitializeGears()
+
 Module("block.ui", function (m) {
     Class("Sync", {
         
@@ -5481,7 +5501,7 @@ Module("block.ui", function (m) {
             
                 var doc = sync.getDoc()
             
-                $.get("/fetch",
+                this.request("GET", "/fetch",
 					{
 						hash:        doc.getId(),
                         max_version: (sync.getMaxVersion() || 0),
@@ -5501,8 +5521,7 @@ Module("block.ui", function (m) {
                     
                         }
                         sync.updateFromArray(dataArray)
-                    },
-                    "json")
+                    })
                 
                 
             },
@@ -5513,7 +5532,7 @@ Module("block.ui", function (m) {
                 
                 var data = JSON.stringify(sync.getDoc());
     
-                $.post("/add",
+                this.request("POST", "/add",
                 	{
                     	hash:         doc.getId(),
                         data:         data,
@@ -5523,8 +5542,44 @@ Module("block.ui", function (m) {
                     },
                     function () {
                         console.log("save successful")
-                    }, 
-                    "json");
+                    });
+            },
+            
+            request: function (method, url, data, callback) {
+		
+            	var request
+            	if(Joose.Gears.clientHasGears()) {
+            		console.log("Gears request " +method +" " +url)
+            		request = google.gears.factory.create('beta.httprequest');
+            	} else {
+            		request = window.ActiveXObject ? new ActiveXObject("Microsoft.XMLHTTP") : new XMLHttpRequest();
+            	}
+            	var dataString    = ""
+            	if(data) {
+            		dataString = jQuery.param(data)
+            	}
+            	var theUrl = url;
+            	if(data && method == "GET") {
+            		theUrl += "?"+dataString
+            	}
+				request.open(method, theUrl);
+				
+				request.onreadystatechange = function() {
+					if (request.readyState == 4) {
+						if(request.status >= 200 && request.status < 400) {
+							var res = request.responseText;
+							callback(JSON.parse(res))
+						} else {
+							throw new Error("Error fetching url "+theUrl+". Response code: " + request.status + " Response text: "+request.responseText)
+						}
+					}
+				};
+				if(data && method == "POST") {
+					request.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); 
+					request.send(dataString)
+				} else {
+					request.send();
+				}
             }
         }
         

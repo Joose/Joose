@@ -3,7 +3,7 @@ Module("block.ui.role", function () {
         after: {
             place: function () {
                 var me = this;
-                this.$.mousedown(function () {
+                this.$.mousedown(function mousedown () {
                     document.manager.switchFocus(me)
                 })
             },

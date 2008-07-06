@@ -9,7 +9,7 @@ Module("block.ui", function (m) {
         },
         after: {
             draw: function () {
-                Joose.A.each(this.getElements(), function (ele) {
+                Joose.A.each(this.getElements(), function drawEach (ele) {
                     ele.draw()
                 })
             }
@@ -56,7 +56,7 @@ Module("block.ui", function (m) {
             },
             
             redraw: function () {
-                Joose.A.each(this.getElements(), function (ele) {
+                Joose.A.each(this.getElements(), function redrawEach (ele) {
                     ele.redraw()
                 })
             },
@@ -83,7 +83,7 @@ Module("block.ui", function (m) {
             
             finishUnpack: function () {
                 var me = this;
-                Joose.A.each(this.getElements(), function (ele) {
+                Joose.A.each(this.getElements(), function finishUnpackEach (ele) {
                     me.propagate(ele)
                 })
             },

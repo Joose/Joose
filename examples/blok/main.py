@@ -84,9 +84,11 @@ class AddData(webapp.RequestHandler):
     rev = DocRevision()
     rev.owner   = user
     rev.hash    = self.request.get('hash')
-    rev.name    = self.request.get('name')
-    rev.data    = self.request.get('data')
+    rev.name    = self.request.get('name').decode('utf-8');
+    
+    rev.data    = self.request.get('data').decode('utf-8');
     rev.session = self.request.get('session')
+    logging.info("Saving data "+rev.hash)
     rev.put()
     rev.version = int(version)
     rev.put()
