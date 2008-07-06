@@ -2534,7 +2534,6 @@ jQuery.extend({
 
     ajaxSettings: {
         global: true,
-        type: "GET",
         timeout: 0,
         contentType: "application/x-www-form-urlencoded",
         processData: true,

@@ -1,12 +1,12 @@
 Module("block.ui", function () {
-	
-	
-	var GuidCounter = 0;
-	
+    
+    
+    var GuidCounter = 0;
+    
     Class("Manager", {
         has: {
             _focusElement: {
-            	is: "ro"
+                is: "ro"
             },
             _zIndex: {
                 is:   "rw",
@@ -81,69 +81,69 @@ Module("block.ui", function () {
             },
             
             selectAll: function () {
-            	var group = new block.ui.shape.SelectionGroup();
-            	var eles  = document.shapes.getElements();
-            	Joose.A.each(eles, function (shape) {
-            		group.add(shape);
-            	})
-            	group.draw()
-            	group.redraw()
-            	this.switchFocus(group)
+                var group = new block.ui.shape.SelectionGroup();
+                var eles  = document.shapes.getElements();
+                Joose.A.each(eles, function (shape) {
+                    group.add(shape);
+                })
+                group.draw()
+                group.redraw()
+                this.switchFocus(group)
             },
             
             setupShortcuts: function () {
-            	var me = this;
-            	var options = {
-            		disableInInput: true
-            	};
-            	
-            	var copy = function() {
-					var f = me.getFocusElement();
-					if(f) {
-						me.copy(f)
-					}
-				};
-				var cut = function() {
-					var f = me.getFocusElement();
-					if(f) {
-						me.copy(f)
-						f.destroy()
-					}
-				};
-				var paste = function() {
-					me.paste()
-				};
-				var selectAll = function () {
-					me.selectAll()
-				};
-				var clearSelection = function () {
-					me.clearFocus()
-				}
-				var destroy = function () {
-					var cur = me.getFocusElement();
-					if(cur) {
-						 cur.destroy()
-					}
-				};
-				
-				var undo = function () {
-					document.undo.undo()
-				}
-            	
-            	$.hotkeys.add("Ctrl+c", options, copy);
-            	$.hotkeys.add("Meta+c", options, copy);
-				$.hotkeys.add("Ctrl+v", options, paste);
-				$.hotkeys.add("Meta+v", options, paste);
-				$.hotkeys.add("Ctrl+x", options, cut);
-				$.hotkeys.add("Meta+x", options, cut);
-            	$.hotkeys.add("Ctrl+a", options, selectAll);
-            	$.hotkeys.add("Meta+a", options, selectAll);
-            	$.hotkeys.add("Ctrl+d", options, clearSelection);
-            	$.hotkeys.add("Meta+d", options, clearSelection);
-            	$.hotkeys.add("backspace", options, destroy);
-            	$.hotkeys.add("del",       options, destroy);
-            	$.hotkeys.add("Ctrl+z", options, undo);
-            	$.hotkeys.add("Meta+z", options, undo);
+                var me = this;
+                var options = {
+                    disableInInput: true
+                };
+                
+                var copy = function() {
+                    var f = me.getFocusElement();
+                    if(f) {
+                        me.copy(f)
+                    }
+                };
+                var cut = function() {
+                    var f = me.getFocusElement();
+                    if(f) {
+                        me.copy(f)
+                        f.destroy()
+                    }
+                };
+                var paste = function() {
+                    me.paste()
+                };
+                var selectAll = function () {
+                    me.selectAll()
+                };
+                var clearSelection = function () {
+                    me.clearFocus()
+                }
+                var destroy = function () {
+                    var cur = me.getFocusElement();
+                    if(cur) {
+                         cur.destroy()
+                    }
+                };
+                
+                var undo = function () {
+                    document.undo.undo()
+                }
+                
+                $.hotkeys.add("Ctrl+c", options, copy);
+                $.hotkeys.add("Meta+c", options, copy);
+                $.hotkeys.add("Ctrl+v", options, paste);
+                $.hotkeys.add("Meta+v", options, paste);
+                $.hotkeys.add("Ctrl+x", options, cut);
+                $.hotkeys.add("Meta+x", options, cut);
+                $.hotkeys.add("Ctrl+a", options, selectAll);
+                $.hotkeys.add("Meta+a", options, selectAll);
+                $.hotkeys.add("Ctrl+d", options, clearSelection);
+                $.hotkeys.add("Meta+d", options, clearSelection);
+                $.hotkeys.add("backspace", options, destroy);
+                $.hotkeys.add("del",       options, destroy);
+                $.hotkeys.add("Ctrl+z", options, undo);
+                $.hotkeys.add("Meta+z", options, undo);
             },
             
             shiftKeyDown: function () {
@@ -172,11 +172,11 @@ Module("block.ui", function () {
             },
             
             shapeFromGuid: function (guid) {
-            	return this.shapeByGuidMap[guid]
+                return this.shapeByGuidMap[guid]
             },
             
             copy: function (shape) {
-            	this.setTempStore(JSON.stringify(shape))
+                this.setTempStore(JSON.stringify(shape))
             },
             
             copyFocused: function () {

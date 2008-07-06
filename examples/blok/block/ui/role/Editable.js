@@ -22,7 +22,7 @@ Module("block.ui.role", function () {
             },
             
             redraw: function () {
-            	 this.textContainer().text(this.getText())
+                 this.textContainer().text(this.getText())
             }
         },
         methods: {

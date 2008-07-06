@@ -30,7 +30,7 @@ Class("Currency", {
 })
 
 Class("TestClass", {
-	
+    
 })
 
 Currency.meta.validateClass()

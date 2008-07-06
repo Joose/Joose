@@ -46,7 +46,7 @@ Joose.A.remove = function (array, removeEle) {
     var a = [];
     Joose.A.each(array, function (t) {
         if(t !== removeEle) {
-        	a.push(t)
+            a.push(t)
         }
     })
     return a
@@ -722,22 +722,22 @@ Joose.MetaClassBootstrap.prototype = {
      * @memberof Joose.Class
      */    
     does: function (roleObject) {
-    	
-    	for(var i = 0; i < this.roles.length; i++) {
-    		if(roleObject === this.roles[i]) {
-    			return true
-    		}
-    	}
-    	
-    	// dive into roles to find roles implemented by my roles
-    	for(var i = 0; i < this.roles.length; i++) {
-    		if(this.roles[i].meta.does(roleObject)) {
-    			return true
-    		}
-    	}
-    	
-    	return false
-    	// return classObject.meta.implementsMyMethods(this.getClassObject())
+        
+        for(var i = 0; i < this.roles.length; i++) {
+            if(roleObject === this.roles[i]) {
+                return true
+            }
+        }
+        
+        // dive into roles to find roles implemented by my roles
+        for(var i = 0; i < this.roles.length; i++) {
+            if(this.roles[i].meta.does(roleObject)) {
+                return true
+            }
+        }
+        
+        return false
+        // return classObject.meta.implementsMyMethods(this.getClassObject())
     },
     
     /**
@@ -1668,12 +1668,12 @@ Class("Joose.Attribute", {
                 }
             }
             if(set) {
-            	var setterName = this.setterName();
-            	if(object.meta.can(setterName)) { // use setter if available
-            		object[setterName](value)
-            	} else { // direct attribute access
-            		object[_name] = value
-            	}
+                var setterName = this.setterName();
+                if(object.meta.can(setterName)) { // use setter if available
+                    object[setterName](value)
+                } else { // direct attribute access
+                    object[_name] = value
+                }
             }
         },
         
@@ -1972,21 +1972,21 @@ Class("Joose.Gears", {
     },
     
     classMethods: {
-    	// builds an environment for non gears platform where the regular window looks more like a gears worker
-    	// APIs implemented: Timer
-    	setupGearsCompat: function () {
-    		// setup gears timer api
+        // builds an environment for non gears platform where the regular window looks more like a gears worker
+        // APIs implemented: Timer
+        setupGearsCompat: function () {
+            // setup gears timer api
             window.timer = {
-            	setTimeout:    function () { return window.setTimeout.apply(window, arguments) },
-            	setInterval:   function () { return window.setInterval.apply(window, arguments) },
-            	clearTimeout:  function () { return window.clearTimeout.apply(window, arguments) },
-            	clearInterval: function () { return window.clearInterval.apply(window, arguments) }
+                setTimeout:    function () { return window.setTimeout.apply(window, arguments) },
+                setInterval:   function () { return window.setInterval.apply(window, arguments) },
+                clearTimeout:  function () { return window.clearTimeout.apply(window, arguments) },
+                clearInterval: function () { return window.clearInterval.apply(window, arguments) }
             };
-    	},
-    	
-    	clientHasGears: function () { //  XXX code dup with instance method
-    		return window.google && window.google.gears && window.google.gears.factory
-    	}
+        },
+        
+        clientHasGears: function () { //  XXX code dup with instance method
+            return window.google && window.google.gears && window.google.gears.factory
+        }
     }
 })
 

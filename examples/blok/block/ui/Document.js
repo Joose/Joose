@@ -12,11 +12,11 @@ Module("block.ui", function (m) {
             id: {
                 is: "rw",
                 init: function () {
-                	var id = document.paras.docId
-                	if(id != null && id != "") {
-                		return id
-                	}
-                	return "default"
+                    var id = document.paras.docId
+                    if(id != null && id != "") {
+                        return id
+                    }
+                    return "default"
                 }
             }
         },

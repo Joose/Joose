@@ -51,14 +51,14 @@ isNull(o.another, "The first object doesnt have the attribute another");
     
 Class("TestClass", {
     has: {
-    	another: {is: rw, init: true},
-    	third:   {is: rw, init: 2}
+        another: {is: rw, init: true},
+        third:   {is: rw, init: 2}
     },
     
     methods: {
-    	setThird: function () {
-    		this.third = 3
-    	}
+        setThird: function () {
+            this.third = 3
+        }
     }
 });
     

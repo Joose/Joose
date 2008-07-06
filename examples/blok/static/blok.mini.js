@@ -2566,7 +2566,7 @@ var doc = sync.getDoc()
 this.request("GET", "/fetch",
 {hash:        doc.getId(),
 max_version: (sync.getMaxVersion() || 0),
-session:	 document.paras.sessionId,
+session:     document.paras.sessionId,
 no_cache:    Math.random()
 },
 function updateData (data) {console.log("Got data "+data + data.data.length)
@@ -2583,7 +2583,7 @@ addData: function (sync, isSavePoint) {var me   = new m.SyncDocument();var doc  
 data:         data,
 is_savepoint: isSavePoint,
 name:         doc.getHeader().getTitle(),
-session:	  document.paras.sessionId
+session:      document.paras.sessionId
 },
 function () {console.log("save successful")
 });},

@@ -38,10 +38,10 @@ Module("block.ui", function (m) {
             }
         },
         methods: {
-        	
-        	isDeleted: function () {
-        		return this.deleted
-        	},
+            
+            isDeleted: function () {
+                return this.deleted
+            },
             
             getGuid: function () { // override for real Guids, See Shape.js
                 return 0

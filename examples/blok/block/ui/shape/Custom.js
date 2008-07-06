@@ -2,15 +2,15 @@ Module("block.ui.shape", function (m) {
     Class("Custom", {
         isa:  block.ui.Shape,
         has: {
-        	_shapeUrl: {
-        		is: "rw",
-        		init: ""
-        	},
-        	_customShape: {
-        		is: "rw",
-        		persistent: false
-        	},
-        	_text: {
+            _shapeUrl: {
+                is: "rw",
+                init: ""
+            },
+            _customShape: {
+                is: "rw",
+                persistent: false
+            },
+            _text: {
                 is:   "rw",
                 init: ""
             }
@@ -39,34 +39,34 @@ Module("block.ui.shape", function (m) {
             
         },
         methods: {
-        	
-        	fetchAndDraw: function () {
-        		var me = this;
-        		
-        		jQuery.getJSON(this.getShapeUrl(), function shapeFetched (data) {
-        			var customShape = Joose.Storage.Unpacker.unpack(data)
-        			me.setCustomShape(customShape)
-        			me.renderCustomShape()
-        		})
-        	},
-        	
-        	renderCustomShape: function () {
-        		this.html$().html(this.getCustomShape().getHtml());
-        		this.redraw()
-        	},
+            
+            fetchAndDraw: function () {
+                var me = this;
+                
+                jQuery.getJSON(this.getShapeUrl(), function shapeFetched (data) {
+                    var customShape = Joose.Storage.Unpacker.unpack(data)
+                    me.setCustomShape(customShape)
+                    me.renderCustomShape()
+                })
+            },
+            
+            renderCustomShape: function () {
+                this.html$().html(this.getCustomShape().getHtml());
+                this.redraw()
+            },
             
             shapeUrl: function (url) {
                 if(arguments.length > 0) {
-                	if(url != this.getShapeUrl()) {
-                		this.setShapeUrl(url);
-                		this.fetchAndDraw();
-                	}
+                    if(url != this.getShapeUrl()) {
+                        this.setShapeUrl(url);
+                        this.fetchAndDraw();
+                    }
                 }
                 return this.getShapeUrl()
             },
             
             html$: function () {
-            	return this.$.find("div div")
+                return this.$.find("div div")
             },
 
             create: function () {

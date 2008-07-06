@@ -12,7 +12,7 @@ Module("block.ui.shape", function (m) {
                 
                 // add only my elements to the target because I am just a transient group
                 Joose.A.each(this.getElements(), function (ele) {
-                	ele.paste(target)
+                    ele.paste(target)
                 })
                 
                 this.draw();
@@ -22,13 +22,13 @@ Module("block.ui.shape", function (m) {
             },
             
             css: function (key, value) {
-            	var args = arguments
-            	if(value != null) {
-            		Joose.A.each(this.getElements(), function (shape) {
-            			shape.css.apply(shape, args)
-            		})
-            	}
-            	return ""
+                var args = arguments
+                if(value != null) {
+                    Joose.A.each(this.getElements(), function (shape) {
+                        shape.css.apply(shape, args)
+                    })
+                }
+                return ""
             },
             
             asRealGroup: function () {

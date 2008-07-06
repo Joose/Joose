@@ -7,9 +7,9 @@ Module("block.ui.role", function () {
             }
         },
         methods: {
-        	
-        	makeResizable: function () {
-        		var me = this;
+            
+            makeResizable: function () {
+                var me = this;
                 this.resize$().resizable({
                     handles:   'all',
                     autoHide:  true,
@@ -20,8 +20,8 @@ Module("block.ui.role", function () {
                     stop:        function onResize () { me.onResize() },
                     grid:        document.grid.jQueryGridParameter()
                 })
-        	},
-        	
+            },
+            
             maintainAspectRatio: function () {
                 return document.manager.shiftKeyDown()
             },

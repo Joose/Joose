@@ -44,21 +44,21 @@ Module("block.ui", function (m) {
                 lazy: true
             },
             _style : {
-            	is: "rw",
-            	init: function () { return {} }
+                is: "rw",
+                init: function () { return {} }
             }
         },
         methods: {
-        	
-        	
+            
+            
             
             create: function () {
                 throw "Abstract"
             },
             
-           	initGuid: function () {
-           		return document.manager.makeGuid(this)
-           	},
+               initGuid: function () {
+                   return document.manager.makeGuid(this)
+               },
             
             addDragPoints: function () {},
             makeDraggable: function () {},
@@ -89,7 +89,7 @@ Module("block.ui", function (m) {
             },
             
             _updateStateCore: function () {
-            	var offset = this.offset()
+                var offset = this.offset()
                 this.setLeft(offset.left);
                 this.setTop(offset.top);
                 this.setWidth(this.width());
@@ -98,7 +98,7 @@ Module("block.ui", function (m) {
             
             updateState: function () {
                 if(!this.isDeleted()) {
-                	document.undo.addUpdateStep(this)
+                    document.undo.addUpdateStep(this)
                     this._updateStateCore();
                     this.touch();
                 }
@@ -121,14 +121,14 @@ Module("block.ui", function (m) {
                     this.destroy()
                 } 
                 else if(!this.isDeleted()) {
-                	if(shape.getLeft() != this.getLeft())                
-                    	this.x(shape.getLeft());
-                    if(shape.getTop() != this.getTop())   	
-                    	this.y(shape.getTop());
+                    if(shape.getLeft() != this.getLeft())                
+                        this.x(shape.getLeft());
+                    if(shape.getTop() != this.getTop())       
+                        this.y(shape.getTop());
                     if(shape.getWidth() != this.getWidth())   
-                    	this.width(shape.getWidth());
-                    if(shape.getHeight() != this.getHeight())   	
-                    	this.height(shape.getHeight());
+                        this.width(shape.getWidth());
+                    if(shape.getHeight() != this.getHeight())       
+                        this.height(shape.getHeight());
                     this.setLastUpdate(shape.getLastUpdate())
                 }
             },
@@ -150,10 +150,10 @@ Module("block.ui", function (m) {
                 return new Date().getTime() + document.paras.timeOffset
             },
             offset: function () {
-            	var offset = this.dim$().offset();
-            	offset.left -= this.getOffsetLeft();
-            	offset.top  -= this.getOffsetTop();
-            	return offset;
+                var offset = this.dim$().offset();
+                offset.left -= this.getOffsetLeft();
+                offset.top  -= this.getOffsetTop();
+                return offset;
             },
             left: function (left) {
                 var ele = this.dim$();
@@ -172,23 +172,23 @@ Module("block.ui", function (m) {
                     ele.css("top", ""+top+"px")
                     ele.height(this.height() - (top - before))
                 } else {
-                	var base = ele.offset().top;
-                	var offset = this.getOffsetTop()
-                	
+                    var base = ele.offset().top;
+                    var offset = this.getOffsetTop()
+                    
                     return base - offset
                 }
             },
             
             dim$: function () {
-            	return this.$
+                return this.$
             },
             
             height: function () {
-            	var ele = this.dim$()
+                var ele = this.dim$()
                 return ele.height.apply(ele, arguments)
             },
             width: function () {
-            	var ele = this.dim$()
+                var ele = this.dim$()
                 return ele.width.apply(ele, arguments)
             },
             right: function (right) {
@@ -216,29 +216,29 @@ Module("block.ui", function (m) {
                 }
             },
             x: function (x) {
-            	if(arguments.length > 0) {
-                	this.$.css("left", ""+x+"px")
-            	} else {
-            		return this.left()
-            	}
+                if(arguments.length > 0) {
+                    this.$.css("left", ""+x+"px")
+                } else {
+                    return this.left()
+                }
             },
             y: function (y) {
-            	if(arguments.length > 0) {
-                	this.$.css("top", ""+y+"px")
-            	} else {
-            		return this.top()
-            	}
+                if(arguments.length > 0) {
+                    this.$.css("top", ""+y+"px")
+                } else {
+                    return this.top()
+                }
             },
             center: function (left, top) {
-            	if(arguments.length > 0) {
-                	this.x(Math.round(left - this.width() / 2))
-                	this.y(Math.round(top - this.height() / 2))
-            	} else {
-            		return {
-            			left: Math.round(this.left() + this.width() / 2),
-            			top:  Math.round(this.top()  + this.height() / 2)
-            		}
-            	}
+                if(arguments.length > 0) {
+                    this.x(Math.round(left - this.width() / 2))
+                    this.y(Math.round(top - this.height() / 2))
+                } else {
+                    return {
+                        left: Math.round(this.left() + this.width() / 2),
+                        top:  Math.round(this.top()  + this.height() / 2)
+                    }
+                }
             },
             
             show: function () {
@@ -249,19 +249,19 @@ Module("block.ui", function (m) {
             },
             
             resetGuid: function () {
-            	this.setGuid(this.initGuid())
-            	this.registerGuid();
-            	this.touch()
+                this.setGuid(this.initGuid())
+                this.registerGuid();
+                this.touch()
             },
             
             paste: function (target) {
-            	
-            	this.resetGuid()
-            	
-            	this.traverse(function (shape) {
-                	shape.resetGuid()
+                
+                this.resetGuid()
+                
+                this.traverse(function (shape) {
+                    shape.resetGuid()
                 })
-            	
+                
                 target.addAndDraw(this);
                 document.manager.switchFocus(this)
             },
@@ -289,8 +289,8 @@ Module("block.ui", function (m) {
             },
             
             type: function () {
-            	var name = this.meta.className();
-            	return name.split('.').pop()
+                var name = this.meta.className();
+                return name.split('.').pop()
             }
         },
         after: {
@@ -299,15 +299,15 @@ Module("block.ui", function (m) {
             }
         },
         classMethods: {
-        	addToDoc: function (paras) { // use to add new shapes to the document
-        		var me = this.meta.instantiate(paras);
-        		document.shapes.addAndDraw(me);
-        		me.touch()
-        		
-        		document.undo.addCreateStep(me)
-        		
-        		return me
-        	}
+            addToDoc: function (paras) { // use to add new shapes to the document
+                var me = this.meta.instantiate(paras);
+                document.shapes.addAndDraw(me);
+                me.touch()
+                
+                document.undo.addCreateStep(me)
+                
+                return me
+            }
         }
     })
 })

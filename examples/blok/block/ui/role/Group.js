@@ -6,12 +6,12 @@ Module("block.ui.role", function () {
             block.ui.role.ShapeUI
         ],
         before: {
-        	destroy: function () {
-        		Joose.A.each(this.getElements(), function (shape) { shape.destroy() })
-        	},
-        	touch: function () {
-        		Joose.A.each(this.getElements(), function (shape) { shape.touch() })
-        	}
+            destroy: function () {
+                Joose.A.each(this.getElements(), function (shape) { shape.destroy() })
+            },
+            touch: function () {
+                Joose.A.each(this.getElements(), function (shape) { shape.touch() })
+            }
         },
         after: {
             draw: function () {
@@ -39,9 +39,9 @@ Module("block.ui.role", function () {
                     }
                 })
                 if(left != null && top != null && right != null && bottom != null) {
-                	
-                	this.x(left);
-                	this.y(top);
+                    
+                    this.x(left);
+                    this.y(top);
                     this.width(right - left)
                     this.height(bottom - top)
                     
@@ -52,7 +52,7 @@ Module("block.ui.role", function () {
         },
         
         override: {
-        	updateState: function (dontMoveChildren) { // evil hack para to avoid movement ruding initialization
+            updateState: function (dontMoveChildren) { // evil hack para to avoid movement ruding initialization
                 var beforeLeft = this.getLeft();
                 var beforeTop  = this.getTop();
                 
@@ -60,25 +60,25 @@ Module("block.ui.role", function () {
                 
                 if(!dontMoveChildren) {
                 
-                	var afterLeft  = this.getLeft();
-                	var afterTop   = this.getTop();
+                    var afterLeft  = this.getLeft();
+                    var afterTop   = this.getTop();
                 
-                	var deltaLeft  = afterLeft - beforeLeft;
-                	var deltaTop   = afterTop  - beforeTop;
+                    var deltaLeft  = afterLeft - beforeLeft;
+                    var deltaTop   = afterTop  - beforeTop;
                 
-                	if(deltaLeft == 0 && deltaTop == 0) { // we didnt really move :)
-                		return
-               		}
+                    if(deltaLeft == 0 && deltaTop == 0) { // we didnt really move :)
+                        return
+                       }
                 
-               		Joose.A.each(this.getElements(), function updateChild (ele) {
+                       Joose.A.each(this.getElements(), function updateChild (ele) {
                     
-                	    ele.x(ele.left() + deltaLeft)
-                	    ele.y(ele.top() + deltaTop)
-                	    if(ele.meta.can("dragComplete")) {
-                	        ele.redraw()
-                	    }
-                	    ele.updateState()
-                	})
+                        ele.x(ele.left() + deltaLeft)
+                        ele.y(ele.top() + deltaTop)
+                        if(ele.meta.can("dragComplete")) {
+                            ele.redraw()
+                        }
+                        ele.updateState()
+                    })
                 }
             }
         },

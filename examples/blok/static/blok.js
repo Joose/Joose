@@ -21,221 +21,221 @@
 
 function colorPicker()
 {
-	this._nextId = 0; // Next ID for a time picker instance
-	this._inst = []; // List of instances indexed by ID
-	this._curInst = null; // The current instance in use
-	this._colorpickerShowing = false;
-	this._colorPickerDiv = $('<div id="colorPickerDiv"></div>');
+    this._nextId = 0; // Next ID for a time picker instance
+    this._inst = []; // List of instances indexed by ID
+    this._curInst = null; // The current instance in use
+    this._colorpickerShowing = false;
+    this._colorPickerDiv = $('<div id="colorPickerDiv"></div>');
 }
 $.extend(colorPicker.prototype, {
-	/* Class name added to elements to indicate already configured with a time picker. */
-	markerClassName: 'hasColorPicker',
+    /* Class name added to elements to indicate already configured with a time picker. */
+    markerClassName: 'hasColorPicker',
 
-	/* Register a new time picker instance - with custom settings. */
-	_register: function(inst) {
-		var id = this._nextId++;
-		this._inst[id] = inst;
-		return id;
-	},
+    /* Register a new time picker instance - with custom settings. */
+    _register: function(inst) {
+        var id = this._nextId++;
+        this._inst[id] = inst;
+        return id;
+    },
 
-	/* Retrieve a particular time picker instance based on its ID. */
-	_getInst: function(id) {
-		return this._inst[id] || id;
-	},
-	
-	/* Handle keystrokes. */
-	_doKeyDown: function(e) {
+    /* Retrieve a particular time picker instance based on its ID. */
+    _getInst: function(id) {
+        return this._inst[id] || id;
+    },
+    
+    /* Handle keystrokes. */
+    _doKeyDown: function(e) {
         var inst = $.colorPicker._getInst(this._colId);
-		if ($.colorPicker._colorpickerShowing) {
-			switch (e.keyCode) {
-				case 9: 
-				    // hide on tab out
-				    $.colorPicker.hideColorPicker();
+        if ($.colorPicker._colorpickerShowing) {
+            switch (e.keyCode) {
+                case 9: 
+                    // hide on tab out
+                    $.colorPicker.hideColorPicker();
                     break; 
 
-				case 27: 
-				    // hide on escape
-				    $.colorPicker.hideColorPicker();
-					break;
+                case 27: 
+                    // hide on escape
+                    $.colorPicker.hideColorPicker();
+                    break;
             }
-		}
-		else if (e.keyCode == 40) { // display the time picker on down arrow key
-			$.colorPicker.showFor(this);
-		}
-	},
+        }
+        else if (e.keyCode == 40) { // display the time picker on down arrow key
+            $.colorPicker.showFor(this);
+        }
+    },
 
 /* Handle keystrokes. */
-	_resetSample: function(e) {
+    _resetSample: function(e) {
         var inst = $.colorPicker._getInst(this._colId);
-		inst._sampleSpan.css('backgroundColor', inst._input.value);
-	},
-	
+        inst._sampleSpan.css('backgroundColor', inst._input.value);
+    },
+    
     /* Does this element have a particular class? */
-	_hasClass: function(element, className) {
-		var classes = element.attr('class');
-		return (classes && classes.indexOf(className) > -1);
-	},
+    _hasClass: function(element, className) {
+        var classes = element.attr('class');
+        return (classes && classes.indexOf(className) > -1);
+    },
 
     /* Pop-up the time picker for a given input field.
-	   @param  control  element - the input field attached to the time picker or
-	                    string - the ID or other jQuery selector of the input field or
-	                    object - jQuery object for input field
-	   @return the manager object */
-	showFor: function(control) {
-		
-		control = (control.jquery ? control[0] :
-			(typeof control == 'string' ? $(control)[0] : control));
-		var input = (control.nodeName && control.nodeName.toLowerCase() == 'input' ? control : this);
-		
-		if ($.colorPicker._lastInput == input) { return; }
-		if ($.colorPicker._colorpickerShowing) { return; }
-		
-		var inst = $.colorPicker._getInst(input._colId);
-		
-		$.colorPicker.hideColorPicker();
-		$.colorPicker._lastInput = input;
-		
-		if (!$.colorPicker._pos) { // position below input
-			$.colorPicker._pos = $.colorPicker._findPos(input);
-			$.colorPicker._pos[1] += input.offsetHeight; // add the height			
-		}
-		
-		var isFixed = true;
-		/*$(input).parents().each(function() {
-			isFixed |= $(this).css('position') == 'fixed';
-		});*/
-		
-		if (isFixed && $.browser.opera) { // correction for Opera when fixed and scrolled
-			$.colorPicker._pos[0] -= document.documentElement.scrollLeft;
-			$.colorPicker._pos[1] -= document.documentElement.scrollTop;
-		}
-		
-		var height = inst._colorPickerDiv.height()
-		if(height == 0) {
-			height = 188
-		}
-	
-	    inst._colorPickerDiv.css('position', ($.blockUI ? 'static' : (isFixed ? 'fixed' : 'absolute'))).css('left', $.colorPicker._pos[0]+150 + 'px').css('top', $.colorPicker._pos[1]+1-height + 'px');
-	
-		$.colorPicker._pos = null;
-		$.colorPicker._showColorPicker(inst);
-		
+       @param  control  element - the input field attached to the time picker or
+                        string - the ID or other jQuery selector of the input field or
+                        object - jQuery object for input field
+       @return the manager object */
+    showFor: function(control) {
+        
+        control = (control.jquery ? control[0] :
+            (typeof control == 'string' ? $(control)[0] : control));
+        var input = (control.nodeName && control.nodeName.toLowerCase() == 'input' ? control : this);
+        
+        if ($.colorPicker._lastInput == input) { return; }
+        if ($.colorPicker._colorpickerShowing) { return; }
+        
+        var inst = $.colorPicker._getInst(input._colId);
+        
+        $.colorPicker.hideColorPicker();
+        $.colorPicker._lastInput = input;
+        
+        if (!$.colorPicker._pos) { // position below input
+            $.colorPicker._pos = $.colorPicker._findPos(input);
+            $.colorPicker._pos[1] += input.offsetHeight; // add the height            
+        }
+        
+        var isFixed = true;
+        /*$(input).parents().each(function() {
+            isFixed |= $(this).css('position') == 'fixed';
+        });*/
+        
+        if (isFixed && $.browser.opera) { // correction for Opera when fixed and scrolled
+            $.colorPicker._pos[0] -= document.documentElement.scrollLeft;
+            $.colorPicker._pos[1] -= document.documentElement.scrollTop;
+        }
+        
+        var height = inst._colorPickerDiv.height()
+        if(height == 0) {
+            height = 188
+        }
+    
+        inst._colorPickerDiv.css('position', ($.blockUI ? 'static' : (isFixed ? 'fixed' : 'absolute'))).css('left', $.colorPicker._pos[0]+150 + 'px').css('top', $.colorPicker._pos[1]+1-height + 'px');
+    
+        $.colorPicker._pos = null;
+        $.colorPicker._showColorPicker(inst);
+        
 
-		return this;
-	},
+        return this;
+    },
 
     /* Find an object's position on the screen. */
-	_findPos: function(obj) {
-		
-		var offset = $(obj).offset();
-		return [offset.left, offset.top]
-		
-		// removed cruft
-	},
-	
-	/* Close time picker if clicked elsewhere. */
-	_checkExternalClick: function(event) {
-		if (!$.colorPicker._curInst)
-		{
-			return;
-		}
-		var target = $(event.target);		
-				
-		if ((target.parents("#colorPickerDiv").length == 0) && $.colorPicker._colorpickerShowing && !($.blockUI))
-		{
-		    if (target.text() != $.colorPicker._curInst._colorPickerDiv.text())
-		        $.colorPicker.hideColorPicker();
-		}
-	},
+    _findPos: function(obj) {
+        
+        var offset = $(obj).offset();
+        return [offset.left, offset.top]
+        
+        // removed cruft
+    },
+    
+    /* Close time picker if clicked elsewhere. */
+    _checkExternalClick: function(event) {
+        if (!$.colorPicker._curInst)
+        {
+            return;
+        }
+        var target = $(event.target);        
+                
+        if ((target.parents("#colorPickerDiv").length == 0) && $.colorPicker._colorpickerShowing && !($.blockUI))
+        {
+            if (target.text() != $.colorPicker._curInst._colorPickerDiv.text())
+                $.colorPicker.hideColorPicker();
+        }
+    },
 
     /* Hide the time picker from view.
-	   @param  speed  string - the speed at which to close the time picker
-	   @return void */
-	hideColorPicker: function(s) {
-		var inst = this._curInst;
-		if (!inst) {
-			return;
-		}		
+       @param  speed  string - the speed at which to close the time picker
+       @return void */
+    hideColorPicker: function(s) {
+        var inst = this._curInst;
+        if (!inst) {
+            return;
+        }        
  
-		if (this._colorpickerShowing)
-		{
-			this._colorpickerShowing = false;
-			this._lastInput = null;
-			
-			this._colorPickerDiv.css('position', 'absolute').css('left', '0px').css('top', '-1000px');
-			
-			if ($.blockUI)
-			{
-				$.unblockUI();
-				$('body').append(this._colorPickerDiv);
-			}
-        
-            this._curInst = null;        			
-		}
-		
-		if (inst._input[0].value != inst._sampleSpan.css('backgroundColor'))
-		{
-		    inst._sampleSpan.css('backgroundColor',inst._input[0].value);
-		}
-	},
-	
-	
-
-	/* Attach the time picker to an input field. */
-	_connectColorPicker: function(target, inst) {
-		var input = $(target);
-		if (this._hasClass(input, this.markerClassName)) { return; }
-		
-		$(input).attr('autocomplete', 'OFF'); // Disable browser autocomplete		
-		inst._input = $(input);	
-		
-		// Create sample span
-		inst._sampleSpan = $('<span class="ColorPickerDivSample" style="background-color:' + inst._input[0].value + ';height:' + inst._input[0].offsetHeight + ';">&nbsp;</span>');
-		input.after(inst._sampleSpan);
-		
-		inst._sampleSpan.click(function() {
-		    input.focus();
-		});
-		
-		input.click(this.showFor);					
-		input.focus(this.showFor);
-		
-		input.addClass(this.markerClassName).keydown(this._doKeyDown);
-		input[0]._colId = inst._id;		
-	},
-	
-	
-	/* Construct and display the time picker. */
-	_showColorPicker: function(id) {
-		var inst = this._getInst(id);
-		this._updateColorPicker(inst);
-		
-        inst._colorPickerDiv.css('width', inst._startTime != null ? '10em' : '6em');
-		
-		inst._colorPickerDiv.show();
-
-		if (inst._input[0].type != 'hidden')
+        if (this._colorpickerShowing)
         {
-		    inst._input[0].focus();
+            this._colorpickerShowing = false;
+            this._lastInput = null;
+            
+            this._colorPickerDiv.css('position', 'absolute').css('left', '0px').css('top', '-1000px');
+            
+            if ($.blockUI)
+            {
+                $.unblockUI();
+                $('body').append(this._colorPickerDiv);
+            }
+        
+            this._curInst = null;                    
         }
-		
-		this._curInst = inst;
-		this._colorpickerShowing = true;
-	},
-	
-	refreshSamples: function () {
-		$('.ColorPickerDivSample').each(function () {
-			$(this).css("backgroundColor", $(this).parent().find(".colorPicker").val())
-		})
-	},
+        
+        if (inst._input[0].value != inst._sampleSpan.css('backgroundColor'))
+        {
+            inst._sampleSpan.css('backgroundColor',inst._input[0].value);
+        }
+    },
+    
+    
 
-	/* Generate the time picker content. */
-	_updateColorPicker: function(inst) {
-		inst._colorPickerDiv.empty().append(inst._generateColorPicker());
-		if (inst._input && inst._input[0].type != 'hidden')
-		{
-			inst._input[0].focus();
-			
+    /* Attach the time picker to an input field. */
+    _connectColorPicker: function(target, inst) {
+        var input = $(target);
+        if (this._hasClass(input, this.markerClassName)) { return; }
+        
+        $(input).attr('autocomplete', 'OFF'); // Disable browser autocomplete        
+        inst._input = $(input);    
+        
+        // Create sample span
+        inst._sampleSpan = $('<span class="ColorPickerDivSample" style="background-color:' + inst._input[0].value + ';height:' + inst._input[0].offsetHeight + ';">&nbsp;</span>');
+        input.after(inst._sampleSpan);
+        
+        inst._sampleSpan.click(function() {
+            input.focus();
+        });
+        
+        input.click(this.showFor);                    
+        input.focus(this.showFor);
+        
+        input.addClass(this.markerClassName).keydown(this._doKeyDown);
+        input[0]._colId = inst._id;        
+    },
+    
+    
+    /* Construct and display the time picker. */
+    _showColorPicker: function(id) {
+        var inst = this._getInst(id);
+        this._updateColorPicker(inst);
+        
+        inst._colorPickerDiv.css('width', inst._startTime != null ? '10em' : '6em');
+        
+        inst._colorPickerDiv.show();
+
+        if (inst._input[0].type != 'hidden')
+        {
+            inst._input[0].focus();
+        }
+        
+        this._curInst = inst;
+        this._colorpickerShowing = true;
+    },
+    
+    refreshSamples: function () {
+        $('.ColorPickerDivSample').each(function () {
+            $(this).css("backgroundColor", $(this).parent().find(".colorPicker").val())
+        })
+    },
+
+    /* Generate the time picker content. */
+    _updateColorPicker: function(inst) {
+        inst._colorPickerDiv.empty().append(inst._generateColorPicker());
+        if (inst._input && inst._input[0].type != 'hidden')
+        {
+            inst._input[0].focus();
+            
             $("td.color", inst._timePickerDiv).unbind().mouseover(function() {
                 inst._sampleSpan.css('backgroundColor', $(this).css('backgroundColor'));
             }).click(function() {
@@ -243,94 +243,94 @@ $.extend(colorPicker.prototype, {
             });
         }
     } 
-	
+    
 });
 
 /* Individualised settings for time picker functionality applied to one or more related inputs.
    Instances are managed and manipulated through the TimePicker manager. */
 function ColorPickerInstance()
 {
-	this._id = $.colorPicker._register(this);
-	this._input = null;
-	this._colorPickerDiv = $.colorPicker._colorPickerDiv;
-	this._sampleSpan = null;
+    this._id = $.colorPicker._register(this);
+    this._input = null;
+    this._colorPickerDiv = $.colorPicker._colorPickerDiv;
+    this._sampleSpan = null;
 }
 
 $.extend(ColorPickerInstance.prototype, {
-	/* Get a setting value, defaulting if necessary. */
-	_get: function(name) {
-		return (this._settings[name] != null ? this._settings[name] : $.colorPicker._defaults[name]);
-	},
-	
+    /* Get a setting value, defaulting if necessary. */
+    _get: function(name) {
+        return (this._settings[name] != null ? this._settings[name] : $.colorPicker._defaults[name]);
+    },
+    
     _getValue: function () {
         if (this._input && this._input[0].type != 'hidden' && this._input[0].value != "")
-		{
-			return this._input[0].value;
+        {
+            return this._input[0].value;
         }
         return null;
     },
-	
-	_setValue: function (sel) {
+    
+    _setValue: function (sel) {
         // Update input field
         if (this._input && this._input[0].type != 'hidden')
-		{
-		    this._input[0].value = $.attr(sel,'title');
-			$(this._input[0]).change();
+        {
+            this._input[0].value = $.attr(sel,'title');
+            $(this._input[0]).change();
         }
         
         // Hide picker
         $.colorPicker.hideColorPicker();
     },
-   	
-	/* Generate the HTML for the current state of the time picker. */
-	_generateColorPicker: function() {
+       
+    /* Generate the HTML for the current state of the time picker. */
+    _generateColorPicker: function() {
         // Code to populate color picker window
         var colors  = new Array("#000000","#000033","#000066","#000099","#0000CC","#0000FF","#330000","#330033","#330066","#330099","#3300CC",
                                 "#3300FF","#660000","#660033","#660066","#660099","#6600CC","#6600FF","#990000","#990033","#990066","#990099",
                                 "#9900CC","#9900FF","#CC0000","#CC0033","#CC0066","#CC0099","#CC00CC","#CC00FF","#FF0000","#FF0033","#FF0066",
-							    "#FF0099","#FF00CC","#FF00FF","#003300","#003333","#003366","#003399","#0033CC","#0033FF","#333300","#333333",
-							    "#333366","#333399","#3333CC","#3333FF","#663300","#663333","#663366","#663399","#6633CC","#6633FF","#993300",
-							    "#993333","#993366","#993399","#9933CC","#9933FF","#CC3300","#CC3333","#CC3366","#CC3399","#CC33CC","#CC33FF",
-							    "#FF3300","#FF3333","#FF3366","#FF3399","#FF33CC","#FF33FF","#006600","#006633","#006666","#006699","#0066CC",
-							    "#0066FF","#336600","#336633","#336666","#336699","#3366CC","#3366FF","#666600","#666633","#666666","#666699",
-							    "#6666CC","#6666FF","#996600","#996633","#996666","#996699","#9966CC","#9966FF","#CC6600","#CC6633","#CC6666",
-							    "#CC6699","#CC66CC","#CC66FF","#FF6600","#FF6633","#FF6666","#FF6699","#FF66CC","#FF66FF","#009900","#009933",
-							    "#009966","#009999","#0099CC","#0099FF","#339900","#339933","#339966","#339999","#3399CC","#3399FF","#669900",
-							    "#669933","#669966","#669999","#6699CC","#6699FF","#999900","#999933","#999966","#999999","#9999CC","#9999FF",
-							    "#CC9900","#CC9933","#CC9966","#CC9999","#CC99CC","#CC99FF","#FF9900","#FF9933","#FF9966","#FF9999","#FF99CC",
-							    "#FF99FF","#00CC00","#00CC33","#00CC66","#00CC99","#00CCCC","#00CCFF","#33CC00","#33CC33","#33CC66","#33CC99",
-							    "#33CCCC","#33CCFF","#66CC00","#66CC33","#66CC66","#66CC99","#66CCCC","#66CCFF","#99CC00","#99CC33","#99CC66",
-							    "#99CC99","#99CCCC","#99CCFF","#CCCC00","#CCCC33","#CCCC66","#CCCC99","#CCCCCC","#CCCCFF","#FFCC00","#FFCC33",
-							    "#FFCC66","#FFCC99","#FFCCCC","#FFCCFF","#00FF00","#00FF33","#00FF66","#00FF99","#00FFCC","#00FFFF","#33FF00",
-							    "#33FF33","#33FF66","#33FF99","#33FFCC","#33FFFF","#66FF00","#66FF33","#66FF66","#66FF99","#66FFCC","#66FFFF",
-							    "#99FF00","#99FF33","#99FF66","#99FF99","#99FFCC","#99FFFF","#CCFF00","#CCFF33","#CCFF66","#CCFF99","#CCFFCC",
-							    "#CCFFFF","#FFFF00","#FFFF33","#FFFF66","#FFFF99","#FFFFCC","#EEEEEE","#111111","#222222","#333333","#444444",
-							    "#555555","#666666","#777777","#888888","#999999","#A5A5A5","#AAAAAA","#BBBBBB","#C3C3C3","#CCCCCC","#D2D2D2",
-							    "#DDDDDD","#E1E1E1","#FFFFFF");
-							    
+                                "#FF0099","#FF00CC","#FF00FF","#003300","#003333","#003366","#003399","#0033CC","#0033FF","#333300","#333333",
+                                "#333366","#333399","#3333CC","#3333FF","#663300","#663333","#663366","#663399","#6633CC","#6633FF","#993300",
+                                "#993333","#993366","#993399","#9933CC","#9933FF","#CC3300","#CC3333","#CC3366","#CC3399","#CC33CC","#CC33FF",
+                                "#FF3300","#FF3333","#FF3366","#FF3399","#FF33CC","#FF33FF","#006600","#006633","#006666","#006699","#0066CC",
+                                "#0066FF","#336600","#336633","#336666","#336699","#3366CC","#3366FF","#666600","#666633","#666666","#666699",
+                                "#6666CC","#6666FF","#996600","#996633","#996666","#996699","#9966CC","#9966FF","#CC6600","#CC6633","#CC6666",
+                                "#CC6699","#CC66CC","#CC66FF","#FF6600","#FF6633","#FF6666","#FF6699","#FF66CC","#FF66FF","#009900","#009933",
+                                "#009966","#009999","#0099CC","#0099FF","#339900","#339933","#339966","#339999","#3399CC","#3399FF","#669900",
+                                "#669933","#669966","#669999","#6699CC","#6699FF","#999900","#999933","#999966","#999999","#9999CC","#9999FF",
+                                "#CC9900","#CC9933","#CC9966","#CC9999","#CC99CC","#CC99FF","#FF9900","#FF9933","#FF9966","#FF9999","#FF99CC",
+                                "#FF99FF","#00CC00","#00CC33","#00CC66","#00CC99","#00CCCC","#00CCFF","#33CC00","#33CC33","#33CC66","#33CC99",
+                                "#33CCCC","#33CCFF","#66CC00","#66CC33","#66CC66","#66CC99","#66CCCC","#66CCFF","#99CC00","#99CC33","#99CC66",
+                                "#99CC99","#99CCCC","#99CCFF","#CCCC00","#CCCC33","#CCCC66","#CCCC99","#CCCCCC","#CCCCFF","#FFCC00","#FFCC33",
+                                "#FFCC66","#FFCC99","#FFCCCC","#FFCCFF","#00FF00","#00FF33","#00FF66","#00FF99","#00FFCC","#00FFFF","#33FF00",
+                                "#33FF33","#33FF66","#33FF99","#33FFCC","#33FFFF","#66FF00","#66FF33","#66FF66","#66FF99","#66FFCC","#66FFFF",
+                                "#99FF00","#99FF33","#99FF66","#99FF99","#99FFCC","#99FFFF","#CCFF00","#CCFF33","#CCFF66","#CCFF99","#CCFFCC",
+                                "#CCFFFF","#FFFF00","#FFFF33","#FFFF66","#FFFF99","#FFFFCC","#EEEEEE","#111111","#222222","#333333","#444444",
+                                "#555555","#666666","#777777","#888888","#999999","#A5A5A5","#AAAAAA","#BBBBBB","#C3C3C3","#CCCCCC","#D2D2D2",
+                                "#DDDDDD","#E1E1E1","#FFFFFF");
+                                
         var total = colors.length;
         var width = 18;
-	    var html = "<table border='1px' cellspacing='0' cellpadding='0'>";
-	    
-	    for (var i=0; i<total; i++)
-	    {
-		    if ((i % width) == 0) { html += "<tr>"; }
-		    
-		    html += '<td class="color" title="' + colors[i] + '" style="background-color:' + colors[i] + '"><label>&nbsp;&nbsp;&nbsp;</label></td>';
-		    
-		    if ( ((i+1)>=total) || (((i+1) % width) == 0))
-		    {
-		        html += "</tr>";
+        var html = "<table border='1px' cellspacing='0' cellpadding='0'>";
+        
+        for (var i=0; i<total; i++)
+        {
+            if ((i % width) == 0) { html += "<tr>"; }
+            
+            html += '<td class="color" title="' + colors[i] + '" style="background-color:' + colors[i] + '"><label>&nbsp;&nbsp;&nbsp;</label></td>';
+            
+            if ( ((i+1)>=total) || (((i+1) % width) == 0))
+            {
+                html += "</tr>";
             }
-		}
-		
-		html += '<tr><td title="" style="background-color:#999" class="color" colspan="' + width + '" align="center"><label>No Color</label></td></tr>'
-		
-		html += "</table>";
+        }
+        
+        html += '<tr><td title="" style="background-color:#999" class="color" colspan="' + width + '" align="center"><label>No Color</label></td></tr>'
+        
+        html += "</table>";
     
         return html
-	}
-	
+    }
+    
 });
 
 
@@ -338,30 +338,30 @@ $.extend(ColorPickerInstance.prototype, {
    @param  settings  object - the new settings to use for this time picker instance (anonymous)
    @return jQuery object - for chaining further calls */
 $.fn.attachColorPicker = function() {
-	return this.each(function() {
-		var nodeName = this.nodeName.toLowerCase();
-		if (nodeName == 'input')
-		{
-			var inst = new ColorPickerInstance();
-			$.colorPicker._connectColorPicker(this, inst);
-		} 		
-	});
+    return this.each(function() {
+        var nodeName = this.nodeName.toLowerCase();
+        if (nodeName == 'input')
+        {
+            var inst = new ColorPickerInstance();
+            $.colorPicker._connectColorPicker(this, inst);
+        }         
+    });
 };
 
 $.fn.getValue = function() {
-	var inst = (this.length > 0 ? $.colorPicker._getInst(this[0]._colId) : null);
-	return (inst ? inst._getValue() : null);
+    var inst = (this.length > 0 ? $.colorPicker._getInst(this[0]._colId) : null);
+    return (inst ? inst._getValue() : null);
 };
 
 $.fn.setValue = function(value) {
-	var inst = (this.length > 0 ? $.colorPicker._getInst(this[0]._colId) : null);
-	if (inst) inst._setValue(value);
+    var inst = (this.length > 0 ? $.colorPicker._getInst(this[0]._colId) : null);
+    if (inst) inst._setValue(value);
 };
 
 /* Initialise the time picker. */
 $(document).ready(function() {
-	$.colorPicker = new colorPicker(); // singleton instance
-	$(document.body).append($.colorPicker._colorPickerDiv).mousedown($.colorPicker._checkExternalClick);
+    $.colorPicker = new colorPicker(); // singleton instance
+    $(document.body).append($.colorPicker._colorPickerDiv).mousedown($.colorPicker._checkExternalClick);
 });
 
 })(jQuery);
@@ -416,7 +416,7 @@ Joose.A.remove = function (array, removeEle) {
     var a = [];
     Joose.A.each(array, function (t) {
         if(t !== removeEle) {
-        	a.push(t)
+            a.push(t)
         }
     })
     return a
@@ -1092,22 +1092,22 @@ Joose.MetaClassBootstrap.prototype = {
      * @memberof Joose.Class
      */    
     does: function (roleObject) {
-    	
-    	for(var i = 0; i < this.roles.length; i++) {
-    		if(roleObject === this.roles[i]) {
-    			return true
-    		}
-    	}
-    	
-    	// dive into roles to find roles implemented by my roles
-    	for(var i = 0; i < this.roles.length; i++) {
-    		if(this.roles[i].meta.does(roleObject)) {
-    			return true
-    		}
-    	}
-    	
-    	return false
-    	// return classObject.meta.implementsMyMethods(this.getClassObject())
+        
+        for(var i = 0; i < this.roles.length; i++) {
+            if(roleObject === this.roles[i]) {
+                return true
+            }
+        }
+        
+        // dive into roles to find roles implemented by my roles
+        for(var i = 0; i < this.roles.length; i++) {
+            if(this.roles[i].meta.does(roleObject)) {
+                return true
+            }
+        }
+        
+        return false
+        // return classObject.meta.implementsMyMethods(this.getClassObject())
     },
     
     /**
@@ -2038,12 +2038,12 @@ Class("Joose.Attribute", {
                 }
             }
             if(set) {
-            	var setterName = this.setterName();
-            	if(object.meta.can(setterName)) { // use setter if available
-            		object[setterName](value)
-            	} else { // direct attribute access
-            		object[_name] = value
-            	}
+                var setterName = this.setterName();
+                if(object.meta.can(setterName)) { // use setter if available
+                    object[setterName](value)
+                } else { // direct attribute access
+                    object[_name] = value
+                }
             }
         },
         
@@ -2342,21 +2342,21 @@ Class("Joose.Gears", {
     },
     
     classMethods: {
-    	// builds an environment for non gears platform where the regular window looks more like a gears worker
-    	// APIs implemented: Timer
-    	setupGearsCompat: function () {
-    		// setup gears timer api
+        // builds an environment for non gears platform where the regular window looks more like a gears worker
+        // APIs implemented: Timer
+        setupGearsCompat: function () {
+            // setup gears timer api
             window.timer = {
-            	setTimeout:    function () { return window.setTimeout.apply(window, arguments) },
-            	setInterval:   function () { return window.setInterval.apply(window, arguments) },
-            	clearTimeout:  function () { return window.clearTimeout.apply(window, arguments) },
-            	clearInterval: function () { return window.clearInterval.apply(window, arguments) }
+                setTimeout:    function () { return window.setTimeout.apply(window, arguments) },
+                setInterval:   function () { return window.setInterval.apply(window, arguments) },
+                clearTimeout:  function () { return window.clearTimeout.apply(window, arguments) },
+                clearInterval: function () { return window.clearInterval.apply(window, arguments) }
             };
-    	},
-    	
-    	clientHasGears: function () { //  XXX code dup with instance method
-    		return window.google && window.google.gears && window.google.gears.factory
-    	}
+        },
+        
+        clientHasGears: function () { //  XXX code dup with instance method
+            return window.google && window.google.gears && window.google.gears.factory
+        }
     }
 })
 
@@ -3344,9 +3344,9 @@ Module("block.ui.role", function () {
             }
         },
         methods: {
-        	
-        	makeResizable: function () {
-        		var me = this;
+            
+            makeResizable: function () {
+                var me = this;
                 this.resize$().resizable({
                     handles:   'all',
                     autoHide:  true,
@@ -3357,8 +3357,8 @@ Module("block.ui.role", function () {
                     stop:        function () { me.onResize() },
                     grid:        document.grid.jQueryGridParameter()
                 })
-        	},
-        	
+            },
+            
             maintainAspectRatio: function () {
                 return document.manager.shiftKeyDown()
             },
@@ -3421,7 +3421,7 @@ Module("block.ui.role", function () {
             },
             
             redraw: function () {
-            	 this.textContainer().text(this.getText())
+                 this.textContainer().text(this.getText())
             }
         },
         methods: {
@@ -3489,12 +3489,12 @@ Module("block.ui.role", function () {
             block.ui.role.ShapeUI
         ],
         before: {
-        	destroy: function () {
-        		Joose.A.each(this.getElements(), function (shape) { shape.destroy() })
-        	},
-        	touch: function () {
-        		Joose.A.each(this.getElements(), function (shape) { shape.touch() })
-        	}
+            destroy: function () {
+                Joose.A.each(this.getElements(), function (shape) { shape.destroy() })
+            },
+            touch: function () {
+                Joose.A.each(this.getElements(), function (shape) { shape.touch() })
+            }
         },
         after: {
             draw: function () {
@@ -3522,9 +3522,9 @@ Module("block.ui.role", function () {
                     }
                 })
                 if(left != null && top != null && right != null && bottom != null) {
-                	
-                	this.x(left);
-                	this.y(top);
+                    
+                    this.x(left);
+                    this.y(top);
                     this.width(right - left)
                     this.height(bottom - top)
                     
@@ -3535,7 +3535,7 @@ Module("block.ui.role", function () {
         },
         
         override: {
-        	updateState: function (dontMoveChildren) { // evil hack para to avoid movement ruding initialization
+            updateState: function (dontMoveChildren) { // evil hack para to avoid movement ruding initialization
                 var beforeLeft = this.getLeft();
                 var beforeTop  = this.getTop();
                 
@@ -3543,25 +3543,25 @@ Module("block.ui.role", function () {
                 
                 if(!dontMoveChildren) {
                 
-                	var afterLeft  = this.getLeft();
-                	var afterTop   = this.getTop();
+                    var afterLeft  = this.getLeft();
+                    var afterTop   = this.getTop();
                 
-                	var deltaLeft  = afterLeft - beforeLeft;
-                	var deltaTop   = afterTop  - beforeTop;
+                    var deltaLeft  = afterLeft - beforeLeft;
+                    var deltaTop   = afterTop  - beforeTop;
                 
-                	if(deltaLeft == 0 && deltaTop == 0) { // we didnt really move :)
-                		return
-               		}
+                    if(deltaLeft == 0 && deltaTop == 0) { // we didnt really move :)
+                        return
+                       }
                 
-               		Joose.A.each(this.getElements(), function (ele) {
+                       Joose.A.each(this.getElements(), function (ele) {
                     
-                	    ele.x(ele.left() + deltaLeft)
-                	    ele.y(ele.top() + deltaTop)
-                	    if(ele.meta.can("dragComplete")) {
-                	        ele.redraw()
-                	    }
-                	    ele.updateState()
-                	})
+                        ele.x(ele.left() + deltaLeft)
+                        ele.y(ele.top() + deltaTop)
+                        if(ele.meta.can("dragComplete")) {
+                            ele.redraw()
+                        }
+                        ele.updateState()
+                    })
                 }
             }
         },
@@ -3591,41 +3591,41 @@ Module("block.ui.role", function () {
         after: {
             
             initialize: function () {
-            	if(this.getStyle() == null) {
-            		this.setStyle({})
-            	}
+                if(this.getStyle() == null) {
+                    this.setStyle({})
+                }
             },
             
             draw: function () {
-            	this.drawCSS()
+                this.drawCSS()
             },
             
             redraw: function () {
-            	this.drawCSS()
+                this.drawCSS()
             },
             
             _updateFromCore: function (shape) {
-            	var before = this.getStyle()
-            	this.setStyle(shape.getStyle())
-            	this.drawCSS(before)
+                var before = this.getStyle()
+                this.setStyle(shape.getStyle())
+                this.drawCSS(before)
             }
         },
         methods: {
-        	
-        	drawCSS: function (before) {
-        		var me    = this;
-            	var style = this.getStyle()
-            	
+            
+            drawCSS: function (before) {
+                var me    = this;
+                var style = this.getStyle()
+                
                 Joose.O.each(style, function (value, name) {
-                	if(!before || before[name] != value) {
-                		me.css(name, value)
-                	}
+                    if(!before || before[name] != value) {
+                        me.css(name, value)
+                    }
                 })
-        	},
-        	
+            },
+            
             css: function (key, value) {
                 if(arguments.length > 1) {
-                	this.$.css(key, value)
+                    this.$.css(key, value)
                     this.$.find(".stylable").css(key, value)
                     this.getStyle()[key] = value
                 }
@@ -3646,14 +3646,14 @@ Module("block.ui.role", function () {
 // File: /Users/malte/workspace/Joose2/examples/blok/block/ui/Manager.js
 // ##########################
 Module("block.ui", function () {
-	
-	
-	var GuidCounter = 0;
-	
+    
+    
+    var GuidCounter = 0;
+    
     Class("Manager", {
         has: {
             _focusElement: {
-            	is: "ro"
+                is: "ro"
             },
             _zIndex: {
                 is:   "rw",
@@ -3728,69 +3728,69 @@ Module("block.ui", function () {
             },
             
             selectAll: function () {
-            	var group = new block.ui.shape.SelectionGroup();
-            	var eles  = document.shapes.getElements();
-            	Joose.A.each(eles, function (shape) {
-            		group.add(shape);
-            	})
-            	group.draw()
-            	group.redraw()
-            	this.switchFocus(group)
+                var group = new block.ui.shape.SelectionGroup();
+                var eles  = document.shapes.getElements();
+                Joose.A.each(eles, function (shape) {
+                    group.add(shape);
+                })
+                group.draw()
+                group.redraw()
+                this.switchFocus(group)
             },
             
             setupShortcuts: function () {
-            	var me = this;
-            	var options = {
-            		disableInInput: true
-            	};
-            	
-            	var copy = function() {
-					var f = me.getFocusElement();
-					if(f) {
-						me.copy(f)
-					}
-				};
-				var cut = function() {
-					var f = me.getFocusElement();
-					if(f) {
-						me.copy(f)
-						f.destroy()
-					}
-				};
-				var paste = function() {
-					me.paste()
-				};
-				var selectAll = function () {
-					me.selectAll()
-				};
-				var clearSelection = function () {
-					me.clearFocus()
-				}
-				var destroy = function () {
-					var cur = me.getFocusElement();
-					if(cur) {
-						 cur.destroy()
-					}
-				};
-				
-				var undo = function () {
-					document.undo.undo()
-				}
-            	
-            	$.hotkeys.add("Ctrl+c", options, copy);
-            	$.hotkeys.add("Meta+c", options, copy);
-				$.hotkeys.add("Ctrl+v", options, paste);
-				$.hotkeys.add("Meta+v", options, paste);
-				$.hotkeys.add("Ctrl+x", options, cut);
-				$.hotkeys.add("Meta+x", options, cut);
-            	$.hotkeys.add("Ctrl+a", options, selectAll);
-            	$.hotkeys.add("Meta+a", options, selectAll);
-            	$.hotkeys.add("Ctrl+d", options, clearSelection);
-            	$.hotkeys.add("Meta+d", options, clearSelection);
-            	$.hotkeys.add("backspace", options, destroy);
-            	$.hotkeys.add("del",       options, destroy);
-            	$.hotkeys.add("Ctrl+z", options, undo);
-            	$.hotkeys.add("Meta+z", options, undo);
+                var me = this;
+                var options = {
+                    disableInInput: true
+                };
+                
+                var copy = function() {
+                    var f = me.getFocusElement();
+                    if(f) {
+                        me.copy(f)
+                    }
+                };
+                var cut = function() {
+                    var f = me.getFocusElement();
+                    if(f) {
+                        me.copy(f)
+                        f.destroy()
+                    }
+                };
+                var paste = function() {
+                    me.paste()
+                };
+                var selectAll = function () {
+                    me.selectAll()
+                };
+                var clearSelection = function () {
+                    me.clearFocus()
+                }
+                var destroy = function () {
+                    var cur = me.getFocusElement();
+                    if(cur) {
+                         cur.destroy()
+                    }
+                };
+                
+                var undo = function () {
+                    document.undo.undo()
+                }
+                
+                $.hotkeys.add("Ctrl+c", options, copy);
+                $.hotkeys.add("Meta+c", options, copy);
+                $.hotkeys.add("Ctrl+v", options, paste);
+                $.hotkeys.add("Meta+v", options, paste);
+                $.hotkeys.add("Ctrl+x", options, cut);
+                $.hotkeys.add("Meta+x", options, cut);
+                $.hotkeys.add("Ctrl+a", options, selectAll);
+                $.hotkeys.add("Meta+a", options, selectAll);
+                $.hotkeys.add("Ctrl+d", options, clearSelection);
+                $.hotkeys.add("Meta+d", options, clearSelection);
+                $.hotkeys.add("backspace", options, destroy);
+                $.hotkeys.add("del",       options, destroy);
+                $.hotkeys.add("Ctrl+z", options, undo);
+                $.hotkeys.add("Meta+z", options, undo);
             },
             
             shiftKeyDown: function () {
@@ -3819,11 +3819,11 @@ Module("block.ui", function () {
             },
             
             shapeFromGuid: function (guid) {
-            	return this.shapeByGuidMap[guid]
+                return this.shapeByGuidMap[guid]
             },
             
             copy: function (shape) {
-            	this.setTempStore(JSON.stringify(shape))
+                this.setTempStore(JSON.stringify(shape))
             },
             
             copyFocused: function () {
@@ -3849,42 +3849,42 @@ Module("block.ui", function () {
 // ##########################
 Module("block.ui", function (m) {
     Class("Query", {
-    	has: {
-    		query: {
-    			is: "rw"
-    		}
-    	},
-    	
-    	methods: {
-    		asHash: function () {
-				return this.query;
-			},
-	
-			param: function (name) {
-				return this.query[name]
-			},
-	
-			initialize: function () {
-				var search = window.location.search;
-				var parts  = search.split("?");
-				var search = parts[1];
+        has: {
+            query: {
+                is: "rw"
+            }
+        },
+        
+        methods: {
+            asHash: function () {
+                return this.query;
+            },
+    
+            param: function (name) {
+                return this.query[name]
+            },
+    
+            initialize: function () {
+                var search = window.location.search;
+                var parts  = search.split("?");
+                var search = parts[1];
 
-				if(search == null) {
-					search = "";
-				}
-	
-				parts      = search.split("&");
-	
-				var query  = {};
-	
-				for(var i = 0; i < parts.length; i++) {
-					var pair = parts[i].split("=");
-					query[unescape(pair[0])] = unescape(pair[1])
-				}
-		
-				this.setQuery(query)
-			}
-    	}
+                if(search == null) {
+                    search = "";
+                }
+    
+                parts      = search.split("&");
+    
+                var query  = {};
+    
+                for(var i = 0; i < parts.length; i++) {
+                    var pair = parts[i].split("=");
+                    query[unescape(pair[0])] = unescape(pair[1])
+                }
+        
+                this.setQuery(query)
+            }
+        }
     })
 });
 // ##########################
@@ -3904,11 +3904,11 @@ Module("block.ui", function (m) {
             id: {
                 is: "rw",
                 init: function () {
-                	var id = document.paras.docId
-                	if(id != null && id != "") {
-                		return id
-                	}
-                	return "default"
+                    var id = document.paras.docId
+                    if(id != null && id != "") {
+                        return id
+                    }
+                    return "default"
                 }
             }
         },
@@ -3923,30 +3923,30 @@ Module("block.ui", function (m) {
 // File: /Users/malte/workspace/Joose2/examples/blok/block/ui/DocumentHeader.js
 // ##########################
 Module("block.ui", function (m) {
-	
-	var userId = Math.random();
-	
+    
+    var userId = Math.random();
+    
     Class("DocumentHeader", {
         does: [Joose.Storage],
         has: {
-        	title: {
-        		is:   "rw"
-        	},
-        	user: {
+            title: {
+                is:   "rw"
+            },
+            user: {
                 is:   "rw",
                 init: function () { return document.location.search ? document.location.search : userId  }
             }
         },
         
         after: {
-        	
-        	initialize: function () {
-        		this.setTitle("Untitled Document")
-        	},
-        	
-        	setTitle: function () {
-        		document.title = ""+this.getTitle() + " - blok";
-        	}
+            
+            initialize: function () {
+                this.setTitle("Untitled Document")
+            },
+            
+            setTitle: function () {
+                document.title = ""+this.getTitle() + " - blok";
+            }
         }
     })
 })
@@ -3993,10 +3993,10 @@ Module("block.ui", function (m) {
             }
         },
         methods: {
-        	
-        	isDeleted: function () {
-        		return this.deleted
-        	},
+            
+            isDeleted: function () {
+                return this.deleted
+            },
             
             getGuid: function () { // override for real Guids, See Shape.js
                 return 0
@@ -4127,59 +4127,59 @@ Module("block.ui", function (m) {
 // ##########################
 Module("block.ui", function (m) {
     Class("Undo", {
-    	has: {
-    		_steps: {
-    			is: "rw",
-    			init: function () { return [] }
-    		}
-    	},
-    	
-    	methods: {
-    		
-    		undo: function () {
-    			var last = this._steps.pop();
-    			if(last) {
-    				last()
-    			}
-    		},
-    		
-    		addUndoStep: function (step, shape) {
-    			if(!shape.meta.does(block.ui.role.Group)) { // refactor to not even add this
-    				console.log("Add Undo step")
-    				this._steps.push(step);
-    				
-    				if(this._steps.length > 10) { // modulo :)
-    					this._steps.shift()
-    				}
-    			}
-    		},
-    		
-    		addUpdateStep: function (before) {
-    			var json = JSON.stringify(before);
-    			this.addUndoStep(function undoUpdate () {
-    				var copy = JSON.parse(json);
-    				copy.touch();
-    				before.updateFrom(copy);
-    				before.touch();
-    			}, before)
-    		},
-    		
-    		addCreateStep: function (shape) {
-    			this.addUndoStep(function undoCreate () {
-    				shape.destroy()
-    			}, shape)
-    		},
-    		
-    		addDestroyStep: function (shape) {
-    			this.addUndoStep(function undoDestroy () {
-    				console.log("Undo destroy")
-    				shape.setDeleted(false);
-    				shape.setPlaced(false); // so we draw again
-    				shape.touch()
-    				document.shapes.addAndDraw(shape);
-    			}, shape)
-    		}
-    	}
+        has: {
+            _steps: {
+                is: "rw",
+                init: function () { return [] }
+            }
+        },
+        
+        methods: {
+            
+            undo: function () {
+                var last = this._steps.pop();
+                if(last) {
+                    last()
+                }
+            },
+            
+            addUndoStep: function (step, shape) {
+                if(!shape.meta.does(block.ui.role.Group)) { // refactor to not even add this
+                    console.log("Add Undo step")
+                    this._steps.push(step);
+                    
+                    if(this._steps.length > 10) { // modulo :)
+                        this._steps.shift()
+                    }
+                }
+            },
+            
+            addUpdateStep: function (before) {
+                var json = JSON.stringify(before);
+                this.addUndoStep(function undoUpdate () {
+                    var copy = JSON.parse(json);
+                    copy.touch();
+                    before.updateFrom(copy);
+                    before.touch();
+                }, before)
+            },
+            
+            addCreateStep: function (shape) {
+                this.addUndoStep(function undoCreate () {
+                    shape.destroy()
+                }, shape)
+            },
+            
+            addDestroyStep: function (shape) {
+                this.addUndoStep(function undoDestroy () {
+                    console.log("Undo destroy")
+                    shape.setDeleted(false);
+                    shape.setPlaced(false); // so we draw again
+                    shape.touch()
+                    document.shapes.addAndDraw(shape);
+                }, shape)
+            }
+        }
     })
 });
 // ##########################
@@ -4231,21 +4231,21 @@ Module("block.ui", function (m) {
                 lazy: true
             },
             _style : {
-            	is: "rw",
-            	init: function () { return {} }
+                is: "rw",
+                init: function () { return {} }
             }
         },
         methods: {
-        	
-        	
+            
+            
             
             create: function () {
                 throw "Abstract"
             },
             
-           	initGuid: function () {
-           		return document.manager.makeGuid(this)
-           	},
+               initGuid: function () {
+                   return document.manager.makeGuid(this)
+               },
             
             addDragPoints: function () {},
             makeDraggable: function () {},
@@ -4276,7 +4276,7 @@ Module("block.ui", function (m) {
             },
             
             _updateStateCore: function () {
-            	var offset = this.offset()
+                var offset = this.offset()
                 this.setLeft(offset.left);
                 this.setTop(offset.top);
                 this.setWidth(this.width());
@@ -4285,7 +4285,7 @@ Module("block.ui", function (m) {
             
             updateState: function () {
                 if(!this.isDeleted()) {
-                	document.undo.addUpdateStep(this)
+                    document.undo.addUpdateStep(this)
                     this._updateStateCore();
                     this.touch();
                 }
@@ -4308,14 +4308,14 @@ Module("block.ui", function (m) {
                     this.destroy()
                 } 
                 else if(!this.isDeleted()) {
-                	if(shape.getLeft() != this.getLeft())                
-                    	this.x(shape.getLeft());
-                    if(shape.getTop() != this.getTop())   	
-                    	this.y(shape.getTop());
+                    if(shape.getLeft() != this.getLeft())                
+                        this.x(shape.getLeft());
+                    if(shape.getTop() != this.getTop())       
+                        this.y(shape.getTop());
                     if(shape.getWidth() != this.getWidth())   
-                    	this.width(shape.getWidth());
-                    if(shape.getHeight() != this.getHeight())   	
-                    	this.height(shape.getHeight());
+                        this.width(shape.getWidth());
+                    if(shape.getHeight() != this.getHeight())       
+                        this.height(shape.getHeight());
                     this.setLastUpdate(shape.getLastUpdate())
                 }
             },
@@ -4337,10 +4337,10 @@ Module("block.ui", function (m) {
                 return new Date().getTime() + document.paras.timeOffset
             },
             offset: function () {
-            	var offset = this.dim$().offset();
-            	offset.left -= this.getOffsetLeft();
-            	offset.top  -= this.getOffsetTop();
-            	return offset;
+                var offset = this.dim$().offset();
+                offset.left -= this.getOffsetLeft();
+                offset.top  -= this.getOffsetTop();
+                return offset;
             },
             left: function (left) {
                 var ele = this.dim$();
@@ -4359,23 +4359,23 @@ Module("block.ui", function (m) {
                     ele.css("top", ""+top+"px")
                     ele.height(this.height() - (top - before))
                 } else {
-                	var base = ele.offset().top;
-                	var offset = this.getOffsetTop()
-                	
+                    var base = ele.offset().top;
+                    var offset = this.getOffsetTop()
+                    
                     return base - offset
                 }
             },
             
             dim$: function () {
-            	return this.$
+                return this.$
             },
             
             height: function () {
-            	var ele = this.dim$()
+                var ele = this.dim$()
                 return ele.height.apply(ele, arguments)
             },
             width: function () {
-            	var ele = this.dim$()
+                var ele = this.dim$()
                 return ele.width.apply(ele, arguments)
             },
             right: function (right) {
@@ -4403,29 +4403,29 @@ Module("block.ui", function (m) {
                 }
             },
             x: function (x) {
-            	if(arguments.length > 0) {
-                	this.$.css("left", ""+x+"px")
-            	} else {
-            		return this.left()
-            	}
+                if(arguments.length > 0) {
+                    this.$.css("left", ""+x+"px")
+                } else {
+                    return this.left()
+                }
             },
             y: function (y) {
-            	if(arguments.length > 0) {
-                	this.$.css("top", ""+y+"px")
-            	} else {
-            		return this.top()
-            	}
+                if(arguments.length > 0) {
+                    this.$.css("top", ""+y+"px")
+                } else {
+                    return this.top()
+                }
             },
             center: function (left, top) {
-            	if(arguments.length > 0) {
-                	this.x(Math.round(left - this.width() / 2))
-                	this.y(Math.round(top - this.height() / 2))
-            	} else {
-            		return {
-            			left: Math.round(this.left() + this.width() / 2),
-            			top:  Math.round(this.top()  + this.height() / 2)
-            		}
-            	}
+                if(arguments.length > 0) {
+                    this.x(Math.round(left - this.width() / 2))
+                    this.y(Math.round(top - this.height() / 2))
+                } else {
+                    return {
+                        left: Math.round(this.left() + this.width() / 2),
+                        top:  Math.round(this.top()  + this.height() / 2)
+                    }
+                }
             },
             
             show: function () {
@@ -4436,19 +4436,19 @@ Module("block.ui", function (m) {
             },
             
             resetGuid: function () {
-            	this.setGuid(this.initGuid())
-            	this.registerGuid();
-            	this.touch()
+                this.setGuid(this.initGuid())
+                this.registerGuid();
+                this.touch()
             },
             
             paste: function (target) {
-            	
-            	this.resetGuid()
-            	
-            	this.traverse(function (shape) {
-                	shape.resetGuid()
+                
+                this.resetGuid()
+                
+                this.traverse(function (shape) {
+                    shape.resetGuid()
                 })
-            	
+                
                 target.addAndDraw(this);
                 document.manager.switchFocus(this)
             },
@@ -4476,8 +4476,8 @@ Module("block.ui", function (m) {
             },
             
             type: function () {
-            	var name = this.meta.className();
-            	return name.split('.').pop()
+                var name = this.meta.className();
+                return name.split('.').pop()
             }
         },
         after: {
@@ -4486,15 +4486,15 @@ Module("block.ui", function (m) {
             }
         },
         classMethods: {
-        	addToDoc: function (paras) { // use to add new shapes to the document
-        		var me = this.meta.instantiate(paras);
-        		document.shapes.addAndDraw(me);
-        		me.touch()
-        		
-        		document.undo.addCreateStep(me)
-        		
-        		return me
-        	}
+            addToDoc: function (paras) { // use to add new shapes to the document
+                var me = this.meta.instantiate(paras);
+                document.shapes.addAndDraw(me);
+                me.touch()
+                
+                document.undo.addCreateStep(me)
+                
+                return me
+            }
         }
     })
 })
@@ -4626,96 +4626,96 @@ Module("block.ui.shape", function (m) {
         isa: block.ui.Shape,
         has: {
             _shape: {
-            	is: "rw"
+                is: "rw"
             }
         },
         methods: {
-        	
-        	// Warning ugly:
-        	// ele must be an input or select
-        	// ele.id must me a method name or a methodName-firstPara
-        	callProp: function (ele, shape, value) {
-        		
-        		var $ele = $(ele);
-        		
-        		var id    = ele.id
-             	var parts = id.substr(4).split("-");
-             	var prop  = parts[0];
-             	var optionalPara = parts[1];
-             	var paras = [];
-             	if(optionalPara) {
-             		paras.push(optionalPara)
-             	}
-             	if(arguments.length > 2) {
-             		var val = "" + value;
-             		
-             		if($ele.attr("addPx")) {
-             			val += "px"
-             		}
-             		paras.push(val)
-             	}
-             	var does = $ele.attr('jooseDoes');
-             	if(shape.meta.can(prop) && (!does || shape.meta.does(shape.meta.classNameToClassObject(does))) ) {
-             		ele.disabled = false;
-             		var val = shape[prop].apply(shape, paras);
-             		if(val != null) {
-             			if($ele.attr("addPx")) {
-             				val = val.replace(/px/, "")
-             			}
-             			return val
-             		} else {
-             			return ""
-             		}
-             	} else {
-             		ele.disabled = true;
-             		return "n/a"
-             	}
-        	},
-        	
+            
+            // Warning ugly:
+            // ele must be an input or select
+            // ele.id must me a method name or a methodName-firstPara
+            callProp: function (ele, shape, value) {
+                
+                var $ele = $(ele);
+                
+                var id    = ele.id
+                 var parts = id.substr(4).split("-");
+                 var prop  = parts[0];
+                 var optionalPara = parts[1];
+                 var paras = [];
+                 if(optionalPara) {
+                     paras.push(optionalPara)
+                 }
+                 if(arguments.length > 2) {
+                     var val = "" + value;
+                     
+                     if($ele.attr("addPx")) {
+                         val += "px"
+                     }
+                     paras.push(val)
+                 }
+                 var does = $ele.attr('jooseDoes');
+                 if(shape.meta.can(prop) && (!does || shape.meta.does(shape.meta.classNameToClassObject(does))) ) {
+                     ele.disabled = false;
+                     var val = shape[prop].apply(shape, paras);
+                     if(val != null) {
+                         if($ele.attr("addPx")) {
+                             val = val.replace(/px/, "")
+                         }
+                         return val
+                     } else {
+                         return ""
+                     }
+                 } else {
+                     ele.disabled = true;
+                     return "n/a"
+                 }
+            },
+            
             place: function () {
-            	var me = this;
+                var me = this;
                 
                 this.$  = $("#properties");
                 
                 this.redraw()
                 
                 this.$.find("input,select").each(function () {
-                	
-                	var input = $(this);
-                	
-                	input.change(function () {
-                		var shape = me.getShape();
-                		if(shape) {
-                			me.callProp(this, shape, $(this).val())
-                			shape.updateState()
-                		}
-                	})
+                    
+                    var input = $(this);
+                    
+                    input.change(function () {
+                        var shape = me.getShape();
+                        if(shape) {
+                            me.callProp(this, shape, $(this).val())
+                            shape.updateState()
+                        }
+                    })
                 })
             },
             
             show: function () {
-            	this.$.show();
+                this.$.show();
             },
             
             hide: function () {
-            	this.$.hide();
+                this.$.hide();
             },
             
             setShape: function (newEle) {
-            	this._shape = newEle
+                this._shape = newEle
                 this.refresh(newEle);
                 this.show()
             },
             
             refresh: function (shape) {
-            	var me = this;
-            	if(shape === this.getShape()) {
-            		$('#shapeType').html(shape.type())
-            		this.$.find("input, select").each(function () {
-            			$(this).val(me.callProp(this, shape))
-            		})
-            		$.colorPicker.refreshSamples()
-            	}
+                var me = this;
+                if(shape === this.getShape()) {
+                    $('#shapeType').html(shape.type())
+                    this.$.find("input, select").each(function () {
+                        $(this).val(me.callProp(this, shape))
+                    })
+                    $.colorPicker.refreshSamples()
+                }
             },
             
             redraw: function () {
@@ -4796,10 +4796,10 @@ Module("block.ui.shape", function (m) {
     Class("Image", {
         isa:  block.ui.Shape,
         has: {
-        	_imageUrl: {
-        		is: "rw",
-        		init: "/static/pony.jpg"
-        	}
+            _imageUrl: {
+                is: "rw",
+                init: "/static/pony.jpg"
+            }
         },
         does: [
             block.ui.role.Draggable, 
@@ -4810,11 +4810,11 @@ Module("block.ui.shape", function (m) {
             place: function () {
                 var me = this;
                 this.$.dblclick(function () {
-                	var url = prompt("Please enter an image URL:", me.getImageUrl());
-                	if(url) {
-                    	me.imageUrl(url);
-                    	me.updateState()
-                	}
+                    var url = prompt("Please enter an image URL:", me.getImageUrl());
+                    if(url) {
+                        me.imageUrl(url);
+                        me.updateState()
+                    }
                 })
                 
                 this.imageUrl(this.getImageUrl())
@@ -4834,16 +4834,16 @@ Module("block.ui.shape", function (m) {
             
         },
         methods: {
-        	
-        	resizeImage: function () {
-        		var img = this.imageContainer().find("img");
-        		img.width(this.getWidth())
-        		img.height(this.getHeight())
-        	},
+            
+            resizeImage: function () {
+                var img = this.imageContainer().find("img");
+                img.width(this.getWidth())
+                img.height(this.getHeight())
+            },
             
             imageUrl: function (url) {
                 if(arguments.length > 0) {
-                	// rerender to get new size
+                    // rerender to get new size
                     this.imageContainer().html("<img class='image' src='"+url+"' />")
                 }
                 return this.getImageUrl()
@@ -4859,11 +4859,11 @@ Module("block.ui.shape", function (m) {
             },
             
             dim$: function () {
-            	return this.$
+                return this.$
             },
             
             resize$: function () {
-            	return this.$
+                return this.$
             }
         }
     });
@@ -4885,7 +4885,7 @@ Module("block.ui.shape", function (m) {
                 
                 // add only my elements to the target because I am just a transient group
                 Joose.A.each(this.getElements(), function (ele) {
-                	ele.paste(target)
+                    ele.paste(target)
                 })
                 
                 this.draw();
@@ -4895,13 +4895,13 @@ Module("block.ui.shape", function (m) {
             },
             
             css: function (key, value) {
-            	var args = arguments
-            	if(value != null) {
-            		Joose.A.each(this.getElements(), function (shape) {
-            			shape.css.apply(shape, args)
-            		})
-            	}
-            	return ""
+                var args = arguments
+                if(value != null) {
+                    Joose.A.each(this.getElements(), function (shape) {
+                        shape.css.apply(shape, args)
+                    })
+                }
+                return ""
             },
             
             asRealGroup: function () {
@@ -4996,14 +4996,14 @@ Module("block.ui", function (m) {
     Class("CustomShape", {
         does: [Joose.Storage],
         has: {
-			_html: {
-				is: "rw",
-				init: ""
-			},
-			_name: {
-				is: "rw",
-				init: "CustomShape"
-			}
+            _html: {
+                is: "rw",
+                init: ""
+            },
+            _name: {
+                is: "rw",
+                init: "CustomShape"
+            }
         }
     })
 })
@@ -5015,15 +5015,15 @@ Module("block.ui.shape", function (m) {
     Class("Custom", {
         isa:  block.ui.Shape,
         has: {
-        	_shapeUrl: {
-        		is: "rw",
-        		init: ""
-        	},
-        	_customShape: {
-        		is: "rw",
-        		persistent: false
-        	},
-        	_text: {
+            _shapeUrl: {
+                is: "rw",
+                init: ""
+            },
+            _customShape: {
+                is: "rw",
+                persistent: false
+            },
+            _text: {
                 is:   "rw",
                 init: ""
             }
@@ -5052,34 +5052,34 @@ Module("block.ui.shape", function (m) {
             
         },
         methods: {
-        	
-        	fetchAndDraw: function () {
-        		var me = this;
-        		
-        		jQuery.getJSON(this.getShapeUrl(), function shapeFetched (data) {
-        			var customShape = Joose.Storage.Unpacker.unpack(data)
-        			me.setCustomShape(customShape)
-        			me.renderCustomShape()
-        		})
-        	},
-        	
-        	renderCustomShape: function () {
-        		this.html$().html(this.getCustomShape().getHtml());
-        		this.redraw()
-        	},
+            
+            fetchAndDraw: function () {
+                var me = this;
+                
+                jQuery.getJSON(this.getShapeUrl(), function shapeFetched (data) {
+                    var customShape = Joose.Storage.Unpacker.unpack(data)
+                    me.setCustomShape(customShape)
+                    me.renderCustomShape()
+                })
+            },
+            
+            renderCustomShape: function () {
+                this.html$().html(this.getCustomShape().getHtml());
+                this.redraw()
+            },
             
             shapeUrl: function (url) {
                 if(arguments.length > 0) {
-                	if(url != this.getShapeUrl()) {
-                		this.setShapeUrl(url);
-                		this.fetchAndDraw();
-                	}
+                    if(url != this.getShapeUrl()) {
+                        this.setShapeUrl(url);
+                        this.fetchAndDraw();
+                    }
                 }
                 return this.getShapeUrl()
             },
             
             html$: function () {
-            	return this.$.find("div div")
+                return this.$.find("div div")
             },
 
             create: function () {
@@ -5093,222 +5093,222 @@ Module("block.ui.shape", function (m) {
 // ##########################
 var c0, c1
 function testConnection() {
-	if(!c0) {
-		c0 = new block.ui.shape.Connection();
-	}
-	
-	if(!c1) {
-		c1 = new block.ui.shape.Connection();
-	}
-	
-	var shapes = document.shapes.getElements();
-	c0.connect(shapes[0], shapes[1])
-	c1.connect(shapes[0], shapes[2])
+    if(!c0) {
+        c0 = new block.ui.shape.Connection();
+    }
+    
+    if(!c1) {
+        c1 = new block.ui.shape.Connection();
+    }
+    
+    var shapes = document.shapes.getElements();
+    c0.connect(shapes[0], shapes[1])
+    c1.connect(shapes[0], shapes[2])
 }
 
 Module("block.ui.shape", function (m) {
-	
-	
-	Class("Connector", {
-		classMethods: {
-			
-			connectFocused: function () {
-				var shapes = document.manager.getFocusElement();
-				if(!shapes) {
-					alert("Please select at least two shapes.")
-				} else {
-					if(shapes.meta.does(block.ui.role.Group)) {
-						this.connect(shapes.getElements())
-					} else {
-						alert("Please select multiple shapes.")
-					}
-				}
-			},
-			
-			connect: function (shapes) {
-				
-				var dests  = [];
-				var origin = shapes[0];
-				if(origin) {
-					Joose.A.each(shapes, function (shape) {
-						if(shape.meta.does(block.ui.role.Connectable)) {
-							if(origin && origin.center().top > shape.center().top) {
-								origin = shape;
-							}
-							dests.push(shape)
-						}
-					})
+    
+    
+    Class("Connector", {
+        classMethods: {
+            
+            connectFocused: function () {
+                var shapes = document.manager.getFocusElement();
+                if(!shapes) {
+                    alert("Please select at least two shapes.")
+                } else {
+                    if(shapes.meta.does(block.ui.role.Group)) {
+                        this.connect(shapes.getElements())
+                    } else {
+                        alert("Please select multiple shapes.")
+                    }
+                }
+            },
+            
+            connect: function (shapes) {
+                
+                var dests  = [];
+                var origin = shapes[0];
+                if(origin) {
+                    Joose.A.each(shapes, function (shape) {
+                        if(shape.meta.does(block.ui.role.Connectable)) {
+                            if(origin && origin.center().top > shape.center().top) {
+                                origin = shape;
+                            }
+                            dests.push(shape)
+                        }
+                    })
 
-					dests = Joose.A.remove(dests, origin)
-					
-					Joose.A.each(dests, function (dest) {
-						var connection = m.Connection.addToDoc({
-							origin:      origin,
-							destination: dest
-						})
-						connection.draw()
-						
-						document.shapes.add(connection)
-					})
-				}
-			}
-		}
-	})
-	
-	Class("Connection", {
-		isa:  block.ui.Shape,
-		
-		does: [
-			block.ui.role.Focusable
-		],
-		
-		has: {
-			_verticals: {
-				is: "rw",
-				persistent: false,
-				init: function () { return [new m.VerticalLine(), new m.VerticalLine()] }
-			},
-			_horizontals: {
-				is: "rw",
-				persistent: false,
-				init: function () { return [new m.HorizontalLine()] }
-			},
-			_origin: {
-				is: "rw",
-				persistent: false
-			},
-			_destination: {
-				is: "rw",
-				persistent: false
-			},
-			_originGuid: {
-				is: "rw"
-			},
-			_destinationGuid: {
-				is: "rw"
-			}
-		},
-		
-		
+                    dests = Joose.A.remove(dests, origin)
+                    
+                    Joose.A.each(dests, function (dest) {
+                        var connection = m.Connection.addToDoc({
+                            origin:      origin,
+                            destination: dest
+                        })
+                        connection.draw()
+                        
+                        document.shapes.add(connection)
+                    })
+                }
+            }
+        }
+    })
+    
+    Class("Connection", {
+        isa:  block.ui.Shape,
+        
+        does: [
+            block.ui.role.Focusable
+        ],
+        
+        has: {
+            _verticals: {
+                is: "rw",
+                persistent: false,
+                init: function () { return [new m.VerticalLine(), new m.VerticalLine()] }
+            },
+            _horizontals: {
+                is: "rw",
+                persistent: false,
+                init: function () { return [new m.HorizontalLine()] }
+            },
+            _origin: {
+                is: "rw",
+                persistent: false
+            },
+            _destination: {
+                is: "rw",
+                persistent: false
+            },
+            _originGuid: {
+                is: "rw"
+            },
+            _destinationGuid: {
+                is: "rw"
+            }
+        },
+        
+        
         methods: {
-        	
-        	changeNode: function (curNode, newNode) {
-        		if(curNode) {
-        			curNode.removeListener(this)
-        		}
-        		newNode.addListener(this)
-        	},
-        	
-        	notify: function (shape) {
-        		console.log("redraw connection")
-        		if(shape.isDeleted() && !this.isDeleted()) {
-        			this.destroy()
-        		} else {
-        			this.redraw()
-        		}
-        	},
-        	
-        	place: function () {
-        		this.redraw()
-        	},
-        	
-        	redraw: function () {
-        		if(!this.isDeleted()) {
-        			this.connect(this.getOrigin(), this.getDestination())
-        		}
-        	},
-        	
-        	/* This currently implements a simple connection strategy based on 3 lines */
-        	/* and should later be refactored to allow for different connection strategires. */
-        	connect: function (shape1, shape2) {
-        		var orig = shape1;
-        		var dest = shape2;
-        		
-        		var origBottom = orig.bottom()      
-        		var destTop    = dest.top()
-        		
-        		if(orig.top() > destTop) {
-        			// reverse origin and destination
-        			orig = shape2
-        			dest = shape1
-        			
-        			origBottom = orig.bottom()
-        			destTop    = dest.top()
-        		}
-        		
-        		var origCenter = orig.center();
-        		var destCenter = dest.center();
-        		
-        		var v0 = this.getVerticals()[0];
-        		var v1 = this.getVerticals()[1];
-        		var h0 = this.getHorizontals()[0];
-        		
-        		v0.draw()
-        		v0.y(origBottom + 1)
-        		v0.x(origCenter.left)
-        		
-        		var vlen = (destTop - origBottom) / 2;
-        		
-        		v0.len(vlen);
-        		
-       			var hlen = destCenter.left - origCenter.left;
-       			
-       			h0.draw()
-       			h0.y(origBottom + vlen);
-       			h0.x(origCenter.left)
-       			h0.len(hlen)
-       			
-       			v1.draw();
-       			v1.y(origBottom + vlen);
-        		v1.x(origCenter.left + hlen)
-        		v1.len(vlen)
-        		
-        		if(origBottom > destTop) {
-        			
-        			console.log("Special case for later")
-						
-        			
-        			v0.hide()
-        			v1.hide()
-        			h0.hide()
-        		} else {
-        			v0.show()
-        			v1.show()
-        			h0.show()
-        		}
-        	}
+            
+            changeNode: function (curNode, newNode) {
+                if(curNode) {
+                    curNode.removeListener(this)
+                }
+                newNode.addListener(this)
+            },
+            
+            notify: function (shape) {
+                console.log("redraw connection")
+                if(shape.isDeleted() && !this.isDeleted()) {
+                    this.destroy()
+                } else {
+                    this.redraw()
+                }
+            },
+            
+            place: function () {
+                this.redraw()
+            },
+            
+            redraw: function () {
+                if(!this.isDeleted()) {
+                    this.connect(this.getOrigin(), this.getDestination())
+                }
+            },
+            
+            /* This currently implements a simple connection strategy based on 3 lines */
+            /* and should later be refactored to allow for different connection strategires. */
+            connect: function (shape1, shape2) {
+                var orig = shape1;
+                var dest = shape2;
+                
+                var origBottom = orig.bottom()      
+                var destTop    = dest.top()
+                
+                if(orig.top() > destTop) {
+                    // reverse origin and destination
+                    orig = shape2
+                    dest = shape1
+                    
+                    origBottom = orig.bottom()
+                    destTop    = dest.top()
+                }
+                
+                var origCenter = orig.center();
+                var destCenter = dest.center();
+                
+                var v0 = this.getVerticals()[0];
+                var v1 = this.getVerticals()[1];
+                var h0 = this.getHorizontals()[0];
+                
+                v0.draw()
+                v0.y(origBottom + 1)
+                v0.x(origCenter.left)
+                
+                var vlen = (destTop - origBottom) / 2;
+                
+                v0.len(vlen);
+                
+                   var hlen = destCenter.left - origCenter.left;
+                   
+                   h0.draw()
+                   h0.y(origBottom + vlen);
+                   h0.x(origCenter.left)
+                   h0.len(hlen)
+                   
+                   v1.draw();
+                   v1.y(origBottom + vlen);
+                v1.x(origCenter.left + hlen)
+                v1.len(vlen)
+                
+                if(origBottom > destTop) {
+                    
+                    console.log("Special case for later")
+                        
+                    
+                    v0.hide()
+                    v1.hide()
+                    h0.hide()
+                } else {
+                    v0.show()
+                    v1.show()
+                    h0.show()
+                }
+            }
         },
         
         before: {
-			setOrigin: function (newNode) {
-				this.changeNode(this.getOrigin(), newNode);
-				this.setOriginGuid(newNode.getGuid())
-			},
-			setDestination: function (newNode) {
-				this.changeNode(this.getDestination(), newNode);
-				this.setDestinationGuid(newNode.getGuid())
-			},
-			
-			place: function () {
-				if(!this.getOrigin() && this.getOriginGuid()) {
-					this.setOrigin(document.manager.shapeFromGuid(this.getOriginGuid()))
-				}
-				if(!this.getDestination() && this.getDestinationGuid()) {
-					this.setDestination(document.manager.shapeFromGuid(this.getDestinationGuid()))
-				}
-			}
-		},
-		after: {
-			place: function () {
-				var a = [];
-				Joose.A.each(this.getVerticals(),   function (line) { a.push(line.$.get(0)) })
-				Joose.A.each(this.getHorizontals(), function (line) { a.push(line.$.get(0)) })
-				
-				this.$ = $(a)
-			}
-		}
-	})
-	
+            setOrigin: function (newNode) {
+                this.changeNode(this.getOrigin(), newNode);
+                this.setOriginGuid(newNode.getGuid())
+            },
+            setDestination: function (newNode) {
+                this.changeNode(this.getDestination(), newNode);
+                this.setDestinationGuid(newNode.getGuid())
+            },
+            
+            place: function () {
+                if(!this.getOrigin() && this.getOriginGuid()) {
+                    this.setOrigin(document.manager.shapeFromGuid(this.getOriginGuid()))
+                }
+                if(!this.getDestination() && this.getDestinationGuid()) {
+                    this.setDestination(document.manager.shapeFromGuid(this.getDestinationGuid()))
+                }
+            }
+        },
+        after: {
+            place: function () {
+                var a = [];
+                Joose.A.each(this.getVerticals(),   function (line) { a.push(line.$.get(0)) })
+                Joose.A.each(this.getHorizontals(), function (line) { a.push(line.$.get(0)) })
+                
+                this.$ = $(a)
+            }
+        }
+    })
+    
     Class("HorizontalLine", {
         isa:  block.ui.Shape,
         does: [
@@ -5321,28 +5321,28 @@ Module("block.ui.shape", function (m) {
             },
             
             getLength: function () {
-            	return this.getWidth()
+                return this.getWidth()
             },
             setLength: function (len) {
-            	this.setWidth(len);
-            	if(len >= 0) {
-            		this.width(len)
-            	} else {
-            		len = Math.abs(len)
-            		this.x(this.left() - len);
-            		this.width(len)
-            	}
+                this.setWidth(len);
+                if(len >= 0) {
+                    this.width(len)
+                } else {
+                    len = Math.abs(len)
+                    this.x(this.left() - len);
+                    this.width(len)
+                }
             },
             
             redraw: function () {
-            	this.len(this.getLength())
+                this.len(this.getLength())
             },
             
             len: function (len) {
-            	if(arguments.length > 0) {
-            		this.setLength(len)
-            	}
-            	return this.width()
+                if(arguments.length > 0) {
+                    this.setLength(len)
+                }
+                return this.width()
             }
         }
     });
@@ -5355,17 +5355,17 @@ Module("block.ui.shape", function (m) {
             },
             
             getLength: function () {
-            	return this.getHeight()
+                return this.getHeight()
             },
             setLength: function (len) {
-            	this.setHeight(len);
-            	if(len >= 0) {
-            		this.height(len)
-            	} else {
-            		len = Math.abs(len)
-            		this.y(this.top() - len);
-            		this.height(len)
-            	}
+                this.setHeight(len);
+                if(len >= 0) {
+                    this.height(len)
+                } else {
+                    len = Math.abs(len)
+                    this.y(this.top() - len);
+                    this.height(len)
+                }
             }
         }
     });
@@ -5389,10 +5389,10 @@ Module("block.ui", function (m) {
         },
         
         methods: {
-        	
-        	startListening: function ()  {
-        		
-        	},
+            
+            startListening: function ()  {
+                
+            },
             
             update: function () {
 
@@ -5403,9 +5403,9 @@ Module("block.ui", function (m) {
             },
             
             updateFromArray: function (updates) {
-            	var me = this;
-            	Joose.A.each(updates, function (update) {
-                	console.log("Update from version "+update.version)
+                var me = this;
+                Joose.A.each(updates, function (update) {
+                    console.log("Update from version "+update.version)
                     me.setMaxVersion(update.version);
                     var doc = update.data
                     
@@ -5415,11 +5415,11 @@ Module("block.ui", function (m) {
                 
                 // get new data in N milli seconds
                 var me = this;
-			 	//if(!$('#doSync') || $('#doSync').attr("checked")) {
-					window.setTimeout(function syncTimer () {
-						me.update()
-					}, 2000)
-				//} 
+                 //if(!$('#doSync') || $('#doSync').attr("checked")) {
+                    window.setTimeout(function syncTimer () {
+                        me.update()
+                    }, 2000)
+                //} 
             },
             
             updateDocument: function (doc) {
@@ -5429,7 +5429,7 @@ Module("block.ui", function (m) {
                 
                 var newTitle = doc.getHeader().getTitle();
                 if(newTitle != null) {
-                	this.getDoc().getHeader().setTitle(newTitle)
+                    this.getDoc().getHeader().setTitle(newTitle)
                 }
                 
                 state.traverse(function updateDocVisitor (shape, container) {
@@ -5438,17 +5438,17 @@ Module("block.ui", function (m) {
                     if(cur) {
                         console.log("Update")
                         if(!cur.isDeleted()) {
-                        	cur.updateFrom(shape)
-                        	// if we changed the hierarchy
+                            cur.updateFrom(shape)
+                            // if we changed the hierarchy
                         
-                        	if(cur.getContainer().getGuid() != container.getGuid()) {
-                        	    cur.getContainer().removeElement(cur)
-                        	    var dest = map[container.getGuid()];
-                        	    dest.add(cur)
-                        	}
+                            if(cur.getContainer().getGuid() != container.getGuid()) {
+                                cur.getContainer().removeElement(cur)
+                                var dest = map[container.getGuid()];
+                                dest.add(cur)
+                            }
                         }
                     } else {
-                    	console.log("Insert")
+                        console.log("Insert")
                         var dest
                         if(container === state) { // root
                             dest = document.shapes
@@ -5456,8 +5456,8 @@ Module("block.ui", function (m) {
                             dest = map[container.getGuid()]
                         }
                         if(!shape.isDeleted()) {
-                        	shape.registerGuid()
-                        	dest.addAndDraw(shape)
+                            shape.registerGuid()
+                            dest.addAndDraw(shape)
                         }
                     }
                 });
@@ -5481,7 +5481,7 @@ Module("block.ui", function (m) {
             },
             
             savePermanent: function () {
-            	return m.SyncDocument.addData(this, true)
+                return m.SyncDocument.addData(this, true)
             },
             
             syncedTime: function () {
@@ -5502,22 +5502,22 @@ Module("block.ui", function (m) {
                 var doc = sync.getDoc()
             
                 this.request("GET", "/fetch",
-					{
-						hash:        doc.getId(),
+                    {
+                        hash:        doc.getId(),
                         max_version: (sync.getMaxVersion() || 0),
-                        session:	 document.paras.sessionId,
+                        session:     document.paras.sessionId,
                         no_cache:    Math.random()
                     },
                     function updateData (data) {
-                    	console.log("Got data "+data + data.data.length)
-                    	rows = data.data
+                        console.log("Got data "+data + data.data.length)
+                        rows = data.data
             
-                    	for(var i = 0; i < rows.length; i++) {
-                        	console.log("Row version "+rows[i].version)
+                        for(var i = 0; i < rows.length; i++) {
+                            console.log("Row version "+rows[i].version)
                             dataArray.push({
-                            	data:    JSON.parse(rows[i].data),
-                            	version: rows[i].version
-                        	});
+                                data:    JSON.parse(rows[i].data),
+                                version: rows[i].version
+                            });
                     
                         }
                         sync.updateFromArray(dataArray)
@@ -5533,12 +5533,12 @@ Module("block.ui", function (m) {
                 var data = JSON.stringify(sync.getDoc());
     
                 this.request("POST", "/add",
-                	{
-                    	hash:         doc.getId(),
+                    {
+                        hash:         doc.getId(),
                         data:         data,
                         is_savepoint: isSavePoint,
                         name:         doc.getHeader().getTitle(),
-                        session:	  document.paras.sessionId
+                        session:      document.paras.sessionId
                     },
                     function () {
                         console.log("save successful")
@@ -5546,40 +5546,40 @@ Module("block.ui", function (m) {
             },
             
             request: function (method, url, data, callback) {
-		
-            	var request
-            	if(Joose.Gears.clientHasGears()) {
-            		console.log("Gears request " +method +" " +url)
-            		request = google.gears.factory.create('beta.httprequest');
-            	} else {
-            		request = window.ActiveXObject ? new ActiveXObject("Microsoft.XMLHTTP") : new XMLHttpRequest();
-            	}
-            	var dataString    = ""
-            	if(data) {
-            		dataString = jQuery.param(data)
-            	}
-            	var theUrl = url;
-            	if(data && method == "GET") {
-            		theUrl += "?"+dataString
-            	}
-				request.open(method, theUrl);
-				
-				request.onreadystatechange = function() {
-					if (request.readyState == 4) {
-						if(request.status >= 200 && request.status < 400) {
-							var res = request.responseText;
-							callback(JSON.parse(res))
-						} else {
-							throw new Error("Error fetching url "+theUrl+". Response code: " + request.status + " Response text: "+request.responseText)
-						}
-					}
-				};
-				if(data && method == "POST") {
-					request.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); 
-					request.send(dataString)
-				} else {
-					request.send();
-				}
+        
+                var request
+                if(Joose.Gears.clientHasGears()) {
+                    console.log("Gears request " +method +" " +url)
+                    request = google.gears.factory.create('beta.httprequest');
+                } else {
+                    request = window.ActiveXObject ? new ActiveXObject("Microsoft.XMLHTTP") : new XMLHttpRequest();
+                }
+                var dataString    = ""
+                if(data) {
+                    dataString = jQuery.param(data)
+                }
+                var theUrl = url;
+                if(data && method == "GET") {
+                    theUrl += "?"+dataString
+                }
+                request.open(method, theUrl);
+                
+                request.onreadystatechange = function() {
+                    if (request.readyState == 4) {
+                        if(request.status >= 200 && request.status < 400) {
+                            var res = request.responseText;
+                            callback(JSON.parse(res))
+                        } else {
+                            throw new Error("Error fetching url "+theUrl+". Response code: " + request.status + " Response text: "+request.responseText)
+                        }
+                    }
+                };
+                if(data && method == "POST") {
+                    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); 
+                    request.send(dataString)
+                } else {
+                    request.send();
+                }
             }
         }
         

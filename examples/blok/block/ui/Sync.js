@@ -14,20 +14,20 @@ Module("block.ui", function (m) {
         },
         
         methods: {
-        	
-        	startListening: function ()  {
-        		
-        	},
+            
+            startListening: function ()  {
+                
+            },
             
             update: function () {
                 this.fetchStates();
             },
             
             updateFromArray: function (updates) {
-            	var me = this;
-            	for(var i = 0; i < updates.length; i++) {
-            		var update = updates[i];
-                	console.log("Update from version "+update.version)
+                var me = this;
+                for(var i = 0; i < updates.length; i++) {
+                    var update = updates[i];
+                    console.log("Update from version "+update.version)
                     me.setMaxVersion(update.version);
                     var doc = update.data
                     
@@ -37,11 +37,11 @@ Module("block.ui", function (m) {
                 
                 // get new data in N milli seconds
                 var me = this;
-			 	//if(!$('#doSync') || $('#doSync').attr("checked")) {
-					window.setTimeout(function syncTimer () {
-						me.update()
-					}, 2000)
-				//} 
+                 //if(!$('#doSync') || $('#doSync').attr("checked")) {
+                    window.setTimeout(function syncTimer () {
+                        me.update()
+                    }, 2000)
+                //} 
             },
             
             updateDocument: function (doc) {
@@ -51,7 +51,7 @@ Module("block.ui", function (m) {
                 
                 var newTitle = doc.getHeader().getTitle();
                 if(newTitle != null) {
-                	this.getDoc().getHeader().setTitle(newTitle)
+                    this.getDoc().getHeader().setTitle(newTitle)
                 }
                 
                 state.traverse(function updateDocVisitor (shape, container) {
@@ -60,17 +60,17 @@ Module("block.ui", function (m) {
                     if(cur) {
                         console.log("Update")
                         if(!cur.isDeleted()) {
-                        	cur.updateFrom(shape)
-                        	// if we changed the hierarchy
+                            cur.updateFrom(shape)
+                            // if we changed the hierarchy
                         
-                        	if(cur.getContainer().getGuid() != container.getGuid()) {
-                        	    cur.getContainer().removeElement(cur)
-                        	    var dest = map[container.getGuid()];
-                        	    dest.add(cur)
-                        	}
+                            if(cur.getContainer().getGuid() != container.getGuid()) {
+                                cur.getContainer().removeElement(cur)
+                                var dest = map[container.getGuid()];
+                                dest.add(cur)
+                            }
                         }
                     } else {
-                    	console.log("Insert")
+                        console.log("Insert")
                         var dest
                         if(container === state) { // root
                             dest = document.shapes
@@ -78,8 +78,8 @@ Module("block.ui", function (m) {
                             dest = map[container.getGuid()]
                         }
                         if(!shape.isDeleted()) {
-                        	shape.registerGuid()
-                        	dest.addAndDraw(shape)
+                            shape.registerGuid()
+                            dest.addAndDraw(shape)
                         }
                     }
                 });
@@ -103,7 +103,7 @@ Module("block.ui", function (m) {
             },
             
             savePermanent: function () {
-            	return m.SyncDocument.addData(this, true)
+                return m.SyncDocument.addData(this, true)
             },
             
             syncedTime: function () {
@@ -124,22 +124,22 @@ Module("block.ui", function (m) {
                 var doc = sync.getDoc()
             
                 this.request("GET", "/fetch",
-					{
-						hash:        doc.getId(),
+                    {
+                        hash:        doc.getId(),
                         max_version: (sync.getMaxVersion() || 0),
-                        session:	 document.paras.sessionId,
+                        session:     document.paras.sessionId,
                         no_cache:    Math.random()
                     },
                     function updateData (data) {
-                    	console.log("Got data "+data + data.data.length)
-                    	rows = data.data
+                        console.log("Got data "+data + data.data.length)
+                        rows = data.data
             
-                    	for(var i = 0; i < rows.length; i++) {
-                        	console.log("Row version "+rows[i].version)
+                        for(var i = 0; i < rows.length; i++) {
+                            console.log("Row version "+rows[i].version)
                             dataArray.push({
-                            	data:    JSON.parse(rows[i].data),
-                            	version: rows[i].version
-                        	});
+                                data:    JSON.parse(rows[i].data),
+                                version: rows[i].version
+                            });
                     
                         }
                         sync.updateFromArray(dataArray)
@@ -155,12 +155,12 @@ Module("block.ui", function (m) {
                 var data = JSON.stringify(sync.getDoc());
     
                 this.request("POST", "/add",
-                	{
-                    	hash:         doc.getId(),
+                    {
+                        hash:         doc.getId(),
                         data:         data,
                         is_savepoint: isSavePoint,
                         name:         doc.getHeader().getTitle(),
-                        session:	  document.paras.sessionId
+                        session:      document.paras.sessionId
                     },
                     function saveMessage () {
                         console.log("save successful")
@@ -168,9 +168,9 @@ Module("block.ui", function (m) {
             },
             
             request: function (method, url, data, callback) {
-            	Joose.Gears.ajaxRequest(method, url, data, function receivedData (data) {
-            		callback(JSON.parse(data))
-            	})
+                Joose.Gears.ajaxRequest(method, url, data, function receivedData (data) {
+                    callback(JSON.parse(data))
+                })
             }
         }
         

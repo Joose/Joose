@@ -27,7 +27,7 @@ USAGE:
 ******************************************************************************************************************************/
 (function (jQuery){
     this.version = '(beta)(0.0.3)';
-	this.all = {};
+    this.all = {};
     this.special_keys = {
         27: 'esc', 9: 'tab', 32:'space', 13: 'return', 8:'backspace', 145: 'scroll', 20: 'capslock', 
         144: 'numlock', 19:'pause', 45:'insert', 36:'home', 46:'del',35:'end', 33: 'pageup', 
@@ -74,7 +74,7 @@ USAGE:
                 mapPoint = null;
                 
             if(ctrl) {
-            	meta = false
+                meta = false
             }
             
             // in opera + safari, the event.target is unpredictable.
@@ -89,7 +89,7 @@ USAGE:
             var cbMap = that.all[element].events[type].callbackMap;
             if(!shift && !ctrl && !alt && !meta) { // No Modifiers
                 mapPoint = cbMap[special] ||  cbMap[character]
-			}
+            }
             // deals with combinaitons (alt|ctrl|shift+anything)
             else{
                 var modif = '';
@@ -108,7 +108,7 @@ USAGE:
                     return false;
                 }
             }
-		};        
+        };        
         // first hook for this element
         if (!this.all[opt.target]){
             this.all[opt.target] = {events:{}};
@@ -119,15 +119,15 @@ USAGE:
         }        
         this.all[opt.target].events[opt.type].callbackMap[combi] =  {cb: callback, propagate:opt.propagate};                
         return jQuery;
-	};    
+    };    
     this.remove = function(exp, opt) {
         opt = opt || {};
         target = opt.target || jQuery('html')[0];
         type = opt.type || 'keydown';
-		exp = exp.toLowerCase();        
+        exp = exp.toLowerCase();        
         delete this.all[target].events[type].callbackMap[exp]        
         return jQuery;
-	};
+    };
     jQuery.hotkeys = this;
     return jQuery;    
 })(jQuery);

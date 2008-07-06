@@ -2,10 +2,10 @@ Module("block.ui.shape", function (m) {
     Class("Image", {
         isa:  block.ui.Shape,
         has: {
-        	_imageUrl: {
-        		is: "rw",
-        		init: "/static/pony.jpg"
-        	}
+            _imageUrl: {
+                is: "rw",
+                init: "/static/pony.jpg"
+            }
         },
         does: [
             block.ui.role.Draggable, 
@@ -16,11 +16,11 @@ Module("block.ui.shape", function (m) {
             place: function () {
                 var me = this;
                 this.$.dblclick(function () {
-                	var url = prompt("Please enter an image URL:", me.getImageUrl());
-                	if(url) {
-                    	me.imageUrl(url);
-                    	me.updateState()
-                	}
+                    var url = prompt("Please enter an image URL:", me.getImageUrl());
+                    if(url) {
+                        me.imageUrl(url);
+                        me.updateState()
+                    }
                 })
                 
                 this.imageUrl(this.getImageUrl())
@@ -40,16 +40,16 @@ Module("block.ui.shape", function (m) {
             
         },
         methods: {
-        	
-        	resizeImage: function () {
-        		var img = this.imageContainer().find("img");
-        		img.width(this.getWidth())
-        		img.height(this.getHeight())
-        	},
+            
+            resizeImage: function () {
+                var img = this.imageContainer().find("img");
+                img.width(this.getWidth())
+                img.height(this.getHeight())
+            },
             
             imageUrl: function (url) {
                 if(arguments.length > 0) {
-                	// rerender to get new size
+                    // rerender to get new size
                     this.imageContainer().html("<img class='image' src='"+url+"' />")
                 }
                 return this.getImageUrl()
@@ -65,11 +65,11 @@ Module("block.ui.shape", function (m) {
             },
             
             dim$: function () {
-            	return this.$
+                return this.$
             },
             
             resize$: function () {
-            	return this.$
+                return this.$
             }
         }
     });
