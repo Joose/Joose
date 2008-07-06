@@ -96,6 +96,9 @@ sub make_single_js {
 
     # Write all JS-Code to a single file
     write_file("$compile_dir/joose.mini.js", $output);
+    
+    # quick hack to get bleeding edge copy into blok
+    copy_file("$compile_dir/joose.mini.js", "/ws/Joose2/examples/blok/static");
 
     print "Built Mini JS-Lib\n";
 }
@@ -113,6 +116,11 @@ sub write_file {
 sub gzip {
     my ($file) = @_;
     print exe qq(gzip -cf $file > $file.gz);
+}
+
+sub copy_file {
+    my ($file, $target) = @_;
+    print exe qq(cp $file $target);
 }
 
 sub gzip_dir {
