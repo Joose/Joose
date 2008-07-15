@@ -29,6 +29,19 @@ class DocRevision(db.Model):
   def forJSON(self):
     return {'data' : ''+self.data , 'name' : self.name , 'version' : self.version}
 
+class Gadget(webapp.RequestHandler):
+
+  def get(self):
+    user = users.get_current_user()
+
+    docHash = self.request.get('id');
+
+    template_file = 'gadget.t.xml';
+    path          = os.path.join(os.path.dirname(__file__), template_file)
+
+    self.response.headers['Content-Type'] = 'text/xml'
+    self.response.out.write(template.render(path, { 'docId' : docHash }))
+   
 class MainPage(webapp.RequestHandler):
 
   def randomHash(self):
@@ -37,9 +50,14 @@ class MainPage(webapp.RequestHandler):
   def get(self):
     user = users.get_current_user()
 
-    docHash = self.request.get('id');
+    docHash  = self.request.get('id');
+    isTest   = self.request.get('test');
+    isBlank  = self.request.get('blank')
+    isGadget = self.request.get('gadget')
+    gadgetLibs = self.request.get('libs')
 
-    isTest  = self.request.get('test');
+    if(gadgetLibs is not None and gadgetLibs != ""):
+      gadgetLibs = gadgetLibs.split(",")
     
     if docHash is None or docHash == "":
       self.redirect('/?id='+self.randomHash())
@@ -58,7 +76,7 @@ class MainPage(webapp.RequestHandler):
         template_file = 'index.t.html'
         
       path = os.path.join(os.path.dirname(__file__), template_file)
-      self.response.out.write(template.render(path, { 'docId' : docHash , 'newId' : newId, 'guidBase' : guidBase, 'nowMilliseconds': now, "sessionId" : sessionId, "isTest" : isTest }))
+      self.response.out.write(template.render(path, { 'docId' : docHash , 'newId' : newId, 'guidBase' : guidBase, 'nowMilliseconds': now, "sessionId" : sessionId, "isTest" : isTest, "isBlank" : isBlank, "isGadget" : isGadget, 'gadgetLibs' : gadgetLibs }))
       #else:
       #  self.redirect(users.create_login_url(self.request.uri))
 
@@ -135,6 +153,7 @@ def main():
                                        [('/', MainPage),
                                         ('/add', AddData),
                                         ('/fetch', FetchData),
+                                        ('/gadget.xml', Gadget),
                                         ('/shape', FetchCustomShape)],
                                        debug=True)
   wsgiref.handlers.CGIHandler().run(application)

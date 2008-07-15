@@ -10,6 +10,11 @@ Module("block.ui", function (m) {
             },
             _doc: {
                 is: "rw"
+            },
+            
+            _firstUpdate: {
+            	is: "rw",
+            	init: true
             }
         },
         
@@ -84,6 +89,10 @@ Module("block.ui", function (m) {
                     }
                 });
                 
+                if(this.getFirstUpdate()) {
+                	window.onfirstdraw();
+                	this.setFirstUpdate(false)
+                }
                 
             },
             

@@ -17,7 +17,6 @@ document.paras = {
 
 </script>
 
-
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>
 <script type="text/javascript" src="static/jquery.ui.all.min.js"></script>
 <script type="text/javascript" src="static/jquery-cmenu.js"></script>
@@ -25,8 +24,6 @@ document.paras = {
 <script type="text/javascript" src="static/jquery.hotkeys.js"></script>
 <script type="text/javascript" src="static/joose.mini.js"></script>
 <script type="text/javascript" src="static/json2.js"></script>
-
-
 
 
 <script type="text/javascript" src="block/ui/Array.js"></script>
@@ -63,8 +60,16 @@ document.paras = {
 
 <script type="text/javascript" src="block/ui/Sync.js"></script>
 
+{% if isGadget %}
+{% for lib in gadgetLibs %}
+<script type="text/javascript" src="http://www.google.com/ig/f/{{ lib }}"></script>
+{% endfor %}
+{% endif %}
 
 <link href="static/block.css" rel="stylesheet" type="text/css" />
+{% if isBlank %}
+<link href="static/blank.css" rel="stylesheet" type="text/css" />
+{% endif %}
 <link href="static/ColorPicker.css" rel="stylesheet" type="text/css" />
 <link href="static/themes/flora/flora.all.css" rel="stylesheet" type="text/css" />
 
@@ -127,6 +132,12 @@ $(document).ready(function docReady () {
 	
 })
 
+function onfirstdraw() {
+	{% if isGadget %}
+		 _IG_AdjustIFrameHeight();
+	{% endif %}
+}
+
 function showState() {
 
 	var html = document.shapes.prettyPrint()
@@ -164,6 +175,7 @@ function write() {
 <body>
 
 <div id="canvas">
+<div id="blocker"></div>
 
 <div id="leftMenu">
 <ul>

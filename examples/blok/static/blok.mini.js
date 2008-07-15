@@ -140,7 +140,7 @@ $.fn.attachColorPicker = function() {return this.each(function() {var nodeName =
 {var inst = new ColorPickerInstance();$.colorPicker._connectColorPicker(this, inst);}
 });};$.fn.getValue = function() {var inst = (this.length > 0 ? $.colorPicker._getInst(this[0]._colId) : null);return (inst ? inst._getValue() : null);};$.fn.setValue = function(value) {var inst = (this.length > 0 ? $.colorPicker._getInst(this[0]._colId) : null);if (inst) inst._setValue(value);};/* Initialise the time picker. */
 $(document).ready(function() {$.colorPicker = new colorPicker(); 
-$(document.body).append($.colorPicker._colorPickerDiv).mousedown($.colorPicker._checkExternalClick);});})(jQuery);Joose = function () {this.cc              = null;  
+$(document.body).append($.colorPicker._colorPickerDiv).mousedown($.colorPicker._checkExternalClick);});})(jQuery);Joose = function () {this.cc              = null;
 this.currentModule   = null
 this.top             = window;this.globalObjects   = [];this.anonymouseClassCounter = 0;};Joose.A = {};Joose.A.each = function (array, func) {for(var i = 0; i < array.length; i++) {func(array[i], i)
 }
@@ -163,11 +163,9 @@ Joose.A.remove = function (array, removeEle) {var a = [];Joose.A.each(array, fun
 })
 return a
 }
-Joose.S = {};Joose.S.uppercaseFirst = function (string) {
-var first = string.substr(0,1);var rest  = string.substr(1,string.length-1);first = first.toUpperCase()
+Joose.S = {};Joose.S.uppercaseFirst = function (string) {var first = string.substr(0,1);var rest  = string.substr(1,string.length-1);first = first.toUpperCase()
 return first + rest;}
-Joose.S.isString = function (thing) {
-if(typeof thing == "string") {return true
+Joose.S.isString = function (thing) {if(typeof thing == "string") {return true
 }
 return false
 }
@@ -211,8 +209,7 @@ document.write(html)
 }
 Joose.copyObject = function (source, target) {var keys = "";Joose.O.each(source, function (value, name) {  keys+=", "+name; target[name] = value })
 return target
-};Joose.emptyFunction = function () {};var joose = new Joose();Joose.bootstrap = function () {var BOOT = new Joose.MetaClassBootstrap();
-BOOT.builder    = Joose.MetaClassBootstrap;Joose.MetaClass = BOOT.createClass("Joose.MetaClass");Joose.MetaClass.meta.addNonJooseSuperClass("Joose.MetaClassBootstrap", BOOT)
+};Joose.emptyFunction = function () {};var joose = new Joose();Joose.bootstrap = function () {var BOOT = new Joose.MetaClassBootstrap();BOOT.builder    = Joose.MetaClassBootstrap;Joose.MetaClass = BOOT.createClass("Joose.MetaClass");Joose.MetaClass.meta.addNonJooseSuperClass("Joose.MetaClassBootstrap", BOOT)
 Joose.MetaClass.meta.addMethod("initialize", function () { this._name = "Joose.MetaClass" })
 var META     = new Joose.MetaClass();META.builder = Joose.MetaClass;Joose.Class  = META.createClass("Joose.Class")
 Joose.Class.meta.addSuperClass(Joose.MetaClass);Joose.MetaClass.meta.addMethod("initialize", function () { this._name = "Joose.Class" })
@@ -228,7 +225,7 @@ Joose.bootstrap3 = function () {}
 /*
 * Joose.MetaClassBootstrap is used to bootstrap the Joose.Class with a regular JS constructor
 */
-/** ignore */ 
+/** ignore */
 Joose.MetaClassBootstrap = function () {this._name            = "Joose.MetaClassBootstrap";this.methodNames      =    [];this.attributeNames   =    ["_name", "isAbstract", "methodNames", "attributeNames", "methods", "parentClasses", "roles", "c"];this.attributes       = {},
 this.methods          = {};this.parentClasses    = [];this.roles            = [];this.isAbstract       = false;}
 /** @ignore */
@@ -445,7 +442,7 @@ getRoles:    function () {return this.roles;},
 getMethodNames:    function () {return this.methodNames;},
 addDetacher: function () {this.addMethod("detach", function () {var meta = this.meta;var c    = meta.createClass(meta.className()+"__anon__"+joose.anonymouseClassCounter++);c.meta.addSuperClass(meta.getClassObject());this.meta      = c.meta;this.constructor = c;c.prototype = this;return
 if(this.__proto__) {this.__proto__ = c.prototype
-} else {   
+} else {
 for(var i in c.prototype) {if(this[i] == null) {this[i] = c.prototype[i]
 }
 }
@@ -664,8 +661,7 @@ root = root[parts[i]];}
 root[parts[parts.length - 1]] = c
 }
 }
-joose.cc = c;if(props) {Joose.O.each(props, function (value, name) {
-var builder = Joose.Builder.Builders[name];if(!builder) {throw new Error("Called invalid builder "+name+" while creating class "+c.meta.className())
+joose.cc = c;if(props) {Joose.O.each(props, function (value, name) {var builder = Joose.Builder.Builders[name];if(!builder) {throw new Error("Called invalid builder "+name+" while creating class "+c.meta.className())
 }
 var paras   = value;builder.call(Joose.Builder, paras)
 })
@@ -715,7 +711,7 @@ ro: "ro"
 * @memberof Joose.Builder
 */
 /** @ignore */
-requires:    function (methodName) {if(!joose.cc.meta.meta.isa(Joose.Role)) { 
+requires:    function (methodName) {if(!joose.cc.meta.meta.isa(Joose.Role)) {
 throw("Keyword 'requires' only available classes with a meta class of type Joose.Role")
 }
 if(methodName instanceof Array) {Joose.A.each(methodName, function (name) {joose.cc.meta.addRequirement(name)
@@ -758,7 +754,7 @@ does:    function (role) {if(role instanceof Array) {Joose.A.each(role, function
 */
 /** @ignore */
 has:    function (map) {if(typeof map == "string") {var name  = arguments[0];var props = arguments[1];joose.cc.meta.addAttribute(name, props)
-} else { 
+} else {
 var me = joose.cc;Joose.O.each(map, function (props, name) {me.meta.addAttribute(name, props)
 })
 }
@@ -889,7 +885,7 @@ Joose.O.each(map, function (classObject, attributeName) {me.meta.decorate(classO
 * A class for methods
 * Originally defined in Joose.js
 */
-Class("Joose.Method", {methods: {_makeWrapped: function (func) {return this.meta.instantiate(this.getName(), func); 
+Class("Joose.Method", {methods: {_makeWrapped: function (func) {return this.meta.instantiate(this.getName(), func);
 },
 around: function (func) {var orig = this.getBody();return this._makeWrapped(function () {var me = this;var bound = function () { return orig.apply(me, arguments) }
 return func.apply(this, Joose.A.concat([bound], arguments))
@@ -924,7 +920,7 @@ copy: function () {return new Joose.ClassMethod(this.getName(), this.getBody(), 
 * A class for methods
 * Originally defined in Joose.js
 */
-Class("Joose.Method", {methods: {_makeWrapped: function (func) {return this.meta.instantiate(this.getName(), func); 
+Class("Joose.Method", {methods: {_makeWrapped: function (func) {return this.meta.instantiate(this.getName(), func);
 },
 around: function (func) {var orig = this.getBody();return this._makeWrapped(function () {var me = this;var bound = function () { return orig.apply(me, arguments) }
 return func.apply(this, Joose.A.concat([bound], arguments))
@@ -967,9 +963,9 @@ var init  = props.init;if(typeof init == "function" && !props.lazy) {value = ini
 set   = true
 }
 }
-if(set) {var setterName = this.setterName();if(object.meta.can(setterName)) { 
+if(set) {var setterName = this.setterName();if(object.meta.can(setterName)) {
 object[setterName](value)
-} else { 
+} else {
 object[_name] = value
 }
 }
@@ -1076,8 +1072,9 @@ if(this.canGears()) {this.wp = google.gears.factory.create('beta.workerpool');va
 }
 }
 },
-handleGearsMessage: function (message) {var paras  = JSON.parse(message.text);var cbName = paras.to;var ret    = paras.ret;var object = this.calls[paras.index];object[cbName].call(object, ret)
-delete this.calls[paras.index]
+handleGearsMessage: function (message) {var paras  = message.body
+var cbName = paras.to;var ret    = paras.ret;var object = this.calls[paras.index];if(object.meta.can(cbName)) {object[cbName].call(object, ret)
+}
 },
 canGears: function () {return window.google && window.google.gears && window.google.gears.factory
 },
@@ -1091,22 +1088,33 @@ canGears: function () {return window.google && window.google.gears && window.goo
 * @memberof Joose.Gears
 */
 addWorker:         function (name, func, props) {var cbName  = "on"+Joose.S.uppercaseFirst(name)
-if(!this.canGears()) {var wrapped = function () {var ret = func.apply(this, arguments);this[cbName].call(this, ret)
+var ajaxRequestFunc = this.meta.getClassObject().ajaxRequest;if(!this.canGears()) {var wrapped = function () {var me = this;var object = {sendReturn:     function (ret, cbName) { if(me.meta.can(cbName)) me[cbName].call(me, ret) },
+clientHasGears: function () { return false },
+ajaxRequest:    ajaxRequestFunc
+};var ret = func.apply(object, arguments);object.sendReturn(ret, cbName)
 }
 this.addMethod(name, wrapped, props)
 return
 }
-var json = new Joose.SimpleRequest().getText("json2.js")
-var source = "function aClass () {}; aClass.prototype."+name+" = "+func.toString()+"\n\n"+
-"var wp = google.gears.workerPool\n" +
+var jsonUrl = this.can("jsonURL") ? this.c.jsonURL() : "json2.js";var json    = new Joose.SimpleRequest().getText(jsonUrl)
+var source  =
+"var timer = google.gears.factory.create('beta.timer');\n"+
+"function aClass () {}; aClass.prototype."+name+" = "+func.toString()+"\n\n"+
+"aClass.prototype.clientHasGears = function () { return true }\n"+
+"aClass.prototype.ajaxRequest = "+ajaxRequestFunc.toString()+"\n\n"+
+"var wp = google.gears.workerPool;\n" +
 "wp.onmessage = function (a,b,message) {\n"+
-"var paras = JSON.parse(message.text)\n"+
-"var o = new aClass(); var ret = o."+name+".apply(o, paras.args); wp.sendMessage(JSON.stringify({ ret: ret, to: paras.cbName, index: paras.index }), message.sender)"+
+"var paras = message.body;\n"+
+"var o = new aClass();\n"+
+"o.sendReturn = function (ret, cbName) { wp.sendMessage({ ret: ret, to: cbName, index: paras.index }, message.sender) } \n"+
+"var ret = o."+name+".apply(o, paras.args); if(!ret) ret = null; \n"+
+"o.sendReturn(ret, paras.cbName);"+
 "\n}\n\n";source += json
 var wp      = this.wp;var childId = wp.createWorker(source)
 var me      = this
-var wrapped = function () {var message = JSON.stringify({ args: arguments, cbName: cbName, index: me.callIndex })
-wp.sendMessage(message, childId);me.calls[me.callIndex] = this
+var wrapped = function () {var args = [];for(var i = 0; i < arguments.length; i++) {args.push(arguments[i])
+}
+var message = { args: args, cbName: cbName, index: me.callIndex };wp.sendMessage(message, childId);me.calls[me.callIndex] = this
 me.callIndex++
 }
 this.addMethod(name, wrapped, props)
@@ -1117,8 +1125,23 @@ setInterval:   function () { return window.setInterval.apply(window, arguments) 
 clearTimeout:  function () { return window.clearTimeout.apply(window, arguments) },
 clearInterval: function () { return window.clearInterval.apply(window, arguments) }
 };},
-clientHasGears: function () { 
+clientHasGears: function () {
 return window.google && window.google.gears && window.google.gears.factory
+},
+ajaxRequest: function (method, url, data, callback) {var request
+if(this.clientHasGears()) {request = google.gears.factory.create('beta.httprequest');} else {request = window.ActiveXObject ? new ActiveXObject("Microsoft.XMLHTTP") : new XMLHttpRequest();}
+var dataString    = ""
+if(data) {for(var i in data) {dataString += encodeURIComponent(i)+"="+encodeURIComponent(data[i])+"&"
+}
+}
+var theUrl = url;if(data && method == "GET") {theUrl += "?"+dataString
+}
+request.open(method, theUrl);request.onreadystatechange = function onreadystatechange () {if (request.readyState == 4) {if(request.status >= 200 && request.status < 400) {var res = request.responseText;callback(res)
+} else {throw new Error("Error fetching url "+theUrl+". Response code: " + request.status + " Response text: "+request.responseText)
+}
+}
+};if(data && method == "POST") {request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");request.send(dataString)
+} else {request.send(dataString);}
 }
 }
 })
@@ -1137,14 +1160,14 @@ methods: {toJSON: function () {return this.pack()
 pack: function () {if(this.meta.can("prepareStorage")) {this.prepareStorage()
 }
 var o  = {__CLASS__: this.packedClassName()
-};var me        = this;var attrs      = this.meta.getAttributes();Joose.O.each(attrs, function (attr, name) {if(attr.isPersistent()) {o[name]   = me[name];}
+};var me        = this;var attrs      = this.meta.getAttributes();Joose.O.each(attrs, function packAttr (attr, name) {if(attr.isPersistent()) {o[name]   = me[name];}
 })
 return o
 },
 packedClassName: function () {var name   = this.meta.className();var parts  = name.split(".");return parts.join("::");}
 },
 classMethods: {unpack: function (data) {var meta      = this.meta
-var me        = meta.instantiate();var seenClass = false;Joose.O.each(data, function (value,name) {if(name == "__CLASS__") {var className = Joose.Storage.Unpacker.packedClassNameToJSClassName(value)
+var me        = meta.instantiate();var seenClass = false;Joose.O.each(data, function unpack (value,name) {if(name == "__CLASS__") {var className = Joose.Storage.Unpacker.packedClassNameToJSClassName(value)
 if(className != me.meta.className()) {throw new Error("Storage data is of wrong type "+className+". I am "+me.meta.className()+".")
 }
 seenClass = true
@@ -1165,13 +1188,12 @@ Class("Joose.Storage.Unpacker", {classMethods: {unpack: function (data) {var nam
 var jsName = this.packedClassNameToJSClassName(name)
 var co = this.meta.classNameToClassObject(jsName);return co.unpack(data)
 },
-packedClassNameToJSClassName: function (packed) {
-var parts  = packed.split("-");parts      = parts[0].split("::");return parts.join(".");},
+packedClassNameToJSClassName: function (packed) {var parts  = packed.split("-");parts      = parts[0].split("::");return parts.join(".");},
 jsonParseFilter: function (key, value) {if(value != null && typeof value == "object" && value.__CLASS__) {return Joose.Storage.Unpacker.unpack(value)
 }
 return value
 },
-patchJSON: function () {var orig = JSON.parse;JSON.parse = function (s, filter) {return orig(s, function (key, value) {var val = value;if(filter) {val = filter(key, value)
+patchJSON: function () {var orig = JSON.parse;JSON.parse = function JooseJSONParseFilter (s, filter) {return orig(s, function (key, value) {var val = value;if(filter) {val = filter(key, value)
 }
 return Joose.Storage.Unpacker.jsonParseFilter(key,val)
 })
@@ -1225,7 +1247,7 @@ getAllModules: function () {return this._allModules
 },
 methods: {alias: function (destination) {var me = this;if(arguments.length == 0) {return this
 }
-Joose.A.each(this.getElements(), function (thing) {var global        = me.globalName(thing.meta.className());if(destination[global] === thing) { 
+Joose.A.each(this.getElements(), function (thing) {var global        = me.globalName(thing.meta.className());if(destination[global] === thing) {
 return
 }
 if(typeof destination[global] != "undefined") {throw "There is already something else in the spot "+global
@@ -1234,7 +1256,7 @@ destination[global] = thing;})
 },
 globalName: function (name) {var moduleName = this.getName();if(name.indexOf(moduleName) != 0) {throw "All things inside me should have a name that starts with "+moduleName+". Name is "+name
 }
-var rest = name.substr(moduleName.length + 1); 
+var rest = name.substr(moduleName.length + 1);
 if(rest.indexOf(".") != -1) {throw "The things inside me should have no more dots in there name. Name is "+rest
 }
 return rest
@@ -1267,8 +1289,7 @@ this.meta.object     = this;}
 Class("Joose.PrototypeLazyMetaObjectProxy", {has: {metaObject: {is: rw,
 isa: Joose.Class,
 handles: "*",
-handleWith: function (name) {return function () {
-var o = this.object;o.meta = this.metaObject;o.detach()
+handleWith: function (name) {return function () {var o = this.object;o.meta = this.metaObject;o.detach()
 o.meta[name].apply(o.meta, arguments)
 }
 }
@@ -1352,63 +1373,104 @@ return null
 }
 })
 /*
-json2.js
-2008-02-14
-Public Domain
-No warranty expressed or implied. Use at your own risk.
+http:
+2008-05-25
+Public Domain.
+NO WARRANTY EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.
 See http:
-This file creates a global JSON object containing two methods:
-JSON.stringify(value, whitelist)
+This file creates a global JSON object containing two methods: stringify
+and parse.
+JSON.stringify(value, replacer, space)
 value       any JavaScript value, usually an object or array.
-whitelist   an optional array parameter that determines how object
-values are stringified.
+replacer    an optional parameter that determines how object
+values are stringified for objects without a toJSON
+method. It can be a function or an array.
+space       an optional parameter that specifies the indentation
+of nested structures. If it is omitted, the text will
+be packed without extra whitespace. If it is a number,
+it will specify the number of spaces to indent at each
+level. If it is a string (such as '\t' or '&nbsp;'),
+it contains the characters used to indent at each level.
 This method produces a JSON text from a JavaScript value.
-There are three possible ways to stringify an object, depending
-on the optional whitelist parameter.
-If an object has a toJSON method, then the toJSON() method will be
-called. The value returned from the toJSON method will be
-stringified.
-Otherwise, if the optional whitelist parameter is an array, then
-the elements of the array will be used to select members of the
-object for stringification.
-Otherwise, if there is no whitelist parameter, then all of the
-members of the object will be stringified.
-Values that do not have JSON representaions, such as undefined or
-functions, will not be serialized. Such values in objects will be
-dropped; in arrays will be replaced with null.
-JSON.stringify(undefined) returns undefined. Dates will be
-stringified as quoted ISO dates.
-Example:
-var text = JSON.stringify(['e', {pluribus: 'unum'}]);JSON.parse(text, filter)
-This method parses a JSON text to produce an object or
-array. It can throw a SyntaxError exception.
-The optional filter parameter is a function that can filter and
-transform the results. It receives each of the keys and values, and
-its return value is used instead of the original value. If it
-returns what it received, then structure is not modified. If it
-returns undefined then the member is deleted.
-Example:
-myData = JSON.parse(text, function (key, value) {return key.indexOf('date') >= 0 ? new Date(value) : value;});This is a reference implementation. You are free to copy, modify, or
-redistribute.
-Use your own copy. It is extremely unwise to load third party
-code into your pages.
-*/
-/*jslint evil: true */
-/*global JSON */
-/*members "\b", "\t", "\n", "\f", "\r", "\"", JSON, "\\", apply,
-charCodeAt, floor, getUTCDate, getUTCFullYear, getUTCHours,
-getUTCMinutes, getUTCMonth, getUTCSeconds, hasOwnProperty, join, length,
-parse, propertyIsEnumerable, prototype, push, replace, stringify, test,
-toJSON, toString
-*/
-if (!this.JSON) {JSON = function () {function f(n) {    
-return n < 10 ? '0' + n : n;}
-Date.prototype.toJSON = function () {return this.getUTCFullYear()   + '-' +
+When an object value is found, if the object contains a toJSON
+method, its toJSON method will be called and the result will be
+stringified. A toJSON method does not serialize: it returns the
+value represented by the name/value pair that should be serialized,
+or undefined if nothing should be serialized. The toJSON method
+will be passed the key associated with the value, and this will be
+bound to the object holding the key.
+For example, this would serialize Dates as ISO strings.
+Date.prototype.toJSON = function (key) {function f(n) {return n < 10 ? '0' + n : n;}
+return this.getUTCFullYear()   + '-' +
 f(this.getUTCMonth() + 1) + '-' +
 f(this.getUTCDate())      + 'T' +
 f(this.getUTCHours())     + ':' +
 f(this.getUTCMinutes())   + ':' +
-f(this.getUTCSeconds())   + 'Z';};var m = {    
+f(this.getUTCSeconds())   + 'Z';};You can provide an optional replacer method. It will be passed the
+key and value of each member, with this bound to the containing
+object. The value that is returned from your method will be
+serialized. If your method returns undefined, then the member will
+be excluded from the serialization.
+If the replacer parameter is an array, then it will be used to
+select the members to be serialized. It filters the results such
+that only members with keys listed in the replacer array are
+stringified.
+Values that do not have JSON representations, such as undefined or
+functions, will not be serialized. Such values in objects will be
+dropped; in arrays they will be replaced with null. You can use
+a replacer function to replace those with JSON values.
+JSON.stringify(undefined) returns undefined.
+The optional space parameter produces a stringification of the
+value that is filled with line breaks and indentation to make it
+easier to read.
+If the space parameter is a non-empty string, then that string will
+be used for indentation. If the space parameter is a number, then
+the indentation will be that many spaces.
+Example:
+text = JSON.stringify(['e', {pluribus: 'unum'}]);text = JSON.stringify(['e', {pluribus: 'unum'}], null, '\t');text = JSON.stringify([new Date()], function (key, value) {return this[key] instanceof Date ?
+'Date(' + this[key] + ')' : value;});JSON.parse(text, reviver)
+This method parses a JSON text to produce an object or array.
+It can throw a SyntaxError exception.
+The optional reviver parameter is a function that can filter and
+transform the results. It receives each of the keys and values,
+and its return value is used instead of the original value.
+If it returns what it received, then the structure is not modified.
+If it returns undefined then the member is deleted.
+Example:
+myData = JSON.parse(text, function (key, value) {var a;if (typeof value === 'string') {a =
+/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/.exec(value);if (a) {return new Date(Date.UTC(+a[1], +a[2] - 1, +a[3], +a[4],
++a[5], +a[6]));}
+}
+return value;});myData = JSON.parse('["Date(09/09/2001)"]', function (key, value) {var d;if (typeof value === 'string' &&
+value.slice(0, 5) === 'Date(' &&
+value.slice(-1) === ')') {d = new Date(value.slice(5, -1));if (d) {return d;}
+}
+return value;});This is a reference implementation. You are free to copy, modify, or
+redistribute.
+This code should be minified before deployment.
+See http:
+USE YOUR OWN COPY. IT IS EXTREMELY UNWISE TO LOAD CODE FROM SERVERS YOU DO
+NOT CONTROL.
+*/
+/*jslint evil: true */
+/*global JSON */
+/*members "", "\b", "\t", "\n", "\f", "\r", "\"", JSON, "\\", call,
+charCodeAt, getUTCDate, getUTCFullYear, getUTCHours, getUTCMinutes,
+getUTCMonth, getUTCSeconds, hasOwnProperty, join, lastIndex, length,
+parse, propertyIsEnumerable, prototype, push, replace, slice, stringify,
+test, toJSON, toString
+*/
+if (!this.JSON) {JSON = function () {function f(n) {return n < 10 ? '0' + n : n;}
+Date.prototype.toJSON = function (key) {return this.getUTCFullYear()   + '-' +
+f(this.getUTCMonth() + 1) + '-' +
+f(this.getUTCDate())      + 'T' +
+f(this.getUTCHours())     + ':' +
+f(this.getUTCMinutes())   + ':' +
+f(this.getUTCSeconds())   + 'Z';};var cx = /[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
+escapeable = /[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
+gap,
+indent,
+meta = {    
 '\b': '\\b',
 '\t': '\\t',
 '\n': '\\n',
@@ -1416,45 +1478,64 @@ f(this.getUTCSeconds())   + 'Z';};var m = {
 '\r': '\\r',
 '"' : '\\"',
 '\\': '\\\\'
-};function stringify(value, whitelist) {var a,          
-i,          
+},
+rep;function quote(string) {escapeable.lastIndex = 0;return escapeable.test(string) ?
+'"' + string.replace(escapeable, function (a) {var c = meta[a];if (typeof c === 'string') {return c;}
+return '\\u' + ('0000' +
+(+(a.charCodeAt(0))).toString(16)).slice(-4);}) + '"' :
+'"' + string + '"';}
+function str(key, holder) {var i,          
 k,          
-l,          
-r = /["\\\x00-\x1f\x7f-\x9f]/g,
-v;          
+v,          
+length,
+mind = gap,
+partial,
+value = holder[key];if (value && typeof value === 'object' &&
+typeof value.toJSON === 'function') {value = value.toJSON(key);}
+if (typeof rep === 'function') {value = rep.call(holder, key, value);}
 switch (typeof value) {case 'string':
-return r.test(value) ?
-'"' + value.replace(r, function (a) {var c = m[a];if (c) {return c;}
-c = a.charCodeAt();return '\\u00' + Math.floor(c / 16).toString(16) +
-(c % 16).toString(16);}) + '"' :
-'"' + value + '"';case 'number':
+return quote(value);case 'number':
 return isFinite(value) ? String(value) : 'null';case 'boolean':
 case 'null':
 return String(value);case 'object':
 if (!value) {return 'null';}
-if (typeof value.toJSON === 'function') {return stringify(value.toJSON());}
-a = [];if (typeof value.length === 'number' &&
-!(value.propertyIsEnumerable('length'))) {l = value.length;for (i = 0; i < l; i += 1) {a.push(stringify(value[i], whitelist) || 'null');}
-return '[' + a.join(',') + ']';}
-if (whitelist) {l = whitelist.length;for (i = 0; i < l; i += 1) {k = whitelist[i];if (typeof k === 'string') {v = stringify(value[k], whitelist);if (v) {a.push(stringify(k) + ':' + v);}
+gap += indent;partial = [];if (typeof value.length === 'number' &&
+!(value.propertyIsEnumerable('length'))) {length = value.length;for (i = 0; i < length; i += 1) {partial[i] = str(i, value) || 'null';}
+v = partial.length === 0 ? '[]' :
+gap ? '[\n' + gap +
+partial.join(',\n' + gap) + '\n' +
+mind + ']' :
+'[' + partial.join(',') + ']';gap = mind;return v;}
+if (rep && typeof rep === 'object') {length = rep.length;for (i = 0; i < length; i += 1) {k = rep[i];if (typeof k === 'string') {v = str(k, value, rep);if (v) {partial.push(quote(k) + (gap ? ': ' : ':') + v);}
 }
 }
-} else {for (k in value) {if (typeof k === 'string') {v = stringify(value[k], whitelist);if (v) {a.push(stringify(k) + ':' + v);}
-}
-}
-}
-return '{' + a.join(',') + '}';}
-}
-return {stringify: stringify,
-parse: function (text, filter) {var j;function walk(k, v) {var i, n;if (v && typeof v === 'object') {for (i in v) {if (Object.prototype.hasOwnProperty.apply(v, [i])) {n = walk(i, v[i]);if (n !== undefined) {v[i] = n;} else {delete v[i];}
+} else {for (k in value) {if (Object.hasOwnProperty.call(value, k)) {v = str(k, value, rep);if (v) {partial.push(quote(k) + (gap ? ': ' : ':') + v);}
 }
 }
 }
-return filter(k, v);}
-if (/^[\],:{}\s]*$/.test(text.replace(/\\./g, '@').
+v = partial.length === 0 ? '{}' :
+gap ? '{\n' + gap + partial.join(',\n' + gap) + '\n' +
+mind + '}' : '{' + partial.join(',') + '}';gap = mind;return v;}
+}
+return {stringify: function (value, replacer, space) {var i;gap = '';indent = '';if (typeof space === 'number') {for (i = 0; i < space; i += 1) {indent += ' ';}
+} else if (typeof space === 'string') {indent = space;}
+rep = replacer;if (replacer && typeof replacer !== 'function' &&
+(typeof replacer !== 'object' ||
+typeof replacer.length !== 'number')) {throw new Error('JSON.stringify');}
+return str('', {'': value});},
+parse: function (text, reviver) {var j;function walk(holder, key) {var k, v, value = holder[key];if (value && typeof value === 'object') {for (k in value) {if (Object.hasOwnProperty.call(value, k)) {v = walk(value, k);if (v !== undefined) {value[k] = v;} else {delete value[k];}
+}
+}
+}
+return reviver.call(holder, key, value);}
+cx.lastIndex = 0;if (cx.test(text)) {text = text.replace(cx, function (a) {return '\\u' + ('0000' +
+(+(a.charCodeAt(0))).toString(16)).slice(-4);});}
+if (/^[\],:{}\s]*$/.
+test(text.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, '@').
 replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
-replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {j = eval('(' + text + ')');return typeof filter === 'function' ? walk('', j) : j;}
-throw new SyntaxError('parseJSON');}
+replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {j = eval('(' + text + ')');return typeof reviver === 'function' ?
+walk({'': j}, '') : j;}
+throw new SyntaxError('JSON.parse');}
 };}();}
 Module("block.ui", function () {Class("Array", {has: {array: {is: "rw",
 init: function () { return [] }
@@ -1466,7 +1547,7 @@ each: function (func) {var a = this.array
 for(var i = 0, len = a.length; i < len; i++) {func.call(this, a[i])
 }
 },
-call: function (method, paras) {this.each(function (ele) {ele[method].apply(ele, paras)
+call: function (method, paras) {this.each(function eachEle (ele) {ele[method].apply(ele, paras)
 })
 }
 }
@@ -1520,7 +1601,7 @@ proxy:     false,
 minHeight: me.getMinHeight(),
 minWidth:  me.getMinWidth(),
 aspectRatio: this.maintainAspectRatio() ? "preserve" : null,
-stop:        function () { me.onResize() },
+stop:        function onResize () { me.onResize() },
 grid:        document.grid.jQueryGridParameter()
 })
 },
@@ -1533,7 +1614,7 @@ onResize: function () {this.updateState()
 }
 })
 })
-Module("block.ui.role", function () {Role("Focusable", {after: {place: function () {var me = this;this.$.mousedown(function () {document.manager.switchFocus(me)
+Module("block.ui.role", function () {Role("Focusable", {after: {place: function () {var me = this;this.$.mousedown(function mousedown () {document.manager.switchFocus(me)
 })
 },
 focus: function () {this.$.addClass("focus")
@@ -1595,7 +1676,7 @@ touch: function () {Joose.A.each(this.getElements(), function (shape) { shape.to
 }
 },
 after: {draw: function () {var me   = this;var left   = null;var top    = null;var right  = null;var bottom = null
-Joose.A.each(this.getElements(), function (ele) {var myTop = ele.top();if(top == null || myTop < top) {top = myTop
+Joose.A.each(this.getElements(), function drawGroupEle (ele) {var myTop = ele.top();if(top == null || myTop < top) {top = myTop
 }
 var myLeft = ele.left();if(left == null || myLeft < left) {left = myLeft
 }
@@ -1615,7 +1696,7 @@ override: {updateState: function (dontMoveChildren) {
 var beforeLeft = this.getLeft();var beforeTop  = this.getTop();this.SUPER();if(!dontMoveChildren) {var afterLeft  = this.getLeft();var afterTop   = this.getTop();var deltaLeft  = afterLeft - beforeLeft;var deltaTop   = afterTop  - beforeTop;if(deltaLeft == 0 && deltaTop == 0) { 
 return
 }
-Joose.A.each(this.getElements(), function (ele) {ele.x(ele.left() + deltaLeft)
+Joose.A.each(this.getElements(), function updateChild (ele) {ele.x(ele.left() + deltaLeft)
 ele.y(ele.top() + deltaTop)
 if(ele.meta.can("dragComplete")) {ele.redraw()
 }
@@ -1647,7 +1728,7 @@ this.drawCSS(before)
 }
 },
 methods: {drawCSS: function (before) {var me    = this;var style = this.getStyle()
-Joose.O.each(style, function (value, name) {if(!before || before[name] != value) {me.css(name, value)
+Joose.O.each(style, function eachCss (value, name) {if(!before || before[name] != value) {me.css(name, value)
 }
 })
 },
@@ -1678,9 +1759,9 @@ shapeByGuidMap: {is: "rw",
 init: function () { return {} }
 }
 },
-after: {initialize: function () {var me  = this;var win = $(window);win.keydown(function (event) {me.setCurrentKeyCode(event.keyCode)
+after: {initialize: function () {var me  = this;var win = $(window);win.keydown(function keydown (event) {me.setCurrentKeyCode(event.keyCode)
 })
-win.keyup(function () {me.setCurrentKeyCode(null)
+win.keyup(function keyup () {me.setCurrentKeyCode(null)
 })
 }
 },
@@ -1848,7 +1929,7 @@ has: {elements: {is: "rw",
 init: function () { return [] }
 }
 },
-after: {draw: function () {Joose.A.each(this.getElements(), function (ele) {ele.draw()
+after: {draw: function () {Joose.A.each(this.getElements(), function drawEach (ele) {ele.draw()
 })
 }
 },
@@ -1858,12 +1939,12 @@ if(!seenHash) {seenHash = {};}
 myDepth = depth
 if(!myDepth) {myDepth = 0
 }
-Joose.A.each(this.getElements(), function (ele) {var guid = ele.getGuid()
+var eles = this.getElements();for(var i = 0; i < eles.length; i++) {var ele = eles[i];var guid = ele.getGuid()
 if(!seenHash[guid]) {seenHash[guid] = true
 func(ele, me, myDepth)
 ele.traverse(func, myDepth+1, seenHash)
 }
-})
+}
 },
 prettyPrint: function() {var html = "<ul>\n"
 var me   = this;Joose.A.each(this.getElements(), function (ele) {html += "<li>"+ele+"\n<ul>\n"
@@ -1877,7 +1958,7 @@ html += ele.prettyPrint()+"</li>\n"
 html += "</ul>\n"
 return html
 },
-redraw: function () {Joose.A.each(this.getElements(), function (ele) {ele.redraw()
+redraw: function () {Joose.A.each(this.getElements(), function redrawEach (ele) {ele.redraw()
 })
 },
 add: function (ele) {this.getElements().push(ele)
@@ -1892,7 +1973,7 @@ propagate: function (ele) {ele.setContainer(this)
 ele.setDocument(this.getDocument())
 ele.setViewPort(this.getViewPort())
 },
-finishUnpack: function () {var me = this;Joose.A.each(this.getElements(), function (ele) {me.propagate(ele)
+finishUnpack: function () {var me = this;Joose.A.each(this.getElements(), function finishUnpackEach (ele) {me.propagate(ele)
 })
 },
 addAndDraw: function (ele) {this.add(ele);this.draw();this.redraw();}
@@ -2107,9 +2188,9 @@ methods: {place: function () {var me       = this;this.$       = $("#grid");var 
 var d        = this.getDocument();var width    = d.width()  - offsetLeft
 var height   = d.height() - offsetTop
 var distance = this.getDistance();var color    = this.getColor()
-var html     = "";for(var i = 0; i < width; i += distance) {html += '<div style="position:absolute; top: 0px; left: '+i+'px; background-color: '+color+'; width: 1px; height: '+height+'px"></div>\n'
+var html     = "";for(var i = 0; i < width; i += distance) {html += '<div style="position:absolute; top: 0px; left: '+i+'px; width: 1px; height: '+height+'px"></div>\n'
 }
-for(var i = 0; i < height; i += distance) {html += '<div style="position:absolute; top: '+i+'px; left: 0px; background-color: '+color+'; width: '+width+'px; height: 1px"><img src="/static/t.gif" width=1 height=1 /></div>\n'
+for(var i = 0; i < height; i += distance) {html += '<div style="position:absolute; top: '+i+'px; left: 0px; width: '+width+'px; height: 1px"><img src="/static/t.gif" width=1 height=1 /></div>\n'
 }
 this.$.width(width);this.$.height(height);this.$.click(function () {document.manager.clearFocus()
 })
@@ -2512,15 +2593,17 @@ Module("block.ui", function (m) {Class("Sync", {has: {_maxVersion: {is: "rw",
 init: 0
 },
 _doc: {is: "rw"
+},
+_firstUpdate: {is: "rw",
+init: true
 }
 },
 methods: {startListening: function ()  {},
-update: function () {var me = this
-this.fetchStates();},
-updateFromArray: function (updates) {var me = this;Joose.A.each(updates, function (update) {console.log("Update from version "+update.version)
+update: function () {this.fetchStates();},
+updateFromArray: function (updates) {var me = this;for(var i = 0; i < updates.length; i++) {var update = updates[i];console.log("Update from version "+update.version)
 me.setMaxVersion(update.version);var doc = update.data
 me.updateDocument(doc)
-})
+}
 this.saveState()
 var me = this;window.setTimeout(function syncTimer () {me.update()
 }, 2000)
@@ -2547,7 +2630,9 @@ if(!shape.isDeleted()) {shape.registerGuid()
 dest.addAndDraw(shape)
 }
 }
-});},
+});if(this.getFirstUpdate()) {window.onfirstdraw();this.setFirstUpdate(false)
+}
+},
 fetchStates: function () {return m.SyncDocument.fetchNewData(this)
 },
 _saveState: function () {return m.SyncDocument.addData(this, false)
@@ -2585,23 +2670,10 @@ is_savepoint: isSavePoint,
 name:         doc.getHeader().getTitle(),
 session:      document.paras.sessionId
 },
-function () {console.log("save successful")
+function saveMessage () {console.log("save successful")
 });},
-request: function (method, url, data, callback) {var request
-if(Joose.Gears.clientHasGears()) {console.log("Gears request " +method +" " +url)
-request = google.gears.factory.create('beta.httprequest');} else {request = window.ActiveXObject ? new ActiveXObject("Microsoft.XMLHTTP") : new XMLHttpRequest();}
-var dataString    = ""
-if(data) {dataString = jQuery.param(data)
-}
-var theUrl = url;if(data && method == "GET") {theUrl += "?"+dataString
-}
-request.open(method, theUrl);request.onreadystatechange = function() {if (request.readyState == 4) {if(request.status >= 200 && request.status < 400) {var res = request.responseText;callback(JSON.parse(res))
-} else {throw new Error("Error fetching url "+theUrl+". Response code: " + request.status + " Response text: "+request.responseText)
-}
-}
-};if(data && method == "POST") {request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-request.send(dataString)
-} else {request.send();}
+request: function (method, url, data, callback) {Joose.Gears.ajaxRequest(method, url, data, function receivedData (data) {callback(JSON.parse(data))
+})
 }
 }
 });});

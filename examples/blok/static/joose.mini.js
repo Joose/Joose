@@ -1004,7 +1004,7 @@ request.open(method, theUrl);request.onreadystatechange = function onreadystatec
 }
 };if(data && method == "POST") {request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 request.send(dataString)
-} else {request.send();}
+} else {request.send(dataString);}
 }
 }
 })

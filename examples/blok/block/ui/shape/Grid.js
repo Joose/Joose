@@ -31,10 +31,10 @@ Module("block.ui.shape", function (m) {
                 var color    = this.getColor()
                 var html     = "";
                 for(var i = 0; i < width; i += distance) {
-                    html += '<div style="position:absolute; top: 0px; left: '+i+'px; background-color: '+color+'; width: 1px; height: '+height+'px"></div>\n'
+                    html += '<div style="position:absolute; top: 0px; left: '+i+'px; width: 1px; height: '+height+'px"></div>\n'
                 }
                 for(var i = 0; i < height; i += distance) {
-                    html += '<div style="position:absolute; top: '+i+'px; left: 0px; background-color: '+color+'; width: '+width+'px; height: 1px"><img src="/static/t.gif" width=1 height=1 /></div>\n'
+                    html += '<div style="position:absolute; top: '+i+'px; left: 0px; width: '+width+'px; height: 1px"><img src="/static/t.gif" width=1 height=1 /></div>\n'
                 }
                 
                 this.$.width(width);

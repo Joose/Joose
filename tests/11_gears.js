@@ -101,7 +101,7 @@ Class("HardWork", {
 
 var gt = new HardWork();
 
-alert("Gears")
+//alert("Gears")
 
 ok(gt.data, "Data member is here")
 

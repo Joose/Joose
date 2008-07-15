@@ -1,0 +1,29 @@
+
+#leftMenu {
+	display: none;
+}
+
+#grid {
+	display: none;
+}
+
+#drawArea .multiSelection {
+	display: none;
+}
+
+#drawArea .group {
+	display: none;
+}
+
+#drawArea .groupBlurred {
+	border: 0px solid #ff0000;
+}
+
+#blocker {
+	z-index: 200000;
+	position: absolute;
+	left: 0px;
+	top: 0x;
+	width: 100%;
+	height: 100%;
+}

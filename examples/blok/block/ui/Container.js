@@ -26,14 +26,17 @@ Module("block.ui", function (m) {
                 if(!myDepth) {
                     myDepth = 0
                 }
-                Joose.A.each(this.getElements(), function (ele) {
-                    var guid = ele.getGuid()
+                
+                var eles = this.getElements();
+                for(var i = 0; i < eles.length; i++) {
+                	var ele = eles[i];
+                	var guid = ele.getGuid()
                     if(!seenHash[guid]) {
                         seenHash[guid] = true
                         func(ele, me, myDepth)
                         ele.traverse(func, myDepth+1, seenHash)
                     }
-                })
+                }
             },
             
             prettyPrint: function() {
