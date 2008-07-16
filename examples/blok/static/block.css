@@ -23,9 +23,17 @@ body {
 	display: none
 }
 
+#grid {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background-color: white;
+}
+
 #grid div {
 	background-color: #CCCCCC;
 }
+
 
 #leftMenu h2 {
 	font-size: 16px;
@@ -157,6 +165,9 @@ input .number {
 
 #drawArea .multiSelection {
 	border: 1px dashed #00ff00;
+	background-color: #00ff00;
+	opacity:.05;
+	filter: alpha(opacity=5);
 }
 
 #drawArea .group {

@@ -20,7 +20,7 @@ Module("block.ui", function () {
             },
             dirty: {
                 is: "rw",
-                init: true
+                init: false
             },
             shapeByGuidMap: {
                 is: "rw",
@@ -49,15 +49,15 @@ Module("block.ui", function () {
                 
                 document.propPanel.hide()
             },
-            switchFocus: function (newEle) {
+            switchFocus: function (newEle, shiftDown) {
                 if(this._focusElement === newEle) {
-                    if(this.shiftKeyDown()) {
+                    if(shiftDown) {
                         this.clearFocus()
                     }
                     return
                 }
                 if(this._focusElement) {
-                    if(this.shiftKeyDown()) {
+                    if(shiftDown) {
                         if(!this._focusElement.meta.isa(block.ui.shape.SelectionGroup)) {
                             var before = this._focusElement;
                             before.blur()

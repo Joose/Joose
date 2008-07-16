@@ -37,17 +37,29 @@ Module("block.ui.shape", function (m) {
                     html += '<div style="position:absolute; top: '+i+'px; left: 0px; width: '+width+'px; height: 1px"><img src="/static/t.gif" width=1 height=1 /></div>\n'
                 }
                 
+                this.$.append(html)
+                
                 this.$.width(width);
                 this.$.height(height);
+                
+                
                 
                 this.$.click(function () {
                     document.manager.clearFocus()
                 })
                 
                 
+                //FIXME IE support für die MultiSelection
+                if(document.all) {
+                	return
+                }
+                
                 var start;
                 
+                // events for multi selection
                 this.$.mousedown(function (e) {
+                	e.preventDefault()
+                	
                     var multi = new block.ui.shape.MultiSelection();
                     multi.draw()
                     multi.redraw()
@@ -61,7 +73,7 @@ Module("block.ui.shape", function (m) {
                     
                     var win = $(window);
                     
-                      var redrawMulti = function (multi, e) {
+                    var redrawMulti = function (multi, e) {
                           
                           var deltaX = e.pageX - start.pageX;
                           var deltaY = e.pageY - start.pageY;
@@ -81,14 +93,17 @@ Module("block.ui.shape", function (m) {
                           }
                           
                     }
-                
-                    win.mousemove(function (e) {
+                    
+                    var mousemove = function (e) {
                         if(me.getMultiSelection()) {
                             redrawMulti(me.getMultiSelection(), e)
                         }
-                    })
+                    }
                 
-                    win.mouseup(function (end) {
+                    win.mousemove(mousemove)
+                
+                    win.one("mouseup", function (end) {
+                    	win.unbind("mousemove", mousemove)
                         var sel = me.getMultiSelection();
                         if(sel) {
                             redrawMulti(sel, end)
@@ -96,11 +111,15 @@ Module("block.ui.shape", function (m) {
                             sel.destroy()
                         }
                         me.setMultiSelection(null)
+                        return true
                     })
+                    
+                    
+                    return true
                 })
                 
                 
-                this.$.append(html)
+                
             },
             
             redraw: function () {

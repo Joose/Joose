@@ -56,9 +56,9 @@ Module("block.ui", function (m) {
                 throw "Abstract"
             },
             
-               initGuid: function () {
-                   return document.manager.makeGuid(this)
-               },
+            initGuid: function () {
+                return document.manager.makeGuid(this)
+            },
             
             addDragPoints: function () {},
             makeDraggable: function () {},

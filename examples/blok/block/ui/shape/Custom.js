@@ -16,12 +16,6 @@ Module("block.ui.shape", function (m) {
             }
         },
         does: [
-            block.ui.role.Draggable, 
-            block.ui.role.Resizable, 
-            block.ui.role.Focusable,
-            block.ui.role.Editable,
-            block.ui.role.ShapeUI,
-            block.ui.role.Stylable
         ],
         after: {
             place: function () {
@@ -45,9 +39,20 @@ Module("block.ui.shape", function (m) {
                 
                 jQuery.getJSON(this.getShapeUrl(), function shapeFetched (data) {
                     var customShape = Joose.Storage.Unpacker.unpack(data)
-                    me.setCustomShape(customShape)
+                    me.setCustomShape(customShape);
+                    me.applyRoles()
                     me.renderCustomShape()
                 })
+            },
+            
+            applyRoles: function () {
+            	var me      = this;
+            	var strings = this.getCustomShape().getRoles();
+            	Joose.A.each(strings, function (s) {
+            		var name = "block.ui.role."+s
+            		var role = me.meta.classNameToClassObject(name);
+            		role.meta.apply(me)
+            	})
             },
             
             renderCustomShape: function () {

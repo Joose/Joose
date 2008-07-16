@@ -15,13 +15,28 @@ Module("block.ui", function (m) {
             _firstUpdate: {
             	is: "rw",
             	init: true
+            },
+            
+            _syncInterval: {
+            	is: "rw"
             }
         },
         
         methods: {
             
             startListening: function ()  {
+                // get new data every N milli seconds
+                var me = this;
                 
+                // check for disabled syncing (for debugging) 
+                //if(!$('#doSync') || $('#doSync').attr("checked")) {
+                 	
+                    var interval = window.setInterval(function syncTimer () {
+                        me.update()
+                    }, 2000)
+                    
+                    this.setSyncInterval(interval)
+                //} 
             },
             
             update: function () {
@@ -40,13 +55,7 @@ Module("block.ui", function (m) {
                 }    
                 this.saveState()   
                 
-                // get new data in N milli seconds
-                var me = this;
-                 //if(!$('#doSync') || $('#doSync').attr("checked")) {
-                    window.setTimeout(function syncTimer () {
-                        me.update()
-                    }, 2000)
-                //} 
+                
             },
             
             updateDocument: function (doc) {

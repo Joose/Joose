@@ -9,6 +9,10 @@ Module("block.ui", function (m) {
             _name: {
                 is: "rw",
                 init: "CustomShape"
+            },
+            _roles: {
+            	is: "rw",
+            	init: function () { return [] }
             }
         }
     })

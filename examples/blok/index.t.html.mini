@@ -100,9 +100,9 @@ $(document).ready(function docReady () {
 })
 
 function onfirstdraw() {
-	if(window._IG_AdjustIFrameHeight) {
+	{% if isGadget %}
 		 _IG_AdjustIFrameHeight();
-	}
+	{% endif %}
 }
 
 function showState() {

@@ -203,9 +203,9 @@ addInitializer: function () {if(!this.c.prototype.initialize) {this.addMethod("i
 * @memberof Joose.Class
 */
 /** @ignore */
-initializer: function () {return function (paras) {var me = this;if(this.meta.isAbstract) {var name = this.meta.className();throw ""+name+" is an abstract class and may not instantiated."
+initializer: function () {return function initialize (paras) {var me = this;if(this.meta.isAbstract) {var name = this.meta.className();throw ""+name+" is an abstract class and may not instantiated."
 }
-Joose.O.each(this.meta.getAttributes(), function (attr) {attr.doInitialization(me, paras);})
+var attributes = this.meta.getAttributes();for(var i in attributes) {var attr = attributes[i];attr.doInitialization(me, paras);}
 }
 },
 dieIfString: function (thing) {if(Joose.S.isString(thing)) {throw new TypeError("Parameter must not be a string.")
@@ -270,7 +270,7 @@ addMethod:         function (name, func, props) {var m = new Joose.Method(name, 
 },
 addClassMethod:         function (name, func, props) {var m = new Joose.ClassMethod(name, func, props);this.addMethodObject(m)
 },
-addMethodObject:         function (method) {var m              = method;var name           = m.getName();if(!Joose.A.exists(this.methodNames, name)) {this.methodNames.push(name);}
+addMethodObject:         function (method) {var m              = method;var name           = m.getName();if(!this.methods[name]) {this.methodNames.push(name);}
 this.methods[name] = m;method.addToClass(this.c)
 },
 attributeMetaclass: function () {return Joose.Attribute
@@ -301,7 +301,7 @@ return a
 getSuperClasses:    function () {return this.parentClasses;},
 getRoles:    function () {return this.roles;},
 getMethodNames:    function () {return this.methodNames;},
-addDetacher: function () {this.addMethod("detach", function () {var meta = this.meta;var c    = meta.createClass(meta.className()+"__anon__"+joose.anonymouseClassCounter++);c.meta.addSuperClass(meta.getClassObject());this.meta      = c.meta;this.constructor = c;c.prototype = this;return
+addDetacher: function () {this.addMethod("detach", function detach () {var meta = this.meta;var c    = meta.createClass(meta.className()+"__anon__"+joose.anonymouseClassCounter++);c.meta.addSuperClass(meta.getClassObject());this.meta      = c.meta;this.constructor = c;c.prototype = this;return
 if(this.__proto__) {this.__proto__ = c.prototype
 } else {   
 for(var i in c.prototype) {if(this[i] == null) {this[i] = c.prototype[i]
@@ -379,19 +379,19 @@ return props.isa
 }
 return
 },
-addSetter: function (classObject) {var meta  = classObject.meta;var name  = this.getName();var props = this.getProps();var isa   = this.getIsa();var func;if(isa) {func = function (value) {if(!value || !value.meta) {throw "The attribute "+name+" only accepts values that have a meta object."
+addSetter: function (classObject) {var meta  = classObject.meta;var name  = this.getName();var props = this.getProps();var isa   = this.getIsa();var func;if(isa) {func = function setterWithIsaCheck (value) {if(!value || !value.meta) {throw "The attribute "+name+" only accepts values that have a meta object."
 }
 if(!value.meta.isa(isa)) {throw "The attribute "+name+" only accepts values that are objects of type "+isa.meta.className()+"."
 }
 this[name] = value
 return this;}
-} else {func = function (value) {this[name] = value
+} else {func = function setter (value) {this[name] = value
 return this;}
 }
 meta.addMethod(this.setterName(), func);},
-addGetter: function (classObject) {var meta  = classObject.meta;var name  = this.getName();var props = this.getProps();var func  = function () {return this[name]
+addGetter: function (classObject) {var meta  = classObject.meta;var name  = this.getName();var props = this.getProps();var func  = function getter () {return this[name]
 }
-var init  = props.init;if(props.lazy) {func = function () {var val = this[name];if(typeof val == "function" && val === init) {this[name] = val.apply(this)
+var init  = props.init;if(props.lazy) {func = function lazyGetter () {var val = this[name];if(typeof val == "function" && val === init) {this[name] = val.apply(this)
 }
 return this[name]
 }
@@ -442,10 +442,6 @@ func.meta   = this
 },
 isClassMethod: function () { return false },
 apply:    function (thisObject, args) {return this._body.apply(thisObject, args)
-},
-asFunction: function () {var me = this
-return function () {var args = arguments;return me.apply(this, args)
-}
 },
 addToClass: function (c) {c.prototype[this.getName()] = this.asFunction()
 },
@@ -749,21 +745,21 @@ Joose.O.each(map, function (classObject, attributeName) {me.meta.decorate(classO
 */
 Class("Joose.Method", {methods: {_makeWrapped: function (func) {return this.meta.instantiate(this.getName(), func); 
 },
-around: function (func) {var orig = this.getBody();return this._makeWrapped(function () {var me = this;var bound = function () { return orig.apply(me, arguments) }
+around: function (func) {var orig = this.getBody();return this._makeWrapped(function aroundWrapper () {var me = this;var bound = function () { return orig.apply(me, arguments) }
 return func.apply(this, Joose.A.concat([bound], arguments))
 })
 },
-before: function (func) {var orig = this.getBody();return this._makeWrapped(function () {func.apply(this, arguments)
+before: function (func) {var orig = this.getBody();return this._makeWrapped(function beforeWrapper () {func.apply(this, arguments)
 return orig.apply(this, arguments);})
 },
-after: function (func) {var orig = this.getBody();return this._makeWrapped(function () {var ret = orig.apply(this, arguments);func.apply(this, arguments);return ret
+after: function (func) {var orig = this.getBody();return this._makeWrapped(function afterWrapper () {var ret = orig.apply(this, arguments);func.apply(this, arguments);return ret
 })
 },
-override: function (func) {var orig = this.getBody();return this._makeWrapped(function () {var me      = this;var bound   = function () { return orig.apply(me, arguments) }
+override: function (func) {var orig = this.getBody();return this._makeWrapped(function overrideWrapper () {var me      = this;var bound   = function () { return orig.apply(me, arguments) }
 var before  = this.SUPER;this.SUPER  = bound;var ret     = func.apply(this, arguments);this.SUPER  = before;return ret
 })
 },
-augment: function (func) {var orig = this.getBody();orig.source = orig.toString();return this._makeWrapped(function () {var exe       = orig;var me        = this;var inner     = func
+augment: function (func) {var orig = this.getBody();orig.source = orig.toString();return this._makeWrapped(function augmentWrapper () {var exe       = orig;var me        = this;var inner     = func
 inner.source  = inner.toString();if(!this.__INNER_STACK__) {this.__INNER_STACK__ = [];};this.__INNER_STACK__.push(inner)
 var before    = this.INNER;this.INNER    = function () {return  me.__INNER_STACK__.pop().apply(me, arguments) };var ret       = orig.apply(this, arguments);this.INNER    = before;return ret
 })
@@ -784,21 +780,21 @@ copy: function () {return new Joose.ClassMethod(this.getName(), this.getBody(), 
 */
 Class("Joose.Method", {methods: {_makeWrapped: function (func) {return this.meta.instantiate(this.getName(), func); 
 },
-around: function (func) {var orig = this.getBody();return this._makeWrapped(function () {var me = this;var bound = function () { return orig.apply(me, arguments) }
+around: function (func) {var orig = this.getBody();return this._makeWrapped(function aroundWrapper () {var me = this;var bound = function () { return orig.apply(me, arguments) }
 return func.apply(this, Joose.A.concat([bound], arguments))
 })
 },
-before: function (func) {var orig = this.getBody();return this._makeWrapped(function () {func.apply(this, arguments)
+before: function (func) {var orig = this.getBody();return this._makeWrapped(function beforeWrapper () {func.apply(this, arguments)
 return orig.apply(this, arguments);})
 },
-after: function (func) {var orig = this.getBody();return this._makeWrapped(function () {var ret = orig.apply(this, arguments);func.apply(this, arguments);return ret
+after: function (func) {var orig = this.getBody();return this._makeWrapped(function afterWrapper () {var ret = orig.apply(this, arguments);func.apply(this, arguments);return ret
 })
 },
-override: function (func) {var orig = this.getBody();return this._makeWrapped(function () {var me      = this;var bound   = function () { return orig.apply(me, arguments) }
+override: function (func) {var orig = this.getBody();return this._makeWrapped(function overrideWrapper () {var me      = this;var bound   = function () { return orig.apply(me, arguments) }
 var before  = this.SUPER;this.SUPER  = bound;var ret     = func.apply(this, arguments);this.SUPER  = before;return ret
 })
 },
-augment: function (func) {var orig = this.getBody();orig.source = orig.toString();return this._makeWrapped(function () {var exe       = orig;var me        = this;var inner     = func
+augment: function (func) {var orig = this.getBody();orig.source = orig.toString();return this._makeWrapped(function augmentWrapper () {var exe       = orig;var me        = this;var inner     = func
 inner.source  = inner.toString();if(!this.__INNER_STACK__) {this.__INNER_STACK__ = [];};this.__INNER_STACK__.push(inner)
 var before    = this.INNER;this.INNER    = function () {return  me.__INNER_STACK__.pop().apply(me, arguments) };var ret       = orig.apply(this, arguments);this.INNER    = before;return ret
 })
@@ -998,13 +994,14 @@ if(data) {for(var i in data) {dataString += encodeURIComponent(i)+"="+encodeURIC
 }
 var theUrl = url;if(data && method == "GET") {theUrl += "?"+dataString
 }
-request.open(method, theUrl);request.onreadystatechange = function onreadystatechange () {if (request.readyState == 4) {if(request.status >= 200 && request.status < 400) {var res = request.responseText;callback(res)
+request.open(method, theUrl, true);request.onreadystatechange = function onreadystatechange () {if (request.readyState == 4) {if(request.status >= 200 && request.status < 400) {var res = request.responseText;callback(res)
 } else {throw new Error("Error fetching url "+theUrl+". Response code: " + request.status + " Response text: "+request.responseText)
 }
 }
 };if(data && method == "POST") {request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 request.send(dataString)
-} else {request.send(dataString);}
+} else {dataString = ""
+request.send(dataString);}
 }
 }
 })
