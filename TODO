@@ -13,9 +13,9 @@ Features
 - implement subtypes, then implement cookbook entries 4 and 5
 - Test object initialization with private attr and other edge cases
 - Demonstrate stringify in Role recipe
-- Test roles with method modifiers
 
 Done:
+- Test roles with method modifiers
 - Implement attribute meta classes
 - Add an interface to Joose.Class to ask for instance vs. class methods
   - joose.isInstance

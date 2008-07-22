@@ -1,4 +1,4 @@
-plan(33)
+plan(41)
 
 diag("Testing Storage Role")
 
@@ -98,5 +98,36 @@ ok(fromMoose.getX() == 10, "getX() retuns the correct value");
 ok(fromMoose.meta.className() == "Geometry.Point", "p is of correct type");
 
 diag("JSON version of the Moose-JSON-Input: "+JSON.stringify(fromMoose));
+
+diag("Test identities")
+
+var p0 = new Geometry.Point({x: 10, y: 20})
+var p1 = new Geometry.Point({x: 20, y: 30})
+
+var test = {
+    a: p0,
+    b: p0,
+    c: p1
+}
+
+diag(JSON.stringify(test))
+diag(JSON.stringify(test))
+
+
+var runs = []
+
+for(var i = 0; i < 3; i++) { // test this multiple times because global vars are involved
+
+    var restore = JSON.parse(JSON.stringify(test))
+    diag(restore.a)
+    diag(restore.b)
+    ok(restore.a === restore.b, "Identities are preserved across JSON boundaries")
+    ok(restore.a !== restore.c, "Non identitcal objects are not identical are se- and deserialization")
+
+    runs[i] = restore
+}
+
+ok(runs[0].a !== runs[1].a, "Multiple deserializations create multiple instances of the same object")
+ok(runs[0].a !== runs[1].b, "Multiple deserializations create multiple instances of the same object")
 
 endTests()
