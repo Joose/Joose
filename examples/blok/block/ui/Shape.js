@@ -112,6 +112,8 @@ Module("block.ui", function (m) {
                 
                  // notify listeners
                 this.updated()
+                
+                document.sync.saveState()
             },
             
             // augment in sub class or role to update extra state

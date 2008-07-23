@@ -17,7 +17,8 @@ document.paras = {
 
 </script>
 
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>
+<!--  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script> -->
+<script type="text/javascript" src="static/jquery-1.2.6.min.js"></script>
 <script type="text/javascript" src="static/jquery.ui.all.min.js"></script>
 <script type="text/javascript" src="static/jquery-cmenu.js"></script>
 <script type="text/javascript" src="static/ColorPicker.js"></script>
@@ -54,7 +55,7 @@ document.paras = {
 <script type="text/javascript" src="block/ui/shape/SelectionGroup.js"></script>
 <script type="text/javascript" src="block/ui/shape/Group.js"></script>
 <script type="text/javascript" src="block/ui/shape/MultiSelection.js"></script>
-<script type="text/javascript" src="block/ui/CustomShape.js"></script>
+<script type="text/javascript" src="block/ui/CustomShapeBody.js"></script>
 <script type="text/javascript" src="block/ui/shape/Custom.js"></script>
 <script type="text/javascript" src="block/ui/shape/Connection.js"></script>
 
@@ -130,6 +131,9 @@ $(document).ready(function docReady () {
 	
 	document.undo   = new block.ui.Undo();
 	
+	document.customShapes = new block.ui.CustomShapeManager();
+	document.customShapes.fetch("/static/custom-shapes/test.shape.json")
+	
 })
 
 function onfirstdraw() {
@@ -187,6 +191,7 @@ function write() {
       <li>---</li>
       <li><a href="javascript:void(block.ui.shape.Connector.connectFocused())">Connect Selected</a></li>
     </ul>
+    <ul id="customShapes"></ul>
   </li>
   <li>
     <h2>Document</h2>

@@ -87,8 +87,8 @@ Joose.bootstrap3 = function () {}
 * Joose.MetaClassBootstrap is used to bootstrap the Joose.Class with a regular JS constructor
 */
 /** ignore */ 
-Joose.MetaClassBootstrap = function () {this._name            = "Joose.MetaClassBootstrap";this.methodNames      =    [];this.attributeNames   =    ["_name", "isAbstract", "methodNames", "attributeNames", "methods", "parentClasses", "roles", "c"];this.attributes       = {},
-this.methods          = {};this.parentClasses    = [];this.roles            = [];this.isAbstract       = false;}
+Joose.MetaClassBootstrap = function () {this._name            = "Joose.MetaClassBootstrap";this.methodNames      =    [];this.attributeNames   =    ["_name", "isAbstract", "isDetached", "methodNames", "attributeNames", "methods", "parentClasses", "roles", "c"];this.attributes       = {},
+this.methods          = {};this.parentClasses    = [];this.roles            = [];this.isAbstract       = false;this.isDetached       = false;}
 /** @ignore */
 Joose.MetaClassBootstrap.prototype = {toString: function () {if(this.meta) {return "a "+this.meta.className();}
 return "NoMeta"
@@ -301,7 +301,9 @@ return a
 getSuperClasses:    function () {return this.parentClasses;},
 getRoles:    function () {return this.roles;},
 getMethodNames:    function () {return this.methodNames;},
-addDetacher: function () {this.addMethod("detach", function detach () {var meta = this.meta;var c    = meta.createClass(meta.className()+"__anon__"+joose.anonymouseClassCounter++);c.meta.addSuperClass(meta.getClassObject());this.meta      = c.meta;this.constructor = c;c.prototype = this;return
+addDetacher: function () {this.addMethod("detach", function detach () {var meta = this.meta;if(meta.isDetached) {return 
+}
+var c    = meta.createClass(meta.className()+"__anon__"+joose.anonymouseClassCounter++);c.meta.addSuperClass(meta.getClassObject());c.meta.isDetached = true;this.meta      = c.meta;this.constructor = c;c.prototype = this;return
 if(this.__proto__) {this.__proto__ = c.prototype
 } else {   
 for(var i in c.prototype) {if(this[i] == null) {this[i] = c.prototype[i]

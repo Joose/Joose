@@ -124,18 +124,35 @@ class FetchData(webapp.RequestHandler):
     maxVersion = int(self.request.get('max_version'))
 
     logging.info(maxVersion)
+
+    i = 0;
+
+    while True:
+      found = False;
+
+      logging.info("Looking for data "+str(i))
       
-    revs       = []
-    if maxVersion > 0:
-      revs = DocRevision.gql('WHERE hash = :1 AND version > :2 ORDER BY version', docHash, maxVersion).fetch(10)
-    else:
-      revs = DocRevision.gql("WHERE hash = :1 ORDER BY version DESC", docHash).fetch(1) #WHERE owner = :1, user
+      revs       = []
+      if maxVersion > 0:
+        revs  = DocRevision.gql('WHERE hash = :1 AND version > :2 ORDER BY version', docHash, maxVersion).fetch(10)
+      else:
+        revs  = DocRevision.gql("WHERE hash = :1 ORDER BY version DESC", docHash).fetch(1) #WHERE owner = :1, user
+        found = True
 
-    rows = [];
+      rows = [];
+      
 
-    for rev in revs:
-      if maxVersion == 0 or rev.session != session: # filter my own rows (cant do this in the query because of GQL limitations)
-        rows.append(rev.forJSON())
+      for rev in revs:
+        if maxVersion == 0 or rev.session != session: # filter my own rows (cant do this in the query because of GQL limitations)
+          rows.append(rev.forJSON())
+          found = True;
+
+      #if found or i > 10:
+      if found or i > 0: # disable long-polling for now
+        break
+      else:
+        i = i + 1
+        time.sleep(2)
 
     data = {'data' : rows }
       

@@ -76,13 +76,13 @@ indexes:
   - name: version
     direction: desc
 
-# Used 4251 times in query history.
+# Used 16213 times in query history.
 - kind: DocRevision
   properties:
   - name: hash
   - name: version
 
-# Used 76 times in query history.
+# Used 1174 times in query history.
 - kind: DocRevision
   properties:
   - name: hash

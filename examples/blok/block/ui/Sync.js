@@ -19,27 +19,39 @@ Module("block.ui", function (m) {
             
             _syncInterval: {
             	is: "rw"
+            },
+            
+            _syncTime: {
+            	is: "rw"
             }
         },
         
         methods: {
+        	
+        	delayedUpdate: function () {
+        		var me = this;
+        		
+        		window.setTimeout(function syncUpdate () {
+                    me.update()
+                }, 2000) 
+        	},
             
             startListening: function ()  {
-                // get new data every N milli seconds
                 var me = this;
                 
-                // check for disabled syncing (for debugging) 
-                //if(!$('#doSync') || $('#doSync').attr("checked")) {
-                 	
-                    var interval = window.setInterval(function syncTimer () {
-                        me.update()
-                    }, 2000)
-                    
-                    this.setSyncInterval(interval)
-                //} 
+                window.setInterval(function recoverTimer () {
+                	var last = me.setSyncTime();
+                	var now  = new Date().getTime();
+                	
+                	if(now - last > 35000) { // restart syncing if there was not update in 35 seconds
+                		me.update()
+                	}  
+                	
+                }, 5000)
             },
             
             update: function () {
+            	this.getSyncTime(new Date().getTime())
                 this.fetchStates();
             },
             
@@ -53,9 +65,9 @@ Module("block.ui", function (m) {
                     
                     me.updateDocument(doc)
                 }    
-                this.saveState()   
                 
                 
+                this.delayedUpdate()
             },
             
             updateDocument: function (doc) {
