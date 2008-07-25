@@ -1,4 +1,4 @@
-plan(34)
+plan(33)
     
 diag("MetaClass");
     

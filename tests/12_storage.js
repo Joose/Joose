@@ -122,7 +122,7 @@ for(var i = 0; i < 3; i++) { // test this multiple times because global vars are
     diag(restore.a)
     diag(restore.b)
     ok(restore.a === restore.b, "Identities are preserved across JSON boundaries")
-    ok(restore.a !== restore.c, "Non identitcal objects are not identical are se- and deserialization")
+    ok(restore.a !== restore.c, "Non identical objects are not identical")
 
     runs[i] = restore
 }

@@ -1,3 +1,5 @@
+TODO_TESTS = false
+
 if(window.$ == null) {
     function $(id) {
         return document.getElementById(id)
@@ -20,22 +22,24 @@ function nofail(func, msg) {
 }
 
 function fail(func, errorMsgPart, msg) {
-    try {
-        func()
-    } catch(e) {
-        var ex = new String(e);
-        if(e.message != null) {
-            ex = new String(e.message)
-        }
-        if(ex.indexOf(errorMsgPart) != -1) {
-            ok(true, msg)
-            return
-        } else {
-            ok(false, msg + " [Wrong error: "+ex+"]")
-            return
-        }
-    }
-    ok(false, msg + " [No error]")
+	todo(isIE(), "Exceptions not catchable in IE, but program terminates properly, so no worries", function () {
+    	try {
+    	    func()
+    	} catch(e) {
+    	    var ex = new String(e);
+    	    if(e.message != null) {
+    	        ex = new String(e.message)
+    	    }
+    	    if(ex.indexOf(errorMsgPart) != -1) {
+    	        ok(true, msg)
+    	        return
+    	    } else {
+    	        ok(false, msg + " [Wrong error: "+ex+"]")
+    	        return
+    	    }
+    	}
+    	ok(false, msg + " [No error]")
+	})
 }
 
 function isaOk(obj, c) {
@@ -67,10 +71,17 @@ function ok(bool, msg) {
     
     var output = "" + (testCounter+1) + (msg ? (" - " + msg) : "")
     if(bool) {
+    	if(TODO_TESTS) {
+    		say("Unexpected success!")
+    	}
         say("OK "+output)
     } else {
-        say("<span style='color: red'>NOT OK "+output+"</span>")
-        testErrors++
+    	if(TODO_TESTS) {
+    		say("OK "+output+" - "+TODO_TESTS )
+    	} else {
+        	say("<span style='color: red'>NOT OK "+output+"</span>")
+        	testErrors++
+    	}
     }
     testCounter++
 }
@@ -103,6 +114,32 @@ function isNotEq(a, b, msg) {
 
 function jsonEq(a, b, msg) {
     ok(JSON.stringify(a) == JSON.stringify(b), msg)
+}
+
+function todo(condition, why, testFunction) {
+	
+	if(condition) {
+		TODO_TESTS = why
+		window.onerror = function () { return false }
+		try {
+			testFunction()
+		} catch(e) {
+			diag("Error: "+e)
+		}
+		window.onerror = null
+		TODO_TESTS = false
+	} else {
+		testFunction()
+	}
+}
+
+function isIE() {
+	return document.all ? true : false
+}
+function has__proto__() {
+	var test = function () {};
+	var o = new test();
+	return o.__proto__ ? true : false
 }
 
 function testReport() {

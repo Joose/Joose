@@ -99,14 +99,17 @@ ok(a.meta.does(RuntimeRole), "does works for runtime roles")
 
 diag("Removing roles")
 
-RuntimeRole.meta.unapply(a);
-ok(!a.meta.does(RuntimeRole), "Role was removed")
-ok(!a.meta.can("appliedAtRuntime"), "... object reports that method from removed role is gone")
-ok(typeof a.constructor.prototype.appliedAtRuntime == "undefined", "... method from role is gone from prototype")
-ok(typeof a.appliedAtRuntime == "undefined", "... method from role is gone")
-ok(a.getValue() != 12345678, "... method modifier is gone")
-ok(a.meta.isa(Currency), "but a is still a currency")
+todo(!has__proto__(), "Experimental feature Role.unapply does not work in browser without object.__proto__", function () {
 
+	RuntimeRole.meta.unapply(a);
+	ok(!a.meta.does(RuntimeRole), "Role was removed")
+	ok(!a.meta.can("appliedAtRuntime"), "... object reports that method from removed role is gone")
+	ok(typeof a.constructor.prototype.appliedAtRuntime == "undefined", "... method from role is gone from prototype")
+	ok(typeof a.appliedAtRuntime == "undefined", "... method from role is gone")
+	ok(a.getValue() != 12345678, "... method modifier is gone")
+	ok(a.meta.isa(Currency), "but a is still a currency")
+
+})
 diag("Role inheritance");
 
 ok(Joose.Role.meta.c === Joose.Role, "The Joose.Role meta class knows about the Joose.Role class")

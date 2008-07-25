@@ -1,4 +1,4 @@
-plan(3)
+plan(4)
 
 Module("Bank", function (m) {
     Class("Account", {

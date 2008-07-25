@@ -11,7 +11,6 @@ Features
 - implement class versioning
 - Improve Implementation of Attribute meta classes
 - implement subtypes, then implement cookbook entries 4 and 5
-- Test object initialization with private attr and other edge cases
 - Demonstrate stringify in Role recipe
 
 Done:
@@ -21,3 +20,4 @@ Done:
   - joose.isInstance
 - execute every test file in its own iframe
 - make this work in IE :)
+- Test object initialization with private attr and other edge cases

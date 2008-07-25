@@ -1,4 +1,4 @@
-plan(8)
+plan(12)
 
 diag("Testing Gears Support")
 
