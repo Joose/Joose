@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Custom Events &raquo; Attaching and Detaching</title>
+  <style type="text/css">
+  body {
+    padding: 0;
+    margin: 0;
+    background-color: #4f4e45;
+    font-family: Tahoma, Arial, sans-serif;
+  }
+  
+  #header {
+    height: 30px;
+    background-color: #111;
+    color: #EEE;
+    font-size: 10pt;
+    padding-top: 4px;
+    border-bottom: 1px solid #333;
+  }
+  
+  #main {
+    margin: 20px auto;  
+    height: 181px;
+    width: 610px;
+  }
+  
+  #main h2 {
+    font-weight: normal;
+    margin: 0;
+    color: #ff9600;
+    font-size: 14pt;
+    font-family: Tahoma, Arial, sans-serif;
+    padding-bottom: 1em;
+  }
+  
+  #leftchoices {
+    padding: 0;
+    margin: 0;
+    float: left;
+    font-size: 12pt;
+    list-style-type: none;
+    width: 180px;
+  }
+  
+  #leftchoices li {
+    padding: 5px;
+  }
+
+  #leftchoices li:hover {
+    background-color: #333;
+    color: #999;
+    cursor: pointer;
+  }
+  
+  #rightcontent {
+    float: right;
+    width: 385px;
+    padding: 5px 20px;
+    color: #999;
+  }
+
+  </style>
+</head>
+<body>
+
+<div id="header" align="center">
+    <span style="color: #999">Settings</span> 
+    <input type="checkbox" id="colorchange" /> Change colour?
+    <input type="checkbox" id="contentchange" /> Change content?
+
+</div>
+
+<div id="main">
+    <h2>Testing custom events and interception</h2>
+    
+    <ul id="leftchoices">
+        <li id="shakespeare">William Shakespeare</li>
+        <li id="fry">Stephen Fry</li>
+        <li id="wright">Stephen Wright</li>
+
+        <li id="gandhi">Mahatma Gandhi</li>
+        <li id="mlk">Martin Luther King</li>
+    </ul>
+    <div id="rightcontent">
+        &laquo; Choose an option from the menus to my left
+    </div>
+</div>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>
+
+<script type="text/javascript">
+var quotes = {
+    'shakespeare': "All the world's a stage, And all the men and women merely players; They have their exits and their entrances, And one man in his time plays many parts, His acts being seven ages.",
+    'fry': "An original idea. That can't be too hard. The library must be full of them.",
+    'wright': "I almost had a psychic girlfriend but she left me before we met.",
+    'gandhi': "An eye for an eye, and soon the whole world is blind",
+    'mlk': "A nation that continues year after year to spend more money on military defense than on programs of social uplift is approaching spiritual doom."
+}
+
+var doc = $(document);
+doc.ready(function() {
+	
+    $('#colorchange').change(function(e) {
+        if (e.target.checked) {
+            doc.bind('selected:choice', changeColor);
+        } else {
+            doc.unbind('selected:choice', changeColor);
+        }
+    })
+
+    $('#contentchange').change(function(e) {
+        if (e.target.checked) {
+            doc.bind('selected:choice', changeContent);
+        } else {
+            doc.unbind('selected:choice', changeContent);
+        }
+    })
+    
+    $('ul#leftchoices li').click(function(e) {
+        doc.trigger('selected:choice', [$(this)]);
+    });
+});
+
+function changeContent(e, ele) {
+    $('#rightcontent').html(quotes[ele.attr("id")]);
+}
+
+function changeColor(e) {
+    document.body.style.backgroundColor = (document.body.style.backgroundColor == 'rgb(255, 255, 255)') ? '#4f4e45' : '#ffffff';
+}
+</script>
+</body>
+</html>
