@@ -30,14 +30,14 @@ Class("Currency", {
 })
 
 Class("SubCurrency", {
-	isa: Currency
+    isa: Currency
 })
 
 Class("TestClass", {
     methods: {
-    	orig: function () {
-    		return true
-    	}
+        orig: function () {
+            return true
+        }
     }
 })
 
@@ -76,9 +76,9 @@ Class("RuntimeRole", {
     },
     
     around: {
-    	getValue: function () {
-    		return 12345678
-    	}
+        getValue: function () {
+            return 12345678
+        }
     }
 })
 
@@ -101,13 +101,13 @@ diag("Removing roles")
 
 todo(!has__proto__(), "Experimental feature Role.unapply does not work in browser without object.__proto__", function () {
 
-	RuntimeRole.meta.unapply(a);
-	ok(!a.meta.does(RuntimeRole), "Role was removed")
-	ok(!a.meta.can("appliedAtRuntime"), "... object reports that method from removed role is gone")
-	ok(typeof a.constructor.prototype.appliedAtRuntime == "undefined", "... method from role is gone from prototype")
-	ok(typeof a.appliedAtRuntime == "undefined", "... method from role is gone")
-	ok(a.getValue() != 12345678, "... method modifier is gone")
-	ok(a.meta.isa(Currency), "but a is still a currency")
+    RuntimeRole.meta.unapply(a);
+    ok(!a.meta.does(RuntimeRole), "Role was removed")
+    ok(!a.meta.can("appliedAtRuntime"), "... object reports that method from removed role is gone")
+    ok(typeof a.constructor.prototype.appliedAtRuntime == "undefined", "... method from role is gone from prototype")
+    ok(typeof a.appliedAtRuntime == "undefined", "... method from role is gone")
+    ok(a.getValue() != 12345678, "... method modifier is gone")
+    ok(a.meta.isa(Currency), "but a is still a currency")
 
 })
 diag("Role inheritance");

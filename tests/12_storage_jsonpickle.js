@@ -7,7 +7,7 @@ ok(JSON.parse && JSON.stringify, "It is the correct version of JSON (json2.js)")
 
 Geometry = {};
 Class("Geometry.Point", {
-    does: Joose.Storage,
+    does: Joose.Storage.jsonpickle,
     has: {
         x: {is: rw},
         y: {is: rw},
@@ -31,7 +31,8 @@ var o = p.pack();
 
 ok(o.x == 10, "Serialized object has correct x value")
 ok(o.y == 20, "Serialized object has correct y value")
-ok(o.__CLASS__ == "Geometry::Point", "Serialized object has the correct class name")
+ok(o.classname__ == "Point", "Serialized object has the correct class name")
+ok(o.classmodule__ == "Geometry", "Serialized object has the correct module name")
 
 var p2 = Geometry.Point.unpack(o);
 
@@ -44,7 +45,7 @@ ok(p3.getX() == 10, "After JSON rountrip: point x value is ok (uses the toJSON m
 ok(p3.getY() == 20, "After JSON rountrip: point y value is ok (uses the toJSON method)")
 
 Class("Geometry.Rectangle", {
-    does: Joose.Storage,
+    does: Joose.Storage.jsonpickle,
     has: {
         width:  {is: rw},
         height: {is: rw}
@@ -57,7 +58,6 @@ fail(function () {Geometry.Rectangle.unpack({width: 10, height: 20})}, "Serializ
 var rect = new Geometry.Rectangle({width: 100, height: 200});
 ok(rect.getWidth() == 100, "We can make Rectangles");
 var packed = rect.pack();
-ok(packed.__CLASS__ == "Geometry::Rectangle", "We are using :: as the Namespace separator")
 ok(Geometry.Rectangle.unpack, "Rectangles have unpack");
 ok(Geometry.Rectangle.unpack(packed).meta.className() == "Geometry.Rectangle", "And we can convert is back to the dot in JavaScript")
 
@@ -66,7 +66,9 @@ var before = {
     another: {a: 1}
 }
 
-var after = JSON.parse(JSON.stringify(before), Joose.Storage.Unpacker.jsonParseFilter);
+diag(JSON.stringify(before))
+
+var after = JSON.parse(JSON.stringify(before), Joose.Storage.Unpacker.jsonpickle.jsonParseFilter);
 
 var p = after.test[0]
 
@@ -78,7 +80,7 @@ ok(p.getX() == 10, "getX() retuns the correct value");
 ok(p.meta.className() == "Geometry.Point", "p is of correct type")
 
 diag("Patching JSON")
-Joose.Storage.Unpacker.patchJSON();
+Joose.Storage.Unpacker.jsonpickle.patchJSON();
 var after = JSON.parse(JSON.stringify(before));
 
 var p = after.test[0]
@@ -91,13 +93,13 @@ ok(p.getX() == 10, "getX() retuns the correct value");
 ok(p.meta.className() == "Geometry.Point", "p is of correct type");
 
 diag("Test with version (Right now we simply ignore it :)")
-var fromMoose = JSON.parse('{"__CLASS__":"Geometry::Point-0.01","y":10,"x":10}');
-ok(fromMoose.x == 10, "X has the correct value");
-ok(fromMoose.getX, "getX method is there");
-ok(fromMoose.getX() == 10, "getX() retuns the correct value");
-ok(fromMoose.meta.className() == "Geometry.Point", "p is of correct type");
+var fromJsonpickle = JSON.parse('{"classname__":"Point", "classmodule__": "Geometry","y":10,"x":10}');
+ok(fromJsonpickle.x == 10, "X has the correct value");
+ok(fromJsonpickle.getX, "getX method is there");
+ok(fromJsonpickle.getX() == 10, "getX() retuns the correct value");
+ok(fromJsonpickle.meta.className() == "Geometry.Point", "p is of correct type");
 
-diag("JSON version of the Moose-JSON-Input: "+JSON.stringify(fromMoose));
+diag("JSON version of the jsonpickle-Input: "+JSON.stringify(fromJsonpickle));
 
 diag("Test identities")
 
