@@ -137,17 +137,17 @@ ok(runs[0].a !== runs[1].b, "Multiple deserializations create multiple instances
 // 
 
 Module("jsonpickle.tests.classes", function () {
-	Class("Thing", {
-		does: Joose.Storage.jsonpickle,
-		has: {
-			child: {
-				is: "rw"
-			},
-			name: {
-				is: "rw"
-			}
-		}
-	})
+    Class("Thing", {
+        does: Joose.Storage.jsonpickle,
+        has: {
+            child: {
+                is: "rw"
+            },
+            name: {
+                is: "rw"
+            }
+        }
+    })
 })
 
 var thing = JSON.parse('{"child": "Robert", "classname__": "Thing", "name": "A String", "classmodule__": "jsonpickle.tests.classes"}');
