@@ -1,4 +1,4 @@
-plan(41)
+plan(43)
 
 diag("Testing Storage Role")
 
@@ -132,6 +132,28 @@ for(var i = 0; i < 3; i++) { // test this multiple times because global vars are
 ok(runs[0].a !== runs[1].a, "Multiple deserializations create multiple instances of the same object")
 ok(runs[0].a !== runs[1].b, "Multiple deserializations create multiple instances of the same object")
 
+// Usage
+
+// 
+
+Module("jsonpickle.tests.classes", function () {
+	Class("Thing", {
+		does: Joose.Storage.jsonpickle,
+		has: {
+			child: {
+				is: "rw"
+			},
+			name: {
+				is: "rw"
+			}
+		}
+	})
+})
+
+var thing = JSON.parse('{"child": "Robert", "classname__": "Thing", "name": "A String", "classmodule__": "jsonpickle.tests.classes"}');
+
+ok(thing.getChild() == "Robert", "child has correct value")
+ok(thing.getName() == "A String", "name has correct value")
 
 
 
