@@ -1,11 +1,15 @@
-plan(10);
+plan(14);
 
 Class("TestMeta", {
 	isa: Joose.Class,
 	
 	methods: {
-		handlePropcustomProp: function (paras) {
+		handlePropcustomProp: function (paras, props) {
 			var me = this;
+			ok(paras, "received paras")
+			ok(props, "received class properties")
+			ok(paras.event1, "Received contents of paras")
+			ok(props.has.one, "Received correct class props")
 			Joose.O.each(paras, function (func,name) {
 				me.addMethod("custom"+name, func)
 			})
