@@ -1,138 +1,138 @@
 Module("ORM", function (m) {
     
     // Add Compatibility with the Gears DB
-	if(!window.openDatabase) {
-		window.openDatabase = function (name) {
-			JooseGearsInitializeGears()
+    if(!window.openDatabase) {
+        window.openDatabase = function (name) {
+            JooseGearsInitializeGears()
 
-			var handle = google.gears.factory.create('beta.database');
-			handle.open(name);
-			var db = new m.HTML5DatabaseEmulator({
-				gearsDb: handle
-			})
-			return db
-		}
-	}
-	
-	// Wrap the gears db db with something that looks like an html5 db
-	Class("HTML5DatabaseEmulator", {
-		has: {
-			gearsDb: {
-			is: "ro",
-			required: true
-			}
-		},
-		methods: {
-			transaction: function (func) {
-				var tx = new m.HTML5TransactionEmulator({
-					database: this
-				})
-				func(tx)
-			}
-		}
-	});
-	
-	// Simulate the html5 transaction interface (currently without transactions :))
-	Class("HTML5TransactionEmulator", {
-		has: {
-			database: {
-				is: "ro",
-				required: true
-			}
-		},
-		methods: {
-			executeSql: function (sql,args,onSuccess,onFailure) {
-				var me = this;
-				var resultSet;
-				try {
-					if(window.console) {
-						console.log(sql)
-					}
-					/// XXX run this inside a worker to really become async
-					var rs = this.getDatabase().getGearsDb().execute(sql, args);
-					resultSet = new m.HTML5ResultSetEmulator({
-						database: this.getDatabase(),
-						resultSet: rs
-					})
-					
-				} catch(e) {
-					if(window.console) {
-						console.log(e + "\nSQL: "+sql + "\nArgs: "+args)
-					}
-					if(onFailure) {
-						onFailure(me, e)
-					} else {
-						throw e
-					}
-				};
-				if(resultSet) {
-					if(onSuccess) {
-						onSuccess(me, resultSet)
-					}
-				}
-			}
-		}
-	});
-	
-	// Emulate html5 result sets
-	Class("HTML5ResultSetEmulator", {
-		has: {
-			database: {
-				is: "ro"
-			},
-			resultSet: {
-				is: "ro",
-				required: true
-			},
-			insertId: {},
-			rowsAffected: {},
-			rows: {}
-		},
-		after: {
-			initialize: function () {
-				var rs = this.getResultSet();
-				this.insertId = this.getDatabase().getGearsDb().lastInsertRowId;
-				var rows = [];
-				rows.item = function (i) {
-					return this[i]
-				};
-				var names = [];
-				var fieldCount = rs.fieldCount();
-				for(var i = 0; i < fieldCount; i++) {
-					names.push(rs.fieldName(i))
-				}
-				while (rs.isValidRow()) {
-					var row = {};
-					row.length = fieldCount;
-					for(var i = 0; i < names.length; i++) {
-						var name = names[i];
-						row[name] = rs.fieldByName(name)
-					}
-					for(var i = 0; i < fieldCount; i++) {
-						row[i] = rs.field(i)
-					}
-					rows.push(row)
-					rs.next();
-				}
-				rs.close();
-				this.rows = rows
-			}
-		}
-	})
-	
-	// ORM.openDatabase - use this to open the database
-	m.openDatabase = function (name, version, desc, size) {
-		m.db = window.openDatabase(name, version, desc, size)
-	};
-	
-	// ORM.transaction - use this to do a transaction
-	m.transaction  = function (transactionCallback) {
-		var me = this;
-		this.db.transaction(function (tx) {
-			me.tx = tx;
-			transactionCallback(tx)
-		})
-	};
+            var handle = google.gears.factory.create('beta.database');
+            handle.open(name);
+            var db = new m.HTML5DatabaseEmulator({
+                gearsDb: handle
+            })
+            return db
+        }
+    }
+    
+    // Wrap the gears db db with something that looks like an html5 db
+    Class("HTML5DatabaseEmulator", {
+        has: {
+            gearsDb: {
+            is: "ro",
+            required: true
+            }
+        },
+        methods: {
+            transaction: function (func) {
+                var tx = new m.HTML5TransactionEmulator({
+                    database: this
+                })
+                func(tx)
+            }
+        }
+    });
+    
+    // Simulate the html5 transaction interface (currently without transactions :))
+    Class("HTML5TransactionEmulator", {
+        has: {
+            database: {
+                is: "ro",
+                required: true
+            }
+        },
+        methods: {
+            executeSql: function (sql,args,onSuccess,onFailure) {
+                var me = this;
+                var resultSet;
+                try {
+                    if(window.console) {
+                        console.log(sql)
+                    }
+                    /// XXX run this inside a worker to really become async
+                    var rs = this.getDatabase().getGearsDb().execute(sql, args);
+                    resultSet = new m.HTML5ResultSetEmulator({
+                        database: this.getDatabase(),
+                        resultSet: rs
+                    })
+                    
+                } catch(e) {
+                    if(window.console) {
+                        console.log(e + "\nSQL: "+sql + "\nArgs: "+args)
+                    }
+                    if(onFailure) {
+                        onFailure(me, e)
+                    } else {
+                        throw e
+                    }
+                };
+                if(resultSet) {
+                    if(onSuccess) {
+                        onSuccess(me, resultSet)
+                    }
+                }
+            }
+        }
+    });
+    
+    // Emulate html5 result sets
+    Class("HTML5ResultSetEmulator", {
+        has: {
+            database: {
+                is: "ro"
+            },
+            resultSet: {
+                is: "ro",
+                required: true
+            },
+            insertId: {},
+            rowsAffected: {},
+            rows: {}
+        },
+        after: {
+            initialize: function () {
+                var rs = this.getResultSet();
+                this.insertId = this.getDatabase().getGearsDb().lastInsertRowId;
+                var rows = [];
+                rows.item = function (i) {
+                    return this[i]
+                };
+                var names = [];
+                var fieldCount = rs.fieldCount();
+                for(var i = 0; i < fieldCount; i++) {
+                    names.push(rs.fieldName(i))
+                }
+                while (rs.isValidRow()) {
+                    var row = {};
+                    row.length = fieldCount;
+                    for(var i = 0; i < names.length; i++) {
+                        var name = names[i];
+                        row[name] = rs.fieldByName(name)
+                    }
+                    for(var i = 0; i < fieldCount; i++) {
+                        row[i] = rs.field(i)
+                    }
+                    rows.push(row)
+                    rs.next();
+                }
+                rs.close();
+                this.rows = rows
+            }
+        }
+    })
+    
+    // ORM.openDatabase - use this to open the database
+    m.openDatabase = function (name, version, desc, size) {
+        m.db = window.openDatabase(name, version, desc, size)
+    };
+    
+    // ORM.transaction - use this to do a transaction
+    m.transaction  = function (transactionCallback) {
+        var me = this;
+        this.db.transaction(function (tx) {
+            me.tx = tx;
+            transactionCallback(tx)
+        })
+    };
    
     Class("EntityMetaClass", {
         isa: Joose.Class,
@@ -141,36 +141,36 @@ Module("ORM", function (m) {
             // get all fields of table of the class I represent
              fetchFields: function (processFields) {
 
-				var c = this.getClassObject();
+                var c = this.getClassObject();
 
-				var tableName = c.tableName();
-				
-				// fetch create table statement
-				// if there is a nicer way to get to the col data, please tell me
-				m.tx.executeSql("SELECT sql FROM sqlite_master WHERE name = ?", [tableName], function (tx, result) {
-					var fields = [];
-					
-					var sql = result.rows.item(0).sql
+                var tableName = c.tableName();
+                
+                // fetch create table statement
+                // if there is a nicer way to get to the col data, please tell me
+                m.tx.executeSql("SELECT sql FROM sqlite_master WHERE name = ?", [tableName], function (tx, result) {
+                    var fields = [];
+                    
+                    var sql = result.rows.item(0).sql
 
-					// parse sql create table statement
-					var match = sql.match(/\((.+)/i)
-					var colsPart = match[1]
-					
-					var definitions = colsPart.split(",")
-					
-					for(var i = 0; i < definitions.length; i++) {
-						var match = definitions[i].match(/\s*(\w+)/)
-						var col = match[1];
-						// XXX ignore keywords like PRIMARY, KEY and UNIQUE
-						fields.push(col)
-					}
-					
-					// rowid is not in the table defition but every table has it!
-					fields.push("rowid")
-					
-					processFields(fields)
-				});
-			},
+                    // parse sql create table statement
+                    var match = sql.match(/\((.+)/i)
+                    var colsPart = match[1]
+                    
+                    var definitions = colsPart.split(",")
+                    
+                    for(var i = 0; i < definitions.length; i++) {
+                        var match = definitions[i].match(/\s*(\w+)/)
+                        var col = match[1];
+                        // XXX ignore keywords like PRIMARY, KEY and UNIQUE
+                        fields.push(col)
+                    }
+                    
+                    // rowid is not in the table defition but every table has it!
+                    fields.push("rowid")
+                    
+                    processFields(fields)
+                });
+            },
             
             // XXX broken
             renderHTML: function () {
@@ -201,7 +201,7 @@ Module("ORM", function (m) {
         
         after: {
             buildComplete: function () {
-            	var me     = this;
+                var me     = this;
                 
                 if(this.isAbstract) {
                     return
@@ -209,26 +209,26 @@ Module("ORM", function (m) {
                 
                 // add getters and setters for each field
                 this.fetchFields(function (fields) {
-                	me.addClassMethod("fields", function () {
-               	    	return fields;
-               		})
+                    me.addClassMethod("fields", function () {
+                           return fields;
+                       })
                 
-                	Joose.A.each(fields, function (field) {
-                    	if(!me.can(field)) {
-                    		var getterName = "get"+Joose.S.uppercaseFirst(field)
-                    		var setterName = "set"+Joose.S.uppercaseFirst(field)
-                    		if(!me.can(getterName)) {
-                    	    	me.addMethod(getterName, function () {
-                    	    	    return this.field.apply(this, Joose.A.concat([field], arguments))
-                    	    	})
-                    		}
-                    		if(!me.can(setterName)) {
-                    	    	me.addMethod(setterName, function () {
-                    	    	    return this.field.apply(this, Joose.A.concat([field], arguments))
-                    	    	})
-                    		}
-                    	}
-                	})
+                    Joose.A.each(fields, function (field) {
+                        if(!me.can(field)) {
+                            var getterName = "get"+Joose.S.uppercaseFirst(field)
+                            var setterName = "set"+Joose.S.uppercaseFirst(field)
+                            if(!me.can(getterName)) {
+                                me.addMethod(getterName, function () {
+                                    return this.field.apply(this, Joose.A.concat([field], arguments))
+                                })
+                            }
+                            if(!me.can(setterName)) {
+                                me.addMethod(setterName, function () {
+                                    return this.field.apply(this, Joose.A.concat([field], arguments))
+                                })
+                            }
+                        }
+                    })
                 });
             }
         }
@@ -264,7 +264,7 @@ Module("ORM", function (m) {
                 var attr = this;
                 
                 classObject.meta.addMethod(methodName, function (object) {
-                	var classOfRel = attr.getIsa()
+                    var classOfRel = attr.getIsa()
                     this.field(name, object.field(classOfRel.primaryKey()))
                 })
             }
@@ -293,10 +293,10 @@ Module("ORM", function (m) {
                 var methodName = "get"+Joose.S.uppercaseFirst(name)
                 
                 classObject.meta.addMethod(methodName, function (onSelect) {
-                	
-                	if(typeof onSelect != "function") {
-                		throw new Error("Please supply an onSelect handler to method "+methodName)
-                	}
+                    
+                    if(typeof onSelect != "function") {
+                        throw new Error("Please supply an onSelect handler to method "+methodName)
+                    }
                     
                     var classOfRel = attr.getIsa();
                     var sql        = "FROM "+classOfRel.tableName()+" WHERE "+foreignKey+" = ?";
@@ -350,13 +350,13 @@ Module("ORM", function (m) {
                     var values = queries.join(",")
                 
                     var sql = "INSERT INTO "+c.tableName()+" VALUES ("+values+")";
-                	
+                    
                     ORM.tx.executeSql(sql, args, function (tx, result) {
-                    	if(window.console)
-                    		console.log("INSERTED into "+c.tableName()+" row with id "+result.insertId)
-                    	me.field(c.primaryKey(), result.insertId)
-                    	me.isNewEntity = false
-                    	if(onSave) onSave(me)
+                        if(window.console)
+                            console.log("INSERTED into "+c.tableName()+" row with id "+result.insertId)
+                        me.field(c.primaryKey(), result.insertId)
+                        me.isNewEntity = false
+                        if(onSave) onSave(me)
                     })
 
                 } else {                
@@ -372,9 +372,9 @@ Module("ORM", function (m) {
                     var sql = "UPDATE "+c.tableName()+" SET "+set+" WHERE "+c.primaryKey() + " = ? ";
                 
                     ORM.tx.executeSql(sql, args, function () {
-                    	if(window.console)
-                    		console.log("UPDATED table "+c.tableName())
-                    	if(onSave) onSave(me)
+                        if(window.console)
+                            console.log("UPDATED table "+c.tableName())
+                        if(onSave) onSave(me)
                     })
                 }
             }
@@ -383,46 +383,46 @@ Module("ORM", function (m) {
         classMethods: {
             
             newFromId: function (id, onFind) {
-            	if(typeof onFind != "function") {
-            		throw new Error("Please supply an onFind function")
-            	}
-            	var me  = this;
+                if(typeof onFind != "function") {
+                    throw new Error("Please supply an onFind function")
+                }
+                var me  = this;
                 var sql = "FROM "+this.tableName()+" WHERE "+this.primaryKey()+" = ? ";
                 
                 this.select(sql, [id], function (selected) {
-                	if(!selected[0]) {
-                    	throw "Cant find row "+id+" in "+me.tableName()
-                	}
-                	onFind(selected[0])
+                    if(!selected[0]) {
+                        throw "Cant find row "+id+" in "+me.tableName()
+                    }
+                    onFind(selected[0])
                 })
             },
             
             select: function (sqlPart, args, onSelect) {
-            	if(typeof onSelect != "function") {
-            		throw new Error("Please supply an onSelect function while selecting from "+this)
-            	}
+                if(typeof onSelect != "function") {
+                    throw new Error("Please supply an onSelect function while selecting from "+this)
+                }
                 var me        = this;
                 var tableName = this.tableName();
                 
                 var sql = "SELECT "+tableName+".rowid, "+tableName+".* " + sqlPart;
                 
                 var rs = ORM.tx.executeSql(sql, args, function (tx, result) {
-                	var a  = [];
-                	
-                	for(var i = 0; i < result.rows.length; i++) {
-                		var row = result.rows.item(i)
-                	    if(window.console)
-                	    	console.log("Retrieved row "+(i+1))
-                	    var o = me.meta.instantiate();
-                	    var data = {};
-                	    Joose.A.each(me.fields(), function (field) {
-                	        data[field] = row[field]
-                	    })
-                	    o._data = data
-                	    o.isNewEntity = false
-                	    a.push(o)
-                	}
-                	onSelect(a)
+                    var a  = [];
+                    
+                    for(var i = 0; i < result.rows.length; i++) {
+                        var row = result.rows.item(i)
+                        if(window.console)
+                            console.log("Retrieved row "+(i+1))
+                        var o = me.meta.instantiate();
+                        var data = {};
+                        Joose.A.each(me.fields(), function (field) {
+                            data[field] = row[field]
+                        })
+                        o._data = data
+                        o.isNewEntity = false
+                        a.push(o)
+                    }
+                    onSelect(a)
                 });
                 
                 

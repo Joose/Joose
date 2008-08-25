@@ -7,7 +7,7 @@ plan(120)
 
 ORM.openDatabase('databaseormtest6', "1.0", "Test-DB", 200000);
 ORM.transaction(function (tx) {
-	// Setup test tables
+    // Setup test tables
     tx.executeSql('create table if not exists car' +
     ' (model TEXT, brand TEXT, owner INTEGER);');
     tx.executeSql('create table if not exists person' +
