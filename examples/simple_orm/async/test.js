@@ -1,4 +1,4 @@
-plan(20)
+plan(120)
 
 //if(!window.google || !window.google.gears || !window.openDatabase) {
     //    document.write("You need to install Google Gears or use a browser with HTML5 database support like WebKit to run the database example. <br><a href='http://gears.google.com/'>Download it here.</a>")
@@ -7,19 +7,19 @@ plan(20)
 
 ORM.openDatabase('databaseormtest6', "1.0", "Test-DB", 200000);
 ORM.transaction(function (tx) {
+	// Setup test tables
     tx.executeSql('create table if not exists car' +
     ' (model TEXT, brand TEXT, owner INTEGER);');
     tx.executeSql('create table if not exists person' +
-    ' (name TEXT, car INTEGER, mother INTEGER, city TEXT);');
-    tx.executeSql('create table if not exists ormhack' +
-    ' (owner INTEGER);');
-    tx.executeSql('INSERT INTO ormhack VALUES(1);',
+    ' (name TEXT, car INTEGER, mother INTEGER, city TEXT);',
     null,
+    // When done set up entities
     function (tx, result) {
         ORM.tx = tx
         
         Module("MyEntities", function (m) {
             
+            // A Car with an owner
             Class("Car", {
                 isa:  ORM.Entity,
                 
@@ -37,6 +37,7 @@ ORM.transaction(function (tx) {
                 }
             })
             
+            // A Person with a mother (a Person) and a collection of cars
             Class("Person", {
                 isa:  ORM.Entity,
                 
@@ -61,7 +62,7 @@ ORM.transaction(function (tx) {
             });
         })
         
-        
+        // Actual usage of entity classes must be in a new transaction
         ORM.transaction(function (tx) {
             
             var mother = new MyEntities.Person();

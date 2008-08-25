@@ -1,5 +1,6 @@
 Module("ORM", function (m) {
     
+    // Add Compatibility with the Gears DB
 	if(!window.openDatabase) {
 		window.openDatabase = function (name) {
 			JooseGearsInitializeGears()
@@ -12,7 +13,8 @@ Module("ORM", function (m) {
 			return db
 		}
 	}
-
+	
+	// Wrap the gears db db with something that looks like an html5 db
 	Class("HTML5DatabaseEmulator", {
 		has: {
 			gearsDb: {
@@ -29,6 +31,8 @@ Module("ORM", function (m) {
 			}
 		}
 	});
+	
+	// Simulate the html5 transaction interface (currently without transactions :))
 	Class("HTML5TransactionEmulator", {
 		has: {
 			database: {
@@ -44,6 +48,7 @@ Module("ORM", function (m) {
 					if(window.console) {
 						console.log(sql)
 					}
+					/// XXX run this inside a worker to really become async
 					var rs = this.getDatabase().getGearsDb().execute(sql, args);
 					resultSet = new m.HTML5ResultSetEmulator({
 						database: this.getDatabase(),
@@ -68,6 +73,8 @@ Module("ORM", function (m) {
 			}
 		}
 	});
+	
+	// Emulate html5 result sets
 	Class("HTML5ResultSetEmulator", {
 		has: {
 			database: {
@@ -113,10 +120,12 @@ Module("ORM", function (m) {
 		}
 	})
 	
+	// ORM.openDatabase - use this to open the database
 	m.openDatabase = function (name, version, desc, size) {
 		m.db = window.openDatabase(name, version, desc, size)
 	};
 	
+	// ORM.transaction - use this to do a transaction
 	m.transaction  = function (transactionCallback) {
 		var me = this;
 		this.db.transaction(function (tx) {
@@ -163,6 +172,7 @@ Module("ORM", function (m) {
 				});
 			},
             
+            // XXX broken
             renderHTML: function () {
                 var c = this.getClassObject();
                 
@@ -197,6 +207,7 @@ Module("ORM", function (m) {
                     return
                 }
                 
+                // add getters and setters for each field
                 this.fetchFields(function (fields) {
                 	me.addClassMethod("fields", function () {
                	    	return fields;
@@ -223,6 +234,7 @@ Module("ORM", function (m) {
         }
     });
     
+    // Attribute meta class for hasOne relations. Adds getters and setters for objects
     Class("HasOne", {
         isa: Joose.Attribute,
         
@@ -259,6 +271,7 @@ Module("ORM", function (m) {
         }
     })
     
+    // Attribute meta class for HasMany relations. Add a getter to retrive a collection of related objects
     Class("HasMany", {
         isa: m.HasOne,
         
@@ -294,6 +307,7 @@ Module("ORM", function (m) {
         }
     })
     
+    // Superclass for all entity
     Class("Entity", {
         meta: m.EntityMetaClass,
         isAbstract: true,
