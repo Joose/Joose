@@ -116,6 +116,14 @@ Module("ORM", function (m) {
 	m.openDatabase = function (name, version, desc, size) {
 		m.db = window.openDatabase(name, version, desc, size)
 	};
+	
+	m.transaction  = function (transactionCallback) {
+		var me = this;
+		this.db.transaction(function (tx) {
+			me.tx = tx;
+			transactionCallback(tx)
+		})
+	};
    
     Class("EntityMetaClass", {
         isa: Joose.Class,
