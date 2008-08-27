@@ -27,7 +27,7 @@ function doTests() {
                 tableName: "car",
                 
                 hasOne: {
-                	owner: {
+                    owner: {
                         isa: function () { return m.Person }
                     }
                 }
@@ -40,13 +40,13 @@ function doTests() {
                 tableName: "person",
                 
                 hasOne: {
-                	mother: {
+                    mother: {
                         isa: function () { return m.Person }
                     }
                 },
                 
                 hasMany: {
-                	cars: {
+                    cars: {
                         isa:        function () { return m.Car },
                         foreignKey: "owner"
                     }
@@ -124,24 +124,24 @@ function doTests() {
         })})});
         
         ORM.transaction(function () {
-        	var id = mother.getRowid();
-        	MyEntities.Person.newFromId(id, function (p) {
-        		p.destroy(function () {
-        			MyEntities.Person.newFromId(
-						id, 
-        				function () {
-        					ok(false, "Person is still there")
-        				},
-        				function () {
-        					ok(true, "Person is gone after destroy")
-        				})
-        		})
-        	})
+            var id = mother.getRowid();
+            MyEntities.Person.newFromId(id, function (p) {
+                p.destroy(function () {
+                    MyEntities.Person.newFromId(
+                        id, 
+                        function () {
+                            ok(false, "Person is still there")
+                        },
+                        function () {
+                            ok(true, "Person is gone after destroy")
+                        })
+                })
+            })
         });
         
         // a transaction serializes the program flow. 
         ORM.transaction(function () {
-        	endTests()
+            endTests()
         });
         
 })}

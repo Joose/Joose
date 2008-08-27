@@ -1,10 +1,10 @@
 Module("ORM", function (module) {
-	
-	var GEARS_COMPAT = false
+    
+    var GEARS_COMPAT = false
     
     // Add Compatibility with the Gears DB
     if(!window.openDatabase) {
-    	GEARS_COMPAT = true;
+        GEARS_COMPAT = true;
         window.openDatabase = function (name) {
             JooseGearsInitializeGears()
 
@@ -21,8 +21,8 @@ Module("ORM", function (module) {
     Class("HTML5DatabaseEmulator", {
         has: {
             gearsDb: {
-            	is: "ro",
-            	required: true
+                is: "ro",
+                required: true
             }
         },
         methods: {
@@ -134,10 +134,10 @@ Module("ORM", function (module) {
     };
     
     var nextTransaction = function () {
-    	if(TRANSACTION_QUEUE.length > 0) {
-    		var txCallback = TRANSACTION_QUEUE.shift();
-    		module.transaction(txCallback)
-    	}
+        if(TRANSACTION_QUEUE.length > 0) {
+            var txCallback = TRANSACTION_QUEUE.shift();
+            module.transaction(txCallback)
+        }
     };
     
     // ORM.transaction - use this to do a transaction
@@ -148,50 +148,50 @@ Module("ORM", function (module) {
         var me = this;
         console.log("Starting transaction ")
         DB.transaction(function (tx) {
-           	if(GEARS_COMPAT) {
-           		
-           		if(ACTIVE_TRANSACTIONS > 0) { // only one transaction at a time
-           			TRANSACTION_QUEUE.push(transactionCallback)
-           			return
-           		}
-           		ACTIVE_TRANSACTIONS++
-           		TX = tx
-        		module.executeSql("BEGIN")
-        		try {
-        			transactionCallback()
-        		} catch(e) {
-        			module.executeSql("ROLLBACK");
-        			ACTIVE_TRANSACTIONS--;
-        			throw e
-        		};
-        		module.executeSql("COMMIT")
-        		ACTIVE_TRANSACTIONS--
-        		nextTransaction()
-        	} else {
-        		TX = tx
-        		transactionCallback()
-        	}
+               if(GEARS_COMPAT) {
+                   
+                   if(ACTIVE_TRANSACTIONS > 0) { // only one transaction at a time
+                       TRANSACTION_QUEUE.push(transactionCallback)
+                       return
+                   }
+                   ACTIVE_TRANSACTIONS++
+                   TX = tx
+                module.executeSql("BEGIN")
+                try {
+                    transactionCallback()
+                } catch(e) {
+                    module.executeSql("ROLLBACK");
+                    ACTIVE_TRANSACTIONS--;
+                    throw e
+                };
+                module.executeSql("COMMIT")
+                ACTIVE_TRANSACTIONS--
+                nextTransaction()
+            } else {
+                TX = tx
+                transactionCallback()
+            }
         })
     };
     
     // Execute Sql using the current transaction
     module.executeSql = function (sql, args, onSuccess, onError) {
-    	TX.executeSql(
-    		sql, 
-    		args,
-    		function onExecuteSqlSuccess (tx, result) {
-    			if(onSuccess) {
-    				onSuccess(result)
-    			}
-    		},
-    		function onExecuteSqlError (tx, error) {
-    			ACTIVE_EXECUTIONS--
-    			if(onError) {
-    				onError(error)
-    			} else {
-    				throw new Error(error)
-    			}
-    		})
+        TX.executeSql(
+            sql, 
+            args,
+            function onExecuteSqlSuccess (tx, result) {
+                if(onSuccess) {
+                    onSuccess(result)
+                }
+            },
+            function onExecuteSqlError (tx, error) {
+                ACTIVE_EXECUTIONS--
+                if(onError) {
+                    onError(error)
+                } else {
+                    throw new Error(error)
+                }
+            })
     };
    
     Class("EntityMetaClass", {
@@ -259,23 +259,23 @@ Module("ORM", function (module) {
             },
             
             handleProphasOne: function (definitions) {
-            	var me = this;
-            	Joose.O.each(definitions, function (props, name) {
-            		props.metaclass = module.HasOne;
-            		me.addAttribute(name, props)
-            	})
+                var me = this;
+                Joose.O.each(definitions, function (props, name) {
+                    props.metaclass = module.HasOne;
+                    me.addAttribute(name, props)
+                })
             },
             
             handleProphasMany: function (definitions) {
-            	var me = this;
-            	Joose.O.each(definitions, function (props, name) {
-            		props.metaclass = module.HasMany;
-            		me.addAttribute(name, props)
-            	})
+                var me = this;
+                Joose.O.each(definitions, function (props, name) {
+                    props.metaclass = module.HasMany;
+                    me.addAttribute(name, props)
+                })
             },
             
             handleProptableName: function (tableName) {
-            	this.addClassMethod("tableName", function () { return tableName })
+                this.addClassMethod("tableName", function () { return tableName })
             }
         },
         
@@ -460,11 +460,11 @@ Module("ORM", function (module) {
             },
             
             destroy: function (onDestroy) {
-            	var me = this;
-            	var c  = this.constructor;
-            	
-            	var sql = "DELETE FROM "+c.tableName()+" WHERE "+c.primaryKey() + " = ? ";
-            	module.executeSql(sql, [me.getRowid()], function onDestroySuccessful () {
+                var me = this;
+                var c  = this.constructor;
+                
+                var sql = "DELETE FROM "+c.tableName()+" WHERE "+c.primaryKey() + " = ? ";
+                module.executeSql(sql, [me.getRowid()], function onDestroySuccessful () {
                     if(window.console)
                         console.log("DELETED FROM table "+c.tableName())
                     if(onDestroy) onDestroy(me)
@@ -483,13 +483,13 @@ Module("ORM", function (module) {
                 
                 this.select(sql, [id], function onNewFromIdSuccessful (selected) {
                     if(!selected[0]) {
-                    	if(onNotFind) {
-                    		onNotFind(id)
-                    	} else {
-                        	throw "Cant find row "+id+" in "+me.tableName()
-                    	}
+                        if(onNotFind) {
+                            onNotFind(id)
+                        } else {
+                            throw "Cant find row "+id+" in "+me.tableName()
+                        }
                     } else {
-                    	onFind(selected[0])
+                        onFind(selected[0])
                     }
                 })
             },
