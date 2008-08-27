@@ -1,13 +1,16 @@
-Module("ORM", function (m) {
+Module("ORM", function (module) {
+	
+	var GEARS_COMPAT = false
     
     // Add Compatibility with the Gears DB
     if(!window.openDatabase) {
+    	GEARS_COMPAT = true;
         window.openDatabase = function (name) {
             JooseGearsInitializeGears()
 
             var handle = google.gears.factory.create('beta.database');
             handle.open(name);
-            var db = new m.HTML5DatabaseEmulator({
+            var db = new module.HTML5DatabaseEmulator({
                 gearsDb: handle
             })
             return db
@@ -18,13 +21,13 @@ Module("ORM", function (m) {
     Class("HTML5DatabaseEmulator", {
         has: {
             gearsDb: {
-            is: "ro",
-            required: true
+            	is: "ro",
+            	required: true
             }
         },
         methods: {
             transaction: function (func) {
-                var tx = new m.HTML5TransactionEmulator({
+                var tx = new module.HTML5TransactionEmulator({
                     database: this
                 })
                 func(tx)
@@ -50,7 +53,7 @@ Module("ORM", function (m) {
                     }
                     /// XXX run this inside a worker to really become async
                     var rs = this.getDatabase().getGearsDb().execute(sql, args);
-                    resultSet = new m.HTML5ResultSetEmulator({
+                    resultSet = new module.HTML5ResultSetEmulator({
                         database: this.getDatabase(),
                         resultSet: rs
                     })
@@ -120,18 +123,75 @@ Module("ORM", function (m) {
         }
     })
     
+    // Global vars, hidden from the outside :)
+    var DB, TX;
+    var ACTIVE_TRANSACTIONS = 0;
+    var TRANSACTION_QUEUE   = [];
+    
     // ORM.openDatabase - use this to open the database
-    m.openDatabase = function (name, version, desc, size) {
-        m.db = window.openDatabase(name, version, desc, size)
+    module.openDatabase = function (name, version, desc, size) {
+        DB = window.openDatabase(name, version, desc, size)
+    };
+    
+    var nextTransaction = function () {
+    	if(TRANSACTION_QUEUE.length > 0) {
+    		var txCallback = TRANSACTION_QUEUE.shift();
+    		module.transaction(txCallback)
+    	}
     };
     
     // ORM.transaction - use this to do a transaction
-    m.transaction  = function (transactionCallback) {
+    // Sets current transaction use ORM.executeSql to execute SQL
+    // With HTML5 it is guaranteed that transactions are serialized per window and database
+    // For gears we build a transaction queue and execute it serialized
+    module.transaction  = function (transactionCallback) {
         var me = this;
-        this.db.transaction(function (tx) {
-            me.tx = tx;
-            transactionCallback(tx)
+        console.log("Starting transaction ")
+        DB.transaction(function (tx) {
+           	if(GEARS_COMPAT) {
+           		
+           		if(ACTIVE_TRANSACTIONS > 0) { // only one transaction at a time
+           			TRANSACTION_QUEUE.push(transactionCallback)
+           			return
+           		}
+           		ACTIVE_TRANSACTIONS++
+           		TX = tx
+        		module.executeSql("BEGIN")
+        		try {
+        			transactionCallback()
+        		} catch(e) {
+        			module.executeSql("ROLLBACK");
+        			ACTIVE_TRANSACTIONS--;
+        			throw e
+        		};
+        		module.executeSql("COMMIT")
+        		ACTIVE_TRANSACTIONS--
+        		nextTransaction()
+        	} else {
+        		TX = tx
+        		transactionCallback()
+        	}
         })
+    };
+    
+    // Execute Sql using the current transaction
+    module.executeSql = function (sql, args, onSuccess, onError) {
+    	TX.executeSql(
+    		sql, 
+    		args,
+    		function onExecuteSqlSuccess (tx, result) {
+    			if(onSuccess) {
+    				onSuccess(result)
+    			}
+    		},
+    		function onExecuteSqlError (tx, error) {
+    			ACTIVE_EXECUTIONS--
+    			if(onError) {
+    				onError(error)
+    			} else {
+    				throw new Error(error)
+    			}
+    		})
     };
    
     Class("EntityMetaClass", {
@@ -147,7 +207,7 @@ Module("ORM", function (m) {
                 
                 // fetch create table statement
                 // if there is a nicer way to get to the col data, please tell me
-                m.tx.executeSql("SELECT sql FROM sqlite_master WHERE name = ?", [tableName], function (tx, result) {
+                module.executeSql("SELECT sql FROM sqlite_master WHERE name = ?", [tableName], function (result) {
                     var fields = [];
                     
                     var sql = result.rows.item(0).sql
@@ -273,7 +333,7 @@ Module("ORM", function (m) {
     
     // Attribute meta class for HasMany relations. Add a getter to retrive a collection of related objects
     Class("HasMany", {
-        isa: m.HasOne,
+        isa: module.HasOne,
         
         methods: {
             addGetter: function (classObject) {
@@ -309,7 +369,7 @@ Module("ORM", function (m) {
     
     // Superclass for all entity
     Class("Entity", {
-        meta: m.EntityMetaClass,
+        meta: module.EntityMetaClass,
         isAbstract: true,
         
         has: {
@@ -351,7 +411,7 @@ Module("ORM", function (m) {
                 
                     var sql = "INSERT INTO "+c.tableName()+" VALUES ("+values+")";
                     
-                    ORM.tx.executeSql(sql, args, function (tx, result) {
+                    module.executeSql(sql, args, function onInsertSuccessful (result) {
                         if(window.console)
                             console.log("INSERTED into "+c.tableName()+" row with id "+result.insertId)
                         me.field(c.primaryKey(), result.insertId)
@@ -371,29 +431,46 @@ Module("ORM", function (m) {
                 
                     var sql = "UPDATE "+c.tableName()+" SET "+set+" WHERE "+c.primaryKey() + " = ? ";
                 
-                    ORM.tx.executeSql(sql, args, function () {
+                    module.executeSql(sql, args, function onUpdateSuccessful() {
                         if(window.console)
-                            console.log("UPDATED table "+c.tableName())
+                            console.log("UPDATED in table "+c.tableName())
                         if(onSave) onSave(me)
                     })
                 }
+            },
+            
+            destroy: function (onDestroy) {
+            	var me = this;
+            	var c  = this.constructor;
+            	
+            	var sql = "DELETE FROM "+c.tableName()+" WHERE "+c.primaryKey() + " = ? ";
+            	module.executeSql(sql, [me.getRowid()], function onDestroySuccessful () {
+                    if(window.console)
+                        console.log("DELETED FROM table "+c.tableName())
+                    if(onDestroy) onDestroy(me)
+                })
             }
         },
         
         classMethods: {
             
-            newFromId: function (id, onFind) {
+            newFromId: function (id, onFind, onNotFind) {
                 if(typeof onFind != "function") {
                     throw new Error("Please supply an onFind function")
                 }
                 var me  = this;
                 var sql = "FROM "+this.tableName()+" WHERE "+this.primaryKey()+" = ? ";
                 
-                this.select(sql, [id], function (selected) {
+                this.select(sql, [id], function onNewFromIdSuccessful (selected) {
                     if(!selected[0]) {
-                        throw "Cant find row "+id+" in "+me.tableName()
+                    	if(onNotFind) {
+                    		onNotFind(id)
+                    	} else {
+                        	throw "Cant find row "+id+" in "+me.tableName()
+                    	}
+                    } else {
+                    	onFind(selected[0])
                     }
-                    onFind(selected[0])
                 })
             },
             
@@ -406,7 +483,7 @@ Module("ORM", function (m) {
                 
                 var sql = "SELECT "+tableName+".rowid, "+tableName+".* " + sqlPart;
                 
-                var rs = ORM.tx.executeSql(sql, args, function (tx, result) {
+                var rs = module.executeSql(sql, args, function onSelectSuccessful (result) {
                     var a  = [];
                     
                     for(var i = 0; i < result.rows.length; i++) {
