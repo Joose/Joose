@@ -24,16 +24,11 @@ function doTests() {
             Class("Car", {
                 isa:  ORM.Entity,
                 
-                has: {
-                    owner: {
-                        metaclass: ORM.HasOne,
-                        isa:       function () { return m.Person }
-                    }
-                },
+                tableName: "car",
                 
-                classMethods: {
-                    tableName: function () {
-                        return "car"
+                hasOne: {
+                	owner: {
+                        isa: function () { return m.Person }
                     }
                 }
             })
@@ -42,20 +37,16 @@ function doTests() {
             Class("Person", {
                 isa:  ORM.Entity,
                 
-                classMethods: {
-                    tableName: function () {
-                        return "person"
+                tableName: "person",
+                
+                hasOne: {
+                	mother: {
+                        isa: function () { return m.Person }
                     }
                 },
                 
-                has: {
-                    mother: {
-                        metaclass: ORM.HasOne,
-                        isa:       function () { return m.Person }
-                    },
-                    
-                    cars: {
-                        metaclass:  ORM.HasMany,
+                hasMany: {
+                	cars: {
                         isa:        function () { return m.Car },
                         foreignKey: "owner"
                     }

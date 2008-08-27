@@ -256,6 +256,26 @@ Module("ORM", function (module) {
                 html += "</table></div>"
                 
                 return html
+            },
+            
+            handleProphasOne: function (definitions) {
+            	var me = this;
+            	Joose.O.each(definitions, function (props, name) {
+            		props.metaclass = module.HasOne;
+            		me.addAttribute(name, props)
+            	})
+            },
+            
+            handleProphasMany: function (definitions) {
+            	var me = this;
+            	Joose.O.each(definitions, function (props, name) {
+            		props.metaclass = module.HasMany;
+            		me.addAttribute(name, props)
+            	})
+            },
+            
+            handleProptableName: function (tableName) {
+            	this.addClassMethod("tableName", function () { return tableName })
             }
         },
         
