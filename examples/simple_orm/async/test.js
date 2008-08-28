@@ -56,7 +56,7 @@ function initialize() {
 })}
 
 function doTests() {
-		var mother;
+        var mother;
         ORM.transaction(function () {
             
             mother = new MyEntities.Person();
@@ -148,6 +148,6 @@ function doTests() {
 
 ORM.transaction(initialize)
 window.onORMLoaded = function () {
-	ORM.transaction(doTests)
-	ORM.transaction(doTests)
+    ORM.transaction(doTests)
+    ORM.transaction(doTests)
 }

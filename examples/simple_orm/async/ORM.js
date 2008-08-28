@@ -70,7 +70,7 @@ Module("ORM", function (module) {
                 };
                 if(resultSet) {
                     if(onSuccess) {
-                    	onSuccess(me, resultSet)
+                        onSuccess(me, resultSet)
                     }
                 }
             }
@@ -147,7 +147,7 @@ Module("ORM", function (module) {
     module.transaction  = function (transactionCallback) {
         var me = this;
         if(window.console)
-        	console.log("Starting transaction ")
+            console.log("Starting transaction ")
         DB.transaction(function (tx) {
             if(GEARS_COMPAT) {
                    
@@ -177,9 +177,9 @@ Module("ORM", function (module) {
     
     // Execute Sql using the current transaction
     module.executeSql = function (sql, args, onSuccess, onError) {
-    	if(!GEARS_COMPAT && window.console) { // the gears layer does this anyway
-    		console.log("Executing SQL: "+sql+" Args: "+args)
-    	}
+        if(!GEARS_COMPAT && window.console) { // the gears layer does this anyway
+            console.log("Executing SQL: "+sql+" Args: "+args)
+        }
         TX.executeSql(
             sql, 
             args,
@@ -203,43 +203,43 @@ Module("ORM", function (module) {
         isa: Joose.Class,
         
         has: {
-        	_props: {}
+            _props: {}
         },
         
         methods: {
-        	
-        	initializeFromProps: function (props) {
-        		
-        		if(props.isAbstract) {
+            
+            initializeFromProps: function (props) {
+                
+                if(props.isAbstract) {
                     this._initializeFromProps(props)
                     return
                 }
                 
-               	var superclass = props.isa;
+                   var superclass = props.isa;
                 this.addSuperClass(superclass)
                 delete props.isa;
-        		
-        		if(typeof props.tableName == "undefined") {
-        			throw new Error("Please provide a tableName is the class definition.")
-        		}
-        		var tableName = props.tableName
-        		this.addClassMethod("tableName", function () { return tableName })
-        		delete props.tableName
-        		
-        		this._props = props
-        		this.initializeFromDb()
-        		// Do nothing else here because the regular time is to early
-        		// Call the actual method _initializeFromProps after fetching the fields
-        	},
-        	
-        	initializeFromDb: function () {
+                
+                if(typeof props.tableName == "undefined") {
+                    throw new Error("Please provide a tableName is the class definition.")
+                }
+                var tableName = props.tableName
+                this.addClassMethod("tableName", function () { return tableName })
+                delete props.tableName
+                
+                this._props = props
+                this.initializeFromDb()
+                // Do nothing else here because the regular time is to early
+                // Call the actual method _initializeFromProps after fetching the fields
+            },
+            
+            initializeFromDb: function () {
                 var me     = this;
                 
                 ENTITY_BUILD_COUNT++
                 
                 // add getters and setters for each field
                 this.fetchFields(function (fields) {
-                	
+                    
                     me.addClassMethod("fields", function () {
                            return fields;
                     })
@@ -265,16 +265,16 @@ Module("ORM", function (module) {
                     
                     ENTITY_BUILD_COUNT--
                     if(ENTITY_BUILD_COUNT == 0) {
-                    	if(window.onORMLoaded) {
-                    		window.onORMLoaded()	
-                    	}
+                        if(window.onORMLoaded) {
+                            window.onORMLoaded()    
+                        }
                     }
                 });
             },
-        	
+            
             // get all fields of table of the class I represent
             fetchFields: function (processFields) {
-				var me = this;
+                var me = this;
                 var c  = this.getClassObject();
 
                 var tableName = c.tableName();
@@ -305,7 +305,7 @@ Module("ORM", function (module) {
                     // this needs to be async (in Gears) so that alle class defs are loaded and
                     // the counting in ENTITY_BUILD_COUNT works 
                     window.setTimeout(function () {
-                    	processFields(fields)
+                        processFields(fields)
                     },0)
                     
                 });
@@ -355,16 +355,16 @@ Module("ORM", function (module) {
         },
         
         override: {
-        	wrapMethod: function () {
-            	var me   = this;
-            	var args = [];
-            	var orig = this.SUPER;
-            	for(var i = 0; i < arguments.length; i++) {
-            		args[i] = arguments[i]
-            	}
-            	module.transaction(function () {
-            		orig.apply(me, args)
-            	})
+            wrapMethod: function () {
+                var me   = this;
+                var args = [];
+                var orig = this.SUPER;
+                for(var i = 0; i < arguments.length; i++) {
+                    args[i] = arguments[i]
+                }
+                module.transaction(function () {
+                    orig.apply(me, args)
+                })
             }
         }
     });
@@ -399,12 +399,12 @@ Module("ORM", function (module) {
                 var attr = this;
                 
                 classObject.meta.addMethod(methodName, function (object) {
-                	if(object && object.meta) {
-                    	var classOfRel = attr.getIsa()
-                    	this.field(name, object.field(classOfRel.primaryKey()))
-                	} else {
-                		this.field(name, object)
-                	}
+                    if(object && object.meta) {
+                        var classOfRel = attr.getIsa()
+                        this.field(name, object.field(classOfRel.primaryKey()))
+                    } else {
+                        this.field(name, object)
+                    }
                 })
             }
         }
@@ -574,7 +574,7 @@ Module("ORM", function (module) {
                         var o = me.meta.instantiate();
 
                         Joose.A.each(me.fields(), function (field) {
-                        	var setterName = "set"+Joose.S.uppercaseFirst(field);
+                            var setterName = "set"+Joose.S.uppercaseFirst(field);
                             o[setterName](row[field])
                         })
                         o.isNewEntity = false
