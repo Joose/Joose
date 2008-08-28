@@ -1,4 +1,4 @@
-plan(27)
+plan(29)
 
 function debuggable () {
 diag("Meta class Extention");
@@ -10,6 +10,11 @@ Class("Joose.Class", {
 });
 
 Class("MyClass", {
+	after: {
+		initialize: function () {
+			this.test = 1
+		}
+	},
     methods: {
         hello: function () { return 1 }
     }
@@ -19,12 +24,14 @@ var o = new MyClass();
     
 ok(o.hello() == 1, "Can call methods on MyClass");
 ok(MyClass.meta.iAmMeta(), "We can extend the meta class");
+ok(o.test == 1, "Initializers can be wrapped")
 isNull(MyClass.iAmMeta, "MyClass does not have the new meta class method");
 
 diag("Instantiation");
     
 ok(MyClass.meta.instantiate().hello() == 1, "We can instantiate a class through the meta class")
 ok(new MyClass().meta.instantiate().hello() == 1, "We can instantiate a class through the meta class from an instance")
+ok(MyClass.meta.instantiate().test == 1, "Wrapped intializers run with meta instantiation")
 
 ok(MyClass.meta instanceof Joose.Class, "Meta object of class instanceof Joose.Class")
 ok(o.meta instanceof Joose.Class, "Meta object of instance instanceof Joose.Class")
