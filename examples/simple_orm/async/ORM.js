@@ -146,7 +146,8 @@ Module("ORM", function (module) {
     // For gears we build a transaction queue and execute it serialized
     module.transaction  = function (transactionCallback) {
         var me = this;
-        console.log("Starting transaction ")
+        if(window.console)
+        	console.log("Starting transaction ")
         DB.transaction(function (tx) {
             if(GEARS_COMPAT) {
                    
