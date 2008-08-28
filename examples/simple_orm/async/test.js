@@ -7,7 +7,7 @@ plan(242)
 
 ORM.openDatabase('databaseormtest6', "1.0", "Test-DB", 200000);
 
-function doTests() {
+function initialize() {
     // Setup test tables
     ORM.executeSql('create table if not exists car' +
     ' (model TEXT, brand TEXT, owner INTEGER);');
@@ -15,8 +15,7 @@ function doTests() {
     ' (name TEXT, car INTEGER, mother INTEGER, city TEXT);',
     null,
     // When done set up entities
-    function (tx, result) {
-        ORM.tx = tx
+    function () {
         
         Module("MyEntities", function (m) {
             
@@ -52,10 +51,12 @@ function doTests() {
                     }
                 }
             });
-        })
+        }) 
         
-        // Actual usage of entity classes must be in a new transaction
-        var mother;
+})}
+
+function doTests() {
+		var mother;
         ORM.transaction(function () {
             
             mother = new MyEntities.Person();
@@ -143,8 +144,10 @@ function doTests() {
         ORM.transaction(function () {
             endTests()
         });
-        
-})}
+}
 
-ORM.transaction(doTests)
-ORM.transaction(doTests)
+ORM.transaction(initialize)
+window.onORMLoaded = function () {
+	ORM.transaction(doTests)
+	ORM.transaction(doTests)
+}

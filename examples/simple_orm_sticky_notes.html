@@ -1,0 +1,327 @@
+<!doctype html>
+<html manifest="DatabaseExample.manifest">
+<head>
+<title>WebKit HTML 5 SQL Storage Notes Demo</title>
+
+<script type="text/javascript" src="../lib/Joose.js"></script>
+<script type="text/javascript">
+joose.loadComponents("../lib")
+
+function $(id) {
+	return document.getElementById(id)
+}
+
+</script>
+
+<script type="text/javascript" src="simple_orm/async/ORM.js"></script>
+
+<style>
+body {
+    font-family: 'Lucida Grande', 'Helvetica', sans-serif;
+}
+
+.note {
+    background-color: rgb(255, 240, 70);
+    height: 250px;
+    padding: 10px;
+    position: absolute;
+    width: 200px;
+    -webkit-box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+.note:hover .closebutton {
+    display: block;
+} 
+
+.closebutton {
+    display: none;
+    background-image: url(pics/deleteButton.png);
+    height: 30px;
+    position: absolute;
+    left: -15px;
+    top: -15px;
+    width: 30px;
+}
+
+.closebutton:active {
+    background-image: url(pics/deleteButtonPressed.png);
+}
+
+.edit {
+    outline: none;
+}
+
+.timestamp {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    font-size: 9px;
+    background-color: #db0;
+    color: white;
+    border-top: 1px solid #a80;
+    padding: 2px 4px;
+    text-align: right;
+}
+</style>
+<script>
+
+function log(msg) {
+	if(window.console) {
+		console.log(msg)
+	}
+}
+
+var db;
+
+ORM.openDatabase('JooseStickyNotes4', "1.0", "Test-DB", 200000);
+
+var captured  = null;
+var highestZ  = 0;
+var highestId = 0;
+
+ORM.transaction(function() {
+    ORM.executeSql("SELECT COUNT(*) FROM WebkitStickyNotes", [], 
+        function(result) {
+        }, 
+        function(error) {
+           	ORM.executeSql("CREATE TABLE WebKitStickyNotes (id REAL UNIQUE, noteText TEXT, timestamp REAL, left TEXT, top TEXT, zindex REAL)", [], 
+           		function(result) { 
+            	}
+            );
+    	});
+});
+
+ORM.transaction(function () {
+Class("Note", {
+	
+	isa: ORM.Entity,
+	
+	tableName: "WebKitStickyNotes",
+    
+    override: {
+    	save: function () {
+    		var me = this;
+    		this.cancelPendingSave();
+			
+        	if ("dirty" in this) {
+            	this.timestamp = new Date().getTime();
+            	delete this.dirty;
+            	
+            	var SUPER = me.SUPER
+            	
+            	log("Saving state")
+            	ORM.transaction(function () {
+            		me.sync()
+            		SUPER()
+            	})
+        	}
+    	}
+    },
+    
+    methods: {
+    	close: function(event)
+    	{
+    	    this.cancelPendingSave();
+
+    	    var note = this;
+    	    ORM.transaction(function () {
+    	    	note.destroy()
+    	    });
+        
+    	    var duration = event.shiftKey ? 2 : .25;
+    	    this.note.style.webkitTransition = '-webkit-transform ' + duration + 's ease-in, opacity ' + duration + 's ease-in';
+    	    this.note.offsetTop; // Force style recalc
+    	    this.note.style.webkitTransformOrigin = "0 0";
+    	    this.note.style.webkitTransform = 'skew(30deg, 0deg) scale(0)';
+    	    this.note.style.opacity = '0';
+
+    	    var self = this;
+        	setTimeout(function() { document.body.removeChild(self.note) }, duration * 1000);
+    	},
+
+    	saveSoon: function()
+    	{
+        	this.cancelPendingSave();
+        	var self = this;
+        	this._saveTimer = setTimeout(function() { self.save() }, 200);
+    	},
+
+    	cancelPendingSave: function()
+    	{
+    	    if (!("_saveTimer" in this))
+       	    	return;
+        	clearTimeout(this._saveTimer);
+        	delete this._saveTimer;
+    	},
+    	
+    	onMouseDown: function(e)
+    	{
+        	captured = this;
+        	this.startX = e.clientX - this.note.offsetLeft;
+        	this.startY = e.clientY - this.note.offsetTop;
+        	this.setZindex(++highestZ);
+
+        	var self = this;
+        	if (!("mouseMoveHandler" in this)) {
+           		this.mouseMoveHandler = function(e) { return self.onMouseMove(e) }
+            	this.mouseUpHandler = function(e) { return self.onMouseUp(e) }
+        	}
+
+        	document.addEventListener('mousemove', this.mouseMoveHandler, true);
+        	document.addEventListener('mouseup', this.mouseUpHandler, true);
+
+        	return false;
+    	},
+
+    	onMouseMove: function(e)
+    	{
+        	if (this != captured)
+        	    return true;
+
+        	this.setLeft(e.clientX - this.startX + 'px');
+        	this.setTop(e.clientY - this.startY + 'px');
+        	return false;
+    	},
+
+    	onMouseUp: function(e)
+    	{
+        	document.removeEventListener('mousemove', this.mouseMoveHandler, true);
+        	document.removeEventListener('mouseup', this.mouseUpHandler, true);
+			this.dirty = true
+        	this.save();
+        	return false;
+    	},
+
+    	onNoteClick: function(e)
+    	{
+        	this.editField.focus();
+        	getSelection().collapseToEnd();
+    	},
+
+    	onKeyUp: function()
+    	{
+        	this.dirty = true;
+        	this.saveSoon();
+    	},
+    	
+    	sync: function () {
+    		this.setNoteText(this.editField.innerHTML)
+    		this.setLeft(this.note.style.left)
+    		this.setTop(this.note.style.top)
+    		this.setZindex(this.note.style.zIndex)
+    	}
+    },
+    
+    after: {
+		initialize: function () {
+    		var self = this;
+    		
+    		log("Creating note")
+
+    		var note = document.createElement('div');
+    		note.className = 'note';
+    		note.addEventListener('mousedown', function(e) { return self.onMouseDown(e) }, false);
+    		note.addEventListener('click', function() { return self.onNoteClick() }, false);
+    		this.note = note;
+
+    		var close = document.createElement('div');
+    		close.className = 'closebutton';
+    		close.addEventListener('click', function(event) { return self.close(event) }, false);
+    		note.appendChild(close);
+
+    		var edit = document.createElement('div');
+    		edit.className = 'edit';
+    		edit.setAttribute('contenteditable', true);
+    		edit.addEventListener('keyup', function(e) { self.onKeyUp(); return true }, false);
+    		note.appendChild(edit);
+    		this.editField = edit;
+
+    		var ts = document.createElement('div');
+    		ts.className = 'timestamp';
+    		ts.addEventListener('mousedown', function(e) { return self.onMouseDown(e) }, false);
+    		note.appendChild(ts);
+    		this.lastModified = ts;
+
+  		  	document.body.appendChild(note);
+  		  	
+  		  	log("Created note")
+    	},
+    	
+    	setNoteText: function (x) {
+    		this.editField.innerHTML = x;
+    	},
+    	
+    	setLeft: function (x) {
+    		this.note.style.left = x;
+    	},
+    	
+    	setTop: function (x) {
+    		this.note.style.top = x;
+    	},
+    	
+    	setZindex: function (x) {
+    		this.note.style.zIndex = x;
+    	},
+    		
+    	setTimestamp: function (x) {
+    		var date = new Date();
+        	date.setTime(parseFloat(x));
+        	this.lastModified.textContent = modifiedString(date);
+    	}
+    }
+})
+})
+
+
+
+
+
+
+function loadNotes()
+{
+    ORM.transaction(function() {
+    	Note.select("FROM "+Note.tableName(),[], function (notes) {
+    		for(var i = 0; i < notes.length; i++) {
+    			var note = notes[i]
+    			
+    			if (note.getId() > highestId)
+                    highestId = note.getId()
+                if (note.getZindex() > highestZ)
+                    highestZ = note.getZindex()
+    		}
+    		if(notes.length == 0) {
+    			newNote()
+    		}
+    	})
+    });
+}
+
+function modifiedString(date)
+{
+    return 'Last Modified: ' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+}
+
+function newNote()
+{
+    var note          = new Note();
+    note.setId(++highestId);
+    note.setTimestamp(new Date().getTime());
+    note.setLeft(Math.round(Math.random() * 400) + 'px');
+    note.setTop(Math.round(Math.random() * 500) + 'px');
+    note.setZindex(++highestZ);
+    note.save()
+}
+
+window.onORMLoaded = function () {
+	loadNotes()	
+}
+
+</script>
+</head>
+<body>
+<p>This page demonstrates the use of the <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/section-sql.html">HTML 5 Client-side Database Storage API</a>. Any notes you create will be saved in a database on your local hard drive, and will be reloaded from that database the next time you visit this page. To try it out, use a <a href="http://nightly.webkit.org/">WebKit Nightly Build</a>.</p>
+
+<button onclick="newNote()">New Note</button>
+</body>
+</html>

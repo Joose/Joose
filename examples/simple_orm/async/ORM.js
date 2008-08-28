@@ -49,7 +49,7 @@ Module("ORM", function (module) {
                 var resultSet;
                 try {
                     if(window.console) {
-                        console.log(sql)
+                        console.log("SQL: "+sql+" Args: "+args)
                     }
                     /// XXX run this inside a worker to really become async
                     var rs = this.getDatabase().getGearsDb().execute(sql, args);
@@ -70,7 +70,7 @@ Module("ORM", function (module) {
                 };
                 if(resultSet) {
                     if(onSuccess) {
-                        onSuccess(me, resultSet)
+                    	onSuccess(me, resultSet)
                     }
                 }
             }
@@ -148,14 +148,14 @@ Module("ORM", function (module) {
         var me = this;
         console.log("Starting transaction ")
         DB.transaction(function (tx) {
-               if(GEARS_COMPAT) {
+            if(GEARS_COMPAT) {
                    
-                   if(ACTIVE_TRANSACTIONS > 0) { // only one transaction at a time
-                       TRANSACTION_QUEUE.push(transactionCallback)
-                       return
-                   }
-                   ACTIVE_TRANSACTIONS++
-                   TX = tx
+                if(ACTIVE_TRANSACTIONS > 0) { // only one transaction at a time
+                    TRANSACTION_QUEUE.push(transactionCallback)
+                    return
+                }
+                ACTIVE_TRANSACTIONS++
+                TX = tx
                 module.executeSql("BEGIN")
                 try {
                     transactionCallback()
@@ -176,6 +176,9 @@ Module("ORM", function (module) {
     
     // Execute Sql using the current transaction
     module.executeSql = function (sql, args, onSuccess, onError) {
+    	if(!GEARS_COMPAT && window.console) { // the gears layer does this anyway
+    		console.log("Executing SQL: "+sql+" Args: "+args)
+    	}
         TX.executeSql(
             sql, 
             args,
@@ -185,7 +188,6 @@ Module("ORM", function (module) {
                 }
             },
             function onExecuteSqlError (tx, error) {
-                ACTIVE_EXECUTIONS--
                 if(onError) {
                     onError(error)
                 } else {
@@ -193,15 +195,86 @@ Module("ORM", function (module) {
                 }
             })
     };
+    
+    var ENTITY_BUILD_COUNT = 0;
    
     Class("EntityMetaClass", {
         isa: Joose.Class,
         
+        has: {
+        	_props: {}
+        },
+        
         methods: {
+        	
+        	initializeFromProps: function (props) {
+        		
+        		if(props.isAbstract) {
+                    this._initializeFromProps(props)
+                    return
+                }
+                
+               	var superclass = props.isa;
+                this.addSuperClass(superclass)
+                delete props.isa;
+        		
+        		if(typeof props.tableName == "undefined") {
+        			throw new Error("Please provide a tableName is the class definition.")
+        		}
+        		var tableName = props.tableName
+        		this.addClassMethod("tableName", function () { return tableName })
+        		delete props.tableName
+        		
+        		this._props = props
+        		this.initializeFromDb()
+        		// Do nothing else here because the regular time is to early
+        		// Call the actual method _initializeFromProps after fetching the fields
+        	},
+        	
+        	initializeFromDb: function () {
+                var me     = this;
+                
+                ENTITY_BUILD_COUNT++
+                
+                // add getters and setters for each field
+                this.fetchFields(function (fields) {
+                	
+                    me.addClassMethod("fields", function () {
+                           return fields;
+                    })
+                
+                    Joose.A.each(fields, function (field) {
+                        if(!me.can(field)) {
+                            var getterName = "get"+Joose.S.uppercaseFirst(field)
+                            var setterName = "set"+Joose.S.uppercaseFirst(field)
+                            if(!me.can(getterName)) {
+                                me.addMethod(getterName, function () {
+                                    return this.field.apply(this, Joose.A.concat([field], arguments))
+                                })
+                            }
+                            if(!me.can(setterName)) {
+                                me.addMethod(setterName, function () {
+                                    return this.field.apply(this, Joose.A.concat([field], arguments))
+                                })
+                            }
+                        }
+                    })
+                    
+                    me._initializeFromProps(me._props)
+                    
+                    ENTITY_BUILD_COUNT--
+                    if(ENTITY_BUILD_COUNT == 0) {
+                    	if(window.onORMLoaded) {
+                    		window.onORMLoaded()	
+                    	}
+                    }
+                });
+            },
+        	
             // get all fields of table of the class I represent
-             fetchFields: function (processFields) {
-
-                var c = this.getClassObject();
+            fetchFields: function (processFields) {
+				var me = this;
+                var c  = this.getClassObject();
 
                 var tableName = c.tableName();
                 
@@ -228,7 +301,12 @@ Module("ORM", function (module) {
                     // rowid is not in the table defition but every table has it!
                     fields.push("rowid")
                     
-                    processFields(fields)
+                    // this needs to be async (in Gears) so that alle class defs are loaded and
+                    // the counting in ENTITY_BUILD_COUNT works 
+                    window.setTimeout(function () {
+                    	processFields(fields)
+                    },0)
+                    
                 });
             },
             
@@ -272,44 +350,20 @@ Module("ORM", function (module) {
                     props.metaclass = module.HasMany;
                     me.addAttribute(name, props)
                 })
-            },
-            
-            handleProptableName: function (tableName) {
-                this.addClassMethod("tableName", function () { return tableName })
             }
         },
         
-        after: {
-            buildComplete: function () {
-                var me     = this;
-                
-                if(this.isAbstract) {
-                    return
-                }
-                
-                // add getters and setters for each field
-                this.fetchFields(function (fields) {
-                    me.addClassMethod("fields", function () {
-                           return fields;
-                       })
-                
-                    Joose.A.each(fields, function (field) {
-                        if(!me.can(field)) {
-                            var getterName = "get"+Joose.S.uppercaseFirst(field)
-                            var setterName = "set"+Joose.S.uppercaseFirst(field)
-                            if(!me.can(getterName)) {
-                                me.addMethod(getterName, function () {
-                                    return this.field.apply(this, Joose.A.concat([field], arguments))
-                                })
-                            }
-                            if(!me.can(setterName)) {
-                                me.addMethod(setterName, function () {
-                                    return this.field.apply(this, Joose.A.concat([field], arguments))
-                                })
-                            }
-                        }
-                    })
-                });
+        override: {
+        	wrapMethod: function () {
+            	var me   = this;
+            	var args = [];
+            	var orig = this.SUPER;
+            	for(var i = 0; i < arguments.length; i++) {
+            		args[i] = arguments[i]
+            	}
+            	module.transaction(function () {
+            		orig.apply(me, args)
+            	})
             }
         }
     });
@@ -344,8 +398,12 @@ Module("ORM", function (module) {
                 var attr = this;
                 
                 classObject.meta.addMethod(methodName, function (object) {
-                    var classOfRel = attr.getIsa()
-                    this.field(name, object.field(classOfRel.primaryKey()))
+                	if(object && object.meta) {
+                    	var classOfRel = attr.getIsa()
+                    	this.field(name, object.field(classOfRel.primaryKey()))
+                	} else {
+                		this.field(name, object)
+                	}
                 })
             }
         }
@@ -440,16 +498,18 @@ Module("ORM", function (module) {
                     })
 
                 } else {                
-                    var set  = "";
+                    var set  = [];
                     var args = [];
                     Joose.O.each(this._data, function (value, field) {
                         args.push(value);
-                        set += field + " = ?"
+                        set.push(field + " = ?")
                     })
+                    
+                    var setString = set.join(", ");
                 
                     args.push(this._data[c.primaryKey()])
                 
-                    var sql = "UPDATE "+c.tableName()+" SET "+set+" WHERE "+c.primaryKey() + " = ? ";
+                    var sql = "UPDATE "+c.tableName()+" SET "+setString+" WHERE "+c.primaryKey() + " = ? ";
                 
                     module.executeSql(sql, args, function onUpdateSuccessful() {
                         if(window.console)
@@ -511,13 +571,15 @@ Module("ORM", function (module) {
                         if(window.console)
                             console.log("Retrieved row "+(i+1))
                         var o = me.meta.instantiate();
-                        var data = {};
+
                         Joose.A.each(me.fields(), function (field) {
-                            data[field] = row[field]
+                        	var setterName = "set"+Joose.S.uppercaseFirst(field);
+                            o[setterName](row[field])
                         })
-                        o._data = data
                         o.isNewEntity = false
                         a.push(o)
+                        if(window.console)
+                            console.log("Created "+o)
                     }
                     onSelect(a)
                 });
