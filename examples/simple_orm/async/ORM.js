@@ -6,7 +6,11 @@ Module("ORM", function (module) {
     if(!window.openDatabase) {
         GEARS_COMPAT = true;
         window.openDatabase = function (name) {
-            JooseGearsInitializeGears()
+            JooseGearsInitializeGears();
+            
+            if(!window.google || !window.google.gears) {
+            	throw "Google Gears required."
+            }
 
             var handle = google.gears.factory.create('beta.database');
             handle.open(name);
@@ -245,20 +249,10 @@ Module("ORM", function (module) {
                     })
                 
                     Joose.A.each(fields, function (field) {
-                        if(!me.can(field)) {
-                            var getterName = "get"+Joose.S.uppercaseFirst(field)
-                            var setterName = "set"+Joose.S.uppercaseFirst(field)
-                            if(!me.can(getterName)) {
-                                me.addMethod(getterName, function () {
-                                    return this.field.apply(this, Joose.A.concat([field], arguments))
-                                })
-                            }
-                            if(!me.can(setterName)) {
-                                me.addMethod(setterName, function () {
-                                    return this.field.apply(this, Joose.A.concat([field], arguments))
-                                })
-                            }
-                        }
+                    	
+                    	me.addAttribute(field, {
+                    		is: "rw"
+                    	})
                     })
                     
                     me._initializeFromProps(me._props)
@@ -388,7 +382,10 @@ Module("ORM", function (module) {
                 
                 classObject.meta.addMethod(methodName, function (onRetrieve) {
                     var classOfRel = attr.getIsa()
-                    return classOfRel.newFromId(this.field.call(this, name), onRetrieve)
+                    if(!onRetrieve) {
+                    	return this[name]
+                    }
+                    classOfRel.newFromId(this.field.call(this, name), onRetrieve)
                 })
             },
             
@@ -452,9 +449,6 @@ Module("ORM", function (module) {
         isAbstract: true,
         
         has: {
-            _data: {
-                init: function () { return {} }
-            },
             isNewEntity: {
                 init: true
             }
@@ -464,23 +458,36 @@ Module("ORM", function (module) {
             
             field: function (fieldName, newValue) {
                 if(arguments.length > 1) {
-                    this._data[fieldName] = newValue
+                    this[fieldName] = newValue
                 }
-                return this._data[fieldName]
+                return this[fieldName]
+            },
+            
+            objectToVal: function (object) {
+            	if(object && object.meta) {
+            		if(object.meta.isa(ORM.Entity)) {
+            			return object.field(object.constructor.primaryKey())
+            		}
+            		throw new Error("unsupported oject found in entity: "+object)
+            	}
+            	return object
             },
             
             save: function (onSave) {
-                var me = self
-                var c  = this.constructor;
+                var me   = this;
+                var c    = this.constructor;
+                var meta = me.meta;
                 
                 if(this.isNewEntity) {
                     
                     var args    = [];
                     var queries = [];
-                    var me      = this;
-                    Joose.A.each(c.fields(), function (field) {
+                    var fields  = c.fields()
+                    
+                    Joose.A.each(fields, function (field) {
                         if(field != "rowid") {
-                            var value = me.field(field)
+                        	var getterName = meta.getAttribute(field).getterName()
+                    		var value = me.objectToVal(me[getterName]());
                             args.push(value);
                             queries.push("?")
                         }
@@ -501,14 +508,18 @@ Module("ORM", function (module) {
                 } else {                
                     var set  = [];
                     var args = [];
-                    Joose.O.each(this._data, function (value, field) {
-                        args.push(value);
-                        set.push(field + " = ?")
+                    Joose.A.each(c.fields(), function (field) {
+                    	if(field != "rowid") {
+                    		var getterName = meta.getAttribute(field).getterName()
+                    		var value      = me.objectToVal(me[getterName]())
+                        	args.push(value);
+                        	set.push(field + " = ?")
+                    	}
                     })
                     
                     var setString = set.join(", ");
                 
-                    args.push(this._data[c.primaryKey()])
+                    args.push(this[c.primaryKey()])
                 
                     var sql = "UPDATE "+c.tableName()+" SET "+setString+" WHERE "+c.primaryKey() + " = ? ";
                 
@@ -553,6 +564,10 @@ Module("ORM", function (module) {
                         onFind(selected[0])
                     }
                 })
+            },
+            
+            selectAll: function (onSelect) {
+            	this.select("FROM "+this.tableName(), [], onSelect)
             },
             
             select: function (sqlPart, args, onSelect) {
@@ -600,6 +615,6 @@ Module("ORM", function (module) {
                 return this.tableName()
             }
         }
-    })
+    });
     
 })
