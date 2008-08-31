@@ -9,7 +9,7 @@ Module("ORM", function (module) {
             JooseGearsInitializeGears();
             
             if(!window.google || !window.google.gears) {
-            	throw "Google Gears required."
+                throw "Google Gears required."
             }
 
             var handle = google.gears.factory.create('beta.database');
@@ -249,10 +249,10 @@ Module("ORM", function (module) {
                     })
                 
                     Joose.A.each(fields, function (field) {
-                    	
-                    	me.addAttribute(field, {
-                    		is: "rw"
-                    	})
+                        
+                        me.addAttribute(field, {
+                            is: "rw"
+                        })
                     })
                     
                     me._initializeFromProps(me._props)
@@ -383,7 +383,7 @@ Module("ORM", function (module) {
                 classObject.meta.addMethod(methodName, function (onRetrieve) {
                     var classOfRel = attr.getIsa()
                     if(!onRetrieve) {
-                    	return this[name]
+                        return this[name]
                     }
                     classOfRel.newFromId(this.field.call(this, name), onRetrieve)
                 })
@@ -464,13 +464,13 @@ Module("ORM", function (module) {
             },
             
             objectToVal: function (object) {
-            	if(object && object.meta) {
-            		if(object.meta.isa(ORM.Entity)) {
-            			return object.field(object.constructor.primaryKey())
-            		}
-            		throw new Error("unsupported oject found in entity: "+object)
-            	}
-            	return object
+                if(object && object.meta) {
+                    if(object.meta.isa(ORM.Entity)) {
+                        return object.field(object.constructor.primaryKey())
+                    }
+                    throw new Error("unsupported oject found in entity: "+object)
+                }
+                return object
             },
             
             save: function (onSave) {
@@ -486,8 +486,8 @@ Module("ORM", function (module) {
                     
                     Joose.A.each(fields, function (field) {
                         if(field != "rowid") {
-                        	var getterName = meta.getAttribute(field).getterName()
-                    		var value = me.objectToVal(me[getterName]());
+                            var getterName = meta.getAttribute(field).getterName()
+                            var value = me.objectToVal(me[getterName]());
                             args.push(value);
                             queries.push("?")
                         }
@@ -509,12 +509,12 @@ Module("ORM", function (module) {
                     var set  = [];
                     var args = [];
                     Joose.A.each(c.fields(), function (field) {
-                    	if(field != "rowid") {
-                    		var getterName = meta.getAttribute(field).getterName()
-                    		var value      = me.objectToVal(me[getterName]())
-                        	args.push(value);
-                        	set.push(field + " = ?")
-                    	}
+                        if(field != "rowid") {
+                            var getterName = meta.getAttribute(field).getterName()
+                            var value      = me.objectToVal(me[getterName]())
+                            args.push(value);
+                            set.push(field + " = ?")
+                        }
                     })
                     
                     var setString = set.join(", ");
@@ -567,7 +567,7 @@ Module("ORM", function (module) {
             },
             
             selectAll: function (onSelect) {
-            	this.select("FROM "+this.tableName(), [], onSelect)
+                this.select("FROM "+this.tableName(), [], onSelect)
             },
             
             select: function (sqlPart, args, onSelect) {
