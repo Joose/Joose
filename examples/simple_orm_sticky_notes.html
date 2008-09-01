@@ -16,7 +16,7 @@ function $(id) {
 <script type="text/javascript">
 JooseGearsInitializeGears();
             
-if(!window.google || !window.google.gears || !window.openDatabase) {
+if((!window.google || !window.google.gears) && !window.openDatabase) {
     alert("This example requires a HTML5 database (currently Safari, etc.) or Google Gears enabled browser.")
 }
 </script>
