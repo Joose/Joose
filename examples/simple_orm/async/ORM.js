@@ -210,7 +210,7 @@ Module("ORM", function (module) {
             _props: {},
             _resultSetClass: {
             	is: "rw"
-            },
+            }
         },
         
         methods: {
