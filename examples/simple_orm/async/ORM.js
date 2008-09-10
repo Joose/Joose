@@ -207,7 +207,10 @@ Module("ORM", function (module) {
         isa: Joose.Class,
         
         has: {
-            _props: {}
+            _props: {},
+            _resultSetClass: {
+            	is: "rw"
+            },
         },
         
         methods: {
@@ -257,6 +260,8 @@ Module("ORM", function (module) {
                     
                     me._initializeFromProps(me._props)
                     
+                    me.buildResultSetClass();
+                    
                     ENTITY_BUILD_COUNT--
                     if(ENTITY_BUILD_COUNT == 0) {
                         if(window.onORMLoaded) {
@@ -264,6 +269,32 @@ Module("ORM", function (module) {
                         }
                     }
                 });
+            },
+            
+            buildResultSetClass: function () {
+            	var me = this;
+            	var className = me.className() + "ResultSet";
+            	var c = new Joose.Class().createClass(className)
+            	
+            	c.meta.addSuperClass(module.ResultSet);
+            	
+            	var methods = this.getInstanceMethods();
+            	
+            	Joose.A.each(methods, function (method) {
+            		var name = method.getName();
+            		if(name != "initialize" && name != "toString") { // initialize gets called in constructor; stringify shold be default
+            			c.meta.addMethod(name, function () {
+            				for(var i = 0; i < this.length; i++) {
+            					var obj = this[i];
+            					obj[name].apply(obj, arguments)
+            				}
+            				return this
+            			})
+            		}
+            	});
+            	
+            	
+            	this.setResultSetClass(c);
             },
             
             // get all fields of table of the class I represent
@@ -567,20 +598,34 @@ Module("ORM", function (module) {
             },
             
             selectAll: function (onSelect) {
-                this.select("FROM "+this.tableName(), [], onSelect)
+                return this.select("FROM "+this.tableName(), [], onSelect)
             },
             
             select: function (sqlPart, args, onSelect) {
-                if(typeof onSelect != "function") {
-                    throw new Error("Please supply an onSelect function while selecting from "+this)
+                if(typeof onSelect != "function" && window.console) {
+                   console.log("There is no onSelect function while selecting from "+this)
                 }
                 var me        = this;
                 var tableName = this.tableName();
                 
                 var sql = "SELECT "+tableName+".rowid, "+tableName+".* " + sqlPart;
                 
+                var processor = onSelect;
+                var delayed;
+                var async     = true;
+                if(!processor) {
+                	async     = false;
+                	delayed   = new JooseX.DelayedExecution(me.meta.getResultSetClass());
+                	processor = function (resultSet) {
+                		delayed.__performOn(resultSet)
+                	}
+                }
+                
+                var resultSet;
+                
                 var rs = module.executeSql(sql, args, function onSelectSuccessful (result) {
-                    var a  = [];
+                	var setClass  = me.meta.getResultSetClass();
+                    resultSet     = setClass.meta.instantiate();
                     
                     for(var i = 0; i < result.rows.length; i++) {
                         var row = result.rows.item(i)
@@ -593,14 +638,21 @@ Module("ORM", function (module) {
                             o[setterName](row[field])
                         })
                         o.isNewEntity = false
-                        a.push(o)
+                        resultSet[i] = o;
+                        resultSet.length = i+1;
                         if(window.console)
                             console.log("Created "+o)
                     }
-                    onSelect(a)
+                    if(async || (!async && !GEARS_COMPAT)) {
+                    	processor(resultSet)
+                    }
                 });
-                
-                
+                if(!async) {
+                	if(GEARS_COMPAT) {
+                		window.setTimeout(function () { processor(resultSet) }, 0)
+                	}
+                	return delayed
+                }
             },
             
             tableName: function () {
@@ -616,5 +668,38 @@ Module("ORM", function (module) {
             }
         }
     });
+    
+    Class("ResultSet", {
+    	
+    	has: {
+    		length: {
+    			init: 0
+    		}
+    	},
+    	
+    	methods: {
+    		each: function (func) {
+            	for(var i = 0; i < this.length; i++) {
+            		var obj = this[i];
+            		func.call(obj, obj)
+            	}
+            },
+            	
+            toArray: function (func) {
+            	var a = [];
+            	for(var i = 0; i < this.length; i++) {
+            		var obj = this[i];
+            		a.push(obj)
+            	}
+            	return a
+            },
+            	
+            toString: function (func) {
+            	return this.toArray().toString()
+            }
+    		
+    	}
+    	
+    })
     
 })
