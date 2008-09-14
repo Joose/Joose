@@ -1,4 +1,4 @@
-TODO_TESTS = false
+var TODO_TESTS = false
 
 if(window.$ == null) {
     function $(id) {
@@ -59,8 +59,13 @@ function plan(count) {
 }
 
 function say(msg) {
-    var log = $("testLog");
-    log.innerHTML = msg + "<br />\n" +log.innerHTML
+	if(window.isDotNet) {
+		print(msg);
+		print("\n");
+	} else {
+    	var log = $("testLog");
+    	log.innerHTML = msg + "<br />\n" +log.innerHTML
+	}
 }
 
 function diag(msg) {
