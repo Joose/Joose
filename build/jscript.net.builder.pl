@@ -11,11 +11,7 @@ require "release_helpers.pl";
 my $js = qq(
 print("Start")
 
-var window;
-
-(function() {
-	window = this;
-})()
+var window = this;
 
 window.isDotNet = true;
 
@@ -25,7 +21,6 @@ var Joose;
 var __global__;
 var google = {};
 var GearsFactory;
-var JSON = {};
 var TYPE;
 //with (window) {
 );
@@ -55,7 +50,7 @@ sub runTestFile {
 		print $test_bat qq{
 jsc /fast- joose.js ../../ext/test_simple.js ../../tests/json2.js ../../tests/$_
 joose.exe
-
+pause
 		};
 	}
 }

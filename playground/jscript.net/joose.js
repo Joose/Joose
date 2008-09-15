@@ -1,11 +1,7 @@
 
 print("Start")
 
-var window;
-
-(function() {
-	window = this;
-})()
+var window = this;
 
 window.isDotNet = true;
 
@@ -15,10 +11,9 @@ var Joose;
 var __global__;
 var google = {};
 var GearsFactory;
-var JSON = {};
 var TYPE;
 //with (window) {
-// Generated: Sun Sep 14 13:18:58 2008
+// Generated: Mon Sep 15 22:18:10 2008
 
 
 print('Joose.js\n');

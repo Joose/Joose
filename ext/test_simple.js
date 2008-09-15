@@ -61,7 +61,6 @@ function plan(count) {
 function say(msg) {
 	if(window.isDotNet) {
 		print(msg);
-		print("\n");
 	} else {
     	var log = $("testLog");
     	log.innerHTML = msg + "<br />\n" +log.innerHTML
