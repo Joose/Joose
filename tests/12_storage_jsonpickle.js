@@ -11,7 +11,7 @@ Class("Geometry.Point", {
     has: {
         x: {is: rw},
         y: {is: rw},
-        $: {
+        extra: {
             is:         rw,
             init:       "stuff",
             persistent: false
@@ -21,11 +21,11 @@ Class("Geometry.Point", {
 
 var p = new Geometry.Point({x: 10, y: 20})
 
-p.set$("value")
+p.setExtra("value")
 
 ok(p.getX() == 10, "Sanity: point x value is ok")
 ok(p.getY() == 20, "Sanity: point y value is ok")
-ok(p.get$() == "value", "Sanity: point extra prop is ok")
+ok(p.getExtra() == "value", "Sanity: point extra prop is ok")
 
 var o = p.pack();
 
@@ -38,8 +38,13 @@ var p2 = Geometry.Point.unpack(o);
 
 ok(p2.getX() == 10, "After unpack: point x value is ok")
 ok(p2.getY() == 20, "After unpack: point y value is ok")
-ok(p2.get$() == "stuff", "After unpack: non persistent value is ok")
-var p3 = Geometry.Point.unpack(JSON.parse(JSON.stringify(p)));
+ok(p2.getExtra() == "stuff", "After unpack: non persistent value is ok")
+diag("Testing packing via JSON")
+var s      = JSON.stringify(p);
+diag("stringify ok")
+var parsed = JSON.parse(s)
+diag("parse ok")
+var p3     = Geometry.Point.unpack(parsed);
 
 ok(p3.getX() == 10, "After JSON rountrip: point x value is ok (uses the toJSON method)")
 ok(p3.getY() == 20, "After JSON rountrip: point y value is ok (uses the toJSON method)")
