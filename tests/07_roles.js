@@ -126,14 +126,14 @@ fail(function () {
 diag("Method modifiers in roles")
 
 var sayString = ""
-function print(msg) {
+function printToSayString(msg) {
     sayString += msg + "\n"
 }
 
 Class("Person", {
     methods: {
         sayHello: function () {
-            print("Hello!")
+            printToSayString("Hello!")
         }
     }
 })
@@ -149,7 +149,7 @@ Role("Stuttering", {
     override: {
         // say Stutter and and say what was defined before
         sayHello: function () {
-            print("Stutter")
+            printToSayString("Stutter")
             this.SUPER()
         }
     }
@@ -158,7 +158,7 @@ Role("Stuttering", {
 Role("ShyPerson", {
     before: {
         sayHello: function () {
-            print("May I talk to you?")
+            printToSayString("May I talk to you?")
         }
     }
 })
@@ -166,7 +166,7 @@ Role("ShyPerson", {
 Role("Introduction", {
     after: {
         sayHello: function () {
-            print("I am a Joose user.")
+            printToSayString("I am a Joose user.")
         }
     }
 })
@@ -174,7 +174,7 @@ Role("Introduction", {
 Class("Person", {
     methods: {
         sayHello: function () {
-            print("Hello!")
+            printToSayString("Hello!")
         }
     }
 })
