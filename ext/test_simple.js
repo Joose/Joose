@@ -55,7 +55,12 @@ function plan(count) {
     testCount   = count
     testCounter = 0;
     testErrors  = 0;
-    say("<hr />")
+    say("<hr />");
+    
+    if(window.parent) {
+    	window.parent.totalTests += count;
+    	window.parent.draw()
+    }
 }
 
 function say(msg) {
@@ -159,23 +164,37 @@ function testReport() {
 function endTests() {
     if(testCount) {
         var message = "All tests successfull.";
+        
+        var inFrame =  window.parent && window.parent !== window;
+        
         if(testErrors > 0) {
             totalTestErrors += testErrors
             message = ""+testErrors + " tests failed."
             
-            if(window.parent && window.parent !== window) {
+            if(inFrame) {
                 window.parent.document.body.style.backgroundColor = "red"
+                
+                window.parent.totalErrors += testErrors;
+
+                window.parent.draw()
             }
         } else {
             
-            if(window.parent && window.parent !== window) {
+            if(inFrame) {
                 if(window.parent.document.body.style.backgroundColor != "red") {
                     window.parent.document.body.style.backgroundColor = "green"
                 }
             }
         }
+        
+        if(inFrame) {
+        	 window.parent.totalTestsRan += testCount;
+             window.parent.draw()
+        }
+        
         totalTestCount   += testCount
         totalTestCounter += testCounter
+        
         diag("Ran "+testCounter+" of "+testCount+" tests. " + message)
         
     }

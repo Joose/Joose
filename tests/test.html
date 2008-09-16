@@ -15,10 +15,26 @@ joose.loadComponents("../lib")
 <script type="text/javascript" src="json2.js"></script>
 <link href="test.css" rel="stylesheet" type="text/css" />
 
+<script type="text/javascript">
+
+window.totalTestsRan  = 0;
+window.totalTests     = 0;
+window.totalErrors    = 0;
+
+function draw() {
+	document.getElementById("count_ran").innerHTML     = window.totalTestsRan;
+	document.getElementById("count_total").innerHTML   = window.totalTests;
+	document.getElementById("count_errors").innerHTML  = window.totalErrors;
+}
+
+</script>
+
 
 </head>
 
 <body>
+
+<h1>Ran <span id="count_ran">0</span> of <span id="count_total">0</span> Tests. <span id="count_errors">0</span> Failures</h1>
 
 <div id="testLog"></div>
 

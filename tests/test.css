@@ -13,6 +13,11 @@
 	margin-bottom: 10px
 }
 
+h1 {
+	padding-left: 10px;
+}
+
 body {
-	background-color: white
+	background-color: white;
+	font-family: Verdana;
 }
