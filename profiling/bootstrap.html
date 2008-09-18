@@ -1,0 +1,46 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Profiling</title>
+
+
+<script type="text/javascript" src="../tests/json2.js"></script>
+<script type="text/javascript" src="../joose/joose-0.99/joose.js"></script>
+
+<script type="text/javascript">
+
+function bootstrap() {
+	document.getElementById("target").innerHTML =
+		'<script type="text/javascript" src="../joose/joose-0.99/joose.js"><'+'/script>'
+	alert(document.getElementById("target").innerHTML)
+}
+
+function run() {
+	Class("TestClass", {
+		methods: {
+			test: function () {
+				console.log("Method ran")
+			}
+		}
+	});
+	
+	new TestClass().test()
+}
+
+</script>
+
+</head>
+
+<body>
+
+<h1>Profiling bootstrap</h1>
+
+<input type=button value="Bootstrap (includes request)" onclick="bootstrap()">
+<input type=button value="Run" onclick="run()">
+
+<div id="target"></div>
+
+
+
+</body>
+</html>
