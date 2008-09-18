@@ -88,7 +88,9 @@ Joose.bootstrap3 = function () {}
 */
 /** ignore */ 
 Joose.MetaClassBootstrap = function () {this._name            = "Joose.MetaClassBootstrap";this.methodNames      =    [];this.attributeNames   =    ["_name", "isAbstract", "isDetached", "methodNames", "attributeNames", "methods", "parentClasses", "roles", "c"];this.attributes       = {},
-this.methods          = {};this.parentClasses    = [];this.roles            = [];this.isAbstract       = false;this.isDetached       = false;}
+this.methods          = {};this.parentClasses    = [];this.roles            = []; 
+this.myRoles          = []; 
+this.isAbstract       = false;this.isDetached       = false;}
 /** @ignore */
 Joose.MetaClassBootstrap.prototype = {toString: function () {if(this.meta) {return "a "+this.meta.className();}
 return "NoMeta"
@@ -124,7 +126,7 @@ c.attributeNames = []
 c.methods        = {}
 c.parentClasses  = []
 c.roles          = []
-c.attributes     = {}
+c.myRoles        = [];c.attributes     = {}
 var myMeta = this.meta;if(!myMeta) {myMeta = this;}
 c.meta = myMeta
 return c
@@ -211,7 +213,7 @@ var attributes = this.meta.getAttributes();for(var i in attributes) {var attr = 
 dieIfString: function (thing) {if(Joose.S.isString(thing)) {throw new TypeError("Parameter must not be a string.")
 }
 },
-addRole: function (roleClass) {this.dieIfString(roleClass);this.roles.push(roleClass);roleClass.meta.apply(this.getClassObject())
+addRole: function (roleClass) {this.dieIfString(roleClass);if(roleClass.meta.apply(this.getClassObject())) {this.roles.push(roleClass);this.myRoles.push(roleClass);}
 },
 getClassObject: function () {return this.c
 },
@@ -229,11 +231,16 @@ this.addSuperClass(pseudoClass);},
 importMethods: function (classObject) {var me    = this;var names = classObject.meta.getMethodNames();Joose.A.each(names, function (name) {var m = classObject.meta.dispatch(name);me.addMethodObject(m.meta.copy())
 })
 },
-addSuperClass:    function (classObject) {this.dieIfString(classObject);var me    = this;var names = classObject.meta.getMethodNames();Joose.A.each(names, function (name) {var m = classObject.meta.dispatch(name);var o = m.meta.copy();o.setIsFromSuperClass(true)
+addSuperClass:    function (classObject) {this.dieIfString(classObject);var me    = this;var names = classObject.meta.getMethodNames();for(var i = 0; i < names.length; i++) {var name = names[i]
+var m = classObject.meta.dispatch(name);var o = m.meta.copy();o.setIsFromSuperClass(true)
 me.addMethodObject(o)
-})
+}
 Joose.O.each(classObject.meta.attributes, function (attr, name) {me.addAttribute(name, attr.getProps())
 })
+var roles = classObject.meta.roles
+for(var i = 0; i < roles.length; i++) {var role = roles[i]
+me.roles.push(role)
+}
 this.parentClasses.unshift(classObject)
 },
 _fixMetaclassIncompatability: function (superClass) {var superMeta     = superClass.meta;var superMetaName = superMeta.meta.className();if(
@@ -299,17 +306,18 @@ getClassMethods: function () {var a = [];Joose.O.each(this.methods, function (m)
 return a
 },
 getSuperClasses:    function () {return this.parentClasses;},
+getSuperClass:    function () {return this.parentClasses[0];},
 getRoles:    function () {return this.roles;},
 getMethodNames:    function () {return this.methodNames;},
+makeAnonSubclass: function () {var c    = this.createClass(this.className()+"__anon__"+joose.anonymouseClassCounter++);c.meta.addSuperClass(this.getClassObject());return c;},
 addDetacher: function () {this.addMethod("detach", function detach () {var meta = this.meta;if(meta.isDetached) {return 
 }
-var c    = meta.createClass(meta.className()+"__anon__"+joose.anonymouseClassCounter++);c.meta.addSuperClass(meta.getClassObject());c.meta.isDetached = true;this.meta      = c.meta;this.constructor = c;c.prototype = this;return
-if(this.__proto__) {this.__proto__ = c.prototype
-} else {   
-for(var i in c.prototype) {if(this[i] == null) {this[i] = c.prototype[i]
+var c    = meta.makeAnonSubclass()
+c.meta.isDetached = true;this.meta      = c.meta;this.constructor = c;var proto;if(!this.__proto__) {proto = this
+} else {proto   = {};Joose.copyObject(this, proto)
 }
-}
-}
+c.prototype    = proto;this.__proto__ = c.prototype
+return
 })
 },
 /**
@@ -439,7 +447,7 @@ setIsFromSuperClass: function (bool) {this._isFromSuperClass = bool
 },
 copy: function () {return new Joose.Method(this.getName(), this.getBody(), this.getProps())
 },
-initialize: function (name, func, props) {this._name  = name;this._body  = func;this._props = props;func.name = "test"+name
+initialize: function (name, func, props) {this._name  = name;this._body  = func;this._props = props;func.name   = name
 func.meta   = this
 },
 isClassMethod: function () { return false },
@@ -874,12 +882,35 @@ initialize: function () {this._name               = "Joose.Role"
 this.requiresMethodNames = [];this.methodModifiers     = [];},
 addRequirement: function (methodName) {this.requiresMethodNames.push(methodName)
 },
-apply: function (object) {if(joose.isInstance(object)) {object.detach();object.meta.addRole(this.getClassObject());} else {var me    = this;var names = this.getMethodNames();Joose.A.each(names, function (name) {var m = me.dispatch(name);if(!object.meta.hasMethod(name) || object.meta.getMethodObject(name).isFromSuperClass()) {object.meta.addMethodObject(m.meta)
+unapply: function (object) {if(!joose.isInstance(object)) {throw new Error("You way only remove roles from instances.")
+}
+if(!object.meta.isDetached) {throw new Error("You may only remove roles that were applied at runtime")
+}
+var role  = this.getClassObject()
+var roles = object.meta.myRoles; 
+var found = false;var otherRoles = [];for(var i = 0; i < roles.length; i++) {if(roles[i] === role) {found = true;} else {otherRoles.push(roles[i])
+}
+}
+if(!found) {throw new Error("The role "+this.className()+" was not applied to the object at runtime")
+}
+var superClass     = object.meta.getSuperClass();var c              = superClass.meta.makeAnonSubclass();/*if(typeof(object.__proto__) != "undefined") {object.__proto__ = c.prototype
+} else {   
+var test = new c()
+for(var i = 0; i < otherRoles.length; i++) {var role = otherRoles[i]
+c.meta.addRole(role)
+}
+c.prototype        = test
+object.meta        = c.meta;object.constructor = c;object.__proto__   = test
+},
+apply: function (object) {if(object.meta.does(this.getClassObject())) {return false
+}
+if(joose.isInstance(object)) {object.detach();object.meta.addRole(this.getClassObject());} else {var me    = this;var names = this.getMethodNames();Joose.A.each(names, function (name) {var m = me.dispatch(name);if(!object.meta.hasMethod(name) || object.meta.getMethodObject(name).isFromSuperClass()) {object.meta.addMethodObject(m.meta)
 }
 })
 Joose.A.each(this.methodModifiers, function (paras) {object.meta.wrapMethod.apply(object.meta, paras)
 })
 }
+return true
 },
 hasRequiredMethods: function (classObject, throwException) {var me       = this
 var complete = true
@@ -1017,11 +1048,23 @@ if (!window.google) {google = {};}
 if (!google.gears) {google.gears = {factory: factory};}
 }
 Class("Joose.Storage", {meta: Joose.Role,
-methods: {toJSON: function () {return this.pack()
+methods: {toJSON: function () {return this.pack(Joose.Storage.TEMP_SEEN)
 },
-pack: function () {if(this.meta.can("prepareStorage")) {this.prepareStorage()
+identity: function () {if(this.__ID__) {return this.__ID__
+} else {return this.__ID__ = Joose.Storage.OBJECT_COUNTER++
 }
-var o  = {__CLASS__: this.packedClassName()
+},
+pack: function (seen) {if(seen) {var id = this.identity()
+var obj;if(obj = seen[id]) {return {__ID__: id
+}
+}
+}
+if(this.meta.can("prepareStorage")) {this.prepareStorage()
+}
+if(seen) {seen[this.identity()] = true
+}
+var o  = {__CLASS__: this.packedClassName(),
+__ID__:    this.identity()
 };var me        = this;var attrs      = this.meta.getAttributes();Joose.O.each(attrs, function packAttr (attr, name) {if(attr.isPersistent()) {o[name]   = me[name];}
 })
 return o
@@ -1045,21 +1088,30 @@ return me
 }
 }
 })
-Class("Joose.Storage.Unpacker", {classMethods: {unpack: function (data) {var name = data.__CLASS__;if(!name) {throw("Serialized data needs to include a __CLASS__ attribute.")
+Joose.Storage.OBJECT_COUNTER = 1;Class("Joose.Storage.Unpacker", {classMethods: {unpack: function (data) {var name = data.__CLASS__;if(!name) {throw("Serialized data needs to include a __CLASS__ attribute.")
 }
 var jsName = this.packedClassNameToJSClassName(name)
-var co = this.meta.classNameToClassObject(jsName);return co.unpack(data)
+var co  = this.meta.classNameToClassObject(jsName);var obj = co.unpack(data);var id;if(Joose.Storage.CACHE && (id = data.__ID__)) {Joose.Storage.CACHE[id] = obj
+}
+return obj
 },
 packedClassNameToJSClassName: function (packed) {
 var parts  = packed.split("-");parts      = parts[0].split("::");return parts.join(".");},
-jsonParseFilter: function (key, value) {if(value != null && typeof value == "object" && value.__CLASS__) {return Joose.Storage.Unpacker.unpack(value)
+jsonParseFilter: function (key, value) {if(value != null && typeof value == "object") {if(value.__CLASS__) {return Joose.Storage.Unpacker.unpack(value)
+}
+if(value.__ID__) {return Joose.Storage.CACHE[value.__ID__]
+}
 }
 return value
 },
-patchJSON: function () {var orig = JSON.parse;JSON.parse = function JooseJSONParseFilter (s, filter) {return orig(s, function (key, value) {var val = value;if(filter) {val = filter(key, value)
+patchJSON: function () {var orig = JSON.parse;JSON.parse = function (s, filter) {Joose.Storage.CACHE = {}
+return orig(s, function JooseJSONParseFilter (key, value) {var val = value;if(filter) {val = filter(key, value)
 }
 return Joose.Storage.Unpacker.jsonParseFilter(key,val)
 })
+}
+var stringify = JSON.stringify;JSON.stringify = function () {Joose.Storage.TEMP_SEEN = {}
+return stringify.apply(JSON, arguments)
 }
 }
 }

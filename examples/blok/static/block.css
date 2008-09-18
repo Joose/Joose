@@ -132,6 +132,22 @@ input .number {
 	top:  0px;
 }
 
+#drawArea .filled {
+	background-color: white;
+}
+
+#drawArea .bordered {
+	border: 1px solid transparent
+}
+
+#drawArea .bordered table {
+	border-collapse:collapse;
+}
+
+#drawArea .bordered td {
+	border: 1px solid #000000;
+}
+
 #drawArea .line {
 	background-color: black;
 	border: 0px;
@@ -186,6 +202,16 @@ input .number {
 }
 
 #drawArea .focus {
-	border: 1px solid #00FF00;
+	/* border: 1px solid #00FF00; */
 }
 
+#drawArea .focusDiv {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	background-color: #00ff00;
+	opacity:.10;
+	filter: alpha(opacity=10);
+}

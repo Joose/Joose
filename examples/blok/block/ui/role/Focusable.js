@@ -4,18 +4,18 @@ Module("block.ui.role", function () {
             place: function () {
                 var me = this;
                 this.$.click(function focusClick (e) {
-                	e.preventDefault()
+                    e.preventDefault()
                     document.manager.switchFocus(me, e.shiftKey)
                     return false;
                 })
             },
             
             focus: function () {
-                this.$.addClass("focus")
+                this.$.append('<div class="focusDiv"></div>')
             },
             
             blur: function () {
-                this.$.removeClass("focus")
+                this.$.find(".focusDiv").remove()
             }
         }
     })

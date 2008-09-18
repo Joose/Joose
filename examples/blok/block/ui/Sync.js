@@ -13,45 +13,45 @@ Module("block.ui", function (m) {
             },
             
             _firstUpdate: {
-            	is: "rw",
-            	init: true
+                is: "rw",
+                init: true
             },
             
             _syncInterval: {
-            	is: "rw"
+                is: "rw"
             },
             
             _syncTime: {
-            	is: "rw"
+                is: "rw"
             }
         },
         
         methods: {
-        	
-        	delayedUpdate: function () {
-        		var me = this;
-        		
-        		window.setTimeout(function syncUpdate () {
+            
+            delayedUpdate: function () {
+                var me = this;
+                
+                window.setTimeout(function syncUpdate () {
                     me.update()
                 }, 2000) 
-        	},
+            },
             
             startListening: function ()  {
                 var me = this;
                 
                 window.setInterval(function recoverTimer () {
-                	var last = me.setSyncTime();
-                	var now  = new Date().getTime();
-                	
-                	if(now - last > 35000) { // restart syncing if there was not update in 35 seconds
-                		me.update()
-                	}  
-                	
+                    var last = me.setSyncTime();
+                    var now  = new Date().getTime();
+                    
+                    if(now - last > 35000) { // restart syncing if there was not update in 35 seconds
+                        me.update()
+                    }  
+                    
                 }, 5000)
             },
             
             update: function () {
-            	this.getSyncTime(new Date().getTime())
+                this.getSyncTime(new Date().getTime())
                 this.fetchStates();
             },
             
@@ -111,8 +111,8 @@ Module("block.ui", function (m) {
                 });
                 
                 if(this.getFirstUpdate()) {
-                	window.onfirstdraw();
-                	this.setFirstUpdate(false)
+                    window.onfirstdraw();
+                    this.setFirstUpdate(false)
                 }
                 
             },

@@ -16,7 +16,7 @@
 		"__CLASS__": "block::ui::CustomShapeBody",
 		"_name":        "Collapsible Panel",
 		"_description": "A Shape to test custom shapes",
-		"_html":        "<div class='rectangle shape stylable'><table border=1 width=100% height=100%><tr height=20><td class='textField stdText'></td><td width=20>V</td></tr><tr><td colspan=2 valign=center align=center class='stylable'></td></tr></table></div>",
+		"_html":        "<div class='shape stylable bordered' style='width: 6blok'><table width=100% height=100%><tr height=20 class='filled'><td class='textField stdText'></td><td width=20 align=center>X</td></tr><tr><td colspan=2 valign=center align=center class='stylable'></td></tr></table></div>",
 		"_roles": [
 			"Draggable", 
 	        "Focusable",

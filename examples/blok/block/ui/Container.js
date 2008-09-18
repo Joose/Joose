@@ -29,8 +29,8 @@ Module("block.ui", function (m) {
                 
                 var eles = this.getElements();
                 for(var i = 0; i < eles.length; i++) {
-                	var ele = eles[i];
-                	var guid = ele.getGuid()
+                    var ele = eles[i];
+                    var guid = ele.getGuid()
                     if(!seenHash[guid]) {
                         seenHash[guid] = true
                         func(ele, me, myDepth)

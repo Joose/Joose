@@ -2242,7 +2242,7 @@ Module("block.ui.role", function () {
             place: function () {
                 var me = this;
                 this.$.click(function focusClick (e) {
-                	e.preventDefault()
+                    e.preventDefault()
                     document.manager.switchFocus(me, e.shiftKey)
                     return false;
                 })
@@ -2920,8 +2920,8 @@ Module("block.ui", function (m) {
                 
                 var eles = this.getElements();
                 for(var i = 0; i < eles.length; i++) {
-                	var ele = eles[i];
-                	var guid = ele.getGuid()
+                    var ele = eles[i];
+                    var guid = ele.getGuid()
                     if(!seenHash[guid]) {
                         seenHash[guid] = true
                         func(ele, me, myDepth)
@@ -3421,15 +3421,15 @@ Module("block.ui.shape", function (m) {
                 
                 //FIXME IE support für die MultiSelection
                 if(document.all) {
-                	return
+                    return
                 }
                 
                 var start;
                 
                 // events for multi selection
                 this.$.mousedown(function (e) {
-                	e.preventDefault()
-                	
+                    e.preventDefault()
+                    
                     var multi = new block.ui.shape.MultiSelection();
                     multi.draw()
                     multi.redraw()
@@ -3473,7 +3473,7 @@ Module("block.ui.shape", function (m) {
                     win.mousemove(mousemove)
                 
                     win.one("mouseup", function (end) {
-                    	win.unbind("mousemove", mousemove)
+                        win.unbind("mousemove", mousemove)
                         var sel = me.getMultiSelection();
                         if(sel) {
                             redrawMulti(sel, end)
@@ -3891,8 +3891,8 @@ Module("block.ui", function (m) {
                 init: "CustomShape"
             },
             _roles: {
-            	is: "rw",
-            	init: function () { return [] }
+                is: "rw",
+                init: function () { return [] }
             }
         }
     })
@@ -3949,13 +3949,13 @@ Module("block.ui.shape", function (m) {
             },
             
             applyRoles: function () {
-            	var me      = this;
-            	var strings = this.getCustomShape().getRoles();
-            	Joose.A.each(strings, function (s) {
-            		var name = "block.ui.role."+s
-            		var role = me.meta.classNameToClassObject(name);
-            		role.meta.apply(me)
-            	})
+                var me      = this;
+                var strings = this.getCustomShape().getRoles();
+                Joose.A.each(strings, function (s) {
+                    var name = "block.ui.role."+s
+                    var role = me.meta.classNameToClassObject(name);
+                    role.meta.apply(me)
+                })
             },
             
             renderCustomShape: function () {
@@ -4283,12 +4283,12 @@ Module("block.ui", function (m) {
             },
             
             _firstUpdate: {
-            	is: "rw",
-            	init: true
+                is: "rw",
+                init: true
             },
             
             _syncInterval: {
-            	is: "rw"
+                is: "rw"
             }
         },
         
@@ -4300,7 +4300,7 @@ Module("block.ui", function (m) {
                 
                 // check for disabled syncing (for debugging) 
                 //if(!$('#doSync') || $('#doSync').attr("checked")) {
-                 	
+                     
                     var interval = window.setInterval(function syncTimer () {
                         me.update()
                     }, 2000)
@@ -4369,8 +4369,8 @@ Module("block.ui", function (m) {
                 });
                 
                 if(this.getFirstUpdate()) {
-                	window.onfirstdraw();
-                	this.setFirstUpdate(false)
+                    window.onfirstdraw();
+                    this.setFirstUpdate(false)
                 }
                 
             },

@@ -1,6 +1,6 @@
 Module("block.ui.shape", function (m) {
-	
-	
+    
+    
     Class("Custom", {
         isa:  block.ui.Shape,
         has: {
@@ -13,49 +13,49 @@ Module("block.ui.shape", function (m) {
             }
         },
         before: {
-        	draw: function () {
-        		this.updateBody()
-        		this.applyRoles()
-        	}
+            draw: function () {
+                this.updateBody()
+                this.applyRoles()
+            }
         },
         methods: {
-        	
-        	updateBody: function () {
-        		var cur = document.customShapes.getBody(this.getBody().getId())
-        		if(cur && cur !== this.getBody()) {
-        			this.setBody(cur);
-        				if(this.$) {
-        				this.$.remove();
-        				this.placed = false;
-        			}
-        		}
-        		
-        	},
-        	
-        	// override to ignore changed name through runtime role application
-        	packedClassName: function () {
-	            return "block::ui::shape::Custom"
-        	},
+            
+            updateBody: function () {
+                var cur = document.customShapes.getBody(this.getBody().getId())
+                if(cur && cur !== this.getBody()) {
+                    this.setBody(cur);
+                        if(this.$) {
+                        this.$.remove();
+                        this.placed = false;
+                    }
+                }
+                
+            },
+            
+            // override to ignore changed name through runtime role application
+            packedClassName: function () {
+                return "block::ui::shape::Custom"
+            },
             
             applyRoles: function () {
-            	var me      = this;
-            	var strings = this.getBody().getRoles();
-            	Joose.A.each(strings, function (s) {
-            		var name = "block.ui.role."+s
-            		var role = me.meta.classNameToClassObject(name);
-            		role.meta.apply(me)
-            	})
+                var me      = this;
+                var strings = this.getBody().getRoles();
+                Joose.A.each(strings, function (s) {
+                    var name = "block.ui.role."+s
+                    var role = me.meta.classNameToClassObject(name);
+                    role.meta.apply(me)
+                })
             },
 
             create: function () {
-               	var ele = jQuery(this.getBody().getHtml());
-               	ele.addClass("shape");
-               	ele.addClass("baseSize");
-               	return ele
+                   var ele = jQuery(this.getBody().getHtml());
+                   ele.addClass("shape");
+                   ele.addClass("baseSize");
+                   return ele
             },
             
             type: function () {
-            	return this.getBody().getName()
+                return this.getBody().getName()
             }
         }
     });

@@ -51,15 +51,15 @@ Module("block.ui.shape", function (m) {
                 
                 //FIXME IE support für die MultiSelection
                 if(document.all) {
-                	return
+                    return
                 }
                 
                 var start;
                 
                 // events for multi selection
                 this.$.mousedown(function (e) {
-                	e.preventDefault()
-                	
+                    e.preventDefault()
+                    
                     var multi = new block.ui.shape.MultiSelection();
                     multi.draw()
                     multi.redraw()
@@ -103,7 +103,7 @@ Module("block.ui.shape", function (m) {
                     win.mousemove(mousemove)
                 
                     win.one("mouseup", function (end) {
-                    	win.unbind("mousemove", mousemove)
+                        win.unbind("mousemove", mousemove)
                         var sel = me.getMultiSelection();
                         if(sel) {
                             redrawMulti(sel, end)
