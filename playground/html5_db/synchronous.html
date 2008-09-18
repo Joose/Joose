@@ -1,0 +1,60 @@
+<!doctype html>
+<html manifest="DatabaseExample.manifest">
+<head>
+<title>Synchronous HTML5 db</title>
+
+<script type="text/javascript">
+
+
+window.onload = function () {
+
+function executeSql(databaseName, sql, args) {
+	var iframe = window.frames[0]
+	
+	iframe.jobDone = false;
+	
+	var script = iframe.document.createElement("script");
+	
+	var js     = "var database = openDatabase('"+databaseName+"');\n"+
+"		database.transaction(function (tx) {\n"+
+"		tx.executeSql(\n"+
+"			'"+sql+"', \n"+
+"			[], \n"+
+"			function (tx, res) {\n"+
+"				window.result  = res;\n"+
+"				window.jobDone = true;\n"+
+"			}, \n"+
+"			function (tx, err) {\n"+
+"				window.error   = err;\n"+
+"				window.jobDone = true;\n"+
+"			}\n"+
+"		);\n"+
+"	})\n"
+	
+	script.innerHTML = js
+	
+	iframe.document.getElementById("scriptTarget").appendChild(script)
+	
+	while(!iframe.jobDone) {
+		alert("bla")
+		iframe.document.body.appendChild(iframe.document.createElement('div'))
+	};
+	if(iframe.error) {
+		throw iframe.error
+	}
+	
+	var result = iframe.result
+	
+	return result
+}
+
+executeSql("bla", "CREATE TABLE WebKitStickyNotes (id REAL UNIQUE, note TEXT, timestamp REAL, left TEXT, top TEXT, zindex REAL)", [])
+
+}
+</script>
+</head>
+<body>
+
+<iframe src="iframe.html" id="workerFrame"></iframe>
+</body>
+</html>
