@@ -95,12 +95,7 @@ window.newNote = function () {
 
 window.onORMLoaded = function () {
     ORM.transaction(function () {
-        Note.selectAll(function (notes) {
-            Joose.A.each(notes, function (note) {
-                note.redraw()
-                note.show()
-            })
-        })
+        Note.selectAll().draw().redraw().show()
     })
 }
 })
