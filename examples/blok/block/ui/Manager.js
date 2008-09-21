@@ -122,7 +122,7 @@ Module("block.ui", function () {
                 var destroy = function () {
                     var cur = me.getFocusElement();
                     if(cur) {
-                         cur.destroy()
+                        cur.destroy()
                     }
                 };
                 
@@ -184,6 +184,10 @@ Module("block.ui", function () {
                 if(shape) {
                     this.copy(shape)
                 }
+            },
+            
+            syncedTime: function () {
+            	return new Date().getTime() + document.paras.timeOffset
             },
             
             paste: function () {

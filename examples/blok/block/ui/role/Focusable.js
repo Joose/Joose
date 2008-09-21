@@ -3,7 +3,7 @@ Module("block.ui.role", function () {
         after: {
             place: function () {
                 var me = this;
-                this.$.click(function focusClick (e) {
+                this.$.mousedown(function focusClick (e) {
                     e.preventDefault()
                     document.manager.switchFocus(me, e.shiftKey)
                     return false;

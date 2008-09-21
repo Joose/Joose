@@ -9,7 +9,8 @@
 	        "Focusable",
 	        "Editable",
 	        "ShapeUI",
-	        "Stylable"
+	        "Stylable",
+	        "Connectable"
 		]
 	},
 	"Collapsible Panel": {
@@ -23,7 +24,8 @@
 	        "Editable",
 	        "ShapeUI",
 	        "Stylable",
-	        "Resizable"
+	        "Resizable",
+	        "Connectable"
 		]
 	},
 	
@@ -36,7 +38,8 @@
 			"Draggable", 
 	        "Focusable",
 	        "Editable",
-	        "Resizable"
+	        "Resizable",
+	        "Connectable"
 		]
 	}
 }

@@ -8,6 +8,13 @@ Module("block.ui.shape", function (m) {
 
             propagate: function () {},
             
+            touch: function () {
+            	// we are just a selection
+            	// Touching ourselves should not make the document dirty 
+            	
+            	this.updated()
+            },
+            
             paste: function (target) {
                 
                 // add only my elements to the target because I am just a transient group

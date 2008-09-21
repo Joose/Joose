@@ -226,8 +226,10 @@ Joose.bootstrap3 = function () {}
 * Joose.MetaClassBootstrap is used to bootstrap the Joose.Class with a regular JS constructor
 */
 /** ignore */
-Joose.MetaClassBootstrap = function () {this._name            = "Joose.MetaClassBootstrap";this.methodNames      =    [];this.attributeNames   =    ["_name", "isAbstract", "methodNames", "attributeNames", "methods", "parentClasses", "roles", "c"];this.attributes       = {},
-this.methods          = {};this.parentClasses    = [];this.roles            = [];this.isAbstract       = false;}
+Joose.MetaClassBootstrap = function () {this._name            = "Joose.MetaClassBootstrap";this.methodNames      =    [];this.attributeNames   =    ["_name", "isAbstract", "isDetached", "methodNames", "attributeNames", "methods", "parentClasses", "roles", "c"];this.attributes       = {},
+this.methods          = {};this.parentClasses    = [];this.roles            = [];
+this.myRoles          = [];
+this.isAbstract       = false;this.isDetached       = false;}
 /** @ignore */
 Joose.MetaClassBootstrap.prototype = {toString: function () {if(this.meta) {return "a "+this.meta.className();}
 return "NoMeta"
@@ -263,7 +265,7 @@ c.attributeNames = []
 c.methods        = {}
 c.parentClasses  = []
 c.roles          = []
-c.attributes     = {}
+c.myRoles        = [];c.attributes     = {}
 var myMeta = this.meta;if(!myMeta) {myMeta = this;}
 c.meta = myMeta
 return c
@@ -350,7 +352,7 @@ var attributes = this.meta.getAttributes();for(var i in attributes) {var attr = 
 dieIfString: function (thing) {if(Joose.S.isString(thing)) {throw new TypeError("Parameter must not be a string.")
 }
 },
-addRole: function (roleClass) {this.dieIfString(roleClass);this.roles.push(roleClass);roleClass.meta.apply(this.getClassObject())
+addRole: function (roleClass) {this.dieIfString(roleClass);if(roleClass.meta.apply(this.getClassObject())) {this.roles.push(roleClass);this.myRoles.push(roleClass);}
 },
 getClassObject: function () {return this.c
 },
@@ -368,11 +370,16 @@ this.addSuperClass(pseudoClass);},
 importMethods: function (classObject) {var me    = this;var names = classObject.meta.getMethodNames();Joose.A.each(names, function (name) {var m = classObject.meta.dispatch(name);me.addMethodObject(m.meta.copy())
 })
 },
-addSuperClass:    function (classObject) {this.dieIfString(classObject);var me    = this;var names = classObject.meta.getMethodNames();Joose.A.each(names, function (name) {var m = classObject.meta.dispatch(name);var o = m.meta.copy();o.setIsFromSuperClass(true)
+addSuperClass:    function (classObject) {this.dieIfString(classObject);var me    = this;var names = classObject.meta.getMethodNames();for(var i = 0; i < names.length; i++) {var name = names[i]
+var m = classObject.meta.dispatch(name);var o = m.meta.copy();o.setIsFromSuperClass(true)
 me.addMethodObject(o)
-})
+}
 Joose.O.each(classObject.meta.attributes, function (attr, name) {me.addAttribute(name, attr.getProps())
 })
+var roles = classObject.meta.roles
+for(var i = 0; i < roles.length; i++) {var role = roles[i]
+me.roles.push(role)
+}
 this.parentClasses.unshift(classObject)
 },
 _fixMetaclassIncompatability: function (superClass) {var superMeta     = superClass.meta;var superMetaName = superMeta.meta.className();if(
@@ -438,15 +445,18 @@ getClassMethods: function () {var a = [];Joose.O.each(this.methods, function (m)
 return a
 },
 getSuperClasses:    function () {return this.parentClasses;},
+getSuperClass:    function () {return this.parentClasses[0];},
 getRoles:    function () {return this.roles;},
 getMethodNames:    function () {return this.methodNames;},
-addDetacher: function () {this.addMethod("detach", function detach () {var meta = this.meta;var c    = meta.createClass(meta.className()+"__anon__"+joose.anonymouseClassCounter++);c.meta.addSuperClass(meta.getClassObject());this.meta      = c.meta;this.constructor = c;c.prototype = this;return
-if(this.__proto__) {this.__proto__ = c.prototype
-} else {
-for(var i in c.prototype) {if(this[i] == null) {this[i] = c.prototype[i]
+makeAnonSubclass: function () {var c    = this.createClass(this.className()+"__anon__"+joose.anonymouseClassCounter++);c.meta.addSuperClass(this.getClassObject());return c;},
+addDetacher: function () {this.addMethod("detach", function detach () {var meta = this.meta;if(meta.isDetached) {return
 }
+var c    = meta.makeAnonSubclass()
+c.meta.isDetached = true;this.meta      = c.meta;this.constructor = c;var proto;if(!this.__proto__) {proto = this
+} else {proto   = {};Joose.copyObject(this, proto)
 }
-}
+c.prototype    = proto;this.__proto__ = c.prototype
+return
 })
 },
 /**
@@ -576,7 +586,7 @@ setIsFromSuperClass: function (bool) {this._isFromSuperClass = bool
 },
 copy: function () {return new Joose.Method(this.getName(), this.getBody(), this.getProps())
 },
-initialize: function (name, func, props) {this._name  = name;this._body  = func;this._props = props;func.name = "test"+name
+initialize: function (name, func, props) {this._name  = name;this._body  = func;this._props = props;func.name   = name
 func.meta   = this
 },
 isClassMethod: function () { return false },
@@ -1010,12 +1020,35 @@ initialize: function () {this._name               = "Joose.Role"
 this.requiresMethodNames = [];this.methodModifiers     = [];},
 addRequirement: function (methodName) {this.requiresMethodNames.push(methodName)
 },
-apply: function (object) {if(joose.isInstance(object)) {object.detach();object.meta.addRole(this.getClassObject());} else {var me    = this;var names = this.getMethodNames();Joose.A.each(names, function (name) {var m = me.dispatch(name);if(!object.meta.hasMethod(name) || object.meta.getMethodObject(name).isFromSuperClass()) {object.meta.addMethodObject(m.meta)
+unapply: function (object) {if(!joose.isInstance(object)) {throw new Error("You way only remove roles from instances.")
+}
+if(!object.meta.isDetached) {throw new Error("You may only remove roles that were applied at runtime")
+}
+var role  = this.getClassObject()
+var roles = object.meta.myRoles;
+var found = false;var otherRoles = [];for(var i = 0; i < roles.length; i++) {if(roles[i] === role) {found = true;} else {otherRoles.push(roles[i])
+}
+}
+if(!found) {throw new Error("The role "+this.className()+" was not applied to the object at runtime")
+}
+var superClass     = object.meta.getSuperClass();var c              = superClass.meta.makeAnonSubclass();/*if(typeof(object.__proto__) != "undefined") {object.__proto__ = c.prototype
+} else {
+var test = new c()
+for(var i = 0; i < otherRoles.length; i++) {var role = otherRoles[i]
+c.meta.addRole(role)
+}
+c.prototype        = test
+object.meta        = c.meta;object.constructor = c;object.__proto__   = test
+},
+apply: function (object) {if(object.meta.does(this.getClassObject())) {return false
+}
+if(joose.isInstance(object)) {object.detach();object.meta.addRole(this.getClassObject());} else {var me    = this;var names = this.getMethodNames();Joose.A.each(names, function (name) {var m = me.dispatch(name);if(!object.meta.hasMethod(name) || object.meta.getMethodObject(name).isFromSuperClass()) {object.meta.addMethodObject(m.meta)
 }
 })
 Joose.A.each(this.methodModifiers, function (paras) {object.meta.wrapMethod.apply(object.meta, paras)
 })
 }
+return true
 },
 hasRequiredMethods: function (classObject, throwException) {var me       = this
 var complete = true
@@ -1152,11 +1185,23 @@ if (!window.google) {google = {};}
 if (!google.gears) {google.gears = {factory: factory};}
 }
 Class("Joose.Storage", {meta: Joose.Role,
-methods: {toJSON: function () {return this.pack()
+methods: {toJSON: function () {return this.pack(Joose.Storage.TEMP_SEEN)
 },
-pack: function () {if(this.meta.can("prepareStorage")) {this.prepareStorage()
+identity: function () {if(this.__ID__) {return this.__ID__
+} else {return this.__ID__ = Joose.Storage.OBJECT_COUNTER++
 }
-var o  = {__CLASS__: this.packedClassName()
+},
+pack: function (seen) {if(seen) {var id = this.identity()
+var obj;if(obj = seen[id]) {return {__ID__: id
+}
+}
+}
+if(this.meta.can("prepareStorage")) {this.prepareStorage()
+}
+if(seen) {seen[this.identity()] = true
+}
+var o  = {__CLASS__: this.packedClassName(),
+__ID__:    this.identity()
 };var me        = this;var attrs      = this.meta.getAttributes();Joose.O.each(attrs, function packAttr (attr, name) {if(attr.isPersistent()) {o[name]   = me[name];}
 })
 return o
@@ -1180,20 +1225,29 @@ return me
 }
 }
 })
-Class("Joose.Storage.Unpacker", {classMethods: {unpack: function (data) {var name = data.__CLASS__;if(!name) {throw("Serialized data needs to include a __CLASS__ attribute.")
+Joose.Storage.OBJECT_COUNTER = 1;Class("Joose.Storage.Unpacker", {classMethods: {unpack: function (data) {var name = data.__CLASS__;if(!name) {throw("Serialized data needs to include a __CLASS__ attribute.")
 }
 var jsName = this.packedClassNameToJSClassName(name)
-var co = this.meta.classNameToClassObject(jsName);return co.unpack(data)
+var co  = this.meta.classNameToClassObject(jsName);var obj = co.unpack(data);var id;if(Joose.Storage.CACHE && (id = data.__ID__)) {Joose.Storage.CACHE[id] = obj
+}
+return obj
 },
 packedClassNameToJSClassName: function (packed) {var parts  = packed.split("-");parts      = parts[0].split("::");return parts.join(".");},
-jsonParseFilter: function (key, value) {if(value != null && typeof value == "object" && value.__CLASS__) {return Joose.Storage.Unpacker.unpack(value)
+jsonParseFilter: function (key, value) {if(value != null && typeof value == "object") {if(value.__CLASS__) {return Joose.Storage.Unpacker.unpack(value)
+}
+if(value.__ID__) {return Joose.Storage.CACHE[value.__ID__]
+}
 }
 return value
 },
-patchJSON: function () {var orig = JSON.parse;JSON.parse = function JooseJSONParseFilter (s, filter) {return orig(s, function (key, value) {var val = value;if(filter) {val = filter(key, value)
+patchJSON: function () {var orig = JSON.parse;JSON.parse = function (s, filter) {Joose.Storage.CACHE = {}
+return orig(s, function JooseJSONParseFilter (key, value) {var val = value;if(filter) {val = filter(key, value)
 }
 return Joose.Storage.Unpacker.jsonParseFilter(key,val)
 })
+}
+var stringify = JSON.stringify;JSON.stringify = function () {Joose.Storage.TEMP_SEEN = {}
+return stringify.apply(JSON, arguments)
 }
 }
 }
@@ -1615,9 +1669,9 @@ Module("block.ui.role", function () {Role("Focusable", {after: {place: function 
 document.manager.switchFocus(me, e.shiftKey)
 return false;})
 },
-focus: function () {this.$.addClass("focus")
+focus: function () {this.$.append('<div class="focusDiv"></div>')
 },
-blur: function () {this.$.removeClass("focus")
+blur: function () {this.$.find(".focusDiv").remove()
 }
 }
 })
@@ -2066,6 +2120,7 @@ touch: function () {document.propPanel.refresh(this);this.setLastUpdate(this.syn
 console.log("Touch: "+this.getLastUpdate())
 document.manager.setDirty(true)
 this.updated()
+document.sync.saveState()
 },
 _updateFromCore: function (shape) {if(shape.isDeleted() && !this.isDeleted()) {this.destroy()
 }
@@ -2401,56 +2456,74 @@ group.redraw();document.manager.switchFocus(group)
 }
 }
 });})
-Module("block.ui", function (m) {Class("CustomShape", {does: [Joose.Storage],
+Module("block.ui", function (m) {Class("CustomShapeBody", {does: [Joose.Storage],
 has: {_html: {is: "rw",
 init: ""
 },
 _name: {is: "rw",
 init: "CustomShape"
 },
+_url: {is: "rw"
+},
 _roles: {is: "rw",
 init: function () { return [] }
-}
-}
-})
-})
-Module("block.ui.shape", function (m) {Class("Custom", {isa:  block.ui.Shape,
-has: {_shapeUrl: {is: "rw",
-init: ""
 },
-_customShape: {is: "rw",
-persistent: false
+_description: {is: "rw",
+init: ""
+}
+},
+methods: {getId: function () {return this.getUrl() + "/" + this.getName()
+}
+},
+override: {getHtml: function () {var html = this.SUPER();var match;while(match = html.match(/(\d+)\s*blok/)) {var n = parseInt(match[1]) * 20;html  = html.replace(/(\d+)\s*blok/, ""+n+"px")
+}
+return html
+}
+}
+});Class("CustomShapeManager", {has: {_shapeBodies: {is: "rw",
+init: function () { return {} }
+}
+},
+methods: {fetch: function (url) {var me = this;block.ui.SyncDocument.request("GET", url, null, function shapesFetched (data) {Joose.O.each(data, function (body, key) {body.setUrl(url);var id              = body.getId();me.setBody(body)
+var h = $('<li><a href="#">'+body.getName()+'</li>');h.click(function () { me.drawShape(id) })
+$('#customShapes').append(h)
+})
+})
+},
+getBody: function (id) {return this.getShapeBodies()[id]
+},
+setBody: function (body) {this.getShapeBodies()[body.getId()] = body
+},
+drawShape: function (id) {var body  = this.getBody(id)
+var shape = new block.ui.shape.Custom({body: body
+});document.shapes.addAndDraw(shape)
+}
+}
+});})
+Module("block.ui.shape", function (m) {Class("Custom", {isa:  block.ui.Shape,
+has: {_body: {is: "rw"
 },
 _text: {is:   "rw",
 init: ""
 }
 },
-does: [
-],
-after: {place: function () {this.shapeUrl(this.getShapeUrl());this.fetchAndDraw()
+before: {draw: function () {this.updateBody()
+this.applyRoles()
+}
 },
-_updateFromCore: function (shape) {this.shapeUrl(shape.getShapeUrl())
+methods: {updateBody: function () {var cur = document.customShapes.getBody(this.getBody().getId())
+if(cur && cur !== this.getBody()) {this.setBody(cur);if(this.$) {this.$.remove();this.placed = false;}
+}
 },
-_updateStateCore: function () {}
+packedClassName: function () {return "block::ui::shape::Custom"
 },
-methods: {fetchAndDraw: function () {var me = this;jQuery.getJSON(this.getShapeUrl(), function shapeFetched (data) {var customShape = Joose.Storage.Unpacker.unpack(data)
-me.setCustomShape(customShape);me.applyRoles()
-me.renderCustomShape()
-})
-},
-applyRoles: function () {var me      = this;var strings = this.getCustomShape().getRoles();Joose.A.each(strings, function (s) {var name = "block.ui.role."+s
+applyRoles: function () {var me      = this;var strings = this.getBody().getRoles();Joose.A.each(strings, function (s) {var name = "block.ui.role."+s
 var role = me.meta.classNameToClassObject(name);role.meta.apply(me)
 })
 },
-renderCustomShape: function () {this.html$().html(this.getCustomShape().getHtml());this.redraw()
+create: function () {var ele = jQuery(this.getBody().getHtml());ele.addClass("shape");ele.addClass("baseSize");return ele
 },
-shapeUrl: function (url) {if(arguments.length > 0) {if(url != this.getShapeUrl()) {this.setShapeUrl(url);this.fetchAndDraw();}
-}
-return this.getShapeUrl()
-},
-html$: function () {return this.$.find("div div")
-},
-create: function () {return jQuery("<div class='shape baseSize'><div><div></div></div></div>")
+type: function () {return this.getBody().getName()
 }
 }
 });})
@@ -2604,18 +2677,25 @@ _firstUpdate: {is: "rw",
 init: true
 },
 _syncInterval: {is: "rw"
+},
+_syncTime: {is: "rw"
 }
 },
-methods: {startListening: function ()  {var me = this;var interval = window.setInterval(function syncTimer () {me.update()
+methods: {delayedUpdate: function () {var me = this;window.setTimeout(function syncUpdate () {me.update()
 }, 2000)
-this.setSyncInterval(interval)
 },
-update: function () {this.fetchStates();},
+startListening: function ()  {var me = this;window.setInterval(function recoverTimer () {var last = me.setSyncTime();var now  = new Date().getTime();if(now - last > 35000) { 
+me.update()
+}
+}, 5000)
+},
+update: function () {this.getSyncTime(new Date().getTime())
+this.fetchStates();},
 updateFromArray: function (updates) {var me = this;for(var i = 0; i < updates.length; i++) {var update = updates[i];console.log("Update from version "+update.version)
 me.setMaxVersion(update.version);var doc = update.data
 me.updateDocument(doc)
 }
-this.saveState()
+this.delayedUpdate()
 },
 updateDocument: function (doc) {console.log("Got something new!")
 var cur;var state = doc.getBody()

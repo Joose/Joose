@@ -4,10 +4,28 @@ Module("block.ui", function (m) {
             _steps: {
                 is: "rw",
                 init: function () { return [] }
+            },
+            
+            _activeTransaction: {
+            	is: "rw",
+            	init: false
             }
         },
         
         methods: {
+        	
+        	// "Transactions" make all steps until a commit collapse into a single step
+        	beginTransaction: function () {
+        		if(this.getActiveTransaction()) {
+        			throw new Error("there is already an active transaction")
+        		}
+        		this.addUndoStep(function emptyUndoStep () {}, block.ui.Shape)
+        		this.setActiveTransaction(true);
+        	},
+        	
+        	commit: function () {
+        		this.setActiveTransaction(false);
+        	},
             
             undo: function () {
                 var last = this._steps.pop();
@@ -17,14 +35,23 @@ Module("block.ui", function (m) {
             },
             
             addUndoStep: function (step, shape) {
-                if(!shape.meta.does(block.ui.role.Group)) { // refactor to not even add this
-                    console.log("Add Undo step")
-                    this._steps.push(step);
+            	if(!shape.meta.does(block.ui.role.Group)) {
+                	console.log("Add Undo step: "+shape)
+                
+                	if(this.getActiveTransaction()) {
+                		var last = this._steps.pop();
+                		this._steps.push(function undoWrapper () {
+                			last();
+                			step();
+                		});
+                	} else {
+                		this._steps.push(step);
+                	}
                     
-                    if(this._steps.length > 10) { // modulo :)
-                        this._steps.shift()
-                    }
-                }
+                	if(this._steps.length > 10) { // modulo :)
+                	    this._steps.shift()
+                	}
+            	}
             },
             
             addUpdateStep: function (before) {

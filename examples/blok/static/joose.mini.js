@@ -32,7 +32,12 @@ return false
 Joose.O = {};Joose.O.each = function (object, func) {for(var i in object) {func(object[i], i)
 }
 }
-Joose.prototype = {/*
+Joose.O.extend = function (target, newObject) {for(var i in newObject) {var thing = newObject[i]
+target[i] = thing
+}
+}
+Joose.prototype = {addToString: function (object, func) {object.toString = func;},
+/*
 * Differentiates between instances and classes
 */
 isInstance: function(obj) {if(!obj.meta) {throw "isInstance only works with Joose objects and classes."
@@ -87,8 +92,8 @@ Joose.bootstrap3 = function () {}
 * Joose.MetaClassBootstrap is used to bootstrap the Joose.Class with a regular JS constructor
 */
 /** ignore */ 
-Joose.MetaClassBootstrap = function () {this._name            = "Joose.MetaClassBootstrap";this.methodNames      =    [];this.attributeNames   =    ["_name", "isAbstract", "isDetached", "methodNames", "attributeNames", "methods", "parentClasses", "roles", "c"];this.attributes       = {},
-this.methods          = {};this.parentClasses    = [];this.roles            = []; 
+Joose.MetaClassBootstrap = function () {this._name            = "Joose.MetaClassBootstrap";this.methodNames      = [];this.attributeNames   = ["_name", "isAbstract", "isDetached", "methodNames", "attributeNames", "methods", "parentClasses", "roles", "c"];this.attributes       = {},
+this.methods          = {};this.classMethods     = {};this.parentClasses    = [];this.roles            = []; 
 this.myRoles          = []; 
 this.isAbstract       = false;this.isDetached       = false;}
 /** @ignore */
@@ -121,13 +126,7 @@ getName: function () {return this.className()
 */
 /** @ignore */
 newMetaClass: function () {var me  = this;var metaClassClass = this.builder;var c     = new metaClassClass();c.builder = metaClassClass;c._name   = this._name
-c.methodNames    = []
-c.attributeNames = []
-c.methods        = {}
-c.parentClasses  = []
-c.roles          = []
-c.myRoles        = [];c.attributes     = {}
-var myMeta = this.meta;if(!myMeta) {myMeta = this;}
+c.methodNames    = [];c.attributeNames = [];c.methods        = {};c.classMethods   = {};c.parentClasses  = [];c.roles          = [];c.myRoles        = [];c.attributes     = {};var myMeta = this.meta;if(!myMeta) {myMeta = this;}
 c.meta = myMeta
 return c
 },
@@ -154,6 +153,17 @@ meta.c = c;if(!optionalModuleObject) {joose.globalObjects.push(c)
 }
 meta.addInitializer();meta.addToString();meta.addDetacher();meta.validateClass();return c;},
 buildComplete: function () {},
+initializeFromProps: function (props) {this._initializeFromProps(props)
+},
+_initializeFromProps: function (props) {var me = this;if(props) {Joose.O.each(props, function (value, name) {var paras             = value;var customBuilderName = "handleProp"+name;if(me.meta.can(customBuilderName)) {me[customBuilderName](paras, props)
+} else { 
+throw new Error("Called invalid builder "+name+" while creating class "+me.meta.className())
+}
+})
+me.validateClass()
+me.buildComplete()
+}
+},
 /**
 * Returns a new instance of the class that this meta class instance is representing
 * @function
@@ -170,8 +180,8 @@ instantiate: function () {var f = function () {};f.prototype = this.c.prototype;
 * @memberof Joose.Class
 */
 /** @ignore */
-defaultClassFunctionBody: function () {var f = function () {this.initialize.apply(this, arguments);};f.toString = function () {return this.meta.className()
-}
+defaultClassFunctionBody: function () {var f = function () {this.initialize.apply(this, arguments);};joose.addToString(f, function () {return this.meta.className()
+})
 return f;},
 /**
 * Adds a toString method to a class
@@ -228,12 +238,13 @@ Joose.O.each(object, function(value, name) {if(typeof(value) == "function") {pse
 }
 })
 this.addSuperClass(pseudoClass);},
-importMethods: function (classObject) {var me    = this;var names = classObject.meta.getMethodNames();Joose.A.each(names, function (name) {var m = classObject.meta.dispatch(name);me.addMethodObject(m.meta.copy())
-})
-},
 addSuperClass:    function (classObject) {this.dieIfString(classObject);var me    = this;var names = classObject.meta.getMethodNames();for(var i = 0; i < names.length; i++) {var name = names[i]
-var m = classObject.meta.dispatch(name);var o = m.meta.copy();o.setIsFromSuperClass(true)
-me.addMethodObject(o)
+var m = classObject.meta.getMethodObject(name)
+if(m) {var method = m.copy();method.setIsFromSuperClass(true);me.addMethodObject(method)
+}
+m = classObject.meta.getClassMethodObject(name)
+if(m) {var method = m.copy();method.setIsFromSuperClass(true);me.addMethodObject(method)
+}
 }
 Joose.O.each(classObject.meta.attributes, function (attr, name) {me.addAttribute(name, attr.getProps())
 })
@@ -271,14 +282,15 @@ wrapMethod:  function (name, wrappingStyle, func, notPresentCB) {var orig = this
 },
 dispatch:        function (name) {return this.getMethodObject(name).asFunction()
 },
-hasMethod:         function (name) {return this.methods[name] != null
+hasMethod:         function (name) {return this.methods[name] != null || this.classMethods[name] != null
 },
 addMethod:         function (name, func, props) {var m = new Joose.Method(name, func, props);this.addMethodObject(m)
 },
 addClassMethod:         function (name, func, props) {var m = new Joose.ClassMethod(name, func, props);this.addMethodObject(m)
 },
-addMethodObject:         function (method) {var m              = method;var name           = m.getName();if(!this.methods[name]) {this.methodNames.push(name);}
-this.methods[name] = m;method.addToClass(this.c)
+addMethodObject:         function (method) {var m              = method;var name           = m.getName();if(!this.methods[name] && !this.classMethods[name]) {this.methodNames.push(name);}
+if(m.isClassMethod()) {this.classMethods[name] = m;} else {this.methods[name] = m;}
+method.addToClass(this.c)
 },
 attributeMetaclass: function () {return Joose.Attribute
 },
@@ -294,14 +306,14 @@ setAttribute: function (name, attributeObject) {return this.attributes[name] = a
 },
 getMethodObject: function (name) {return this.methods[name]
 },
+getClassMethodObject: function (name) {return this.classMethods[name]
+},
 getAttributeNames: function () {return this.attributeNames;},
-getInstanceMethods: function () {var a = [];Joose.O.each(this.methods, function (m) {if(!m.isClassMethod()) {a.push(m)
-}
+getInstanceMethods: function () {var a = [];Joose.O.each(this.methods, function (m) {a.push(m)
 })
 return a
 },
-getClassMethods: function () {var a = [];Joose.O.each(this.methods, function (m) {if(m.isClassMethod()) {a.push(m)
-}
+getClassMethods: function () {var a = [];Joose.O.each(this.classMethods, function (m) {a.push(m)
 })
 return a
 },
@@ -336,11 +348,11 @@ validateClass: function () {var c  = this.getClassObject();var me = this;var thr
 * @param {string} methodName The method
 * @memberof Joose.Class
 */
-can: function (methodName) {var method = this.methods[methodName];if(!method || method.isClassMethod()) {return false
+can: function (methodName) {var method = this.methods[methodName];if(!method) {return false
 }
 return true
 },
-classCan: function (methodName) {var method = this.methods[methodName];if(!method || !method.isClassMethod()) {return false
+classCan: function (methodName) {var method = this.classMethods[methodName];if(!method) {return false
 }
 return true
 },
@@ -372,6 +384,183 @@ if(!found) {complete = false
 }
 })
 return complete
+},
+/**
+* Tells a role that the method name must be implemented by all classes that implement the role
+* @function
+* @param methodName {string} Name of the required method name
+* @name requires
+* @memberof Joose.Builder
+*/
+/** @ignore */
+handleProprequires:    function (methodName) {var me = this;if(!this.meta.isa(Joose.Role)) {throw("Keyword 'requires' only available classes with a meta class of type Joose.Role")
+}
+if(methodName instanceof Array) {Joose.A.each(methodName, function (name) {me.addRequirement(name)
+})
+} else {me.addRequirement(methodName)
+}
+},
+handlePropisAbstract: function (bool) {this.isAbstract = bool
+},
+/**
+* Class builder method
+* Defines the super class of the class
+* @function
+* @param classObject {Joose.Class} The super class
+* @name isa
+* @memberof Joose.Builder
+*/
+/** @ignore */
+handlePropisa:    function (classObject) {this.addSuperClass(classObject)
+},
+/**
+* Class builder method
+* Defines a role for the class
+* @function
+* @param classObject {Joose.Role} The role
+* @name does
+* @memberof Joose.Builder
+*/
+/** @ignore */
+handlePropdoes:    function (role) {var me = this;if(role instanceof Array) {Joose.A.each(role, function (aRole) {me.addRole(aRole)
+})
+} else {me.addRole(role)
+}
+},
+/**
+* Class builder method
+* Defines attributes for the class
+* @function
+* @param classObject {object} Maps attribute names to properties (See Joose.Attribute)
+* @name has
+* @memberof Joose.Builder
+*/
+/** @ignore */
+handleProphas:    function (map) {var me = this;if(typeof map == "string") {var name  = arguments[0];var props = arguments[1];me.addAttribute(name, props)
+} else { 
+Joose.O.each(map, function (props, name) {me.addAttribute(name, props)
+})
+}
+},
+/**
+* @ignore
+*/
+handlePropmethod: function (name, func, props) {this.addMethod(name, func, props)
+},
+/**
+* Class builder method
+* Defines methods for the class
+* @function
+* @param classObject {object} Maps method names to function bodies
+* @name methods
+* @memberof Joose.Builder
+*/
+/** @ignore */
+handlePropmethods: function (map) {var me = this
+Joose.O.each(map, function (func, name) {me.addMethod(name, func)
+})
+},
+/**
+* Class builder method
+* Defines class methods for the class
+* @function
+* @param classObject {object} Maps class method names to function bodies
+* @name classMethods
+* @memberof Joose.Builder
+*/
+/** @ignore */
+handlePropclassMethods: function (map) {var me = this;Joose.O.each(map, function (func, name2) {me.addMethodObject(new Joose.ClassMethod(name2, func))
+})
+},
+/**
+* Class builder method
+* Defines workers for the class (The class must have the meta class Joose.Gears)
+* @function
+* @param classObject {object} Maps method names to function bodies
+* @name workers
+* @memberof Joose.Builder
+*/
+/** @ignore */
+handlePropworkers: function (map) {var me = this;Joose.O.each(map, function (func, name) {me.addWorker(name, func)
+})
+},
+/**
+* Class builder method
+* Defines before method modifieres for the class.
+* The defined method modifiers will be called before the method of the super class.
+* The return value of the method modifier will be ignored
+* @function
+* @param classObject {object} Maps method names to function bodies
+* @name before
+* @memberof Joose.Builder
+*/
+/** @ignore */
+handlePropbefore: function(map) {var me = this
+Joose.O.each(map, function (func, name) {me.wrapMethod(name, "before", func);})
+},
+/**
+* Class builder method
+* Defines after method modifieres for the class.
+* The defined method modifiers will be called after the method of the super class.
+* The return value of the method modifier will be ignored
+* @function
+* @param classObject {object} Maps method names to function bodies
+* @name after
+* @memberof Joose.Builder
+*/
+/** @ignore */
+handlePropafter: function(map) {var me = this
+Joose.O.each(map, function (func, name) {me.wrapMethod(name, "after", func);})
+},
+/**
+* Class builder method
+* Defines around method modifieres for the class.
+* The defined method modifiers will be called instead of the method of the super class.
+* The orginial function is passed as an initial parameter to the new function
+* @function
+* @param classObject {object} Maps method names to function bodies
+* @name around
+* @memberof Joose.Builder
+*/
+/** @ignore */
+handleProparound: function(map) {var me = this
+Joose.O.each(map, function (func, name) {me.wrapMethod(name, "around", func);})
+},
+/**
+* Class builder method
+* Defines override method modifieres for the class.
+* The defined method modifiers will be called instead the method of the super class.
+* You can call the method of the super class by calling this.SUPER(para1, para2)
+* @function
+* @param classObject {object} Maps method names to function bodies
+* @name override
+* @memberof Joose.Builder
+*/
+/** @ignore */
+handlePropoverride: function(map) {var me = this
+Joose.O.each(map, function (func, name) {me.wrapMethod(name, "override", func);})
+},
+/**
+* Class builder method
+* Defines augment method modifieres for the class.
+* These method modifiers will be called in "most super first" order
+* The methods may call this.INNER() to call the augement method in it's sup class.
+* @function
+* @param classObject {object} Maps method names to function bodies
+* @name augment
+* @memberof Joose.Builder
+*/
+/** @ignore */
+handlePropaugment: function(map) {var me = this
+Joose.O.each(map, function (func, name) {me.wrapMethod(name, "augment", func, function () {me.addMethod(name, func)
+});})
+},
+/**
+* @ignore
+*/
+handlePropdecorates: function(map) {var me = this
+Joose.O.each(map, function (classObject, attributeName) {me.decorate(classObject, attributeName)
+})
 }
 };Joose.Attribute = function (name, props) {this.initialize(name, props)
 }
@@ -409,15 +598,25 @@ return this[name]
 meta.addMethod(this.getterName(), func);},
 initializerName: function () {return this.toPublicName()
 },
-getterName: function () {return "get"+Joose.S.uppercaseFirst(this.toPublicName())
-},
-setterName: function () {return "set"+Joose.S.uppercaseFirst(this.toPublicName())
-},
+getterName: function () {if(this.__getterNameCache) { 
+return this.__getterNameCache
+}
+this.__getterNameCache = "get"+Joose.S.uppercaseFirst(this.toPublicName())
+return this.__getterNameCache;},
+setterName: function () {if(this.__setterNameCache) { 
+return this.__setterNameCache
+}
+this.__setterNameCache = "set"+Joose.S.uppercaseFirst(this.toPublicName())
+return this.__setterNameCache;},
 isPrivate: function () {return this.getName().charAt(0) == "_"
 },
-toPublicName: function () {var name = this.getName();if(this.isPrivate()) {return name.substr(1)
+toPublicName: function () {if(this.__publicNameCache) { 
+return this.__publicNameCache
 }
-return name
+var name = this.getName();if(this.isPrivate()) {this.__publicNameCache = name.substr(1)
+return this.__publicNameCache;}
+this.__publicNameCache = name
+return this.__publicNameCache
 },
 handleIs: function (classObject) {var meta  = classObject.meta;var name  = this.getName();var props = this.getProps();var is    = props.is;if(is == "rw" || is == "ro") {this.addGetter(classObject);}
 if(is == "rw") {this.addSetter(classObject)
@@ -475,7 +674,10 @@ Joose.bootstrap()
 * @constructor
 */
 Joose.Builder = function () {/** @ignore */
-this.globalize = function () {Joose.O.each(Joose.Builder.Globals, function (func, name) {joose.top[name] = func
+this.globalize = function () {Joose.O.each(Joose.Builder.Globals, function (func, name) {var globalName = "Joose"+name
+if(typeof joose.top[name] == "undefined") {joose.top[name] = func
+}
+joose.top[globalName] = func
 });}
 }
 /** @ignore */
@@ -528,14 +730,7 @@ root = root[parts[i]];}
 root[parts[parts.length - 1]] = c
 }
 }
-joose.cc = c;if(props) {Joose.O.each(props, function (value, name) {
-var builder = Joose.Builder.Builders[name];if(!builder) {throw new Error("Called invalid builder "+name+" while creating class "+c.meta.className())
-}
-var paras   = value;builder.call(Joose.Builder, paras)
-})
-c.meta.validateClass()
-c.meta.buildComplete()
-}
+c.meta.initializeFromProps(props)
 return c
 },
 Type: function (name, props) {var t = Joose.TypeConstraint.newFromTypeBuilder(name, props);var m = joose.currentModule
@@ -552,7 +747,7 @@ m.getContainer()[name] = t;return t
 * @name joosify
 */
 /** @ignore */
-joosify: function (standardClassName, standardClassObject) {var c         = standardClassObject;var metaClass = new Joose.Class();metaClass.builder = Joose.Class;c.toString = function () { return joose.cc.meta.className() }
+joosify: function (standardClassName, standardClassObject) {var c         = standardClassObject;var metaClass = new Joose.Class();metaClass.builder = Joose.Class;c.toString = function () { return this.meta.className() }
 c             = metaClass.createClass(standardClassName, c)
 var meta = c.meta;for(var name in standardClassObject.prototype) {if(name == "meta") {continue
 }
@@ -569,191 +764,15 @@ return c
 rw: "rw",
 /** @ignore */
 ro: "ro"
-};Joose.Builder.Builders = {isAbstract: function (bool) {joose.cc.meta.isAbstract = bool
-},
-/**
-* Tells a role that the method name must be implemented by all classes that implement joose.cc role
-* @function
-* @param methodName {string} Name of the required method name
-* @name requires
-* @memberof Joose.Builder
-*/
-/** @ignore */
-requires:    function (methodName) {if(!joose.cc.meta.meta.isa(Joose.Role)) { 
-throw("Keyword 'requires' only available classes with a meta class of type Joose.Role")
-}
-if(methodName instanceof Array) {Joose.A.each(methodName, function (name) {joose.cc.meta.addRequirement(name)
-})
-} else {joose.cc.meta.addRequirement(methodName)
-}
-},
-/**
-* Class builder method
-* Defines the super class of the class
-* @function
-* @param classObject {Joose.Class} The super class
-* @name isa
-* @memberof Joose.Builder
-*/
-/** @ignore */
-isa:    function (classObject) {joose.cc.meta.addSuperClass(classObject)
-},
-/**
-* Class builder method
-* Defines a role for the class
-* @function
-* @param classObject {Joose.Role} The role
-* @name does
-* @memberof Joose.Builder
-*/
-/** @ignore */
-does:    function (role) {if(role instanceof Array) {Joose.A.each(role, function (aRole) {joose.cc.meta.addRole(aRole)
-})
-} else {joose.cc.meta.addRole(role)
-}
-},
-/**
-* Class builder method
-* Defines attributes for the class
-* @function
-* @param classObject {object} Maps attribute names to properties (See Joose.Attribute)
-* @name has
-* @memberof Joose.Builder
-*/
-/** @ignore */
-has:    function (map) {if(typeof map == "string") {var name  = arguments[0];var props = arguments[1];joose.cc.meta.addAttribute(name, props)
-} else { 
-var me = joose.cc;Joose.O.each(map, function (props, name) {me.meta.addAttribute(name, props)
-})
-}
-},
-/**
-* @ignore
-*/
-method: function (name, func, props) {joose.cc.meta.addMethod(name, func, props)
-},
-/**
-* Class builder method
-* Defines methods for the class
-* @function
-* @param classObject {object} Maps method names to function bodies
-* @name methods
-* @memberof Joose.Builder
-*/
-/** @ignore */
-methods: function (map) {var me = joose.cc
-Joose.O.each(map, function (func, name) {me.meta.addMethod(name, func)
-})
-},
-/**
-* Class builder method
-* Defines class methods for the class
-* @function
-* @param classObject {object} Maps class method names to function bodies
-* @name classMethods
-* @memberof Joose.Builder
-*/
-/** @ignore */
-classMethods: function (map) {var me = joose.cc
-Joose.O.each(map, function (func, name2) {me.meta.addMethodObject(new Joose.ClassMethod(name2, func))
-})
-},
-/**
-* Class builder method
-* Defines workers for the class (The class must have the meta class Joose.Gears)
-* @function
-* @param classObject {object} Maps method names to function bodies
-* @name workers
-* @memberof Joose.Builder
-*/
-/** @ignore */
-workers: function (map) {var me = joose.cc
-Joose.O.each(map, function (func, name) {me.meta.addWorker(name, func)
-})
-},
-/**
-* Class builder method
-* Defines before method modifieres for the class.
-* The defined method modifiers will be called before the method of the super class.
-* The return value of the method modifier will be ignored
-* @function
-* @param classObject {object} Maps method names to function bodies
-* @name before
-* @memberof Joose.Builder
-*/
-/** @ignore */
-before: function(map) {var me = joose.cc
-Joose.O.each(map, function (func, name) {me.meta.wrapMethod(name, "before", func);})
-},
-/**
-* Class builder method
-* Defines after method modifieres for the class.
-* The defined method modifiers will be called after the method of the super class.
-* The return value of the method modifier will be ignored
-* @function
-* @param classObject {object} Maps method names to function bodies
-* @name after
-* @memberof Joose.Builder
-*/
-/** @ignore */
-after: function(map) {var me = joose.cc
-Joose.O.each(map, function (func, name) {me.meta.wrapMethod(name, "after", func);})
-},
-/**
-* Class builder method
-* Defines around method modifieres for the class.
-* The defined method modifiers will be called instead of the method of the super class.
-* The orginial function is passed as an initial parameter to the new function
-* @function
-* @param classObject {object} Maps method names to function bodies
-* @name around
-* @memberof Joose.Builder
-*/
-/** @ignore */
-around: function(map) {var me = joose.cc
-Joose.O.each(map, function (func, name) {me.meta.wrapMethod(name, "around", func);})
-},
-/**
-* Class builder method
-* Defines override method modifieres for the class.
-* The defined method modifiers will be called instead the method of the super class.
-* You can call the method of the super class by calling joose.cc.SUPER(para1, para2)
-* @function
-* @param classObject {object} Maps method names to function bodies
-* @name override
-* @memberof Joose.Builder
-*/
-/** @ignore */
-override: function(map) {var me = joose.cc
-Joose.O.each(map, function (func, name) {me.meta.wrapMethod(name, "override", func);})
-},
-/**
-* Class builder method
-* Defines augment method modifieres for the class.
-* These method modifiers will be called in "most super first" order
-* The methods may call this.INNER() to call the augement method in it's sup class.
-* @function
-* @param classObject {object} Maps method names to function bodies
-* @name augment
-* @memberof Joose.Builder
-*/
-/** @ignore */
-augment: function(map) {var me = joose.cc
-Joose.O.each(map, function (func, name) {me.meta.wrapMethod(name, "augment", func, function () {me.meta.addMethod(name, func)
-});})
-},
-/**
-* @ignore
-*/
-decorates: function(map) {var me = joose.cc
-Joose.O.each(map, function (classObject, attributeName) {me.meta.decorate(classObject, attributeName)
-})
-}
 };joose.init();Joose.bootstrap2();/*
 * A class for methods
 * Originally defined in Joose.js
+*
+* See http:
 */
-Class("Joose.Method", {methods: {_makeWrapped: function (func) {return this.meta.instantiate(this.getName(), func); 
+Class("Joose.Method", {methods: {copy: function () {return this.meta.instantiate(this.getName(), this.getBody(), this.getProps())
+},
+_makeWrapped: function (func) {return this.meta.instantiate(this.getName(), func); 
 },
 around: function (func) {var orig = this.getBody();return this._makeWrapped(function aroundWrapper () {var me = this;var bound = function () { return orig.apply(me, arguments) }
 return func.apply(this, Joose.A.concat([bound], arguments))
@@ -787,8 +806,12 @@ copy: function () {return new Joose.ClassMethod(this.getName(), this.getBody(), 
 /*
 * A class for methods
 * Originally defined in Joose.js
+*
+* See http:
 */
-Class("Joose.Method", {methods: {_makeWrapped: function (func) {return this.meta.instantiate(this.getName(), func); 
+Class("Joose.Method", {methods: {copy: function () {return this.meta.instantiate(this.getName(), this.getBody(), this.getProps())
+},
+_makeWrapped: function (func) {return this.meta.instantiate(this.getName(), func); 
 },
 around: function (func) {var orig = this.getBody();return this._makeWrapped(function aroundWrapper () {var me = this;var bound = function () { return orig.apply(me, arguments) }
 return func.apply(this, Joose.A.concat([bound], arguments))
@@ -817,6 +840,9 @@ var before    = this.INNER;this.INNER    = function () {return  me.__INNER_STACK
 *  * required attributes in initializaion
 *  * handles for auto-decoration
 *  * predicate for attribute availability checks
+*
+*
+* See http:
 */
 Class("Joose.Attribute", {after: {handleProps: function (classObject) {this.handleHandles(classObject);this.handlePredicate(classObject);}
 },
@@ -825,13 +851,13 @@ if(props.persistent == false) {return false
 }
 return true
 },
-doInitialization: function (object, paras) {var  name  = this.initializerName();var _name  = this.getName();var value;var set    = false;if(typeof paras != "undefined" && typeof paras[name] != "undefined") {value = paras[name];set   = true;} else {var props = this.getProps();if(props.required) {throw "Required initialization parameter missing: "+name + "(While initializing "+object+")"
+doInitialization: function (object, paras) {var  name  = this.initializerName();var _name  = this.getName();var value;var isSet  = false;if(typeof paras != "undefined" && typeof paras[name] != "undefined") {value  = paras[name];isSet  = true;} else {var props = this.getProps();if(props.required) {throw "Required initialization parameter missing: "+name + "(While initializing "+object+")"
 }
 var init  = props.init;if(typeof init == "function" && !props.lazy) {value = init.call(object)
-set   = true
+isSet = true
 }
 }
-if(set) {var setterName = this.setterName();if(object.meta.can(setterName)) { 
+if(isSet) {var setterName = this.setterName();if(object.meta.can(setterName)) { 
 object[setterName](value)
 } else { 
 object[_name] = value
@@ -873,7 +899,7 @@ return bool
 },
 addInitializer: Joose.emptyFunction,
 defaultClassFunctionBody: function () {var f = function () {throw new Error("Roles may not be instantiated.")
-};f.toString = function () { return this.meta.className() }
+};joose.addToString(f, function () { return this.meta.className() })
 return f
 },
 addSuperClass: function () {throw new Error("Roles may not inherit from a super class.")
@@ -895,6 +921,7 @@ if(!found) {throw new Error("The role "+this.className()+" was not applied to th
 }
 var superClass     = object.meta.getSuperClass();var c              = superClass.meta.makeAnonSubclass();/*if(typeof(object.__proto__) != "undefined") {object.__proto__ = c.prototype
 } else {   
+*/
 var test = new c()
 for(var i = 0; i < otherRoles.length; i++) {var role = otherRoles[i]
 c.meta.addRole(role)
@@ -902,9 +929,20 @@ c.meta.addRole(role)
 c.prototype        = test
 object.meta        = c.meta;object.constructor = c;object.__proto__   = test
 },
+addMethodToClass: function (method, classObject) {var name = method.getName()
+var cur;if(method.isClassMethod()) {cur = classObject.meta.getClassMethodObject(name)
+} else {cur = classObject.meta. getMethodObject(name)
+}
+if(!cur || cur.isFromSuperClass()) {classObject.meta.addMethodObject(method)
+}
+},
 apply: function (object) {if(object.meta.does(this.getClassObject())) {return false
 }
-if(joose.isInstance(object)) {object.detach();object.meta.addRole(this.getClassObject());} else {var me    = this;var names = this.getMethodNames();Joose.A.each(names, function (name) {var m = me.dispatch(name);if(!object.meta.hasMethod(name) || object.meta.getMethodObject(name).isFromSuperClass()) {object.meta.addMethodObject(m.meta)
+if(joose.isInstance(object)) {object.detach();object.meta.addRole(this.getClassObject());} else {var me    = this;var names = this.getMethodNames();Joose.A.each(names, function (name) {var m = me.getMethodObject(name)
+if(m) {me.addMethodToClass(m, object)
+}
+m = me.getClassMethodObject(name)
+if(m) {me.addMethodToClass(m, object)
 }
 })
 Joose.A.each(this.methodModifiers, function (paras) {object.meta.wrapMethod.apply(object.meta, paras)
@@ -1011,15 +1049,15 @@ me.callIndex++
 this.addMethod(name, wrapped, props)
 }
 },
-classMethods: {setupGearsCompat: function () {window.timer = {setTimeout:    function () { return window.setTimeout.apply(window, arguments) },
-setInterval:   function () { return window.setInterval.apply(window, arguments) },
-clearTimeout:  function () { return window.clearTimeout.apply(window, arguments) },
-clearInterval: function () { return window.clearInterval.apply(window, arguments) }
+classMethods: {setupGearsCompat: function () {window.timer = {setTimeout:    function (func, time) { return window.setTimeout(func, time) },
+setInterval:   function (func, time) { return window.setInterval(func, time) },
+clearTimeout:  function (timer) { return window.clearTimeout(timer) },
+clearInterval: function (timer) { return window.clearInterval(timer) }
 };},
 clientHasGears: function () { 
 return window.google && window.google.gears && window.google.gears.factory
 },
-ajaxRequest: function (method, url, data, callback) {var request
+ajaxRequest: function (method, url, data, callback, errorCallback) {var request
 if(this.clientHasGears()) {request = google.gears.factory.create('beta.httprequest');} else {request = window.ActiveXObject ? new ActiveXObject("Microsoft.XMLHTTP") : new XMLHttpRequest();}
 var dataString    = ""
 if(data) {for(var i in data) {dataString += encodeURIComponent(i)+"="+encodeURIComponent(data[i])+"&"
@@ -1028,10 +1066,12 @@ if(data) {for(var i in data) {dataString += encodeURIComponent(i)+"="+encodeURIC
 var theUrl = url;if(data && method == "GET") {theUrl += "?"+dataString
 }
 request.open(method, theUrl, true);request.onreadystatechange = function onreadystatechange () {if (request.readyState == 4) {if(request.status >= 200 && request.status < 400) {var res = request.responseText;callback(res)
+} else {if(errorCallback) {return errorCallback(request)
 } else {throw new Error("Error fetching url "+theUrl+". Response code: " + request.status + " Response text: "+request.responseText)
 }
 }
-};if(data && method == "POST") {request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+}
+};if(data && method == "POST") {request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 request.send(dataString)
 } else {dataString = ""
 request.send(dataString);}
@@ -1047,31 +1087,42 @@ if (!factory) {return;}
 if (!window.google) {google = {};}
 if (!google.gears) {google.gears = {factory: factory};}
 }
-Class("Joose.Storage", {meta: Joose.Role,
-methods: {toJSON: function () {return this.pack(Joose.Storage.TEMP_SEEN)
+Role("Joose.Storage", {methods: {toJSON: function () {return this.pack(Joose.Storage.TEMP_SEEN)
 },
 identity: function () {if(this.__ID__) {return this.__ID__
 } else {return this.__ID__ = Joose.Storage.OBJECT_COUNTER++
 }
 },
-pack: function (seen) {if(seen) {var id = this.identity()
-var obj;if(obj = seen[id]) {return {__ID__: id
+pack: function (seen) {return this.meta.c.storageEngine().pack(this, seen)
+}
+},
+classMethods: {storageEngine: function () {return Joose.Storage.Engine
+},
+unpack: function (data) {return this.storageEngine().unpack(this, data)
+}
+}
+})
+Role("Joose.Storage.jsonpickle", {does: Joose.Storage,
+classMethods: {storageEngine: function () {return Joose.Storage.Engine.jsonpickle
+}
+}
+})
+Joose.Storage.OBJECT_COUNTER = 1;Class("Joose.Storage.Engine", {classMethods: {pack: function (object, seen) {if(seen) {var id  = object.identity()
+var obj = seen[id];if(obj) {return {__ID__: id
 }
 }
 }
-if(this.meta.can("prepareStorage")) {this.prepareStorage()
+if(object.meta.can("prepareStorage")) {object.prepareStorage()
 }
-if(seen) {seen[this.identity()] = true
+if(seen) {seen[object.identity()] = true
 }
-var o  = {__CLASS__: this.packedClassName(),
-__ID__:    this.identity()
-};var me        = this;var attrs      = this.meta.getAttributes();Joose.O.each(attrs, function packAttr (attr, name) {if(attr.isPersistent()) {o[name]   = me[name];}
+var o  = {__CLASS__: this.packedClassName(object),
+__ID__:    object.identity()
+};var attrs      = object.meta.getAttributes();Joose.O.each(attrs, function packAttr (attr, name) {if(attr.isPersistent()) {o[name]   = object[name];}
 })
 return o
 },
-packedClassName: function () {var name   = this.meta.className();var parts  = name.split(".");return parts.join("::");}
-},
-classMethods: {unpack: function (data) {var meta      = this.meta
+unpack: function (classObject, data) {var meta      = classObject.meta
 var me        = meta.instantiate();var seenClass = false;Joose.O.each(data, function unpack (value,name) {if(name == "__CLASS__") {var className = Joose.Storage.Unpacker.packedClassNameToJSClassName(value)
 if(className != me.meta.className()) {throw new Error("Storage data is of wrong type "+className+". I am "+me.meta.className()+".")
 }
@@ -1082,13 +1133,58 @@ me[name] = value
 })
 if(!seenClass) {throw new Error("Serialized data needs to include a __CLASS__ attribute.: "+data)
 }
+delete me.__ID__
 if(me.meta.can("finishUnpack")) {me.finishUnpack()
 }
 return me
-}
+},
+packedClassName: function (object) {if(object.meta.can("packedClassName")) {return object.packedClassName();}
+var name   = object.meta.className();var parts  = name.split(".");return parts.join("::");}
 }
 })
-Joose.Storage.OBJECT_COUNTER = 1;Class("Joose.Storage.Unpacker", {classMethods: {unpack: function (data) {var name = data.__CLASS__;if(!name) {throw("Serialized data needs to include a __CLASS__ attribute.")
+Class("Joose.Storage.Engine.jsonpickle", {classMethods: {pack: function (object, seen) {if(seen) {var id  = object.identity()
+var obj = seen[id];if(obj) {return {objectid__: id
+}
+}
+}
+if(object.meta.can("prepareStorage")) {object.prepareStorage()
+}
+if(seen) {seen[object.identity()] = true
+}
+var o  = {classname__:   this.packedClassName(object),
+classmodule__: this.packedModuleName(object),
+objectid__:    object.identity()
+};var attrs      = object.meta.getAttributes();Joose.O.each(attrs, function packAttr (attr, name) {if(attr.isPersistent()) {o[name]   = object[name];}
+})
+return o
+},
+unpack: function (classObject, data) {var meta      = classObject.meta
+var me        = meta.instantiate();var seenClass = false;Joose.O.each(data, function unpack (value,name) {if(name == "classname__") {var className = value;var module    = data.classmodule__
+if(module) {className = "" + module + "." + value
+}
+if(className != me.meta.className()) {throw new Error("Storage data is of wrong type "+className+". I am "+me.meta.className()+".")
+}
+seenClass = true
+return
+}
+if(name == "classmodule__") {return
+}
+me[name] = value
+})
+if(!seenClass) {throw new Error("Serialized data needs to include a __CLASS__ attribute.: "+data)
+}
+if(me.meta.can("finishUnpack")) {me.finishUnpack()
+}
+return me
+},
+packedClassName: function (object) {var name   = object.meta.className();var parts  = name.split(".");return parts.pop()
+},
+packedModuleName: function (object) {var name   = object.meta.className();var parts  = name.split(".");parts.pop();return parts.join(".");}
+}
+})
+Joose.Storage.storageEngine            = Joose.Storage.Engine
+Joose.Storage.jsonpickle.storageEngine = Joose.Storage.Engine.jsonpickle
+Class("Joose.Storage.Unpacker", {classMethods: {unpack: function (data) {var name = data.__CLASS__;if(!name) {throw("Serialized data needs to include a __CLASS__ attribute.")
 }
 var jsName = this.packedClassNameToJSClassName(name)
 var co  = this.meta.classNameToClassObject(jsName);var obj = co.unpack(data);var id;if(Joose.Storage.CACHE && (id = data.__ID__)) {Joose.Storage.CACHE[id] = obj
@@ -1104,15 +1200,38 @@ if(value.__ID__) {return Joose.Storage.CACHE[value.__ID__]
 }
 return value
 },
-patchJSON: function () {var orig = JSON.parse;JSON.parse = function (s, filter) {Joose.Storage.CACHE = {}
+patchJSON: function () {var orig = JSON.parse;var storageFilter = this.jsonParseFilter
+JSON.parse = function (s, filter) {Joose.Storage.CACHE = {}
 return orig(s, function JooseJSONParseFilter (key, value) {var val = value;if(filter) {val = filter(key, value)
 }
-return Joose.Storage.Unpacker.jsonParseFilter(key,val)
+return storageFilter(key,val)
 })
 }
 var stringify = JSON.stringify;JSON.stringify = function () {Joose.Storage.TEMP_SEEN = {}
 return stringify.apply(JSON, arguments)
 }
+}
+}
+})
+Class("Joose.Storage.Unpacker.jsonpickle", {isa: Joose.Storage.Unpacker,
+classMethods: {unpack: function (data) {var name = data.classname__;if(!name) {throw("Serialized data needs to include a classname__ attribute.")
+}
+var jsName = this.packedClassNameToJSClassName(name, data.classmodule__)
+var co  = this.meta.classNameToClassObject(jsName);var obj = co.unpack(data);var id;if(Joose.Storage.CACHE && (id = data.objectid__)) {Joose.Storage.CACHE[id] = obj
+}
+return obj
+},
+packedClassNameToJSClassName: function (className, moduleName) {
+var name = "";if(moduleName) {name += moduleName + "."
+}
+name += className;return name
+},
+jsonParseFilter: function (key, value) {if(value != null && typeof value == "object") {if(value.classname__) {return Joose.Storage.Unpacker.jsonpickle.unpack(value)
+}
+if(value.objectid__) {return Joose.Storage.CACHE[value.objectid__]
+}
+}
+return value
 }
 }
 })
@@ -1131,17 +1250,17 @@ Joose.Decorator.meta.apply(Joose.Class)
 Module("my.namespace", function () {Class("Test", {})
 })
 */
-Class("Joose.Module", {has: {_name: {is: rw
+Class("Joose.Module", {has: {_name: {is: "rw"
 },
-_elements: {is: rw
+_elements: {is: "rw"
 },
-_container: {is: rw
+_container: {is: "rw"
 }
 },
 classMethods: {setup: function (name, functionThatCreatesClassesAndRoles) {var me      = this;var parts   = name.split(".");var object  = joose.top;var soFar   = []
 var module;for(var i = 0; i < parts.length; i++) {var part = parts[i];if(part == "meta") {throw "Module names may not include a part called 'meta'."
 }
-cur = object[part];soFar.push(part)
+var cur = object[part];soFar.push(part)
 var name = soFar.join(".")
 if(typeof cur == "undefined") {object[part]      = {};module            = new Joose.Module(name)
 module.setContainer(object[part])
@@ -1176,7 +1295,7 @@ if(rest.indexOf(".") != -1) {throw "The things inside me should have no more dot
 }
 return rest
 },
-removeGlobalSymbols: function () {Joose.A.each(this.getElements(), function () {var global = this.globalName(thing.getName());delete joose.top[global]
+removeGlobalSymbols: function () {Joose.A.each(this.getElements(), function (thing) {var global = this.globalName(thing.getName());delete joose.top[global]
 })
 },
 initialize: function (name) {this.setElements([])
@@ -1201,7 +1320,7 @@ this.meta.object     = this;}
 }
 }
 })
-Class("Joose.PrototypeLazyMetaObjectProxy", {has: {metaObject: {is: rw,
+Class("Joose.PrototypeLazyMetaObjectProxy", {has: {metaObject: {is: "rw",
 isa: Joose.Class,
 handles: "*",
 handleWith: function (name) {return function () {
@@ -1210,7 +1329,7 @@ o.meta[name].apply(o.meta, arguments)
 }
 }
 },
-object: {is: rw
+object: {is: "rw"
 }
 }
 })
@@ -1259,7 +1378,7 @@ var message = this._messages[i];if(message) {throw new ReferenceError(message.ap
 }
 throw new ReferenceError("The passed value ["+value+"] is not a "+this)
 },
-_validate: function (value) {var con = this._constraints;var i;for(i = 0, len = con.length; i < len; i++) {var func = con[i];var result = false;if(func instanceof RegExp) {result = func.test(value)
+_validate: function (value) {var con = this._constraints;var i, len;for(i = 0, len = con.length; i < len; i++) {var func = con[i];var result = false;if(func instanceof RegExp) {result = func.test(value)
 } else {result = func.call(this, value)
 }
 if(!result) {return i

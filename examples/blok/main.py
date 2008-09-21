@@ -65,7 +65,7 @@ class MainPage(webapp.RequestHandler):
 
       newId     = self.randomHash();
       guidBase  = self.randomHash();
-      now       = int(time.time() * 1000) + 2000;
+      now       = int(time.time() * 1000);
       sessionId = self.randomHash();
 
       #if user:
@@ -93,11 +93,7 @@ class AddData(webapp.RequestHandler):
       version = 1 + int(time.time());
       memcache.set(key, version)
     else:
-      # incr doesnt work :(
-      # version = memcache.incr(key)
-      version = int(memcache.get(key))
-      version = version + 1
-      memcache.set(key, version)
+      version = memcache.incr(key)
       
     rev = DocRevision()
     rev.owner   = user
@@ -107,7 +103,7 @@ class AddData(webapp.RequestHandler):
     rev.data    = self.request.get('data').decode('utf-8');
     rev.session = self.request.get('session')
     logging.info("Saving data "+rev.hash)
-    rev.put()
+    # rev.put()
     rev.version = int(version)
     rev.put()
     self.response.out.write(json.write({}))
@@ -127,34 +123,31 @@ class FetchData(webapp.RequestHandler):
 
     i = 0;
 
-    while True:
-      found = False;
+    found = False;
 
-      logging.info("Looking for data "+str(i))
+    logging.info("Looking for data "+str(i))
+
+    newMaxVersion = 0;
       
-      revs       = []
-      if maxVersion > 0:
-        revs  = DocRevision.gql('WHERE hash = :1 AND version > :2 ORDER BY version', docHash, maxVersion).fetch(10)
-      else:
-        revs  = DocRevision.gql("WHERE hash = :1 ORDER BY version DESC", docHash).fetch(1) #WHERE owner = :1, user
-        found = True
+    revs       = []
+    if maxVersion > 0:
+      revs  = DocRevision.gql('WHERE hash = :1 AND version > :2 ORDER BY version', docHash, maxVersion).fetch(10)
+    else:
+      revs  = DocRevision.gql("WHERE hash = :1 ORDER BY version DESC", docHash).fetch(1) #WHERE owner = :1, user
+      found = True
 
-      rows = [];
+    rows = [];
       
 
-      for rev in revs:
-        if maxVersion == 0 or rev.session != session: # filter my own rows (cant do this in the query because of GQL limitations)
-          rows.append(rev.forJSON())
-          found = True;
-
-      #if found or i > 10:
-      if found or i > 0: # disable long-polling for now
-        break
+    for rev in revs:
+      newMaxVersion = rev.version;
+      if maxVersion == 0 or rev.session != session: # filter my own rows (cant do this in the query because of GQL limitations)
+        rows.append(rev.forJSON())
+        found = True;
       else:
-        i = i + 1
-        time.sleep(2)
+        logging.info("ignoring row because it is my own: " + session + " = " + rev.session + ";")
 
-    data = {'data' : rows }
+    data = {'data' : rows , 'max_version' : newMaxVersion }
       
     self.response.out.write(json.write(data))
     #else:

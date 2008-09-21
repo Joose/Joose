@@ -19,6 +19,7 @@ document.paras = {
 
 <!--  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script> -->
 <script type="text/javascript" src="static/jquery-1.2.6.min.js"></script>
+
 <script type="text/javascript" src="static/jquery.ui.all.min.js"></script>
 <script type="text/javascript" src="static/jquery-cmenu.js"></script>
 <script type="text/javascript" src="static/ColorPicker.js"></script>
@@ -163,8 +164,10 @@ function read() {
 }
 
 function changeName() {
-	document.sync.getDoc().getHeader().setTitle(prompt('Please enter the name:'))
-	document.manager.setDirty(true)
+	var name = prompt('Please enter the name:');
+	if(name) {
+		document.sync.getDoc().getHeader().changeTitle(name)
+	}
 }
 
 function write() {
@@ -293,9 +296,11 @@ var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "htt
 document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
 </script>
 <script type="text/javascript">
-var pageTracker = _gat._getTracker("UA-340701-27");
-pageTracker._initData();
-pageTracker._trackPageview("/example/blok");
+if(window._gat) {
+	var pageTracker = _gat._getTracker("UA-340701-27");
+	pageTracker._initData();
+	pageTracker._trackPageview("/example/blok");
+}
 </script>
 
 </body>

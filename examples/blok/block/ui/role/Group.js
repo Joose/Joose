@@ -5,14 +5,6 @@ Module("block.ui.role", function () {
             block.ui.role.Focusable,
             block.ui.role.ShapeUI
         ],
-        before: {
-            destroy: function () {
-                Joose.A.each(this.getElements(), function (shape) { shape.destroy() })
-            },
-            touch: function () {
-                Joose.A.each(this.getElements(), function (shape) { shape.touch() })
-            }
-        },
         after: {
             draw: function () {
                 var me   = this;
@@ -52,7 +44,22 @@ Module("block.ui.role", function () {
         },
         
         override: {
+        	
+        	destroy: function () {
+            	document.undo.beginTransaction()
+                Joose.A.each(this.getElements(), function (shape) { shape.destroy() })
+                this.SUPER()
+                document.undo.commit()
+            },
+            
+            touch: function () {
+                Joose.A.each(this.getElements(), function (shape) { shape.touch() })
+                this.SUPER()
+            },
+        	
             updateState: function (dontMoveChildren) { // evil hack para to avoid movement ruding initialization
+                document.undo.beginTransaction()
+                
                 var beforeLeft = this.getLeft();
                 var beforeTop  = this.getTop();
                 
@@ -68,10 +75,9 @@ Module("block.ui.role", function () {
                 
                     if(deltaLeft == 0 && deltaTop == 0) { // we didnt really move :)
                         return
-                       }
+                    }
                 
-                       Joose.A.each(this.getElements(), function updateChild (ele) {
-                    
+                    Joose.A.each(this.getElements(), function updateChild (ele) {
                         ele.x(ele.left() + deltaLeft)
                         ele.y(ele.top() + deltaTop)
                         if(ele.meta.can("dragComplete")) {
@@ -80,10 +86,13 @@ Module("block.ui.role", function () {
                         ele.updateState()
                     })
                 }
+                
+                document.undo.commit()
             }
         },
         
         methods: {
+        	
             create: function () {
                 return jQuery("<div class='group shape'></div>")
             },

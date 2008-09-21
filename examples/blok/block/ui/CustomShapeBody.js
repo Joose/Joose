@@ -84,7 +84,8 @@ Module("block.ui", function (m) {
                 var shape = new block.ui.shape.Custom({
                     body: body
                 });
-                document.shapes.addAndDraw(shape)
+                
+                shape.drawOnDoc();
             }
         }
     });

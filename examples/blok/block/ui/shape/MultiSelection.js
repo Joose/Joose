@@ -7,6 +7,13 @@ Module("block.ui.shape", function (m) {
                 return jQuery("<div class='multiSelection shape'></div>")
             },
             
+            touch: function () {
+            	// we are just a selection
+            	// Touching ourselves should not make the document dirty 
+            	
+            	this.updated()
+            },
+            
             selectContained: function () {
                 var top    = this.$.offset().top
                 var left   = this.left();

@@ -149,7 +149,7 @@ Module("block.ui", function (m) {
             },
             
             syncedTime: function () {
-                return new Date().getTime() + document.paras.timeOffset
+                return document.manager.syncedTime();
             },
             offset: function () {
                 var offset = this.dim$().offset();
@@ -293,6 +293,17 @@ Module("block.ui", function (m) {
             type: function () {
                 var name = this.meta.className();
                 return name.split('.').pop()
+            },
+            
+           drawOnDoc: function () {
+            	var me = this;
+            	
+            	document.shapes.addAndDraw(me);
+                me.touch()
+                
+                document.undo.addCreateStep(me)
+                
+                return me
             }
         },
         after: {
@@ -303,12 +314,7 @@ Module("block.ui", function (m) {
         classMethods: {
             addToDoc: function (paras) { // use to add new shapes to the document
                 var me = this.meta.instantiate(paras);
-                document.shapes.addAndDraw(me);
-                me.touch()
-                
-                document.undo.addCreateStep(me)
-                
-                return me
+               	return me.drawOnDoc()
             }
         }
     })

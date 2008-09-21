@@ -23,6 +23,10 @@ Module("block.ui", function (m) {
             
             _syncTime: {
                 is: "rw"
+            },
+            
+            _saveTimeout: {
+            	is: "rw"
             }
         },
         
@@ -33,17 +37,20 @@ Module("block.ui", function (m) {
                 
                 window.setTimeout(function syncUpdate () {
                     me.update()
-                }, 2000) 
+                }, 5000) 
             },
             
             startListening: function ()  {
                 var me = this;
                 
+                // Make sure we do an update at least every 20 seconds
+                // This only fires if there was an error on a previous update
+                // and no next update was triggered
                 window.setInterval(function recoverTimer () {
-                    var last = me.setSyncTime();
+                    var last = me.getSyncTime();
                     var now  = new Date().getTime();
                     
-                    if(now - last > 35000) { // restart syncing if there was not update in 35 seconds
+                    if(now - last > 20000) { // restart syncing if there was no update in 20 seconds
                         me.update()
                     }  
                     
@@ -51,7 +58,7 @@ Module("block.ui", function (m) {
             },
             
             update: function () {
-                this.getSyncTime(new Date().getTime())
+                this.setSyncTime(new Date().getTime())
                 this.fetchStates();
             },
             
@@ -60,13 +67,13 @@ Module("block.ui", function (m) {
                 for(var i = 0; i < updates.length; i++) {
                     var update = updates[i];
                     console.log("Update from version "+update.version)
-                    me.setMaxVersion(update.version);
+                    
                     var doc = update.data
                     
                     me.updateDocument(doc)
                 }    
                 
-                
+                // Request next Update
                 this.delayedUpdate()
             },
             
@@ -122,7 +129,19 @@ Module("block.ui", function (m) {
             },
             
             _saveState: function () {
-                return m.SyncDocument.addData(this, false)
+            	var timer = this.getSaveTimeout();
+            	if(timer) {
+            		clearTimeout(timer)
+            	}
+            	
+            	var me = this;
+            	this.setSaveTimeout(
+            		window.setTimeout(
+            			function () {
+            				m.SyncDocument.addData(me, false)
+            			},
+            			800)
+            		)
             },
             
             saveState: function () {
@@ -148,21 +167,24 @@ Module("block.ui", function (m) {
         classMethods: {
             fetchNewData: function (sync) {
             
-                var dataArray = [];
-                var rows      = []
+                var dataArray  = [];
+                var rows       = []
             
-                var doc = sync.getDoc()
+                var doc        = sync.getDoc()
+                var maxVersion = sync.getMaxVersion() || 0;
             
                 this.request("GET", "/fetch",
                     {
                         hash:        doc.getId(),
-                        max_version: (sync.getMaxVersion() || 0),
+                        max_version: maxVersion,
                         session:     document.paras.sessionId,
                         no_cache:    Math.random()
                     },
                     function updateData (data) {
-                        console.log("Got data "+data + data.data.length)
+                        console.log("Got data "+data + " Length: "+data.data.length + " (Requested from version "+maxVersion+"/"+Math.round(document.manager.syncedTime()/1000)+")")
                         rows = data.data
+                        
+                        var newMaxVersion = data.max_version;
             
                         for(var i = 0; i < rows.length; i++) {
                             console.log("Row version "+rows[i].version)
@@ -173,6 +195,9 @@ Module("block.ui", function (m) {
                     
                         }
                         sync.updateFromArray(dataArray)
+                        if(newMaxVersion > 0) {
+                        	sync.setMaxVersion(newMaxVersion);
+                        }
                     })
                 
                 
@@ -183,6 +208,8 @@ Module("block.ui", function (m) {
                 var doc  = sync.getDoc();
                 
                 var data = JSON.stringify(sync.getDoc());
+                
+                console.log(data)
     
                 this.request("POST", "/add",
                     {
@@ -198,9 +225,16 @@ Module("block.ui", function (m) {
             },
             
             request: function (method, url, data, callback) {
-                Joose.Gears.ajaxRequest(method, url, data, function receivedData (data) {
-                    callback(JSON.parse(data))
-                })
+            	try {
+                	Joose.Gears.ajaxRequest(method, url, data, function receivedData (data) {
+                		console.log(data)
+                	    callback(JSON.parse(data))
+                	}, function onError (request) {
+                		console.log("Error fetching url "+request.url+". Response code: " + request.status + " Response text: "+request.responseText)
+                	})
+            	} catch (e) {
+            		console.log(e)
+            	}
             }
         }
         
