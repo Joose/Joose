@@ -1,4 +1,4 @@
-plan(25)
+plan(31)
     
 
 diag("Methods");
@@ -72,5 +72,24 @@ Joose.A.each(["initialize","toString","detach","one","two"], function (methodNam
     canOk(m, methodName)
 })
 
+diag("Methods and class methods with the same name")
+Class("SameName", {
+    methods: {
+        method: function () { return "instance" }
+    },
+    classMethods: {
+        method: function () { return "class" }
+    }
+})
+
+var o = new SameName();
+
+ok(SameName.meta.can("method"), "Instance method found")
+ok(SameName.meta.classCan("method"), "Class method found")
+ok(o.meta.can("method"), "Instance method found on object")
+ok(o.meta.classCan("method"), "Class method found on object")
+
+ok(o.method() == "instance", "Instance method works")
+ok(SameName.method() == "class", "Class method works")
 
 endTests()

@@ -1,4 +1,4 @@
-plan(33)
+plan(35)
     
 diag("MetaClass");
     
@@ -112,6 +112,9 @@ Class("ConcreteClass", {
         }
     }
 })
+
+ok(AbstractClass.meta.isAbstract, "Abstract class has isActract flag set")
+ok(!TestClass.meta.isAbstract, "Non abstract class has isActract flag not set")
 
 fail(function () {
     new AbstractClass()

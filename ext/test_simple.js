@@ -50,6 +50,10 @@ function canOk(obj, methodName) {
     ok(obj.meta.can(methodName), ""+obj+" can "+methodName)
 }
 
+function classCanOk(obj, methodName) {
+    ok(obj.meta.classCan(methodName), ""+obj+" can "+methodName)
+}
+
 
 function plan(count) {
     testCount   = count
