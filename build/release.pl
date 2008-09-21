@@ -1,6 +1,10 @@
 #!/usr/bin/perl
 use strict;
 
+use FindBin;
+use File::Find;
+use File::Copy;
+
 # prepares a joose release archive
 # containing
 # - lib

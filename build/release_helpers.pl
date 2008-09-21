@@ -59,7 +59,6 @@ sub single_js {
         $short =~ s(^$quoted_path)();
 
         $output .= "
-print('$short\\n');
 // ##########################
 // File: $short
 // ##########################
