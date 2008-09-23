@@ -6,7 +6,7 @@ Module("block.ui.role", function () {
             place: function () {
                 var me = this;
                 this.$.dblclick(function () {
-                    me.text(prompt("Please enter Text", me.textContainer().text()));
+                    me.text(prompt("Please enter Text", me.textContainer().html()));
                     me.updateState()
                 })
                 
@@ -18,18 +18,18 @@ Module("block.ui.role", function () {
             },
             
             _updateStateCore: function () {
-                this.setText(this.textContainer().text());
+                this.setText(this.textContainer().html());
             },
             
             redraw: function () {
-                 this.textContainer().text(this.getText())
+                 this.textContainer().html(this.getText().html())
             }
         },
         methods: {
             
             text: function (t) {
                 if(arguments.length > 0) {
-                    this.textContainer().text(new String(t).html())
+                    this.textContainer().html(new String(t).html())
                 }
                 return this.getText()
             },
