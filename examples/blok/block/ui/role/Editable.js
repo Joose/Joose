@@ -6,8 +6,11 @@ Module("block.ui.role", function () {
             place: function () {
                 var me = this;
                 this.$.dblclick(function () {
-                    me.text(prompt("Please enter Text", me.textContainer().html()));
-                    me.updateState()
+                	var newValue = prompt("Please enter Text", me.textContainer().text())
+                    if(newValue) {
+                    	me.text(newValue);
+                    	me.updateState()
+                    }
                 })
                 
                 me.text(this.getText())
