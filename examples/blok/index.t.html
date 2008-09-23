@@ -9,16 +9,26 @@
 <script type="text/javascript">
 
 document.paras = {
-	docId:      "{{ docId }}",
-	guidBase:   "{{ guidBase }}",
-	sessionId:  "{{ sessionId }}",
-	timeOffset: ({{ nowMilliseconds }} - new Date().getTime())
+	docId:      "{{ docId|escape }}",
+	userName:   "{{ userName|escape }}",
+	guidBase:   "{{ guidBase|escape }}",
+	sessionId:  "{{ sessionId|escape }}",
+	timeOffset: ({{ nowMilliseconds|escape }} - new Date().getTime())
 }
 
 </script>
 
 <!--  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script> -->
 <script type="text/javascript" src="static/jquery-1.2.6.min.js"></script>
+
+<script type="text/javascript">
+(function () {
+	var version = new Number(jQuery.browser.version)
+	if(document.all && jQuery.browser.msie && version < 7) {
+		location.href = "/static/old_browser.html"
+	}
+})()
+</script>
 
 <script type="text/javascript" src="static/jquery.ui.all.min.js"></script>
 <script type="text/javascript" src="static/jquery-cmenu.js"></script>
@@ -28,6 +38,7 @@ document.paras = {
 <script type="text/javascript" src="static/json2.js"></script>
 
 
+<script type="text/javascript" src="block/built_in_class_extension.js"></script>
 <script type="text/javascript" src="block/ui/Array.js"></script>
 <script type="text/javascript" src="block/ui/ElementMetaclass.js"></script>
 <script type="text/javascript" src="block/ui/role/Notification.js"></script>
@@ -39,6 +50,7 @@ document.paras = {
 <script type="text/javascript" src="block/ui/role/Group.js"></script>
 <script type="text/javascript" src="block/ui/role/Stylable.js"></script>
 <script type="text/javascript" src="block/ui/role/Connectable.js"></script>
+<script type="text/javascript" src="block/ui/Guid.js"></script>
 <script type="text/javascript" src="block/ui/Manager.js"></script>
 <script type="text/javascript" src="block/ui/Query.js"></script>
 <script type="text/javascript" src="block/ui/Document.js"></script>
@@ -59,6 +71,8 @@ document.paras = {
 <script type="text/javascript" src="block/ui/CustomShapeBody.js"></script>
 <script type="text/javascript" src="block/ui/shape/Custom.js"></script>
 <script type="text/javascript" src="block/ui/shape/Connection.js"></script>
+<script type="text/javascript" src="block/ui/Template.js"></script>
+<script type="text/javascript" src="block/ui/User.js"></script>
 
 <script type="text/javascript" src="block/ui/Sync.js"></script>
 
@@ -75,103 +89,18 @@ document.paras = {
 <link href="static/ColorPicker.css" rel="stylesheet" type="text/css" />
 <link href="static/themes/flora/flora.all.css" rel="stylesheet" type="text/css" />
 
+<script type="text/javascript" src="block/base.js"></script>
 <script type="text/javascript">
-
-if(!window.console) {
-	window.console = {
-		log: function log (msg) {
-			$("#stateDialog").html(""+msg+"<br>"+$("#stateDialog").html())
-		}
-	}
-}
-
-Joose.Storage.Unpacker.patchJSON();
-
-$(document).ready(function docReady () {
-
-	$("#leftMenu h2").click(function () {
-		$(this).parent().find('ul').toggle()
-	})
-
-	document.query   = new block.ui.Query();
-
-	document.manager = new block.ui.Manager();
-	document.manager.setupShortcuts()
-
-	document.grid = new block.ui.shape.Grid({ container: $("#grid") })
-	document.grid.draw();
-	
-	document.propPanel = new block.ui.shape.PropertiesPanel({  })
-	document.propPanel.draw()
-	
-	$('.colorPicker').attachColorPicker();
-	
-	$(window).resize(function onResize () {
-		document.propPanel.redraw()
-		document.grid.redraw()
-	})
-	$(window).scroll(function onScroll () {
-		document.grid.redraw()
-	})
-	
-	$("#stateDialog").dialog()
-	$("#stateDialog").dialog("close")
-	
-	$("#share").focus(function () {
-		this.select()
-	})
-
-	document.shapes = new block.ui.Container({ $: $('#shapeArea')});
-
-	var doc         = new block.ui.Document({ body: document.shapes });
-	
-	document.sync   = new block.ui.Sync({ doc: doc })
-	document.sync.update();
-	
-	document.sync.startListening()
-	
-	document.undo   = new block.ui.Undo();
-	
-	document.customShapes = new block.ui.CustomShapeManager();
-	document.customShapes.fetch("/static/custom-shapes/test.shape.json")
-	
-})
 
 function onfirstdraw() {
 	{% if isGadget %}
 		 _IG_AdjustIFrameHeight();
 	{% endif %}
-}
 
-function showState() {
 
-	var html = document.shapes.prettyPrint()
-
-	$('#stateDialog').html(html)
-	$('#stateDialog').dialog("open")
-}
-
-function read() {
-	$('#shapeArea').html("")
-	var json        = document.getElementById("outputArea").value
-	if(json != null && json != "") {
-		document.shapes = JSON.parse(json);
-		document.shapes.draw();
-		document.shapes.redraw();
-		
-		document.sync.getDoc().setBody(document.shapes)
-	}
-}
-
-function changeName() {
-	var name = prompt('Please enter the name:');
-	if(name) {
-		document.sync.getDoc().getHeader().changeTitle(name)
-	}
-}
-
-function write() {
-	document.getElementById("outputArea").value = JSON.stringify(document.shapes)
+	$("#blocker").hide();
+	
+	doInitialAction()
 }
 
 
@@ -181,8 +110,8 @@ function write() {
 
 <body>
 
+
 <div id="canvas">
-<div id="blocker"></div>
 
 <div id="leftMenu">
 <ul>
@@ -193,17 +122,20 @@ function write() {
       <li><a href="javascript:void(block.ui.shape.Image.addToDoc())">Image</a></li>
       <li>---</li>
       <li><a href="javascript:void(block.ui.shape.Connector.connectFocused())">Connect Selected</a></li>
+      <li style="display:none">
+        <h2>Custom Shapes</h2>
+        <ul id="customShapes"></ul>
+      </li>
     </ul>
-    <ul id="customShapes"></ul>
   </li>
   <li>
     <h2>Document</h2>
     <ul>
       <!-- <li><a href="javascript:document.sync.savePermanent()">Save</a></li> -->
-      <li><a href="/?id={{ newId }}">New Document</a></li>
+      <li><a href="/?id={{ newId|escape }}">New Document</a></li>
       <li>---</li>
-      <li><a href="javascript:changeName()">Change Name</a></li>
-      <li>Share this doc URL: <input value="http://blok.appspot.com/?id={{ docId }}" id="share" style="width: 100px; text-align: right"></li>
+      <li><a href="javascript:saveDocument()">Save As</a></li>
+      <li><a href="javascript:loadDocuments()">Open</a></li>
     </ul>
   </li>
   <li>
@@ -220,6 +152,7 @@ function write() {
     <ul>
       <li><a href="http://joose-js.blogspot.com" target="_blank">blok blog</a></li>
       <li><a href="http://code.google.com/p/joose-js/" target="_blank">Joose JS</a></li>
+      <li><a href="http://code.google.com/p/joose-js/issues/entry" target="_blank">Report a Bug</a></li>
     </ul>
   </li>
   
@@ -229,11 +162,13 @@ function write() {
     <ul class="hidden">
       <!-- <li><a href="javascript:void($('#browser').show())">Class Browser</a></li> -->
       <li><a href="javascript:showState()">Show State</a></li>
+      <li><a href="javascript:showClipboardContent()">Show Clipboard</a></li>
       <li>Sync<input type="checkbox" id="doSync" checked=true></li>
     </ul>
   </li>
   {% endif %}
 </ul>
+<div id="saveMessage"></div>
 </div>
 
 
@@ -245,6 +180,7 @@ function write() {
 
 
 <div id="properties">
+<div id="shapeProperties">
   <h1>Properties of <span id="shapeType"></span>
   <table border=0 cellpadding=2>
     <tr>
@@ -273,9 +209,42 @@ function write() {
       <th>Border Color</th><td><input id="propcss-borderColor" class="text colorPicker"   style="width:70px"></td>
     </tr>
   </table>
+</div> 
+<div id="documentProperties">
+  <h1>You are editing &quot;<span id="documentTitle"></span>&quot;</h1>
+  <label for="share">Share this document for real time collaborative editing: </label><input value="http://blok.appspot.com/?id={{ docId|escape }}" size=60 id="share" style="text-align: right">
+</div>
 </div>
 
-<div id="stateDialog" class="flora" title="Document State" style="font-size: 9px"></div>
+<div id="stateDialog" class="flora" title="Document State" style="font-size: 9px">
+  <textarea style="width:100%;height:100%"></textarea>
+</div>
+
+<div id="loadDialog" class="flora" title="Your Documents">
+  <div id="documentList"></div>
+</div>
+
+<div id="welcomeDialog" class="flora" title="Welcome to blok">
+  <h1>Welcome to blok</h1>
+  <p>
+    blok is a web based application for real time collaborative editing of simple diagrams and 
+    user interface prototypes.
+  </p>
+  <p>
+    Simply share the URL of this document with a friend or co-worker and all changes will be 
+    synchronized between your computers immediately.
+  </p>
+  <p>
+    Try out the regular keyboard short cuts for copy, paste, delete, undo and select all. 
+    They should work just like you expect.
+  </p>
+  <p><strong>How would you like to start?</strong></p>
+  <ul>
+    <li><a href="javascript:closeWelcomeDialog()">Create a new diagram</a></li>
+    <li><a href="javascript:loadTemplate('/templates/diagram/organigram.json'); closeWelcomeDialog()">Start with a diagram template</a></li>
+    <li><a href="javascript:loadTemplate('/templates/ui/web-page.json'); closeWelcomeDialog()">Start with a web-page prototype template</a></li>
+  </ul>
+</div>
 
 
 
@@ -291,9 +260,13 @@ function write() {
 
 </div>
 
+<div id="blocker">Loading blok...</div>
+
 <script type="text/javascript">
+
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
 document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+
 </script>
 <script type="text/javascript">
 if(window._gat) {

@@ -172,7 +172,12 @@ return false
 Joose.O = {};Joose.O.each = function (object, func) {for(var i in object) {func(object[i], i)
 }
 }
-Joose.prototype = {/*
+Joose.O.extend = function (target, newObject) {for(var i in newObject) {var thing = newObject[i]
+target[i] = thing
+}
+}
+Joose.prototype = {addToString: function (object, func) {object.toString = func;},
+/*
 * Differentiates between instances and classes
 */
 isInstance: function(obj) {if(!obj.meta) {throw "isInstance only works with Joose objects and classes."
@@ -226,8 +231,8 @@ Joose.bootstrap3 = function () {}
 * Joose.MetaClassBootstrap is used to bootstrap the Joose.Class with a regular JS constructor
 */
 /** ignore */
-Joose.MetaClassBootstrap = function () {this._name            = "Joose.MetaClassBootstrap";this.methodNames      =    [];this.attributeNames   =    ["_name", "isAbstract", "isDetached", "methodNames", "attributeNames", "methods", "parentClasses", "roles", "c"];this.attributes       = {},
-this.methods          = {};this.parentClasses    = [];this.roles            = [];
+Joose.MetaClassBootstrap = function () {this._name            = "Joose.MetaClassBootstrap";this.methodNames      = [];this.attributeNames   = ["_name", "isAbstract", "isDetached", "methodNames", "attributeNames", "methods", "parentClasses", "roles", "c"];this.attributes       = {},
+this.methods          = {};this.classMethods     = {};this.parentClasses    = [];this.roles            = [];
 this.myRoles          = [];
 this.isAbstract       = false;this.isDetached       = false;}
 /** @ignore */
@@ -260,13 +265,7 @@ getName: function () {return this.className()
 */
 /** @ignore */
 newMetaClass: function () {var me  = this;var metaClassClass = this.builder;var c     = new metaClassClass();c.builder = metaClassClass;c._name   = this._name
-c.methodNames    = []
-c.attributeNames = []
-c.methods        = {}
-c.parentClasses  = []
-c.roles          = []
-c.myRoles        = [];c.attributes     = {}
-var myMeta = this.meta;if(!myMeta) {myMeta = this;}
+c.methodNames    = [];c.attributeNames = [];c.methods        = {};c.classMethods   = {};c.parentClasses  = [];c.roles          = [];c.myRoles        = [];c.attributes     = {};var myMeta = this.meta;if(!myMeta) {myMeta = this;}
 c.meta = myMeta
 return c
 },
@@ -293,6 +292,17 @@ meta.c = c;if(!optionalModuleObject) {joose.globalObjects.push(c)
 }
 meta.addInitializer();meta.addToString();meta.addDetacher();meta.validateClass();return c;},
 buildComplete: function () {},
+initializeFromProps: function (props) {this._initializeFromProps(props)
+},
+_initializeFromProps: function (props) {var me = this;if(props) {Joose.O.each(props, function (value, name) {var paras             = value;var customBuilderName = "handleProp"+name;if(me.meta.can(customBuilderName)) {me[customBuilderName](paras, props)
+} else {
+throw new Error("Called invalid builder "+name+" while creating class "+me.meta.className())
+}
+})
+me.validateClass()
+me.buildComplete()
+}
+},
 /**
 * Returns a new instance of the class that this meta class instance is representing
 * @function
@@ -309,8 +319,8 @@ instantiate: function () {var f = function () {};f.prototype = this.c.prototype;
 * @memberof Joose.Class
 */
 /** @ignore */
-defaultClassFunctionBody: function () {var f = function () {this.initialize.apply(this, arguments);};f.toString = function () {return this.meta.className()
-}
+defaultClassFunctionBody: function () {var f = function () {this.initialize.apply(this, arguments);};joose.addToString(f, function () {return this.meta.className()
+})
 return f;},
 /**
 * Adds a toString method to a class
@@ -367,12 +377,13 @@ Joose.O.each(object, function(value, name) {if(typeof(value) == "function") {pse
 }
 })
 this.addSuperClass(pseudoClass);},
-importMethods: function (classObject) {var me    = this;var names = classObject.meta.getMethodNames();Joose.A.each(names, function (name) {var m = classObject.meta.dispatch(name);me.addMethodObject(m.meta.copy())
-})
-},
 addSuperClass:    function (classObject) {this.dieIfString(classObject);var me    = this;var names = classObject.meta.getMethodNames();for(var i = 0; i < names.length; i++) {var name = names[i]
-var m = classObject.meta.dispatch(name);var o = m.meta.copy();o.setIsFromSuperClass(true)
-me.addMethodObject(o)
+var m = classObject.meta.getMethodObject(name)
+if(m) {var method = m.copy();method.setIsFromSuperClass(true);me.addMethodObject(method)
+}
+m = classObject.meta.getClassMethodObject(name)
+if(m) {var method = m.copy();method.setIsFromSuperClass(true);me.addMethodObject(method)
+}
 }
 Joose.O.each(classObject.meta.attributes, function (attr, name) {me.addAttribute(name, attr.getProps())
 })
@@ -410,14 +421,15 @@ wrapMethod:  function (name, wrappingStyle, func, notPresentCB) {var orig = this
 },
 dispatch:        function (name) {return this.getMethodObject(name).asFunction()
 },
-hasMethod:         function (name) {return this.methods[name] != null
+hasMethod:         function (name) {return this.methods[name] != null || this.classMethods[name] != null
 },
 addMethod:         function (name, func, props) {var m = new Joose.Method(name, func, props);this.addMethodObject(m)
 },
 addClassMethod:         function (name, func, props) {var m = new Joose.ClassMethod(name, func, props);this.addMethodObject(m)
 },
-addMethodObject:         function (method) {var m              = method;var name           = m.getName();if(!this.methods[name]) {this.methodNames.push(name);}
-this.methods[name] = m;method.addToClass(this.c)
+addMethodObject:         function (method) {var m              = method;var name           = m.getName();if(!this.methods[name] && !this.classMethods[name]) {this.methodNames.push(name);}
+if(m.isClassMethod()) {this.classMethods[name] = m;} else {this.methods[name] = m;}
+method.addToClass(this.c)
 },
 attributeMetaclass: function () {return Joose.Attribute
 },
@@ -433,14 +445,14 @@ setAttribute: function (name, attributeObject) {return this.attributes[name] = a
 },
 getMethodObject: function (name) {return this.methods[name]
 },
+getClassMethodObject: function (name) {return this.classMethods[name]
+},
 getAttributeNames: function () {return this.attributeNames;},
-getInstanceMethods: function () {var a = [];Joose.O.each(this.methods, function (m) {if(!m.isClassMethod()) {a.push(m)
-}
+getInstanceMethods: function () {var a = [];Joose.O.each(this.methods, function (m) {a.push(m)
 })
 return a
 },
-getClassMethods: function () {var a = [];Joose.O.each(this.methods, function (m) {if(m.isClassMethod()) {a.push(m)
-}
+getClassMethods: function () {var a = [];Joose.O.each(this.classMethods, function (m) {a.push(m)
 })
 return a
 },
@@ -475,11 +487,11 @@ validateClass: function () {var c  = this.getClassObject();var me = this;var thr
 * @param {string} methodName The method
 * @memberof Joose.Class
 */
-can: function (methodName) {var method = this.methods[methodName];if(!method || method.isClassMethod()) {return false
+can: function (methodName) {var method = this.methods[methodName];if(!method) {return false
 }
 return true
 },
-classCan: function (methodName) {var method = this.methods[methodName];if(!method || !method.isClassMethod()) {return false
+classCan: function (methodName) {var method = this.classMethods[methodName];if(!method) {return false
 }
 return true
 },
@@ -511,6 +523,183 @@ if(!found) {complete = false
 }
 })
 return complete
+},
+/**
+* Tells a role that the method name must be implemented by all classes that implement the role
+* @function
+* @param methodName {string} Name of the required method name
+* @name requires
+* @memberof Joose.Builder
+*/
+/** @ignore */
+handleProprequires:    function (methodName) {var me = this;if(!this.meta.isa(Joose.Role)) {throw("Keyword 'requires' only available classes with a meta class of type Joose.Role")
+}
+if(methodName instanceof Array) {Joose.A.each(methodName, function (name) {me.addRequirement(name)
+})
+} else {me.addRequirement(methodName)
+}
+},
+handlePropisAbstract: function (bool) {this.isAbstract = bool
+},
+/**
+* Class builder method
+* Defines the super class of the class
+* @function
+* @param classObject {Joose.Class} The super class
+* @name isa
+* @memberof Joose.Builder
+*/
+/** @ignore */
+handlePropisa:    function (classObject) {this.addSuperClass(classObject)
+},
+/**
+* Class builder method
+* Defines a role for the class
+* @function
+* @param classObject {Joose.Role} The role
+* @name does
+* @memberof Joose.Builder
+*/
+/** @ignore */
+handlePropdoes:    function (role) {var me = this;if(role instanceof Array) {Joose.A.each(role, function (aRole) {me.addRole(aRole)
+})
+} else {me.addRole(role)
+}
+},
+/**
+* Class builder method
+* Defines attributes for the class
+* @function
+* @param classObject {object} Maps attribute names to properties (See Joose.Attribute)
+* @name has
+* @memberof Joose.Builder
+*/
+/** @ignore */
+handleProphas:    function (map) {var me = this;if(typeof map == "string") {var name  = arguments[0];var props = arguments[1];me.addAttribute(name, props)
+} else {
+Joose.O.each(map, function (props, name) {me.addAttribute(name, props)
+})
+}
+},
+/**
+* @ignore
+*/
+handlePropmethod: function (name, func, props) {this.addMethod(name, func, props)
+},
+/**
+* Class builder method
+* Defines methods for the class
+* @function
+* @param classObject {object} Maps method names to function bodies
+* @name methods
+* @memberof Joose.Builder
+*/
+/** @ignore */
+handlePropmethods: function (map) {var me = this
+Joose.O.each(map, function (func, name) {me.addMethod(name, func)
+})
+},
+/**
+* Class builder method
+* Defines class methods for the class
+* @function
+* @param classObject {object} Maps class method names to function bodies
+* @name classMethods
+* @memberof Joose.Builder
+*/
+/** @ignore */
+handlePropclassMethods: function (map) {var me = this;Joose.O.each(map, function (func, name2) {me.addMethodObject(new Joose.ClassMethod(name2, func))
+})
+},
+/**
+* Class builder method
+* Defines workers for the class (The class must have the meta class Joose.Gears)
+* @function
+* @param classObject {object} Maps method names to function bodies
+* @name workers
+* @memberof Joose.Builder
+*/
+/** @ignore */
+handlePropworkers: function (map) {var me = this;Joose.O.each(map, function (func, name) {me.addWorker(name, func)
+})
+},
+/**
+* Class builder method
+* Defines before method modifieres for the class.
+* The defined method modifiers will be called before the method of the super class.
+* The return value of the method modifier will be ignored
+* @function
+* @param classObject {object} Maps method names to function bodies
+* @name before
+* @memberof Joose.Builder
+*/
+/** @ignore */
+handlePropbefore: function(map) {var me = this
+Joose.O.each(map, function (func, name) {me.wrapMethod(name, "before", func);})
+},
+/**
+* Class builder method
+* Defines after method modifieres for the class.
+* The defined method modifiers will be called after the method of the super class.
+* The return value of the method modifier will be ignored
+* @function
+* @param classObject {object} Maps method names to function bodies
+* @name after
+* @memberof Joose.Builder
+*/
+/** @ignore */
+handlePropafter: function(map) {var me = this
+Joose.O.each(map, function (func, name) {me.wrapMethod(name, "after", func);})
+},
+/**
+* Class builder method
+* Defines around method modifieres for the class.
+* The defined method modifiers will be called instead of the method of the super class.
+* The orginial function is passed as an initial parameter to the new function
+* @function
+* @param classObject {object} Maps method names to function bodies
+* @name around
+* @memberof Joose.Builder
+*/
+/** @ignore */
+handleProparound: function(map) {var me = this
+Joose.O.each(map, function (func, name) {me.wrapMethod(name, "around", func);})
+},
+/**
+* Class builder method
+* Defines override method modifieres for the class.
+* The defined method modifiers will be called instead the method of the super class.
+* You can call the method of the super class by calling this.SUPER(para1, para2)
+* @function
+* @param classObject {object} Maps method names to function bodies
+* @name override
+* @memberof Joose.Builder
+*/
+/** @ignore */
+handlePropoverride: function(map) {var me = this
+Joose.O.each(map, function (func, name) {me.wrapMethod(name, "override", func);})
+},
+/**
+* Class builder method
+* Defines augment method modifieres for the class.
+* These method modifiers will be called in "most super first" order
+* The methods may call this.INNER() to call the augement method in it's sup class.
+* @function
+* @param classObject {object} Maps method names to function bodies
+* @name augment
+* @memberof Joose.Builder
+*/
+/** @ignore */
+handlePropaugment: function(map) {var me = this
+Joose.O.each(map, function (func, name) {me.wrapMethod(name, "augment", func, function () {me.addMethod(name, func)
+});})
+},
+/**
+* @ignore
+*/
+handlePropdecorates: function(map) {var me = this
+Joose.O.each(map, function (classObject, attributeName) {me.decorate(classObject, attributeName)
+})
 }
 };Joose.Attribute = function (name, props) {this.initialize(name, props)
 }
@@ -548,15 +737,25 @@ return this[name]
 meta.addMethod(this.getterName(), func);},
 initializerName: function () {return this.toPublicName()
 },
-getterName: function () {return "get"+Joose.S.uppercaseFirst(this.toPublicName())
-},
-setterName: function () {return "set"+Joose.S.uppercaseFirst(this.toPublicName())
-},
+getterName: function () {if(this.__getterNameCache) {
+return this.__getterNameCache
+}
+this.__getterNameCache = "get"+Joose.S.uppercaseFirst(this.toPublicName())
+return this.__getterNameCache;},
+setterName: function () {if(this.__setterNameCache) {
+return this.__setterNameCache
+}
+this.__setterNameCache = "set"+Joose.S.uppercaseFirst(this.toPublicName())
+return this.__setterNameCache;},
 isPrivate: function () {return this.getName().charAt(0) == "_"
 },
-toPublicName: function () {var name = this.getName();if(this.isPrivate()) {return name.substr(1)
+toPublicName: function () {if(this.__publicNameCache) {
+return this.__publicNameCache
 }
-return name
+var name = this.getName();if(this.isPrivate()) {this.__publicNameCache = name.substr(1)
+return this.__publicNameCache;}
+this.__publicNameCache = name
+return this.__publicNameCache
 },
 handleIs: function (classObject) {var meta  = classObject.meta;var name  = this.getName();var props = this.getProps();var is    = props.is;if(is == "rw" || is == "ro") {this.addGetter(classObject);}
 if(is == "rw") {this.addSetter(classObject)
@@ -614,7 +813,10 @@ Joose.bootstrap()
 * @constructor
 */
 Joose.Builder = function () {/** @ignore */
-this.globalize = function () {Joose.O.each(Joose.Builder.Globals, function (func, name) {joose.top[name] = func
+this.globalize = function () {Joose.O.each(Joose.Builder.Globals, function (func, name) {var globalName = "Joose"+name
+if(typeof joose.top[name] == "undefined") {joose.top[name] = func
+}
+joose.top[globalName] = func
 });}
 }
 /** @ignore */
@@ -667,13 +869,7 @@ root = root[parts[i]];}
 root[parts[parts.length - 1]] = c
 }
 }
-joose.cc = c;if(props) {Joose.O.each(props, function (value, name) {var builder = Joose.Builder.Builders[name];if(!builder) {throw new Error("Called invalid builder "+name+" while creating class "+c.meta.className())
-}
-var paras   = value;builder.call(Joose.Builder, paras)
-})
-c.meta.validateClass()
-c.meta.buildComplete()
-}
+c.meta.initializeFromProps(props)
 return c
 },
 Type: function (name, props) {var t = Joose.TypeConstraint.newFromTypeBuilder(name, props);var m = joose.currentModule
@@ -690,7 +886,7 @@ m.getContainer()[name] = t;return t
 * @name joosify
 */
 /** @ignore */
-joosify: function (standardClassName, standardClassObject) {var c         = standardClassObject;var metaClass = new Joose.Class();metaClass.builder = Joose.Class;c.toString = function () { return joose.cc.meta.className() }
+joosify: function (standardClassName, standardClassObject) {var c         = standardClassObject;var metaClass = new Joose.Class();metaClass.builder = Joose.Class;c.toString = function () { return this.meta.className() }
 c             = metaClass.createClass(standardClassName, c)
 var meta = c.meta;for(var name in standardClassObject.prototype) {if(name == "meta") {continue
 }
@@ -707,191 +903,15 @@ return c
 rw: "rw",
 /** @ignore */
 ro: "ro"
-};Joose.Builder.Builders = {isAbstract: function (bool) {joose.cc.meta.isAbstract = bool
-},
-/**
-* Tells a role that the method name must be implemented by all classes that implement joose.cc role
-* @function
-* @param methodName {string} Name of the required method name
-* @name requires
-* @memberof Joose.Builder
-*/
-/** @ignore */
-requires:    function (methodName) {if(!joose.cc.meta.meta.isa(Joose.Role)) {
-throw("Keyword 'requires' only available classes with a meta class of type Joose.Role")
-}
-if(methodName instanceof Array) {Joose.A.each(methodName, function (name) {joose.cc.meta.addRequirement(name)
-})
-} else {joose.cc.meta.addRequirement(methodName)
-}
-},
-/**
-* Class builder method
-* Defines the super class of the class
-* @function
-* @param classObject {Joose.Class} The super class
-* @name isa
-* @memberof Joose.Builder
-*/
-/** @ignore */
-isa:    function (classObject) {joose.cc.meta.addSuperClass(classObject)
-},
-/**
-* Class builder method
-* Defines a role for the class
-* @function
-* @param classObject {Joose.Role} The role
-* @name does
-* @memberof Joose.Builder
-*/
-/** @ignore */
-does:    function (role) {if(role instanceof Array) {Joose.A.each(role, function (aRole) {joose.cc.meta.addRole(aRole)
-})
-} else {joose.cc.meta.addRole(role)
-}
-},
-/**
-* Class builder method
-* Defines attributes for the class
-* @function
-* @param classObject {object} Maps attribute names to properties (See Joose.Attribute)
-* @name has
-* @memberof Joose.Builder
-*/
-/** @ignore */
-has:    function (map) {if(typeof map == "string") {var name  = arguments[0];var props = arguments[1];joose.cc.meta.addAttribute(name, props)
-} else {
-var me = joose.cc;Joose.O.each(map, function (props, name) {me.meta.addAttribute(name, props)
-})
-}
-},
-/**
-* @ignore
-*/
-method: function (name, func, props) {joose.cc.meta.addMethod(name, func, props)
-},
-/**
-* Class builder method
-* Defines methods for the class
-* @function
-* @param classObject {object} Maps method names to function bodies
-* @name methods
-* @memberof Joose.Builder
-*/
-/** @ignore */
-methods: function (map) {var me = joose.cc
-Joose.O.each(map, function (func, name) {me.meta.addMethod(name, func)
-})
-},
-/**
-* Class builder method
-* Defines class methods for the class
-* @function
-* @param classObject {object} Maps class method names to function bodies
-* @name classMethods
-* @memberof Joose.Builder
-*/
-/** @ignore */
-classMethods: function (map) {var me = joose.cc
-Joose.O.each(map, function (func, name2) {me.meta.addMethodObject(new Joose.ClassMethod(name2, func))
-})
-},
-/**
-* Class builder method
-* Defines workers for the class (The class must have the meta class Joose.Gears)
-* @function
-* @param classObject {object} Maps method names to function bodies
-* @name workers
-* @memberof Joose.Builder
-*/
-/** @ignore */
-workers: function (map) {var me = joose.cc
-Joose.O.each(map, function (func, name) {me.meta.addWorker(name, func)
-})
-},
-/**
-* Class builder method
-* Defines before method modifieres for the class.
-* The defined method modifiers will be called before the method of the super class.
-* The return value of the method modifier will be ignored
-* @function
-* @param classObject {object} Maps method names to function bodies
-* @name before
-* @memberof Joose.Builder
-*/
-/** @ignore */
-before: function(map) {var me = joose.cc
-Joose.O.each(map, function (func, name) {me.meta.wrapMethod(name, "before", func);})
-},
-/**
-* Class builder method
-* Defines after method modifieres for the class.
-* The defined method modifiers will be called after the method of the super class.
-* The return value of the method modifier will be ignored
-* @function
-* @param classObject {object} Maps method names to function bodies
-* @name after
-* @memberof Joose.Builder
-*/
-/** @ignore */
-after: function(map) {var me = joose.cc
-Joose.O.each(map, function (func, name) {me.meta.wrapMethod(name, "after", func);})
-},
-/**
-* Class builder method
-* Defines around method modifieres for the class.
-* The defined method modifiers will be called instead of the method of the super class.
-* The orginial function is passed as an initial parameter to the new function
-* @function
-* @param classObject {object} Maps method names to function bodies
-* @name around
-* @memberof Joose.Builder
-*/
-/** @ignore */
-around: function(map) {var me = joose.cc
-Joose.O.each(map, function (func, name) {me.meta.wrapMethod(name, "around", func);})
-},
-/**
-* Class builder method
-* Defines override method modifieres for the class.
-* The defined method modifiers will be called instead the method of the super class.
-* You can call the method of the super class by calling joose.cc.SUPER(para1, para2)
-* @function
-* @param classObject {object} Maps method names to function bodies
-* @name override
-* @memberof Joose.Builder
-*/
-/** @ignore */
-override: function(map) {var me = joose.cc
-Joose.O.each(map, function (func, name) {me.meta.wrapMethod(name, "override", func);})
-},
-/**
-* Class builder method
-* Defines augment method modifieres for the class.
-* These method modifiers will be called in "most super first" order
-* The methods may call this.INNER() to call the augement method in it's sup class.
-* @function
-* @param classObject {object} Maps method names to function bodies
-* @name augment
-* @memberof Joose.Builder
-*/
-/** @ignore */
-augment: function(map) {var me = joose.cc
-Joose.O.each(map, function (func, name) {me.meta.wrapMethod(name, "augment", func, function () {me.meta.addMethod(name, func)
-});})
-},
-/**
-* @ignore
-*/
-decorates: function(map) {var me = joose.cc
-Joose.O.each(map, function (classObject, attributeName) {me.meta.decorate(classObject, attributeName)
-})
-}
 };joose.init();Joose.bootstrap2();/*
 * A class for methods
 * Originally defined in Joose.js
+*
+* See http:
 */
-Class("Joose.Method", {methods: {_makeWrapped: function (func) {return this.meta.instantiate(this.getName(), func);
+Class("Joose.Method", {methods: {copy: function () {return this.meta.instantiate(this.getName(), this.getBody(), this.getProps())
+},
+_makeWrapped: function (func) {return this.meta.instantiate(this.getName(), func);
 },
 around: function (func) {var orig = this.getBody();return this._makeWrapped(function aroundWrapper () {var me = this;var bound = function () { return orig.apply(me, arguments) }
 return func.apply(this, Joose.A.concat([bound], arguments))
@@ -925,8 +945,12 @@ copy: function () {return new Joose.ClassMethod(this.getName(), this.getBody(), 
 /*
 * A class for methods
 * Originally defined in Joose.js
+*
+* See http:
 */
-Class("Joose.Method", {methods: {_makeWrapped: function (func) {return this.meta.instantiate(this.getName(), func);
+Class("Joose.Method", {methods: {copy: function () {return this.meta.instantiate(this.getName(), this.getBody(), this.getProps())
+},
+_makeWrapped: function (func) {return this.meta.instantiate(this.getName(), func);
 },
 around: function (func) {var orig = this.getBody();return this._makeWrapped(function aroundWrapper () {var me = this;var bound = function () { return orig.apply(me, arguments) }
 return func.apply(this, Joose.A.concat([bound], arguments))
@@ -955,6 +979,9 @@ var before    = this.INNER;this.INNER    = function () {return  me.__INNER_STACK
 *  * required attributes in initializaion
 *  * handles for auto-decoration
 *  * predicate for attribute availability checks
+*
+*
+* See http:
 */
 Class("Joose.Attribute", {after: {handleProps: function (classObject) {this.handleHandles(classObject);this.handlePredicate(classObject);}
 },
@@ -963,13 +990,13 @@ if(props.persistent == false) {return false
 }
 return true
 },
-doInitialization: function (object, paras) {var  name  = this.initializerName();var _name  = this.getName();var value;var set    = false;if(typeof paras != "undefined" && typeof paras[name] != "undefined") {value = paras[name];set   = true;} else {var props = this.getProps();if(props.required) {throw "Required initialization parameter missing: "+name + "(While initializing "+object+")"
+doInitialization: function (object, paras) {var  name  = this.initializerName();var _name  = this.getName();var value;var isSet  = false;if(typeof paras != "undefined" && typeof paras[name] != "undefined") {value  = paras[name];isSet  = true;} else {var props = this.getProps();if(props.required) {throw "Required initialization parameter missing: "+name + "(While initializing "+object+")"
 }
 var init  = props.init;if(typeof init == "function" && !props.lazy) {value = init.call(object)
-set   = true
+isSet = true
 }
 }
-if(set) {var setterName = this.setterName();if(object.meta.can(setterName)) {
+if(isSet) {var setterName = this.setterName();if(object.meta.can(setterName)) {
 object[setterName](value)
 } else {
 object[_name] = value
@@ -1011,7 +1038,7 @@ return bool
 },
 addInitializer: Joose.emptyFunction,
 defaultClassFunctionBody: function () {var f = function () {throw new Error("Roles may not be instantiated.")
-};f.toString = function () { return this.meta.className() }
+};joose.addToString(f, function () { return this.meta.className() })
 return f
 },
 addSuperClass: function () {throw new Error("Roles may not inherit from a super class.")
@@ -1033,6 +1060,7 @@ if(!found) {throw new Error("The role "+this.className()+" was not applied to th
 }
 var superClass     = object.meta.getSuperClass();var c              = superClass.meta.makeAnonSubclass();/*if(typeof(object.__proto__) != "undefined") {object.__proto__ = c.prototype
 } else {
+*/
 var test = new c()
 for(var i = 0; i < otherRoles.length; i++) {var role = otherRoles[i]
 c.meta.addRole(role)
@@ -1040,9 +1068,20 @@ c.meta.addRole(role)
 c.prototype        = test
 object.meta        = c.meta;object.constructor = c;object.__proto__   = test
 },
+addMethodToClass: function (method, classObject) {var name = method.getName()
+var cur;if(method.isClassMethod()) {cur = classObject.meta.getClassMethodObject(name)
+} else {cur = classObject.meta. getMethodObject(name)
+}
+if(!cur || cur.isFromSuperClass()) {classObject.meta.addMethodObject(method)
+}
+},
 apply: function (object) {if(object.meta.does(this.getClassObject())) {return false
 }
-if(joose.isInstance(object)) {object.detach();object.meta.addRole(this.getClassObject());} else {var me    = this;var names = this.getMethodNames();Joose.A.each(names, function (name) {var m = me.dispatch(name);if(!object.meta.hasMethod(name) || object.meta.getMethodObject(name).isFromSuperClass()) {object.meta.addMethodObject(m.meta)
+if(joose.isInstance(object)) {object.detach();object.meta.addRole(this.getClassObject());} else {var me    = this;var names = this.getMethodNames();Joose.A.each(names, function (name) {var m = me.getMethodObject(name)
+if(m) {me.addMethodToClass(m, object)
+}
+m = me.getClassMethodObject(name)
+if(m) {me.addMethodToClass(m, object)
 }
 })
 Joose.A.each(this.methodModifiers, function (paras) {object.meta.wrapMethod.apply(object.meta, paras)
@@ -1149,15 +1188,15 @@ me.callIndex++
 this.addMethod(name, wrapped, props)
 }
 },
-classMethods: {setupGearsCompat: function () {window.timer = {setTimeout:    function () { return window.setTimeout.apply(window, arguments) },
-setInterval:   function () { return window.setInterval.apply(window, arguments) },
-clearTimeout:  function () { return window.clearTimeout.apply(window, arguments) },
-clearInterval: function () { return window.clearInterval.apply(window, arguments) }
+classMethods: {setupGearsCompat: function () {window.timer = {setTimeout:    function (func, time) { return window.setTimeout(func, time) },
+setInterval:   function (func, time) { return window.setInterval(func, time) },
+clearTimeout:  function (timer) { return window.clearTimeout(timer) },
+clearInterval: function (timer) { return window.clearInterval(timer) }
 };},
 clientHasGears: function () {
 return window.google && window.google.gears && window.google.gears.factory
 },
-ajaxRequest: function (method, url, data, callback) {var request
+ajaxRequest: function (method, url, data, callback, errorCallback) {var request
 if(this.clientHasGears()) {request = google.gears.factory.create('beta.httprequest');} else {request = window.ActiveXObject ? new ActiveXObject("Microsoft.XMLHTTP") : new XMLHttpRequest();}
 var dataString    = ""
 if(data) {for(var i in data) {dataString += encodeURIComponent(i)+"="+encodeURIComponent(data[i])+"&"
@@ -1166,10 +1205,12 @@ if(data) {for(var i in data) {dataString += encodeURIComponent(i)+"="+encodeURIC
 var theUrl = url;if(data && method == "GET") {theUrl += "?"+dataString
 }
 request.open(method, theUrl, true);request.onreadystatechange = function onreadystatechange () {if (request.readyState == 4) {if(request.status >= 200 && request.status < 400) {var res = request.responseText;callback(res)
+} else {if(errorCallback) {return errorCallback(request)
 } else {throw new Error("Error fetching url "+theUrl+". Response code: " + request.status + " Response text: "+request.responseText)
 }
 }
-};if(data && method == "POST") {request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");request.send(dataString)
+}
+};if(data && method == "POST") {request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");request.send(dataString)
 } else {dataString = ""
 request.send(dataString);}
 }
@@ -1184,31 +1225,42 @@ if (!factory) {return;}
 if (!window.google) {google = {};}
 if (!google.gears) {google.gears = {factory: factory};}
 }
-Class("Joose.Storage", {meta: Joose.Role,
-methods: {toJSON: function () {return this.pack(Joose.Storage.TEMP_SEEN)
+Role("Joose.Storage", {methods: {toJSON: function () {return this.pack(Joose.Storage.TEMP_SEEN)
 },
 identity: function () {if(this.__ID__) {return this.__ID__
 } else {return this.__ID__ = Joose.Storage.OBJECT_COUNTER++
 }
 },
-pack: function (seen) {if(seen) {var id = this.identity()
-var obj;if(obj = seen[id]) {return {__ID__: id
+pack: function (seen) {return this.meta.c.storageEngine().pack(this, seen)
+}
+},
+classMethods: {storageEngine: function () {return Joose.Storage.Engine
+},
+unpack: function (data) {return this.storageEngine().unpack(this, data)
+}
+}
+})
+Role("Joose.Storage.jsonpickle", {does: Joose.Storage,
+classMethods: {storageEngine: function () {return Joose.Storage.Engine.jsonpickle
+}
+}
+})
+Joose.Storage.OBJECT_COUNTER = 1;Class("Joose.Storage.Engine", {classMethods: {pack: function (object, seen) {if(seen) {var id  = object.identity()
+var obj = seen[id];if(obj) {return {__ID__: id
 }
 }
 }
-if(this.meta.can("prepareStorage")) {this.prepareStorage()
+if(object.meta.can("prepareStorage")) {object.prepareStorage()
 }
-if(seen) {seen[this.identity()] = true
+if(seen) {seen[object.identity()] = true
 }
-var o  = {__CLASS__: this.packedClassName(),
-__ID__:    this.identity()
-};var me        = this;var attrs      = this.meta.getAttributes();Joose.O.each(attrs, function packAttr (attr, name) {if(attr.isPersistent()) {o[name]   = me[name];}
+var o  = {__CLASS__: this.packedClassName(object),
+__ID__:    object.identity()
+};var attrs      = object.meta.getAttributes();Joose.O.each(attrs, function packAttr (attr, name) {if(attr.isPersistent()) {o[name]   = object[name];}
 })
 return o
 },
-packedClassName: function () {var name   = this.meta.className();var parts  = name.split(".");return parts.join("::");}
-},
-classMethods: {unpack: function (data) {var meta      = this.meta
+unpack: function (classObject, data) {var meta      = classObject.meta
 var me        = meta.instantiate();var seenClass = false;Joose.O.each(data, function unpack (value,name) {if(name == "__CLASS__") {var className = Joose.Storage.Unpacker.packedClassNameToJSClassName(value)
 if(className != me.meta.className()) {throw new Error("Storage data is of wrong type "+className+". I am "+me.meta.className()+".")
 }
@@ -1219,13 +1271,58 @@ me[name] = value
 })
 if(!seenClass) {throw new Error("Serialized data needs to include a __CLASS__ attribute.: "+data)
 }
+delete me.__ID__
 if(me.meta.can("finishUnpack")) {me.finishUnpack()
 }
 return me
-}
+},
+packedClassName: function (object) {if(object.meta.can("packedClassName")) {return object.packedClassName();}
+var name   = object.meta.className();var parts  = name.split(".");return parts.join("::");}
 }
 })
-Joose.Storage.OBJECT_COUNTER = 1;Class("Joose.Storage.Unpacker", {classMethods: {unpack: function (data) {var name = data.__CLASS__;if(!name) {throw("Serialized data needs to include a __CLASS__ attribute.")
+Class("Joose.Storage.Engine.jsonpickle", {classMethods: {pack: function (object, seen) {if(seen) {var id  = object.identity()
+var obj = seen[id];if(obj) {return {objectid__: id
+}
+}
+}
+if(object.meta.can("prepareStorage")) {object.prepareStorage()
+}
+if(seen) {seen[object.identity()] = true
+}
+var o  = {classname__:   this.packedClassName(object),
+classmodule__: this.packedModuleName(object),
+objectid__:    object.identity()
+};var attrs      = object.meta.getAttributes();Joose.O.each(attrs, function packAttr (attr, name) {if(attr.isPersistent()) {o[name]   = object[name];}
+})
+return o
+},
+unpack: function (classObject, data) {var meta      = classObject.meta
+var me        = meta.instantiate();var seenClass = false;Joose.O.each(data, function unpack (value,name) {if(name == "classname__") {var className = value;var module    = data.classmodule__
+if(module) {className = "" + module + "." + value
+}
+if(className != me.meta.className()) {throw new Error("Storage data is of wrong type "+className+". I am "+me.meta.className()+".")
+}
+seenClass = true
+return
+}
+if(name == "classmodule__") {return
+}
+me[name] = value
+})
+if(!seenClass) {throw new Error("Serialized data needs to include a __CLASS__ attribute.: "+data)
+}
+if(me.meta.can("finishUnpack")) {me.finishUnpack()
+}
+return me
+},
+packedClassName: function (object) {var name   = object.meta.className();var parts  = name.split(".");return parts.pop()
+},
+packedModuleName: function (object) {var name   = object.meta.className();var parts  = name.split(".");parts.pop();return parts.join(".");}
+}
+})
+Joose.Storage.storageEngine            = Joose.Storage.Engine
+Joose.Storage.jsonpickle.storageEngine = Joose.Storage.Engine.jsonpickle
+Class("Joose.Storage.Unpacker", {classMethods: {unpack: function (data) {var name = data.__CLASS__;if(!name) {throw("Serialized data needs to include a __CLASS__ attribute.")
 }
 var jsName = this.packedClassNameToJSClassName(name)
 var co  = this.meta.classNameToClassObject(jsName);var obj = co.unpack(data);var id;if(Joose.Storage.CACHE && (id = data.__ID__)) {Joose.Storage.CACHE[id] = obj
@@ -1240,15 +1337,37 @@ if(value.__ID__) {return Joose.Storage.CACHE[value.__ID__]
 }
 return value
 },
-patchJSON: function () {var orig = JSON.parse;JSON.parse = function (s, filter) {Joose.Storage.CACHE = {}
+patchJSON: function () {var orig = JSON.parse;var storageFilter = this.jsonParseFilter
+JSON.parse = function (s, filter) {Joose.Storage.CACHE = {}
 return orig(s, function JooseJSONParseFilter (key, value) {var val = value;if(filter) {val = filter(key, value)
 }
-return Joose.Storage.Unpacker.jsonParseFilter(key,val)
+return storageFilter(key,val)
 })
 }
 var stringify = JSON.stringify;JSON.stringify = function () {Joose.Storage.TEMP_SEEN = {}
 return stringify.apply(JSON, arguments)
 }
+}
+}
+})
+Class("Joose.Storage.Unpacker.jsonpickle", {isa: Joose.Storage.Unpacker,
+classMethods: {unpack: function (data) {var name = data.classname__;if(!name) {throw("Serialized data needs to include a classname__ attribute.")
+}
+var jsName = this.packedClassNameToJSClassName(name, data.classmodule__)
+var co  = this.meta.classNameToClassObject(jsName);var obj = co.unpack(data);var id;if(Joose.Storage.CACHE && (id = data.objectid__)) {Joose.Storage.CACHE[id] = obj
+}
+return obj
+},
+packedClassNameToJSClassName: function (className, moduleName) {var name = "";if(moduleName) {name += moduleName + "."
+}
+name += className;return name
+},
+jsonParseFilter: function (key, value) {if(value != null && typeof value == "object") {if(value.classname__) {return Joose.Storage.Unpacker.jsonpickle.unpack(value)
+}
+if(value.objectid__) {return Joose.Storage.CACHE[value.objectid__]
+}
+}
+return value
 }
 }
 })
@@ -1267,17 +1386,17 @@ Joose.Decorator.meta.apply(Joose.Class)
 Module("my.namespace", function () {Class("Test", {})
 })
 */
-Class("Joose.Module", {has: {_name: {is: rw
+Class("Joose.Module", {has: {_name: {is: "rw"
 },
-_elements: {is: rw
+_elements: {is: "rw"
 },
-_container: {is: rw
+_container: {is: "rw"
 }
 },
 classMethods: {setup: function (name, functionThatCreatesClassesAndRoles) {var me      = this;var parts   = name.split(".");var object  = joose.top;var soFar   = []
 var module;for(var i = 0; i < parts.length; i++) {var part = parts[i];if(part == "meta") {throw "Module names may not include a part called 'meta'."
 }
-cur = object[part];soFar.push(part)
+var cur = object[part];soFar.push(part)
 var name = soFar.join(".")
 if(typeof cur == "undefined") {object[part]      = {};module            = new Joose.Module(name)
 module.setContainer(object[part])
@@ -1312,7 +1431,7 @@ if(rest.indexOf(".") != -1) {throw "The things inside me should have no more dot
 }
 return rest
 },
-removeGlobalSymbols: function () {Joose.A.each(this.getElements(), function () {var global = this.globalName(thing.getName());delete joose.top[global]
+removeGlobalSymbols: function () {Joose.A.each(this.getElements(), function (thing) {var global = this.globalName(thing.getName());delete joose.top[global]
 })
 },
 initialize: function (name) {this.setElements([])
@@ -1337,7 +1456,7 @@ this.meta.object     = this;}
 }
 }
 })
-Class("Joose.PrototypeLazyMetaObjectProxy", {has: {metaObject: {is: rw,
+Class("Joose.PrototypeLazyMetaObjectProxy", {has: {metaObject: {is: "rw",
 isa: Joose.Class,
 handles: "*",
 handleWith: function (name) {return function () {var o = this.object;o.meta = this.metaObject;o.detach()
@@ -1345,7 +1464,7 @@ o.meta[name].apply(o.meta, arguments)
 }
 }
 },
-object: {is: rw
+object: {is: "rw"
 }
 }
 })
@@ -1394,7 +1513,7 @@ var message = this._messages[i];if(message) {throw new ReferenceError(message.ap
 }
 throw new ReferenceError("The passed value ["+value+"] is not a "+this)
 },
-_validate: function (value) {var con = this._constraints;var i;for(i = 0, len = con.length; i < len; i++) {var func = con[i];var result = false;if(func instanceof RegExp) {result = func.test(value)
+_validate: function (value) {var con = this._constraints;var i, len;for(i = 0, len = con.length; i < len; i++) {var func = con[i];var result = false;if(func instanceof RegExp) {result = func.test(value)
 } else {result = func.call(this, value)
 }
 if(!result) {return i
@@ -1588,6 +1707,9 @@ replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {j = eval('(' + text + ')');return typeof 
 walk({'': j}, '') : j;}
 throw new SyntaxError('JSON.parse');}
 };}();}
+String.prototype.html = function () {var string = new String(this);string = string.replace(/\&/g, "&amp;");string = string.replace(/\</g, "&lt;");string = string.replace(/\>/g, "&gt;");string = string.replace(/"/g,  "&quot;")
+string = string.replace(/'/g,  "&#39;");return string
+}
 Module("block.ui", function () {Class("Array", {has: {array: {is: "rw",
 init: function () { return [] }
 }
@@ -1665,7 +1787,7 @@ onResize: function () {this.updateState()
 }
 })
 })
-Module("block.ui.role", function () {Role("Focusable", {after: {place: function () {var me = this;this.$.click(function focusClick (e) {e.preventDefault()
+Module("block.ui.role", function () {Role("Focusable", {after: {place: function () {var me = this;this.$.mousedown(function focusClick (e) {e.preventDefault()
 document.manager.switchFocus(me, e.shiftKey)
 return false;})
 },
@@ -1687,7 +1809,7 @@ _updateStateCore: function () {this.setText(this.textContainer().text());},
 redraw: function () {this.textContainer().text(this.getText())
 }
 },
-methods: {text: function (t) {if(arguments.length > 0) {this.textContainer().text(t)
+methods: {text: function (t) {if(arguments.length > 0) {this.textContainer().text(new String(t).html())
 }
 return this.getText()
 },
@@ -1722,11 +1844,6 @@ block.ui.role.Draggable,
 block.ui.role.Focusable,
 block.ui.role.ShapeUI
 ],
-before: {destroy: function () {Joose.A.each(this.getElements(), function (shape) { shape.destroy() })
-},
-touch: function () {Joose.A.each(this.getElements(), function (shape) { shape.touch() })
-}
-},
 after: {draw: function () {var me   = this;var left   = null;var top    = null;var right  = null;var bottom = null
 Joose.A.each(this.getElements(), function drawGroupEle (ele) {var myTop = ele.top();if(top == null || myTop < top) {top = myTop
 }
@@ -1744,7 +1861,16 @@ this.updateState(dontMoveChildren)
 }
 }
 },
-override: {updateState: function (dontMoveChildren) { 
+override: {destroy: function () {document.undo.beginTransaction()
+Joose.A.each(this.getElements(), function (shape) { shape.destroy() })
+this.SUPER()
+document.undo.commit()
+},
+touch: function () {Joose.A.each(this.getElements(), function (shape) { shape.touch() })
+this.SUPER()
+},
+updateState: function (dontMoveChildren) { 
+document.undo.beginTransaction()
 var beforeLeft = this.getLeft();var beforeTop  = this.getTop();this.SUPER();if(!dontMoveChildren) {var afterLeft  = this.getLeft();var afterTop   = this.getTop();var deltaLeft  = afterLeft - beforeLeft;var deltaTop   = afterTop  - beforeTop;if(deltaLeft == 0 && deltaTop == 0) { 
 return
 }
@@ -1755,6 +1881,7 @@ if(ele.meta.can("dragComplete")) {ele.redraw()
 ele.updateState()
 })
 }
+document.undo.commit()
 }
 },
 methods: {create: function () {return jQuery("<div class='group shape'></div>")
@@ -1795,7 +1922,26 @@ return this.getStyle()[key]
 })
 Module("block.ui.role", function () {Role("Connectable", {})
 })
-Module("block.ui", function () {var GuidCounter = 0;Class("Manager", {has: {_focusElement: {is: "ro"
+Module("block.ui", function () {var GuidCounter = 0;Class("Guid", {has: {id:{}
+},
+methods: {toString: function () {return ""+this.id
+}
+},
+classMethods: {startReplaceSession: function () {this.substitution = {};},
+replaceGuids: function (shape) {var me = this;var shapes       = [shape];shape.traverse(function (shape) {shapes.push(shape)
+})
+Joose.A.each(shapes, function (s) {var before = shape.getGuid();var after  = shape.resetGuid();me.substitution[before] = after;})
+Joose.A.each(shapes, function (s) {if(s.meta.isa(block.ui.shape.Connection)) {var origin = me.substitution[s.getOriginGuid()];s.setOriginGuid(origin)
+var dest   = me.substitution[s.getDestinationGuid()];s.setDestinationGuid(dest)
+}
+})
+},
+create: function () {return document.paras.guidBase + "-" + GuidCounter++
+}
+}
+})
+})
+Module("block.ui", function () {var focusTimeout;Class("Manager", {has: {_focusElement: {is: "ro"
 },
 _zIndex: {is:   "rw",
 init: 10
@@ -1815,12 +1961,23 @@ after: {initialize: function () {var me  = this;var win = $(window);win.keydown(
 })
 win.keyup(function keyup () {me.setCurrentKeyCode(null)
 })
+},
+setDirty: function () {saveMessage("Unsaved")
 }
 },
-methods: {clearFocus: function () {if(this._focusElement) {this._focusElement.blur()
+methods: {clearFocus: function () {if(focusTimeout) { 
+clearTimeout(focusTimeout)
+}
+if(this._focusElement) {this._focusElement.blur()
 }
 this._focusElement = null
 document.propPanel.hide()
+},
+asyncSwitchFocus: function () {if(focusTimeout) {clearTimeout(focusTimeout)
+}
+var me   = this;var args = arguments
+focusTimeout = setTimeout(function () {me.switchFocus.apply(me, args)
+}, 0)
 },
 switchFocus: function (newEle, shiftDown) {if(this._focusElement === newEle) {if(shiftDown) {this.clearFocus()
 }
@@ -1856,9 +2013,12 @@ f.destroy()
 }
 var destroy = function () {var cur = me.getFocusElement();if(cur) {cur.destroy()
 }
-};var undo = function () {document.undo.undo()
+};var save = function () {saveDocument()
+};var openDocs = function () {loadDocuments()
 }
-$.hotkeys.add("Ctrl+c", options, copy);$.hotkeys.add("Meta+c", options, copy);$.hotkeys.add("Ctrl+v", options, paste);$.hotkeys.add("Meta+v", options, paste);$.hotkeys.add("Ctrl+x", options, cut);$.hotkeys.add("Meta+x", options, cut);$.hotkeys.add("Ctrl+a", options, selectAll);$.hotkeys.add("Meta+a", options, selectAll);$.hotkeys.add("Ctrl+d", options, clearSelection);$.hotkeys.add("Meta+d", options, clearSelection);$.hotkeys.add("backspace", options, destroy);$.hotkeys.add("del",       options, destroy);$.hotkeys.add("Ctrl+z", options, undo);$.hotkeys.add("Meta+z", options, undo);},
+var undo = function () {document.undo.undo()
+}
+$.hotkeys.add("Ctrl+c", options, copy);$.hotkeys.add("Meta+c", options, copy);$.hotkeys.add("Ctrl+v", options, paste);$.hotkeys.add("Meta+v", options, paste);$.hotkeys.add("Ctrl+x", options, cut);$.hotkeys.add("Meta+x", options, cut);$.hotkeys.add("Ctrl+a", options, selectAll);$.hotkeys.add("Meta+a", options, selectAll);$.hotkeys.add("Ctrl+d", options, clearSelection);$.hotkeys.add("Meta+d", options, clearSelection);$.hotkeys.add("backspace", options, destroy);$.hotkeys.add("del",       options, destroy);$.hotkeys.add("Ctrl+z", options, undo);$.hotkeys.add("Meta+z", options, undo);$.hotkeys.add("Ctrl+s", options, save);$.hotkeys.add("Meta+s", options, save);$.hotkeys.add("Ctrl+o", options, openDocs);$.hotkeys.add("Meta+o", options, openDocs);},
 shiftKeyDown: function () {return this.getCurrentKeyCode() == 16
 },
 getViewPort: function () {return $('#shapeArea')
@@ -1868,7 +2028,7 @@ $("#leftMenu").css("zIndex", max + 1)
 }
 },
 nextZIndex: function () {var next = this.getZIndex() + 1;this.setZIndex(next);return next;},
-makeGuid: function () {return document.paras.guidBase + "-" + GuidCounter++
+makeGuid: function () {return block.ui.Guid.create()
 },
 shapeFromGuid: function (guid) {return this.shapeByGuidMap[guid]
 },
@@ -1878,8 +2038,10 @@ copyFocused: function () {var shape = this.getFocusElement()
 if(shape) {this.copy(shape)
 }
 },
+syncedTime: function () {return new Date().getTime() + document.paras.timeOffset
+},
 paste: function () {var content = this.getTempStore()
-if(content) {var shape = JSON.parse(content)
+if(content) {block.ui.Guid.startReplaceSession();var shape = JSON.parse(content)
 shape.paste(document.shapes);}
 }
 }
@@ -1917,16 +2079,24 @@ methods: {getUser: function () {return this.getHeader().getUser()
 }
 })
 })
-Module("block.ui", function (m) {var userId = Math.random();Class("DocumentHeader", {does: [Joose.Storage],
+Module("block.ui", function (m) {var userId = Math.random();var defaultTitle = "Untitled Document";Class("DocumentHeader", {does: [Joose.Storage],
 has: {title: {is:   "rw"
 },
 user: {is:   "rw",
 init: function () { return document.location.search ? document.location.search : userId  }
 }
 },
-after: {initialize: function () {this.setTitle("Untitled Document")
+methods: {touch: function () {document.manager.setDirty(true);document.sync.saveState()
 },
-setTitle: function () {document.title = ""+this.getTitle() + " - blok";}
+changeTitle: function (title) {this.setTitle(title);this.touch()
+},
+isDefaultTitle: function () {return this.getTitle == defaultTitle
+}
+},
+after: {initialize: function () {this.setTitle(defaultTitle)
+},
+setTitle: function () {document.title = (""+this.getTitle() + " - blok");$('#documentTitle').html(this.getTitle().html())
+}
 }
 })
 })
@@ -1956,6 +2126,8 @@ persistent: false
 },
 deleted: {is:            "rw",
 init:        false
+},
+redrawTimeout: {persistent:   false
 }
 },
 methods: {isDeleted: function () {return this.deleted
@@ -1967,6 +2139,11 @@ place: function () {},
 draw: function () {if(!this.placed && !this.deleted) {this.placed = true
 this.place()
 }
+},
+asyncRedraw: function () {if(this.redrawTimeout) {clearTimeout(this.redrawTimeout)
+}
+var me = this;this.redrawTimeout = setTimeout(function asyncRedrawCallback () {me.redraw()
+}, 0)
 },
 redraw: function () {},
 focus: function () {},
@@ -1998,16 +2175,14 @@ ele.traverse(func, myDepth+1, seenHash)
 }
 }
 },
-prettyPrint: function() {var html = "<ul>\n"
-var me   = this;Joose.A.each(this.getElements(), function (ele) {html += "<li>"+ele+"\n<ul>\n"
+prettyPrint: function() {var html = ""
+var me   = this;Joose.A.each(this.getElements(), function (ele) {html += "  "+ele+"\n\n"
 var fields = ["getGuid", "getLeft", "getWidth", "getHeight", "getTop", "getText", "getDeleted"]
-Joose.A.each(fields, function (field, i) {if(ele.meta.can(field)) {html += "<li>"+fields[i]+": "+ ele[field]() +"</li>"
+Joose.A.each(fields, function (field, i) {if(ele.meta.can(field)) {html += "    "+fields[i]+": "+ ele[field]() +"\n"
 }
 })
-html += "</ul>\n"
-html += ele.prettyPrint()+"</li>\n"
+html += ele.prettyPrint()+"\n"
 })
-html += "</ul>\n"
 return html
 },
 redraw: function () {Joose.A.each(this.getElements(), function redrawEach (ele) {ele.redraw()
@@ -2028,20 +2203,29 @@ ele.setViewPort(this.getViewPort())
 finishUnpack: function () {var me = this;Joose.A.each(this.getElements(), function finishUnpackEach (ele) {me.propagate(ele)
 })
 },
-addAndDraw: function (ele) {this.add(ele);this.draw();this.redraw();}
+addAndDraw: function (ele) {this.add(ele);this.draw();this.redraw();},
+isEmpty: function () {return this.getElements().length == 0;}
 }
 })
 })
 Module("block.ui", function (m) {Class("Undo", {has: {_steps: {is: "rw",
 init: function () { return [] }
+},
+_activeTransaction: {is: "rw",
+init: false
 }
 },
-methods: {undo: function () {var last = this._steps.pop();if(last) {last()
+methods: {beginTransaction: function () {if(this.getActiveTransaction()) {return
+}
+this.addUndoStep(function emptyUndoStep () {}, block.ui.Shape)
+this.setActiveTransaction(true);},
+commit: function () {this.setActiveTransaction(false);},
+undo: function () {var last = this._steps.pop();if(last) {last()
 }
 },
-addUndoStep: function (step, shape) {if(!shape.meta.does(block.ui.role.Group)) { 
-console.log("Add Undo step")
-this._steps.push(step);if(this._steps.length > 10) { 
+addUndoStep: function (step, shape) {if(!shape.meta.does(block.ui.role.Group)) {console.log("Add Undo step: "+shape)
+if(this.getActiveTransaction()) {var last = this._steps.pop();this._steps.push(function undoWrapper () {last();step();});} else {this._steps.push(step);}
+if(this._steps.length > 10) { 
 this._steps.shift()
 }
 }
@@ -2138,8 +2322,7 @@ this._updateStateCore()
 document.propPanel.refresh(this);this.updated()
 }
 },
-syncedTime: function () {return new Date().getTime() + document.paras.timeOffset
-},
+syncedTime: function () {return document.manager.syncedTime();},
 offset: function () {var offset = this.dim$().offset();offset.left -= this.getOffsetLeft();offset.top  -= this.getOffsetTop();return offset;},
 left: function (left) {var ele = this.dim$();if(arguments.length > 0) {var before = this.left()
 ele.css("left", ""+left+"px")
@@ -2163,13 +2346,12 @@ width: function () {var ele = this.dim$()
 return ele.width.apply(ele, arguments)
 },
 right: function (right) {if(arguments.length > 0) {this.width(right - this.left())
-} else {return this.left() + this.width()
+} else {var right = this.left() + this.width();return right
 }
 },
 bottom: function (bottom) {if(arguments.length > 0) {var top = this.top()
 this.height(bottom - top)
-} else {return this.top()  + this.height()
-}
+} else {var bottom = this.top()  + this.height();return bottom;}
 },
 zIndex: function (index) {if(arguments.length > 0) {this.setZIndex(index);document.manager.setMaxZIndex(index);this.$.css("zIndex", index)
 } else {throw "Only settable"
@@ -2194,13 +2376,12 @@ show: function () {this.$.show()
 },
 hide: function () {this.$.hide()
 },
-resetGuid: function () {this.setGuid(this.initGuid())
+resetGuid: function () {var guid = this.initGuid();this.setGuid(guid)
 this.registerGuid();this.touch()
+return guid
 },
-paste: function (target) {this.resetGuid()
-this.traverse(function (shape) {shape.resetGuid()
-})
-target.addAndDraw(this);document.manager.switchFocus(this)
+paste: function (target) {block.ui.Guid.replaceGuids(this)
+target.addAndDraw(this);document.manager.asyncSwitchFocus(this)
 },
 registerGuid: function () {document.manager.shapeByGuidMap[this.getGuid()] = this
 },
@@ -2215,19 +2396,21 @@ this.touch()
 document.undo.addDestroyStep(this)
 },
 type: function () {var name = this.meta.className();return name.split('.').pop()
+},
+drawOnDoc: function () {var me = this;document.shapes.addAndDraw(me);me.touch()
+document.undo.addCreateStep(me)
+return me
 }
 },
 after: {initialize: function () {this.optionalRegisterGuid();}
 },
 classMethods: {addToDoc: function (paras) { 
-var me = this.meta.instantiate(paras);document.shapes.addAndDraw(me);me.touch()
-document.undo.addCreateStep(me)
-return me
+var me = this.meta.instantiate(paras);return me.drawOnDoc()
 }
 }
 })
 })
-Module("block.ui.shape", function (m) {Class("Grid", {isa: block.ui.Shape,
+Module("block.ui.shape", function (m) {var firstDraw = true;Class("Grid", {isa: block.ui.Shape,
 has: {distance: {is:   "rw",
 init: 20
 },
@@ -2238,12 +2421,14 @@ multiSelection: {is: "rw"
 }
 },
 methods: {place: function () {var me       = this;this.$       = $("#grid");var offsetLeft = this.getOffsetLeft();var offsetTop  = this.getOffsetTop()
-var d        = this.getDocument();var width    = d.width()  - offsetLeft
-var height   = d.height() - offsetTop
-var distance = this.getDistance();var color    = this.getColor()
-var html     = "";for(var i = 0; i < width; i += distance) {html += '<div style="position:absolute; top: 0px; left: '+i+'px; width: 1px; height: '+height+'px"></div>\n'
+var d        = this.getDocument();if(firstDraw) {d = $(window)
+firstDraw = false
 }
-for(var i = 0; i < height; i += distance) {html += '<div style="position:absolute; top: '+i+'px; left: 0px; width: '+width+'px; height: 1px"><img src="/static/t.gif" width=1 height=1 /></div>\n'
+var distance = this.getDistance();var width    = d.width()  - offsetLeft - 1
+var height   = d.height() - offsetTop
+var html     = "";for(var i = 0; i < width; i += distance) {html += '<div style="top: 0px; left: '+i+'px; width: 1px; height: '+height+'px"></div>\n'
+}
+for(var i = 0; i < height; i += distance) {html += '<div style="top: '+i+'px; left: 0px; width: '+width+'px; height: 1px"><img src="/static/t.gif" width=1 height=1 /></div>\n'
 }
 this.$.append(html)
 this.$.width(width);this.$.height(height);this.$.click(function () {document.manager.clearFocus()
@@ -2284,7 +2469,7 @@ jQueryGridParameter: function () {return [this.getDistance(), this.getDistance()
 }
 })
 })
-Module("block.ui.shape", function (m) {Class("PropertiesPanel", {isa: block.ui.Shape,
+Module("block.ui.shape", function (m) {var refreshTimeout;Class("PropertiesPanel", {isa: block.ui.Shape,
 has: {_shape: {is: "rw"
 }
 },
@@ -2304,24 +2489,36 @@ return val
 }
 },
 place: function () {var me = this;this.$  = $("#properties");this.redraw()
-this.$.find("input,select").each(function () {var input = $(this);input.change(function () {var shape = me.getShape();if(shape) {me.callProp(this, shape, $(this).val())
-shape.updateState()
+this.$.find("#shapeProperties input,#shapeProperties select").each(function () {var input = $(this);input.change(function () {var shape = me.getShape();if(shape) {me.callProp(this, shape, $(this).val())
+document.manager.setDirty(true)
+document.sync.saveState()
 }
 })
 })
 },
-show: function () {this.$.show();},
-hide: function () {this.$.hide();},
+show: function () {$('#shapeProperties').show()
+$('#documentProperties').hide()
+this.redraw()
+},
+hide: function () {$('#shapeProperties').hide()
+$('#documentProperties').show()
+this.redraw()
+},
 setShape: function (newEle) {this._shape = newEle
 this.refresh(newEle);this.show()
 },
-refresh: function (shape) {var me = this;if(shape === this.getShape()) {$('#shapeType').html(shape.type())
-this.$.find("input, select").each(function () {$(this).val(me.callProp(this, shape))
+refresh: function (shape) {if(refreshTimeout) {clearTimeout(refreshTimeout)
+}
+var me = this;refreshTimeout = setTimeout(function () {if(shape === me.getShape()) {$('#shapeType').html(shape.type())
+me.$.find("#shapeProperties input, #shapeProperties select").each(function () {$(this).val(me.callProp(this, shape))
 })
 $.colorPicker.refreshSamples()
 }
+}, 0)
 },
-redraw: function () {this.$.css("top",$(window).height() - this.$.height());}
+redraw: function () {var height = this.$.height();this.$.css("top",""+($(window).height() - height - 20) + "px"); 
+this.$.css("width", ""+($(window).width() - 150)  + "px"); 
+}
 }
 })
 })
@@ -2407,9 +2604,11 @@ does: [
 block.ui.role.Group
 ],
 methods: {propagate: function () {},
+touch: function () {this.updated()
+},
 paste: function (target) {Joose.A.each(this.getElements(), function (ele) {ele.paste(target)
 })
-this.draw();this.redraw();document.manager.switchFocus(this)
+this.draw();this.redraw();document.manager.asyncSwitchFocus(this)
 },
 css: function (key, value) {var args = arguments
 if(value != null) {Joose.A.each(this.getElements(), function (shape) {shape.css.apply(shape, args)
@@ -2439,6 +2638,8 @@ focus: function () {this.$.removeClass("groupBlurred")
 Module("block.ui.shape", function (m) {Class("MultiSelection", {isa:  block.ui.Shape,
 does: [],
 methods: {create: function () {return jQuery("<div class='multiSelection shape'></div>")
+},
+touch: function () {this.updated()
 },
 selectContained: function () {var top    = this.$.offset().top
 var left   = this.left();var right  = this.right();var bottom = top + this.height()
@@ -2485,7 +2686,7 @@ init: function () { return {} }
 }
 },
 methods: {fetch: function (url) {var me = this;block.ui.SyncDocument.request("GET", url, null, function shapesFetched (data) {Joose.O.each(data, function (body, key) {body.setUrl(url);var id              = body.getId();me.setBody(body)
-var h = $('<li><a href="#">'+body.getName()+'</li>');h.click(function () { me.drawShape(id) })
+var h = $('<li><a href="#">'+body.getName().html()+'</li>');h.click(function () { me.drawShape(id) })
 $('#customShapes').append(h)
 })
 })
@@ -2496,8 +2697,7 @@ setBody: function (body) {this.getShapeBodies()[body.getId()] = body
 },
 drawShape: function (id) {var body  = this.getBody(id)
 var shape = new block.ui.shape.Custom({body: body
-});document.shapes.addAndDraw(shape)
-}
+});shape.drawOnDoc();}
 }
 });})
 Module("block.ui.shape", function (m) {Class("Custom", {isa:  block.ui.Shape,
@@ -2577,13 +2777,16 @@ _originGuid: {is: "rw"
 _destinationGuid: {is: "rw"
 }
 },
-methods: {changeNode: function (curNode, newNode) {if(curNode) {curNode.removeListener(this)
+methods: {changeNode: function (curNode, newNode) {if(newNode) {if(curNode) {curNode.removeListener(this)
 }
 newNode.addListener(this)
+} else {console.log("There is now newNode")
+}
 },
+updateFrom: function () {},
 notify: function (shape) {console.log("redraw connection")
 if(shape.isDeleted() && !this.isDeleted()) {this.destroy()
-} else {this.redraw()
+} else {this.asyncRedraw()
 }
 },
 place: function () {this.redraw()
@@ -2593,8 +2796,10 @@ redraw: function () {if(!this.isDeleted()) {this.connect(this.getOrigin(), this.
 },
 /* This currently implements a simple connection strategy based on 3 lines */
 /* and should later be refactored to allow for different connection strategires. */
-connect: function (shape1, shape2) {var orig = shape1;var dest = shape2;var origBottom = orig.bottom()
+connect: function (shape1, shape2) {try {var orig = shape1;var dest = shape2;var origBottom = orig.bottom()
 var destTop    = dest.top()
+} catch(e) {window.log(e);return
+}
 if(orig.top() > destTop) {orig = shape2
 dest = shape1
 origBottom = orig.bottom()
@@ -2643,6 +2848,7 @@ methods: {create: function () {return jQuery("<div class='line horizontalLine sh
 },
 getLength: function () {return this.getWidth()
 },
+updateFrom: function () {},
 setLength: function (len) {this.setWidth(len);if(len >= 0) {this.width(len)
 } else {len = Math.abs(len)
 this.x(this.left() - len);this.width(len)
@@ -2667,6 +2873,33 @@ this.y(this.top() - len);this.height(len)
 }
 }
 });})
+Module("block.ui", function (m) {Class("Template", {has: {_url: {is: "rw"
+}
+},
+methods: {loadAndDraw: function () {block.ui.SyncDocument.request("GET", this.getUrl(), null, function templateFetched (template) {block.ui.Guid.startReplaceSession();template.paste(document.shapes)
+})
+}
+}
+})
+})
+Module("block.ui", function (m) {Class("User", {has: {id: {is: "rw",
+init: document.paras.userName
+}
+},
+methods: {loggedIn: function () {return document.paras.userName != "";},
+login: function (action) {var after = window.location.href;after.replace(/#.+/, "");after += "&action="+action
+window.location.href = "/login?continue="+encodeURIComponent(after)
+},
+saveCurrentDocument: function () {if(this.loggedIn()) {document.manager.setDirty(true);document.sync.saveState();block.ui.SyncDocument.request("GET", "/save", { hash: document.paras.docId }, function saved (template) {alert("The document was successfully saved.")
+});} else {this.login("save");}
+},
+loadDocuments: function (callback) {if(this.loggedIn()) {block.ui.SyncDocument.request("GET", "/documents", null, function fetchDocuments (documents) {callback(documents)
+});} else {this.login("open")
+}
+}
+}
+})
+})
 JooseGearsInitializeGears()
 Module("block.ui", function (m) {Class("Sync", {has: {_maxVersion: {is: "rw",
 init: 0
@@ -2679,22 +2912,25 @@ init: true
 _syncInterval: {is: "rw"
 },
 _syncTime: {is: "rw"
+},
+_saveTimeout: {is: "rw"
 }
 },
 methods: {delayedUpdate: function () {var me = this;window.setTimeout(function syncUpdate () {me.update()
-}, 2000)
+}, 5000)
 },
-startListening: function ()  {var me = this;window.setInterval(function recoverTimer () {var last = me.setSyncTime();var now  = new Date().getTime();if(now - last > 35000) { 
+startListening: function ()  {var me = this;window.setInterval(function recoverTimer () {var last = me.getSyncTime();var now  = new Date().getTime();if(now - last > 20000) { 
 me.update()
 }
 }, 5000)
 },
-update: function () {this.getSyncTime(new Date().getTime())
+update: function () {this.setSyncTime(new Date().getTime())
 this.fetchStates();},
 updateFromArray: function (updates) {var me = this;for(var i = 0; i < updates.length; i++) {var update = updates[i];console.log("Update from version "+update.version)
-me.setMaxVersion(update.version);var doc = update.data
+var doc = update.data
 me.updateDocument(doc)
 }
+this.fireFirstDraw()
 this.delayedUpdate()
 },
 updateDocument: function (doc) {console.log("Got something new!")
@@ -2706,7 +2942,9 @@ var cur = map[shape.getGuid()]
 if(cur) {console.log("Update")
 if(!cur.isDeleted()) {cur.updateFrom(shape)
 if(cur.getContainer().getGuid() != container.getGuid()) {cur.getContainer().removeElement(cur)
-var dest = map[container.getGuid()];dest.add(cur)
+var dest = map[container.getGuid()];if(dest) {dest.add(cur)
+} else {console.log("Cannot find "+container.getGuid())
+}
 }
 }
 } else {console.log("Insert")
@@ -2714,19 +2952,31 @@ var dest
 if(container === state) { 
 dest = document.shapes
 } else {dest = map[container.getGuid()]
+if(dest) {dest.add(cur)
+} else {console.log("Cannot find "+container.getGuid())
+}
 }
 if(!shape.isDeleted()) {shape.registerGuid()
 dest.addAndDraw(shape)
 }
 }
-});if(this.getFirstUpdate()) {window.onfirstdraw();this.setFirstUpdate(false)
+});},
+fireFirstDraw: function () {if(this.getFirstUpdate()) {window.onfirstdraw();this.setFirstUpdate(false)
 }
 },
 fetchStates: function () {return m.SyncDocument.fetchNewData(this)
 },
-_saveState: function () {return m.SyncDocument.addData(this, false)
+_saveState: function () {var timer = this.getSaveTimeout();if(timer) {clearTimeout(timer)
+}
+var me = this;this.setSaveTimeout(
+window.setTimeout(
+function () {m.SyncDocument.addData(me, false)
 },
-saveState: function () {if(document.manager.getDirty()) {this._saveState()
+800)
+)
+},
+saveState: function () {if(document.manager.getDirty()) {saveMessage("Saving...")
+this._saveState()
 document.manager.setDirty(false)
 }
 },
@@ -2735,34 +2985,126 @@ savePermanent: function () {return m.SyncDocument.addData(this, true)
 syncedTime: function () {return new Date().getTime()
 }
 }
-});Class("SyncDocument", {classMethods: {fetchNewData: function (sync) {var dataArray = [];var rows      = []
-var doc = sync.getDoc()
-this.request("GET", "/fetch",
+});Class("SyncDocument", {classMethods: {fetchNewData: function (sync) {var dataArray  = [];var rows       = []
+var doc        = sync.getDoc()
+var maxVersion = sync.getMaxVersion() || 0;this.request("GET", "/fetch",
 {hash:        doc.getId(),
-max_version: (sync.getMaxVersion() || 0),
+max_version: maxVersion,
 session:     document.paras.sessionId,
 no_cache:    Math.random()
 },
-function updateData (data) {console.log("Got data "+data + data.data.length)
+function updateData (data) {console.log("Got data "+data + " Length: "+data.data.length + " (Requested from version "+maxVersion+"/"+Math.round(document.manager.syncedTime()/1000)+")")
 rows = data.data
-for(var i = 0; i < rows.length; i++) {console.log("Row version "+rows[i].version)
+var newMaxVersion = data.max_version;for(var i = 0; i < rows.length; i++) {console.log("Row version "+rows[i].version)
 dataArray.push({data:    JSON.parse(rows[i].data),
 version: rows[i].version
 });}
 sync.updateFromArray(dataArray)
+if(newMaxVersion > 0) {sync.setMaxVersion(newMaxVersion);}
 })
 },
-addData: function (sync, isSavePoint) {var me   = new m.SyncDocument();var doc  = sync.getDoc();var data = JSON.stringify(sync.getDoc());this.request("POST", "/add",
+addData: function (sync, isSavePoint) {var me   = new m.SyncDocument();var doc  = sync.getDoc();var data = JSON.stringify(sync.getDoc());console.log(data)
+this.request("POST", "/add",
 {hash:         doc.getId(),
 data:         data,
 is_savepoint: isSavePoint,
 name:         doc.getHeader().getTitle(),
 session:      document.paras.sessionId
 },
-function saveMessage () {console.log("save successful")
+function saveMessage () {window.saveMessage("Saved")
+console.log("save successful")
 });},
-request: function (method, url, data, callback) {Joose.Gears.ajaxRequest(method, url, data, function receivedData (data) {callback(JSON.parse(data))
+request: function (method, url, data, callback) {try {Joose.Gears.ajaxRequest(method, url, data, function receivedData (data) {console.log(data)
+callback(JSON.parse(data))
+}, function onError (request) {console.log("Error fetching url "+request.url+". Response code: " + request.status + " Response text: "+request.responseText)
+})
+} catch (e) {console.log(e)
+}
+}
+}
+});});if(!window.console) {window.console = {log: function log (msg) {}
+}
+}
+Joose.Storage.Unpacker.patchJSON();$(document).ready(function docReady () {$("#leftMenu h2").click(function () {$(this).parent().find('ul').toggle()
+})
+document.query   = new block.ui.Query();document.user    = new block.ui.User();document.manager = new block.ui.Manager();document.manager.setupShortcuts()
+document.grid = new block.ui.shape.Grid({ container: $("#grid") })
+document.grid.draw();$('.colorPicker').attachColorPicker();document.propPanel = new block.ui.shape.PropertiesPanel()
+document.propPanel.draw()
+$(window).resize(function onResize () {document.propPanel.redraw()
+document.grid.redraw()
+})
+$(window).scroll(function onScroll () {document.grid.redraw()
+})
+$("#stateDialog").dialog()
+$("#stateDialog").dialog("close")
+$("#share").focus(function () {this.select()
+})
+document.shapes = new block.ui.Container({ $: $('#shapeArea')});var doc         = new block.ui.Document({ body: document.shapes });document.sync   = new block.ui.Sync({ doc: doc })
+document.sync.update();document.sync.startListening()
+document.undo   = new block.ui.Undo();document.customShapes = new block.ui.CustomShapeManager();$('#welcomeDialog').dialog({height: "400px",
+width:  "500px"
+})
+$('#welcomeDialog').dialog("close")
+$('#loadDialog').dialog({height: "300px",
+width:  "400px"
+});$('#loadDialog').dialog("close")
+})
+function loadTemplate(url) {var template = new block.ui.Template({url: url
+})
+template.loadAndDraw()
+}
+function closeWelcomeDialog() {$('#welcomeDialog').dialog("close")
+}
+function showState() {var state = document.shapes.prettyPrint()
+$('#stateDialog textarea').val(state)
+$('#Dialog').dialog("open")
+}
+function showClipboardContent() {var val = document.manager.getTempStore() || "empty"
+$('#stateDialog textarea').val(val)
+$('#stateDialog').dialog("open")
+}
+function read() {$('#shapeArea').html("")
+var json        = document.getElementById("outputArea").value
+if(json != null && json != "") {document.shapes = JSON.parse(json);document.shapes.draw();document.shapes.redraw();document.sync.getDoc().setBody(document.shapes)
+}
+}
+function changeName() {var current = document.sync.getDoc().getHeader().getTitle()
+var name = prompt('Save as:', current);if(name) {document.sync.getDoc().getHeader().changeTitle(name)
+return true
+}
+return false
+}
+function write() {document.getElementById("outputArea").value = JSON.stringify(document.shapes)
+}
+function saveDocument() {if(changeName()) {document.user.saveCurrentDocument()
+}
+}
+function loadDocuments() {var list = $("#documentList");list.html("Loading...")
+$('#loadDialog').dialog("open")
+var html = "<table class=list>"
+html    += "<tr><th>Name</th><th>Last Update</th></tr>"
+document.user.loadDocuments(function (docs) {var count = 0;Joose.A.each(docs, function (doc) {html += "<tr class=listItem onclick=\"loadDocument('"+doc.hash.html()+"')\"><td>"+doc.name.html()+"</td><td>"+doc.lastUpdate.html()+"</td></tr>\n"
+count++
+})
+if(count == 0) {html += "<tr><td colspan=2>You have not yet saved any documents.</td></tr>"
+}
+html +="</table>"
+list.html(html)
 })
 }
+function loadDocument(hash) {location.href = "/?id="+hash
 }
-});});
+function saveMessage(msg) {$('#saveMessage').html(msg)
+}
+function doInitialAction() {window.setTimeout(function () {document.propPanel.redraw()}, 1000) 
+if(document.shapes.isEmpty()) {var template = document.query.param("template")
+if(template && template.length > 0) {loadTemplate(template)
+} else {$('#welcomeDialog').dialog("open")
+}
+}
+var action = document.query.param("action");if(action == "save") {saveDocument()
+}
+if(action == "open") {loadDocuments()
+}
+}

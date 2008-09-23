@@ -40,20 +40,18 @@ Module("block.ui", function (m) {
             },
             
             prettyPrint: function() {
-                var html = "<ul>\n"
+                var html = ""
                 var me   = this;
                 Joose.A.each(this.getElements(), function (ele) {
-                    html += "<li>"+ele+"\n<ul>\n"
+                    html += "  "+ele+"\n\n"
                     var fields = ["getGuid", "getLeft", "getWidth", "getHeight", "getTop", "getText", "getDeleted"]
                     Joose.A.each(fields, function (field, i) {
                         if(ele.meta.can(field)) {
-                            html += "<li>"+fields[i]+": "+ ele[field]() +"</li>"
+                            html += "    "+fields[i]+": "+ ele[field]() +"\n"
                         }
                     })
-                    html += "</ul>\n"
-                    html += ele.prettyPrint()+"</li>\n"
+                    html += ele.prettyPrint()+"\n"
                 })
-                html += "</ul>\n"
                 
                 return html
             },
@@ -94,6 +92,10 @@ Module("block.ui", function (m) {
                 this.add(ele);
                 this.draw();
                 this.redraw();
+            },
+            
+            isEmpty: function () {
+            	return this.getElements().length == 0;
             }
         }
     })

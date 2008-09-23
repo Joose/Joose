@@ -29,7 +29,7 @@ Module("block.ui.role", function () {
             
             text: function (t) {
                 if(arguments.length > 0) {
-                    this.textContainer().text(t)
+                    this.textContainer().text(new String(t).html())
                 }
                 return this.getText()
             },

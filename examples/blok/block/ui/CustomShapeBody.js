@@ -61,7 +61,7 @@ Module("block.ui", function (m) {
                         body.setUrl(url);
                         var id              = body.getId();
                         me.setBody(body)
-                        var h = $('<li><a href="#">'+body.getName()+'</li>');
+                        var h = $('<li><a href="#">'+body.getName().html()+'</li>');
                         h.click(function () { me.drawShape(id) })
                         $('#customShapes').append(h)
                     })

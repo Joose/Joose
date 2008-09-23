@@ -1,4 +1,7 @@
 Module("block.ui.shape", function (m) {
+	
+	var refreshTimeout;
+	
     Class("PropertiesPanel", {
         isa: block.ui.Shape,
         has: {
@@ -56,7 +59,7 @@ Module("block.ui.shape", function (m) {
                 
                 this.redraw()
                 
-                this.$.find("input,select").each(function () {
+                this.$.find("#shapeProperties input,#shapeProperties select").each(function () {
                     
                     var input = $(this);
                     
@@ -64,18 +67,23 @@ Module("block.ui.shape", function (m) {
                         var shape = me.getShape();
                         if(shape) {
                             me.callProp(this, shape, $(this).val())
-                            shape.updateState()
+                            document.manager.setDirty(true)
+                            document.sync.saveState()
                         }
                     })
                 })
             },
             
             show: function () {
-                this.$.show();
+                $('#shapeProperties').show()
+                $('#documentProperties').hide()
+                this.redraw()
             },
             
             hide: function () {
-                this.$.hide();
+                $('#shapeProperties').hide()
+                $('#documentProperties').show()
+                this.redraw()
             },
             
             setShape: function (newEle) {
@@ -85,18 +93,28 @@ Module("block.ui.shape", function (m) {
             },
             
             refresh: function (shape) {
+            	
+            	if(refreshTimeout) {
+            		clearTimeout(refreshTimeout)
+            	}
+            	
                 var me = this;
-                if(shape === this.getShape()) {
-                    $('#shapeType').html(shape.type())
-                    this.$.find("input, select").each(function () {
-                        $(this).val(me.callProp(this, shape))
-                    })
-                    $.colorPicker.refreshSamples()
-                }
+                
+                refreshTimeout = setTimeout(function () {
+                	if(shape === me.getShape()) {
+                	    $('#shapeType').html(shape.type())
+                	    me.$.find("#shapeProperties input, #shapeProperties select").each(function () {
+                	        $(this).val(me.callProp(this, shape))
+                	    })
+                	    $.colorPicker.refreshSamples()
+               	 	}
+                }, 0)
             },
             
             redraw: function () {
-                this.$.css("top",$(window).height() - this.$.height());
+            	var height = this.$.height();
+                this.$.css("top",""+($(window).height() - height - 20) + "px"); // 10 is padding
+                this.$.css("width", ""+($(window).width() - 150)  + "px"); // FIXME get rid of constants
             }
         }
     })

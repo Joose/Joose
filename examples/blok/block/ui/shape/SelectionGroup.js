@@ -25,7 +25,7 @@ Module("block.ui.shape", function (m) {
                 this.draw();
                 this.redraw();
                 
-                document.manager.switchFocus(this)
+                document.manager.asyncSwitchFocus(this)
             },
             
             css: function (key, value) {

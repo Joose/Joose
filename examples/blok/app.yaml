@@ -5,6 +5,9 @@ api_version: 1
 
 handlers:
 
+- url: /templates
+  static_dir: templates
+  
 - url: /static
   static_dir: static
   

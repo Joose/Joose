@@ -35,6 +35,10 @@ Module("block.ui", function (m) {
             deleted: {
                 is:            "rw",
                 init:        false
+            },
+            
+            redrawTimeout: {
+            	persistent:   false
             }
         },
         methods: {
@@ -53,6 +57,17 @@ Module("block.ui", function (m) {
                     this.placed = true
                     this.place()
                 }
+            },
+            
+            // call this to make sure you only redraw once in a mass redraw of shapes
+            asyncRedraw: function () {
+            	if(this.redrawTimeout) {
+            		clearTimeout(this.redrawTimeout)
+            	}
+            	var me = this;
+            	this.redrawTimeout = setTimeout(function asyncRedrawCallback () {
+            		me.redraw()
+            	}, 0)
             },
             
             redraw: function () {},

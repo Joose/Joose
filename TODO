@@ -7,6 +7,9 @@ Tests
 Documentation
 - All
 
+Bugs
+
+
 Features
 - implement class versioning
 - Improve Implementation of Attribute meta classes
@@ -24,3 +27,4 @@ Done:
 - Test object initialization with private attr and other edge cases
 - Dont step on other peoples toes with builders
 - Moved initialization from Class-Props into meta class so it is overridable
+- Allow instance and class methods with the same name

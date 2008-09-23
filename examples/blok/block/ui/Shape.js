@@ -197,7 +197,8 @@ Module("block.ui", function (m) {
                 if(arguments.length > 0) {
                     this.width(right - this.left())
                 } else {
-                    return this.left() + this.width()
+                	var right = this.left() + this.width();
+                    return right
                 }
             },
             bottom: function (bottom) {
@@ -205,7 +206,8 @@ Module("block.ui", function (m) {
                     var top = this.top()
                     this.height(bottom - top)
                 } else {
-                    return this.top()  + this.height()
+                	var bottom = this.top()  + this.height();
+                    return bottom;
                 }
             },
             zIndex: function (index) {
@@ -251,21 +253,19 @@ Module("block.ui", function (m) {
             },
             
             resetGuid: function () {
-                this.setGuid(this.initGuid())
+            	var guid = this.initGuid();
+                this.setGuid(guid)
                 this.registerGuid();
                 this.touch()
+                return guid
             },
             
             paste: function (target) {
-                
-                this.resetGuid()
-                
-                this.traverse(function (shape) {
-                    shape.resetGuid()
-                })
+            	
+            	block.ui.Guid.replaceGuids(this)
                 
                 target.addAndDraw(this);
-                document.manager.switchFocus(this)
+                document.manager.asyncSwitchFocus(this)
             },
             
             registerGuid: function () {

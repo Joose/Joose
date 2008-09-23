@@ -17,7 +17,7 @@ Module("block.ui", function (m) {
         	// "Transactions" make all steps until a commit collapse into a single step
         	beginTransaction: function () {
         		if(this.getActiveTransaction()) {
-        			throw new Error("there is already an active transaction")
+        			return
         		}
         		this.addUndoStep(function emptyUndoStep () {}, block.ui.Shape)
         		this.setActiveTransaction(true);

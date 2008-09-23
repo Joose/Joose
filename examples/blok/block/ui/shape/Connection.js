@@ -100,10 +100,18 @@ Module("block.ui.shape", function (m) {
         methods: {
             
             changeNode: function (curNode, newNode) {
-                if(curNode) {
-                    curNode.removeListener(this)
-                }
-                newNode.addListener(this)
+            	if(newNode) {
+                	if(curNode) {
+                	    curNode.removeListener(this)
+                	}
+                	newNode.addListener(this)
+            	} else {
+            		console.log("There is now newNode")
+            	}
+            },
+            
+            updateFrom: function () {
+            	// Do nothing. Update will happen through notification from attached Shapes
             },
             
             notify: function (shape) {
@@ -111,7 +119,7 @@ Module("block.ui.shape", function (m) {
                 if(shape.isDeleted() && !this.isDeleted()) {
                     this.destroy()
                 } else {
-                    this.redraw()
+                    this.asyncRedraw()
                 }
             },
             
@@ -128,11 +136,16 @@ Module("block.ui.shape", function (m) {
             /* This currently implements a simple connection strategy based on 3 lines */
             /* and should later be refactored to allow for different connection strategires. */
             connect: function (shape1, shape2) {
-                var orig = shape1;
-                var dest = shape2;
+            	try {
+                	var orig = shape1;
+                	var dest = shape2;
                 
-                var origBottom = orig.bottom()      
-                var destTop    = dest.top()
+                	var origBottom = orig.bottom()      
+                	var destTop    = dest.top()
+            	} catch(e) {
+            		window.log(e);
+            		return
+            	}
                 
                 if(orig.top() > destTop) {
                     // reverse origin and destination
@@ -230,6 +243,11 @@ Module("block.ui.shape", function (m) {
             getLength: function () {
                 return this.getWidth()
             },
+            
+            updateFrom: function () {
+            	//
+            },
+            
             setLength: function (len) {
                 this.setWidth(len);
                 if(len >= 0) {

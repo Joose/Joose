@@ -73,6 +73,8 @@ Module("block.ui", function (m) {
                     me.updateDocument(doc)
                 }    
                 
+                this.fireFirstDraw()
+                
                 // Request next Update
                 this.delayedUpdate()
             },
@@ -99,7 +101,11 @@ Module("block.ui", function (m) {
                             if(cur.getContainer().getGuid() != container.getGuid()) {
                                 cur.getContainer().removeElement(cur)
                                 var dest = map[container.getGuid()];
-                                dest.add(cur)
+                                if(dest) {
+                                	dest.add(cur)
+                                } else {
+                                	console.log("Cannot find "+container.getGuid())
+                                }
                             }
                         }
                     } else {
@@ -109,6 +115,11 @@ Module("block.ui", function (m) {
                             dest = document.shapes
                         } else {
                             dest = map[container.getGuid()]
+                            if(dest) {
+                               	dest.add(cur)
+                            } else {
+                              	console.log("Cannot find "+container.getGuid())
+                            }
                         }
                         if(!shape.isDeleted()) {
                             shape.registerGuid()
@@ -117,11 +128,13 @@ Module("block.ui", function (m) {
                     }
                 });
                 
-                if(this.getFirstUpdate()) {
+            },
+            
+            fireFirstDraw: function () {
+            	if(this.getFirstUpdate()) {
                     window.onfirstdraw();
                     this.setFirstUpdate(false)
                 }
-                
             },
             
             fetchStates: function () {
@@ -146,6 +159,7 @@ Module("block.ui", function (m) {
             
             saveState: function () {
                 if(document.manager.getDirty()) {
+                	saveMessage("Saving...")
                     this._saveState()
                     document.manager.setDirty(false)
                 }
@@ -220,6 +234,7 @@ Module("block.ui", function (m) {
                         session:      document.paras.sessionId
                     },
                     function saveMessage () {
+                    	window.saveMessage("Saved")
                         console.log("save successful")
                     });
             },

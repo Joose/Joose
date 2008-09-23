@@ -2,6 +2,8 @@ Module("block.ui", function (m) {
     
     var userId = Math.random();
     
+    var defaultTitle = "Untitled Document";
+    
     Class("DocumentHeader", {
         does: [Joose.Storage],
         has: {
@@ -24,17 +26,22 @@ Module("block.ui", function (m) {
         	changeTitle: function (title) {
         		this.setTitle(title);
         		this.touch()
+        	},
+        	
+        	isDefaultTitle: function () {
+        		return this.getTitle == defaultTitle
         	}
         },
         
         after: {
             
             initialize: function () {
-                this.setTitle("Untitled Document")
+                this.setTitle(defaultTitle)
             },
             
             setTitle: function () {
-                document.title = ""+this.getTitle() + " - blok";
+                document.title = (""+this.getTitle() + " - blok");
+                $('#documentTitle').html(this.getTitle().html())
             }
         }
     })

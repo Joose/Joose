@@ -23,15 +23,21 @@ body {
 	display: none
 }
 
+#canvas {
+}
+
 #grid {
 	position: absolute;
 	top: 0px;
 	left: 0px;
 	background-color: white;
+	overflow: hidden;
 }
 
 #grid div {
+	position:absolute;
 	background-color: #CCCCCC;
+	overflow: hidden;
 }
 
 
@@ -63,14 +69,19 @@ body {
 	color: black;
 }
 
+#shapeProperties {
+	display:  none;
+}
+
 #properties {
 	position: fixed;
-	display:  none;
 	left:     150px;
-	width:    100%;
+	
 	background-color: #dddddd;
 	padding: 4px;
 	z-index: 100000;
+	overflow: hidden;
+	padding-bottom: 20px;
 }
 
 #properties th {
@@ -215,3 +226,43 @@ input .number {
 	opacity:.10;
 	filter: alpha(opacity=10);
 }
+
+#welcomeDialog {
+	font-size: 14px;
+	line-height: 20px;
+}
+
+.list th {
+	text-align: left;
+}
+
+#documentList {
+	height: 100%;
+	overflow: auto;
+}
+
+.list.table {
+	width: 100%;
+	font-size: 12px;
+	line-height: 18px;
+}
+
+.list .listItem {
+	cursor: pointer;
+}
+
+#saveMessage {
+	margin-top: 20px;
+}
+
+#blocker {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	z-index: 10000000;
+	background-color: white;
+	padding: 10px;
+	font-size: 18px;
+	font-weight: bold;
+}
+

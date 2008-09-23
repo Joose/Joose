@@ -18,6 +18,8 @@ from google.appengine.api import memcache
 
 import json
 
+# Dear reader: I learned just as much Python to get this somewhat working. I'm sorry.
+
 class DocRevision(db.Model):
   hash    = db.StringProperty()
   owner   = db.UserProperty()
@@ -28,6 +30,16 @@ class DocRevision(db.Model):
   lastUpdate = db.DateTimeProperty(auto_now_add=True)
   def forJSON(self):
     return {'data' : ''+self.data , 'name' : self.name , 'version' : self.version}
+
+  def infoJSON(self):
+    return {'name' : self.name , 'hash' : self.hash , 'version' : self.version , 'lastUpdate' : str(self.lastUpdate)}
+
+class SavedDoc(db.Model):
+  hash    = db.StringProperty()
+  owner   = db.UserProperty()
+  session = db.StringProperty()
+  def forJSON(self):
+    return {'hash' : ''+self.hash}
 
 class Gadget(webapp.RequestHandler):
 
@@ -60,15 +72,22 @@ class MainPage(webapp.RequestHandler):
       gadgetLibs = gadgetLibs.split(",")
     
     if docHash is None or docHash == "":
-      self.redirect('/?id='+self.randomHash())
+      uri = '/?id='+self.randomHash()
+      if self.request.get('template') != "":
+        uri = uri + "&template=" + self.request.get('template')
+      self.redirect(uri)
     else:
+
+      userName = "";
+      
+      if user:
+        userName = user.nickname()
 
       newId     = self.randomHash();
       guidBase  = self.randomHash();
       now       = int(time.time() * 1000);
       sessionId = self.randomHash();
 
-      #if user:
       self.response.headers['Content-Type'] = 'text/html'
 
       template_file = 'index.t.html.mini';
@@ -76,14 +95,67 @@ class MainPage(webapp.RequestHandler):
         template_file = 'index.t.html'
         
       path = os.path.join(os.path.dirname(__file__), template_file)
-      self.response.out.write(template.render(path, { 'docId' : docHash , 'newId' : newId, 'guidBase' : guidBase, 'nowMilliseconds': now, "sessionId" : sessionId, "isTest" : isTest, "isBlank" : isBlank, "isGadget" : isGadget, 'gadgetLibs' : gadgetLibs }))
-      #else:
-      #  self.redirect(users.create_login_url(self.request.uri))
+      self.response.out.write(template.render(path, { 'docId' : docHash , 'userName' : userName, 'newId' : newId, 'guidBase' : guidBase, 'nowMilliseconds': now, "sessionId" : sessionId, "isTest" : isTest, "isBlank" : isBlank, "isGadget" : isGadget, 'gadgetLibs' : gadgetLibs }))
+
+class Login(webapp.RequestHandler):
+  def get(self):
+    user = users.get_current_user()
+
+    uri  = self.request.get("continue")
+    
+    if user:
+      self.redirect(uri)
+    else:
+      self.redirect(users.create_login_url(uri))
+
+
+class SaveDocument(webapp.RequestHandler):
+  def get(self):
+    user = users.get_current_user()
+    if user:
+
+      docHash = self.request.get('hash');
+
+      exists  = False
+      docs    = SavedDoc.gql("WHERE owner = :1 AND hash = :2", user, docHash)
+      for doc in docs:
+        exists = True;
+        break;
+      
+      if not exists:
+        doc = SavedDoc();
+        doc.hash  = docHash;
+        doc.owner = user;
+        doc.put()
+
+      self.response.out.write(json.write({ 'success' : True }))
+    else:
+      self.response.out.write(json.write({ 'error' : "no_login" }))
+
+class GetSavedDocuments(webapp.RequestHandler):
+  def get(self):
+    user = users.get_current_user()
+    if user:
+      
+      docs = SavedDoc.gql('WHERE owner = :1', user).fetch(100)
+
+      data = []
+
+      for doc in docs:
+        # find the current revision
+        if doc.hash != "":
+          revs  = DocRevision.gql("WHERE hash = :1 ORDER BY version DESC", doc.hash).fetch(1)
+          for rev in revs:
+            data.append(rev.infoJSON())
+
+      self.response.out.write(json.write(data))
+      
+    else:
+      self.response.out.write(json.write({ 'error' : "no_login" }))
 
 class AddData(webapp.RequestHandler):
   def post(self):
-    user = users.get_current_user()
-    #if user:
+    user = users.get_current_user() # optional
 
     key     = 'version'
 
@@ -94,22 +166,30 @@ class AddData(webapp.RequestHandler):
       memcache.set(key, version)
     else:
       version = memcache.incr(key)
-      
+
+    docHash = self.request.get('hash');
+    
     rev = DocRevision()
     rev.owner   = user
-    rev.hash    = self.request.get('hash')
+    rev.hash    = docHash
     rev.name    = self.request.get('name').decode('utf-8');
     
     rev.data    = self.request.get('data').decode('utf-8');
     rev.session = self.request.get('session')
     logging.info("Saving data "+rev.hash)
-    # rev.put()
     rev.version = int(version)
     rev.put()
     self.response.out.write(json.write({}))
-      
-    #else:
-    #  self.response.out.write(json.write({error: "need login"}))
+
+
+    # cleanup old versions
+    revs = DocRevision.gql("WHERE hash = :1 ORDER BY version DESC", docHash).fetch(40)
+
+    count = 0;
+    for rev in revs:
+      if count > 20: # skip entries that might still be needed by other users
+        rev.delete()
+      count = count + 1
       
 class FetchData(webapp.RequestHandler):
   def get(self):
@@ -164,7 +244,10 @@ def main():
                                         ('/add', AddData),
                                         ('/fetch', FetchData),
                                         ('/gadget.xml', Gadget),
-                                        ('/shape', FetchCustomShape)],
+                                        ('/shape', FetchCustomShape),
+                                        ('/login', Login),
+                                        ('/documents', GetSavedDocuments),
+                                        ('/save', SaveDocument)],
                                        debug=True)
   wsgiref.handlers.CGIHandler().run(application)
 

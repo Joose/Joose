@@ -1,7 +1,7 @@
 Module("block.ui", function () {
     
+    var focusTimeout;
     
-    var GuidCounter = 0;
     
     Class("Manager", {
         has: {
@@ -37,11 +37,19 @@ Module("block.ui", function () {
                 win.keyup(function keyup () {
                     me.setCurrentKeyCode(null)
                 })
+            },
+            
+            setDirty: function () {
+            	saveMessage("Unsaved")
             }
         },
         methods: {
-            
             clearFocus: function () {
+            	
+            	if(focusTimeout) { // If focus was set asynchronously, clear the timeout
+            		clearTimeout(focusTimeout)
+            	}
+            	
                 if(this._focusElement) {
                     this._focusElement.blur()
                 }
@@ -49,6 +57,19 @@ Module("block.ui", function () {
                 
                 document.propPanel.hide()
             },
+            
+            // Use when switching focus multiple times to avoid actually doing it every time
+            asyncSwitchFocus: function () {
+            	if(focusTimeout) {
+            		clearTimeout(focusTimeout)
+            	}
+            	var me   = this;
+            	var args = arguments
+            	focusTimeout = setTimeout(function () {
+            		me.switchFocus.apply(me, args)
+            	}, 0)
+            },
+            
             switchFocus: function (newEle, shiftDown) {
                 if(this._focusElement === newEle) {
                     if(shiftDown) {
@@ -126,6 +147,15 @@ Module("block.ui", function () {
                     }
                 };
                 
+                var save = function () {
+                	saveDocument()
+                };
+                
+                var openDocs = function () {
+                	loadDocuments()
+                }
+                
+                
                 var undo = function () {
                     document.undo.undo()
                 }
@@ -144,6 +174,11 @@ Module("block.ui", function () {
                 $.hotkeys.add("del",       options, destroy);
                 $.hotkeys.add("Ctrl+z", options, undo);
                 $.hotkeys.add("Meta+z", options, undo);
+                
+                $.hotkeys.add("Ctrl+s", options, save);
+                $.hotkeys.add("Meta+s", options, save);
+                $.hotkeys.add("Ctrl+o", options, openDocs);
+                $.hotkeys.add("Meta+o", options, openDocs);
             },
             
             shiftKeyDown: function () {
@@ -168,7 +203,7 @@ Module("block.ui", function () {
             },
             
             makeGuid: function () {
-                return document.paras.guidBase + "-" + GuidCounter++
+                return block.ui.Guid.create()
             },
             
             shapeFromGuid: function (guid) {
@@ -193,6 +228,9 @@ Module("block.ui", function () {
             paste: function () {
                 var content = this.getTempStore()
                 if(content) {
+                	
+                	block.ui.Guid.startReplaceSession();
+                	
                     var shape = JSON.parse(content)
                     
                     shape.paste(document.shapes);

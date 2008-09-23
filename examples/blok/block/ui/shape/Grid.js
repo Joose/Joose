@@ -1,4 +1,7 @@
 Module("block.ui.shape", function (m) {
+	
+	var firstDraw = true;
+	
     Class("Grid", {
         isa: block.ui.Shape,
         has: {
@@ -25,16 +28,19 @@ Module("block.ui.shape", function (m) {
                 var offsetTop  = this.getOffsetTop()
                 
                 var d        = this.getDocument();
-                var width    = d.width()  - offsetLeft
-                var height   = d.height() - offsetTop
+                if(firstDraw) {
+                	d = $(window)
+                	firstDraw = false
+                }
                 var distance = this.getDistance();
-                var color    = this.getColor()
+                var width    = d.width()  - offsetLeft - 1
+                var height   = d.height() - offsetTop
                 var html     = "";
                 for(var i = 0; i < width; i += distance) {
-                    html += '<div style="position:absolute; top: 0px; left: '+i+'px; width: 1px; height: '+height+'px"></div>\n'
+                    html += '<div style="top: 0px; left: '+i+'px; width: 1px; height: '+height+'px"></div>\n'
                 }
                 for(var i = 0; i < height; i += distance) {
-                    html += '<div style="position:absolute; top: '+i+'px; left: 0px; width: '+width+'px; height: 1px"><img src="/static/t.gif" width=1 height=1 /></div>\n'
+                    html += '<div style="top: '+i+'px; left: 0px; width: '+width+'px; height: 1px"><img src="/static/t.gif" width=1 height=1 /></div>\n'
                 }
                 
                 this.$.append(html)
