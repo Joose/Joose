@@ -1,11 +1,15 @@
 Module("block.ui.shape", function (m) {
-	
-	var refreshTimeout;
-	
+    
+    var refreshTimeout;
+    
     Class("PropertiesPanel", {
         isa: block.ui.Shape,
         has: {
             _shape: {
+                is: "rw"
+            },
+            
+            _openEdit: { // stores an edit action that gets executed if there wasnt an event before a change of shape
                 is: "rw"
             }
         },
@@ -52,6 +56,16 @@ Module("block.ui.shape", function (m) {
                  }
             },
             
+            handleChange: function (input, shape) {
+                var me = this;
+                if(shape) {
+                    me.setOpenEdit(null);
+                    document.undo.addUpdateStep(shape)
+                    me.callProp(input, shape, $(input).val())
+                    shape.touch()
+                }
+            },
+            
             place: function () {
                 var me = this;
                 
@@ -59,17 +73,24 @@ Module("block.ui.shape", function (m) {
                 
                 this.redraw()
                 
+                // Update property on change of input field or select box
                 this.$.find("#shapeProperties input,#shapeProperties select").each(function () {
-                    
-                    var input = $(this);
-                    
-                    input.change(function () {
-                        var shape = me.getShape();
-                        if(shape) {
-                            me.callProp(this, shape, $(this).val())
-                            document.manager.setDirty(true)
-                            document.sync.saveState()
-                        }
+                    $(this).change(function () {
+                        me.handleChange(this, me.getShape())
+                    })
+                })
+                
+                // if we have a keypress event on an input, we will interpret this as a change if
+                // there is no onchange event, but we change shapes
+                this.$.find("#shapeProperties input").each(function () {
+                    $(this).keypress(function () {
+                        
+                        var input = this;
+                        var shape = me.getShape()
+                        
+                        me.setOpenEdit(function () {
+                            me.handleChange(input, shape)
+                        })
                     })
                 })
             },
@@ -81,38 +102,49 @@ Module("block.ui.shape", function (m) {
             },
             
             hide: function () {
+                this.executeOpenEdit()
                 $('#shapeProperties').hide()
                 $('#documentProperties').show()
                 this.redraw()
             },
             
+            executeOpenEdit: function () {
+                var edit = this.getOpenEdit();
+                if(edit) {
+                    edit()
+                    this.setOpenEdit(null)
+                }
+            },
+            
             setShape: function (newEle) {
+                this.executeOpenEdit()
                 this._shape = newEle
                 this.refresh(newEle);
                 this.show()
             },
             
             refresh: function (shape) {
-            	
-            	if(refreshTimeout) {
-            		clearTimeout(refreshTimeout)
-            	}
-            	
+                
+                if(refreshTimeout) {
+                    clearTimeout(refreshTimeout)
+                }
+                
                 var me = this;
                 
+                // fill in values from newly assigned shape
                 refreshTimeout = setTimeout(function () {
-                	if(shape === me.getShape()) {
-                	    $('#shapeType').html(shape.type())
-                	    me.$.find("#shapeProperties input, #shapeProperties select").each(function () {
-                	        $(this).val(me.callProp(this, shape))
-                	    })
-                	    $.colorPicker.refreshSamples()
-               	 	}
+                    if(shape === me.getShape()) {
+                        $('#shapeType').html(shape.type())
+                        me.$.find("#shapeProperties input, #shapeProperties select").each(function () {
+                            $(this).val(me.callProp(this, shape))
+                        })
+                        $.colorPicker.refreshSamples()
+                        }
                 }, 0)
             },
             
             redraw: function () {
-            	var height = this.$.height();
+                var height = this.$.height();
                 this.$.css("top",""+($(window).height() - height - 20) + "px"); // 10 is padding
                 this.$.css("width", ""+($(window).width() - 150)  + "px"); // FIXME get rid of constants
             }
