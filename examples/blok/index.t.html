@@ -3,7 +3,7 @@
 <head>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Loading...</title>
+<title>blok: Collaborative Editing of Diagrams and UI Prototypes</title>
 
 
 <script type="text/javascript">
@@ -113,6 +113,35 @@ function onfirstdraw() {
 
 <div id="canvas">
 
+<div id="welcomeDialog" class="flora" title="Welcome to blok">
+  <h1>Welcome to blok</h1>
+  <p>
+    blok is a web based application for real time collaborative editing of simple diagrams and 
+    user interface prototypes.
+  </p>
+  <p>
+    Simply share the URL of this document with a friend or co-worker and all changes will be 
+    synchronized between your computers immediately.
+  </p>
+  <p>
+    Try out the regular keyboard short cuts for copy, paste, delete, undo and select all. 
+    They should work just like you expect.
+  </p>
+  <p><strong>How would you like to start?</strong></p>
+  <ul>
+    <li><a href="javascript:closeWelcomeDialog()">Create a new diagram</a></li>
+    <li><a href="javascript:loadTemplate('/templates/diagram/organigram.json'); closeWelcomeDialog()">Start with a diagram template</a></li>
+    <li><a href="javascript:loadTemplate('/templates/ui/web-page.json'); closeWelcomeDialog()">Start with a web-page prototype template</a></li>
+  </ul>
+</div>
+<div id="stateDialog" class="flora" title="Document State" style="font-size: 9px">
+  <textarea style="width:100%;height:100%"></textarea>
+</div>
+
+<div id="loadDialog" class="flora" title="Your Documents">
+  <div id="documentList"></div>
+</div>
+
 <div id="leftMenu">
 <ul>
   <li>
@@ -216,35 +245,7 @@ function onfirstdraw() {
 </div>
 </div>
 
-<div id="stateDialog" class="flora" title="Document State" style="font-size: 9px">
-  <textarea style="width:100%;height:100%"></textarea>
-</div>
 
-<div id="loadDialog" class="flora" title="Your Documents">
-  <div id="documentList"></div>
-</div>
-
-<div id="welcomeDialog" class="flora" title="Welcome to blok">
-  <h1>Welcome to blok</h1>
-  <p>
-    blok is a web based application for real time collaborative editing of simple diagrams and 
-    user interface prototypes.
-  </p>
-  <p>
-    Simply share the URL of this document with a friend or co-worker and all changes will be 
-    synchronized between your computers immediately.
-  </p>
-  <p>
-    Try out the regular keyboard short cuts for copy, paste, delete, undo and select all. 
-    They should work just like you expect.
-  </p>
-  <p><strong>How would you like to start?</strong></p>
-  <ul>
-    <li><a href="javascript:closeWelcomeDialog()">Create a new diagram</a></li>
-    <li><a href="javascript:loadTemplate('/templates/diagram/organigram.json'); closeWelcomeDialog()">Start with a diagram template</a></li>
-    <li><a href="javascript:loadTemplate('/templates/ui/web-page.json'); closeWelcomeDialog()">Start with a web-page prototype template</a></li>
-  </ul>
-</div>
 
 
 

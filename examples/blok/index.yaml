@@ -10,13 +10,13 @@ indexes:
 # automatically uploaded to the admin console when you next deploy
 # your application using appcfg.py.
 
-# Used 3978 times in query history.
+# Used 3986 times in query history.
 - kind: DocRevision
   properties:
   - name: hash
   - name: version
 
-# Used 522 times in query history.
+# Used 558 times in query history.
 - kind: DocRevision
   properties:
   - name: hash

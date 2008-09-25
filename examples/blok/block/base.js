@@ -12,6 +12,10 @@ if(!window.console) {
 Joose.Storage.Unpacker.patchJSON();
 
 $(document).ready(function docReady () {
+	
+	document.title = "Loading...";
+	
+	initializeDialogs()
 
     $("#leftMenu h2").click(function () {
         $(this).parent().find('ul').toggle()
@@ -40,9 +44,6 @@ $(document).ready(function docReady () {
         document.grid.redraw()
     })
     
-    $("#stateDialog").dialog()
-    $("#stateDialog").dialog("close")
-    
     $("#share").focus(function () {
         this.select()
     })
@@ -60,6 +61,12 @@ $(document).ready(function docReady () {
     
     document.customShapes = new block.ui.CustomShapeManager();
     //document.customShapes.fetch("/static/custom-shapes/test.shape.json")
+
+})
+
+function initializeDialogs() {
+	$("#stateDialog").dialog()
+    $("#stateDialog").dialog("close")
     
     $('#welcomeDialog').dialog({
         height: "400px",
@@ -72,9 +79,7 @@ $(document).ready(function docReady () {
         width:  "400px"
     });
     $('#loadDialog').dialog("close")
-    
-    
-})
+}
 
 function loadTemplate(url) {
     var template = new block.ui.Template({

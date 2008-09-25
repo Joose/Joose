@@ -3045,7 +3045,8 @@ request: function (method, url, data, callback) {try {Joose.Gears.ajaxRequest(me
 });});if(!window.console) {window.console = {log: function log (msg) {}
 }
 }
-Joose.Storage.Unpacker.patchJSON();$(document).ready(function docReady () {$("#leftMenu h2").click(function () {$(this).parent().find('ul').toggle()
+Joose.Storage.Unpacker.patchJSON();$(document).ready(function docReady () {document.title = "Loading...";initializeDialogs()
+$("#leftMenu h2").click(function () {$(this).parent().find('ul').toggle()
 })
 document.query   = new block.ui.Query();document.user    = new block.ui.User();document.manager = new block.ui.Manager();document.manager.setupShortcuts()
 document.grid = new block.ui.shape.Grid({ container: $("#grid") })
@@ -3056,20 +3057,21 @@ document.grid.redraw()
 })
 $(window).scroll(function onScroll () {document.grid.redraw()
 })
-$("#stateDialog").dialog()
-$("#stateDialog").dialog("close")
 $("#share").focus(function () {this.select()
 })
 document.shapes = new block.ui.Container({ $: $('#shapeArea')});var doc         = new block.ui.Document({ body: document.shapes });document.sync   = new block.ui.Sync({ doc: doc })
 document.sync.update();document.sync.startListening()
-document.undo   = new block.ui.Undo();document.customShapes = new block.ui.CustomShapeManager();$('#welcomeDialog').dialog({height: "400px",
+document.undo   = new block.ui.Undo();document.customShapes = new block.ui.CustomShapeManager();})
+function initializeDialogs() {$("#stateDialog").dialog()
+$("#stateDialog").dialog("close")
+$('#welcomeDialog').dialog({height: "400px",
 width:  "500px"
 })
 $('#welcomeDialog').dialog("close")
 $('#loadDialog').dialog({height: "300px",
 width:  "400px"
 });$('#loadDialog').dialog("close")
-})
+}
 function loadTemplate(url) {var template = new block.ui.Template({url: url
 })
 template.loadAndDraw()
