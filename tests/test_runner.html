@@ -6,10 +6,33 @@
 
 
 <script type="text/javascript" src="../ext/test_simple.js"></script>
-<script type="text/javascript" src="../lib/Joose.js"></script>
+
 <script type="text/javascript">
 
-joose.loadComponents("../lib")
+var html1 = "";
+var html2 = null;
+
+// Joose in a single lib, only works in release dir
+if(location.search.indexOf("mode=single") != -1) {
+	html1 = '<'+'script type="text/javascript" src="../joose.js"><'+'/script>';
+}
+else
+// Joose in a single minified lib, only works in release dir
+if(location.search.indexOf("mode=mini") != -1) {
+	html1 = '<'+'script type="text/javascript" src="../joose.mini.js"><'+'/script>';
+}
+// Joose loaded from multiple files
+else {
+	html1 = '<'+'script type="text/javascript" src="../lib/Joose.js"></'+'script>'
+	html2 = '<'+'script type="text/javascript">joose.loadComponents("../lib")</'+'script>'
+}
+document.write(html1)
+</script>
+
+<script type="text/javascript">
+if(html2) { // IE hates executing two script tags via the same document write
+	document.write(html2)
+}
 </script>
 
 <script type="text/javascript" src="json2.js"></script>
@@ -27,7 +50,9 @@ joose.loadComponents("../lib")
 var query = location.search;
 var parts = query.split("?");
 
-var testUrl = unescape(parts[1]);
+parts     = parts[1].split("&")
+
+var testUrl = unescape(parts[0]);
 
 if(testUrl.indexOf(":") != -1) {
 	throw "illegal testUrl: "+testUrl

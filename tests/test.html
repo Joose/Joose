@@ -7,11 +7,6 @@
 
 <script type="text/javascript" src="../ext/test_simple.js"></script>
 
-<script type='text/javascript' src='../lib/Joose.js'></script>
-<script type="text/javascript">
-joose.loadComponents("../lib")
-</script>
-
 <script type="text/javascript" src="json2.js"></script>
 <link href="test.css" rel="stylesheet" type="text/css" />
 
@@ -33,6 +28,16 @@ function draw() {
 </head>
 
 <body>
+
+<form>
+Test
+<ul>
+  <li><input type="radio" name="mode" value="" checked=true> Joose Source</li>
+  <li><input type="radio" name="mode" value="single"> joose.js</li>
+  <li><input type="radio" name="mode" value="mini"> joose.mini.js</li>
+</ul>
+<input type="submit" value="Run">
+</form>
 
 <h1>Ran <span id="count_ran">0</span> of <span id="count_total">0</span> Tests. <span id="count_errors">0</span> Failures</h1>
 

@@ -63,7 +63,9 @@ function plan(count) {
     
     if(window.parent) {
     	window.parent.totalTests += count;
-    	window.parent.draw()
+    	if(window.parent.draw) {
+    		window.parent.draw()
+    	}
     }
 }
 
@@ -206,7 +208,7 @@ function endTests() {
 
 function runTestFile(url) {
     
-    var html = '<h2>Testfile: '+url+'</h2><iframe width=100% height=200 src="test_runner.html?'+url+'"></iframe>'
+    var html = '<h2>Testfile: '+url+'</h2><iframe width=100% height=200 src="test_runner.html?'+url+'&'+location.search.replace(/\?/, '')+'"></iframe>'
     
     var div = document.createElement("div");
     div.className = "test"
