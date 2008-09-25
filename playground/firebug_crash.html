@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Firebug/Gears bug</title>
+<script type="text/javascript">
+
+function initializeGears() {
+  // We are already defined. Hooray!
+  if (window.google && google.gears) {
+    return;
+  }
+
+  var factory = null;
+
+  // Firefox
+  if (typeof GearsFactory != 'undefined') {
+    factory = new GearsFactory();
+  } else {
+    // IE
+    try {
+      factory = new ActiveXObject('Gears.Factory');
+      // privateSetGlobalObject is only required and supported on WinCE.
+      if (factory.getBuildInfo().indexOf('ie_mobile') != -1) {
+        factory.privateSetGlobalObject(this);
+      }
+    } catch (e) {
+      // Safari
+      if (navigator.mimeTypes["application/x-googlegears"]) {
+        factory = document.createElement("object");
+        factory.style.display = "none";
+        factory.width = 0;
+        factory.height = 0;
+        factory.type = "application/x-googlegears";
+        document.documentElement.appendChild(factory);
+      }
+    }
+  }
+
+  // *Do not* define any objects if Gears is not installed. This mimics the
+  // behavior of Gears defining the objects in the future.
+  if (!factory) {
+    return;
+  }
+
+  // Now set up the objects, being careful not to overwrite anything.
+  //
+  // Note: In Internet Explorer for Windows Mobile, you can't add properties to
+  // the window object. However, global objects are automatically added as
+  // properties of the window object in all browsers.
+  if (!window.google) {
+    google = {};
+  }
+
+  if (!google.gears) {
+    google.gears = {factory: factory};
+  }
+}
+
+initializeGears()
+
+
+        function ajaxRequest(method, url, data, callback, errorCallback) {
+        
+            var request = google.gears.factory.create('beta.httprequest');
+            var dataString    = ""
+            if(data) {
+                for(var i in data) {
+                    dataString += encodeURIComponent(i)+"="+encodeURIComponent(data[i])+"&"
+                }
+            }
+            var theUrl = url;
+            if(data && method == "GET") {
+                theUrl += "?"+dataString
+            }
+            request.open(method, theUrl, true);
+                
+            request.onreadystatechange = function onreadystatechange () {
+                if (request.readyState == 4) {
+                    if(request.status >= 200 && request.status < 400) {
+                        var res = request.responseText;
+                        callback(res)
+                    } else {
+                        if(errorCallback) {
+                            return errorCallback(request)
+                        } else {
+                            throw new Error("Error fetching url "+theUrl+". Response code: " + request.status + " Response text: "+request.responseText)
+                        }
+                    }
+                }
+            };
+            if(data && method == "POST") {
+                // FIXME determine page encoding instead of always using UTF8
+                request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8"); 
+                request.send(dataString)
+            } else {
+                dataString = ""
+                request.send(dataString);
+            }
+        }
+        
+        ajaxRequest("GET", "firebug_crash.html", null, function () {
+        	alert("Received content")
+        })
+
+</script
+</head>
+
+<body>
+</body>
+</html>
