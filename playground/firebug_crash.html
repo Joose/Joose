@@ -63,7 +63,7 @@ initializeGears()
         function ajaxRequest(method, url, data, callback, errorCallback) {
         	
             var request;
-            if(location.href.indexOf("no_gears") != -1) {
+            if(location.href.indexOf("gears") != -1) {
                 request = google.gears.factory.create('beta.httprequest');
             } else {
                 request = window.ActiveXObject ? new ActiveXObject("Microsoft.XMLHTTP") : new XMLHttpRequest();
