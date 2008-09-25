@@ -136,16 +136,11 @@ Module("block.ui.shape", function (m) {
             /* This currently implements a simple connection strategy based on 3 lines */
             /* and should later be refactored to allow for different connection strategires. */
             connect: function (shape1, shape2) {
-                try {
-                    var orig = shape1;
-                    var dest = shape2;
+                var orig = shape1;
+                var dest = shape2;
                 
-                    var origBottom = orig.bottom()      
-                    var destTop    = dest.top()
-                } catch(e) {
-                    window.log(e);
-                    return
-                }
+                var origBottom = orig.bottom()      
+                var destTop    = dest.top()
                 
                 if(orig.top() > destTop) {
                     // reverse origin and destination
@@ -171,26 +166,38 @@ Module("block.ui.shape", function (m) {
                 
                 v0.len(vlen);
                 
-                   var hlen = destCenter.left - origCenter.left;
+                var hlen = destCenter.left - origCenter.left;
                    
-                   h0.draw()
-                   h0.y(origBottom + vlen);
-                   h0.x(origCenter.left)
-                   h0.len(hlen)
+                h0.draw()
+                h0.y(origBottom + vlen);
+                h0.x(origCenter.left)
+                h0.len(hlen)
                    
-                   v1.draw();
-                   v1.y(origBottom + vlen);
+                v1.draw();
+                v1.y(origBottom + vlen);
                 v1.x(origCenter.left + hlen)
                 v1.len(vlen)
                 
                 if(origBottom > destTop) {
+                    if(orig.overlaps(dest)) {
+                    	v0.hide()
+                    	v1.hide()
+                    	h0.hide()
+                    } else {
+                    	
+                    	v0.hide()
+                    	v1.hide()
+                    	h0.show()
+                    	
+                    	if(origCenter.left < destCenter.left) {
+                    		h0.x(orig.right() + 1)
+                    		h0.len(dest.left() - orig.right() - 1)
+                    	} else {
+							h0.x(dest.right() + 1)
+                    		h0.len(orig.left() - dest.right() - 1)
+                    	}
+                    }
                     
-                    console.log("Special case for later")
-                        
-                    
-                    v0.hide()
-                    v1.hide()
-                    h0.hide()
                 } else {
                     v0.show()
                     v1.show()
