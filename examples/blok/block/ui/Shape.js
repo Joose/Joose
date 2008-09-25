@@ -271,6 +271,7 @@ Module("block.ui", function (m) {
             registerGuid: function () {
                 document.manager.shapeByGuidMap[this.getGuid()] = this
             },
+            
             optionalRegisterGuid: function () {
                 if(!document.manager.shapeByGuidMap[this.getGuid()]) {
                     this.registerGuid()
@@ -295,7 +296,7 @@ Module("block.ui", function (m) {
                 return name.split('.').pop()
             },
             
-           drawOnDoc: function () {
+            drawOnDoc: function () {
                 var me = this;
                 
                 document.shapes.addAndDraw(me);
@@ -304,6 +305,18 @@ Module("block.ui", function (m) {
                 document.undo.addCreateStep(me)
                 
                 return me
+            },
+            
+            // calculate whether this shapes overlaps with other shapes
+            // by negating the conditions for no overlap
+            // Only works for rectangular shapes
+            overlaps: function (other) {
+            	return !(
+            		other.left()   > this.right() ||
+            		other.right()  < this.left()  ||
+            		other.top()    > this.bottom() ||
+            		other.bottom() < this.top() 
+            	)
             }
         },
         after: {
