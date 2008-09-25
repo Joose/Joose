@@ -197,7 +197,7 @@ Module("block.ui", function (m) {
                 if(arguments.length > 0) {
                     this.width(right - this.left())
                 } else {
-                	var right = this.left() + this.width();
+                    var right = this.left() + this.width();
                     return right
                 }
             },
@@ -206,7 +206,7 @@ Module("block.ui", function (m) {
                     var top = this.top()
                     this.height(bottom - top)
                 } else {
-                	var bottom = this.top()  + this.height();
+                    var bottom = this.top()  + this.height();
                     return bottom;
                 }
             },
@@ -253,7 +253,7 @@ Module("block.ui", function (m) {
             },
             
             resetGuid: function () {
-            	var guid = this.initGuid();
+                var guid = this.initGuid();
                 this.setGuid(guid)
                 this.registerGuid();
                 this.touch()
@@ -261,8 +261,8 @@ Module("block.ui", function (m) {
             },
             
             paste: function (target) {
-            	
-            	block.ui.Guid.replaceGuids(this)
+                
+                block.ui.Guid.replaceGuids(this)
                 
                 target.addAndDraw(this);
                 document.manager.asyncSwitchFocus(this)
@@ -296,9 +296,9 @@ Module("block.ui", function (m) {
             },
             
            drawOnDoc: function () {
-            	var me = this;
-            	
-            	document.shapes.addAndDraw(me);
+                var me = this;
+                
+                document.shapes.addAndDraw(me);
                 me.touch()
                 
                 document.undo.addCreateStep(me)
@@ -314,7 +314,7 @@ Module("block.ui", function (m) {
         classMethods: {
             addToDoc: function (paras) { // use to add new shapes to the document
                 var me = this.meta.instantiate(paras);
-               	return me.drawOnDoc()
+                   return me.drawOnDoc()
             }
         }
     })

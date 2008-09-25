@@ -17,20 +17,20 @@ Module("block.ui", function (m) {
         },
         
         methods: {
-        	touch: function () {
-        		document.manager.setDirty(true);
-        		document.sync.saveState()
-        	},
-        	
-        	// Need this extra method, because setTitle is also called upon initialization
-        	changeTitle: function (title) {
-        		this.setTitle(title);
-        		this.touch()
-        	},
-        	
-        	isDefaultTitle: function () {
-        		return this.getTitle == defaultTitle
-        	}
+            touch: function () {
+                document.manager.setDirty(true);
+                document.sync.saveState()
+            },
+            
+            // Need this extra method, because setTitle is also called upon initialization
+            changeTitle: function (title) {
+                this.setTitle(title);
+                this.touch()
+            },
+            
+            isDefaultTitle: function () {
+                return this.getTitle == defaultTitle
+            }
         },
         
         after: {

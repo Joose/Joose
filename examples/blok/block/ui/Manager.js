@@ -40,16 +40,16 @@ Module("block.ui", function () {
             },
             
             setDirty: function () {
-            	saveMessage("Unsaved")
+                saveMessage("Unsaved")
             }
         },
         methods: {
             clearFocus: function () {
-            	
-            	if(focusTimeout) { // If focus was set asynchronously, clear the timeout
-            		clearTimeout(focusTimeout)
-            	}
-            	
+                
+                if(focusTimeout) { // If focus was set asynchronously, clear the timeout
+                    clearTimeout(focusTimeout)
+                }
+                
                 if(this._focusElement) {
                     this._focusElement.blur()
                 }
@@ -60,14 +60,14 @@ Module("block.ui", function () {
             
             // Use when switching focus multiple times to avoid actually doing it every time
             asyncSwitchFocus: function () {
-            	if(focusTimeout) {
-            		clearTimeout(focusTimeout)
-            	}
-            	var me   = this;
-            	var args = arguments
-            	focusTimeout = setTimeout(function () {
-            		me.switchFocus.apply(me, args)
-            	}, 0)
+                if(focusTimeout) {
+                    clearTimeout(focusTimeout)
+                }
+                var me   = this;
+                var args = arguments
+                focusTimeout = setTimeout(function () {
+                    me.switchFocus.apply(me, args)
+                }, 0)
             },
             
             switchFocus: function (newEle, shiftDown) {
@@ -148,11 +148,11 @@ Module("block.ui", function () {
                 };
                 
                 var save = function () {
-                	saveDocument()
+                    saveDocument()
                 };
                 
                 var openDocs = function () {
-                	loadDocuments()
+                    loadDocuments()
                 }
                 
                 
@@ -222,15 +222,15 @@ Module("block.ui", function () {
             },
             
             syncedTime: function () {
-            	return new Date().getTime() + document.paras.timeOffset
+                return new Date().getTime() + document.paras.timeOffset
             },
             
             paste: function () {
                 var content = this.getTempStore()
                 if(content) {
-                	
-                	block.ui.Guid.startReplaceSession();
-                	
+                    
+                    block.ui.Guid.startReplaceSession();
+                    
                     var shape = JSON.parse(content)
                     
                     shape.paste(document.shapes);

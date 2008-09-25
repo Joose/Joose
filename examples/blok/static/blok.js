@@ -1,4 +1,4 @@
-// Generated: Tue Sep 23 15:59:27 2008
+// Generated: Wed Sep 24 18:16:17 2008
 
 
 // ##########################
@@ -2257,14 +2257,14 @@ replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
 
 // html escape a string
 String.prototype.html = function () {
-	var string = new String(this);
-	string = string.replace(/\&/g, "&amp;");
-	string = string.replace(/\</g, "&lt;");
-	string = string.replace(/\>/g, "&gt;");
-	string = string.replace(/"/g,  "&quot;")
-	string = string.replace(/'/g,  "&#39;");
-	
-	return string
+    var string = new String(this);
+    string = string.replace(/\&/g, "&amp;");
+    string = string.replace(/\</g, "&lt;");
+    string = string.replace(/\>/g, "&gt;");
+    string = string.replace(/"/g,  "&quot;")
+    string = string.replace(/'/g,  "&#39;");
+    
+    return string
 }
 // ##########################
 // File: /Users/malte/workspace/Joose2/examples/blok/block/ui/Array.js
@@ -2458,8 +2458,11 @@ Module("block.ui.role", function () {
             place: function () {
                 var me = this;
                 this.$.dblclick(function () {
-                    me.text(prompt("Please enter Text", me.textContainer().text()));
-                    me.updateState()
+                    var newValue = prompt("Please enter Text", me.textContainer().text())
+                    if(newValue) {
+                        me.text(newValue);
+                        me.updateState()
+                    }
                 })
                 
                 me.text(this.getText())
@@ -2470,18 +2473,18 @@ Module("block.ui.role", function () {
             },
             
             _updateStateCore: function () {
-                this.setText(this.textContainer().text());
+                this.setText(this.textContainer().html());
             },
             
             redraw: function () {
-                 this.textContainer().text(this.getText())
+                 this.textContainer().html(this.getText().html())
             }
         },
         methods: {
             
             text: function (t) {
                 if(arguments.length > 0) {
-                    this.textContainer().text(new String(t).html())
+                    this.textContainer().html(new String(t).html())
                 }
                 return this.getText()
             },
@@ -2580,9 +2583,9 @@ Module("block.ui.role", function () {
         },
         
         override: {
-        	
-        	destroy: function () {
-            	document.undo.beginTransaction()
+            
+            destroy: function () {
+                document.undo.beginTransaction()
                 Joose.A.each(this.getElements(), function (shape) { shape.destroy() })
                 this.SUPER()
                 document.undo.commit()
@@ -2592,7 +2595,7 @@ Module("block.ui.role", function () {
                 Joose.A.each(this.getElements(), function (shape) { shape.touch() })
                 this.SUPER()
             },
-        	
+            
             updateState: function (dontMoveChildren) { // evil hack para to avoid movement ruding initialization
                 document.undo.beginTransaction()
                 
@@ -2628,7 +2631,7 @@ Module("block.ui.role", function () {
         },
         
         methods: {
-        	
+            
             create: function () {
                 return jQuery("<div class='group shape'></div>")
             },
@@ -2708,61 +2711,61 @@ Module("block.ui.role", function () {
 // File: /Users/malte/workspace/Joose2/examples/blok/block/ui/Guid.js
 // ##########################
 Module("block.ui", function () {
-	
-	var GuidCounter = 0;
-	
-	Class("Guid", {
-		has: {
-			id:{}
-		},
-		
-		methods: {
-			toString: function () {
-				return ""+this.id
-			}
-		},
-		
-		classMethods: {
-			
-			// initializes hash for storing transformed Guids during a replace session
-			startReplaceSession: function () {
-				this.substitution = {};
-			},
-			
-			// reset guids in a shapes and its childs. Make sure connections stay connected
-			replaceGuids: function (shape) {
-				
-				var me = this;
-				
-				var shapes       = [shape];
+    
+    var GuidCounter = 0;
+    
+    Class("Guid", {
+        has: {
+            id:{}
+        },
+        
+        methods: {
+            toString: function () {
+                return ""+this.id
+            }
+        },
+        
+        classMethods: {
+            
+            // initializes hash for storing transformed Guids during a replace session
+            startReplaceSession: function () {
+                this.substitution = {};
+            },
+            
+            // reset guids in a shapes and its childs. Make sure connections stay connected
+            replaceGuids: function (shape) {
+                
+                var me = this;
+                
+                var shapes       = [shape];
                 shape.traverse(function (shape) {
                     shapes.push(shape)
                 })
                 
                 // replace all guids of shapes
                 Joose.A.each(shapes, function (s) {
-                	var before = shape.getGuid();
-                	var after  = shape.resetGuid();
-                	
-                	me.substitution[before] = after;
+                    var before = shape.getGuid();
+                    var after  = shape.resetGuid();
+                    
+                    me.substitution[before] = after;
                 })
                 
                 // reassign connections
                 Joose.A.each(shapes, function (s) {
-                	if(s.meta.isa(block.ui.shape.Connection)) {
-                		var origin = me.substitution[s.getOriginGuid()];
-                		s.setOriginGuid(origin)
-                		var dest   = me.substitution[s.getDestinationGuid()];
-                		s.setDestinationGuid(dest)
-                	}
+                    if(s.meta.isa(block.ui.shape.Connection)) {
+                        var origin = me.substitution[s.getOriginGuid()];
+                        s.setOriginGuid(origin)
+                        var dest   = me.substitution[s.getDestinationGuid()];
+                        s.setDestinationGuid(dest)
+                    }
                 })
-			},
-			
-			create: function () {
+            },
+            
+            create: function () {
                 return document.paras.guidBase + "-" + GuidCounter++
-			}
-		}
-	})
+            }
+        }
+    })
 })
 // ##########################
 // File: /Users/malte/workspace/Joose2/examples/blok/block/ui/Manager.js
@@ -2809,16 +2812,16 @@ Module("block.ui", function () {
             },
             
             setDirty: function () {
-            	saveMessage("Unsaved")
+                saveMessage("Unsaved")
             }
         },
         methods: {
             clearFocus: function () {
-            	
-            	if(focusTimeout) { // If focus was set asynchronously, clear the timeout
-            		clearTimeout(focusTimeout)
-            	}
-            	
+                
+                if(focusTimeout) { // If focus was set asynchronously, clear the timeout
+                    clearTimeout(focusTimeout)
+                }
+                
                 if(this._focusElement) {
                     this._focusElement.blur()
                 }
@@ -2829,14 +2832,14 @@ Module("block.ui", function () {
             
             // Use when switching focus multiple times to avoid actually doing it every time
             asyncSwitchFocus: function () {
-            	if(focusTimeout) {
-            		clearTimeout(focusTimeout)
-            	}
-            	var me   = this;
-            	var args = arguments
-            	focusTimeout = setTimeout(function () {
-            		me.switchFocus.apply(me, args)
-            	}, 0)
+                if(focusTimeout) {
+                    clearTimeout(focusTimeout)
+                }
+                var me   = this;
+                var args = arguments
+                focusTimeout = setTimeout(function () {
+                    me.switchFocus.apply(me, args)
+                }, 0)
             },
             
             switchFocus: function (newEle, shiftDown) {
@@ -2917,11 +2920,11 @@ Module("block.ui", function () {
                 };
                 
                 var save = function () {
-                	saveDocument()
+                    saveDocument()
                 };
                 
                 var openDocs = function () {
-                	loadDocuments()
+                    loadDocuments()
                 }
                 
                 
@@ -2991,15 +2994,15 @@ Module("block.ui", function () {
             },
             
             syncedTime: function () {
-            	return new Date().getTime() + document.paras.timeOffset
+                return new Date().getTime() + document.paras.timeOffset
             },
             
             paste: function () {
                 var content = this.getTempStore()
                 if(content) {
-                	
-                	block.ui.Guid.startReplaceSession();
-                	
+                    
+                    block.ui.Guid.startReplaceSession();
+                    
                     var shape = JSON.parse(content)
                     
                     shape.paste(document.shapes);
@@ -3105,20 +3108,20 @@ Module("block.ui", function (m) {
         },
         
         methods: {
-        	touch: function () {
-        		document.manager.setDirty(true);
-        		document.sync.saveState()
-        	},
-        	
-        	// Need this extra method, because setTitle is also called upon initialization
-        	changeTitle: function (title) {
-        		this.setTitle(title);
-        		this.touch()
-        	},
-        	
-        	isDefaultTitle: function () {
-        		return this.getTitle == defaultTitle
-        	}
+            touch: function () {
+                document.manager.setDirty(true);
+                document.sync.saveState()
+            },
+            
+            // Need this extra method, because setTitle is also called upon initialization
+            changeTitle: function (title) {
+                this.setTitle(title);
+                this.touch()
+            },
+            
+            isDefaultTitle: function () {
+                return this.getTitle == defaultTitle
+            }
         },
         
         after: {
@@ -3177,7 +3180,7 @@ Module("block.ui", function (m) {
             },
             
             redrawTimeout: {
-            	persistent:   false
+                persistent:   false
             }
         },
         methods: {
@@ -3200,13 +3203,13 @@ Module("block.ui", function (m) {
             
             // call this to make sure you only redraw once in a mass redraw of shapes
             asyncRedraw: function () {
-            	if(this.redrawTimeout) {
-            		clearTimeout(this.redrawTimeout)
-            	}
-            	var me = this;
-            	this.redrawTimeout = setTimeout(function asyncRedrawCallback () {
-            		me.redraw()
-            	}, 0)
+                if(this.redrawTimeout) {
+                    clearTimeout(this.redrawTimeout)
+                }
+                var me = this;
+                this.redrawTimeout = setTimeout(function asyncRedrawCallback () {
+                    me.redraw()
+                }, 0)
             },
             
             redraw: function () {},
@@ -3321,7 +3324,7 @@ Module("block.ui", function (m) {
             },
             
             isEmpty: function () {
-            	return this.getElements().length == 0;
+                return this.getElements().length == 0;
             }
         }
     })
@@ -3338,27 +3341,28 @@ Module("block.ui", function (m) {
             },
             
             _activeTransaction: {
-            	is: "rw",
-            	init: false
+                is: "rw",
+                init: false
             }
         },
         
         methods: {
-        	
-        	// "Transactions" make all steps until a commit collapse into a single step
-        	beginTransaction: function () {
-        		if(this.getActiveTransaction()) {
-        			return
-        		}
-        		this.addUndoStep(function emptyUndoStep () {}, block.ui.Shape)
-        		this.setActiveTransaction(true);
-        	},
-        	
-        	commit: function () {
-        		this.setActiveTransaction(false);
-        	},
+            
+            // "Transactions" make all steps until a commit collapse into a single step
+            beginTransaction: function () {
+                if(this.getActiveTransaction()) {
+                    return
+                }
+                this.addUndoStep(function emptyUndoStep () {}, block.ui.Shape)
+                this.setActiveTransaction(true);
+            },
+            
+            commit: function () {
+                this.setActiveTransaction(false);
+            },
             
             undo: function () {
+                console.log("undoing")
                 var last = this._steps.pop();
                 if(last) {
                     last()
@@ -3366,28 +3370,29 @@ Module("block.ui", function (m) {
             },
             
             addUndoStep: function (step, shape) {
-            	if(!shape.meta.does(block.ui.role.Group)) {
-                	console.log("Add Undo step: "+shape)
+                if(!shape.meta.does(block.ui.role.Group)) {
+                    console.log("Add Undo step: "+shape)
                 
-                	if(this.getActiveTransaction()) {
-                		var last = this._steps.pop();
-                		this._steps.push(function undoWrapper () {
-                			last();
-                			step();
-                		});
-                	} else {
-                		this._steps.push(step);
-                	}
+                    if(this.getActiveTransaction()) {
+                        var last = this._steps.pop();
+                        this._steps.push(function undoWrapper () {
+                            last();
+                            step();
+                        });
+                    } else {
+                        this._steps.push(step);
+                    }
                     
-                	if(this._steps.length > 10) { // modulo :)
-                	    this._steps.shift()
-                	}
-            	}
+                    if(this._steps.length > 10) { // modulo :)
+                        this._steps.shift()
+                    }
+                }
             },
             
             addUpdateStep: function (before) {
                 var json = JSON.stringify(before);
                 this.addUndoStep(function undoUpdate () {
+                    console.log("Undo shape change")
                     var copy = JSON.parse(json);
                     copy.touch();
                     before.updateFrom(copy);
@@ -3397,6 +3402,7 @@ Module("block.ui", function (m) {
             
             addCreateStep: function (shape) {
                 this.addUndoStep(function undoCreate () {
+                    console.log("Undo create")
                     shape.destroy()
                 }, shape)
             },
@@ -3615,7 +3621,7 @@ Module("block.ui", function (m) {
                 if(arguments.length > 0) {
                     this.width(right - this.left())
                 } else {
-                	var right = this.left() + this.width();
+                    var right = this.left() + this.width();
                     return right
                 }
             },
@@ -3624,7 +3630,7 @@ Module("block.ui", function (m) {
                     var top = this.top()
                     this.height(bottom - top)
                 } else {
-                	var bottom = this.top()  + this.height();
+                    var bottom = this.top()  + this.height();
                     return bottom;
                 }
             },
@@ -3671,7 +3677,7 @@ Module("block.ui", function (m) {
             },
             
             resetGuid: function () {
-            	var guid = this.initGuid();
+                var guid = this.initGuid();
                 this.setGuid(guid)
                 this.registerGuid();
                 this.touch()
@@ -3679,8 +3685,8 @@ Module("block.ui", function (m) {
             },
             
             paste: function (target) {
-            	
-            	block.ui.Guid.replaceGuids(this)
+                
+                block.ui.Guid.replaceGuids(this)
                 
                 target.addAndDraw(this);
                 document.manager.asyncSwitchFocus(this)
@@ -3714,9 +3720,9 @@ Module("block.ui", function (m) {
             },
             
            drawOnDoc: function () {
-            	var me = this;
-            	
-            	document.shapes.addAndDraw(me);
+                var me = this;
+                
+                document.shapes.addAndDraw(me);
                 me.touch()
                 
                 document.undo.addCreateStep(me)
@@ -3732,7 +3738,7 @@ Module("block.ui", function (m) {
         classMethods: {
             addToDoc: function (paras) { // use to add new shapes to the document
                 var me = this.meta.instantiate(paras);
-               	return me.drawOnDoc()
+                   return me.drawOnDoc()
             }
         }
     })
@@ -3741,9 +3747,9 @@ Module("block.ui", function (m) {
 // File: /Users/malte/workspace/Joose2/examples/blok/block/ui/shape/Grid.js
 // ##########################
 Module("block.ui.shape", function (m) {
-	
-	var firstDraw = true;
-	
+    
+    var firstDraw = true;
+    
     Class("Grid", {
         isa: block.ui.Shape,
         has: {
@@ -3771,8 +3777,8 @@ Module("block.ui.shape", function (m) {
                 
                 var d        = this.getDocument();
                 if(firstDraw) {
-                	d = $(window)
-                	firstDraw = false
+                    d = $(window)
+                    firstDraw = false
                 }
                 var distance = this.getDistance();
                 var width    = d.width()  - offsetLeft - 1
@@ -3886,13 +3892,17 @@ Module("block.ui.shape", function (m) {
 // File: /Users/malte/workspace/Joose2/examples/blok/block/ui/shape/PropertiesPanel.js
 // ##########################
 Module("block.ui.shape", function (m) {
-	
-	var refreshTimeout;
-	
+    
+    var refreshTimeout;
+    
     Class("PropertiesPanel", {
         isa: block.ui.Shape,
         has: {
             _shape: {
+                is: "rw"
+            },
+            
+            _openEdit: { // stores an edit action that gets executed if there wasnt an event before a change of shape
                 is: "rw"
             }
         },
@@ -3939,6 +3949,16 @@ Module("block.ui.shape", function (m) {
                  }
             },
             
+            handleChange: function (input, shape) {
+                var me = this;
+                if(shape) {
+                    me.setOpenEdit(null);
+                    document.undo.addUpdateStep(shape)
+                    me.callProp(input, shape, $(input).val())
+                    shape.touch()
+                }
+            },
+            
             place: function () {
                 var me = this;
                 
@@ -3946,17 +3966,24 @@ Module("block.ui.shape", function (m) {
                 
                 this.redraw()
                 
+                // Update property on change of input field or select box
                 this.$.find("#shapeProperties input,#shapeProperties select").each(function () {
-                    
-                    var input = $(this);
-                    
-                    input.change(function () {
-                        var shape = me.getShape();
-                        if(shape) {
-                            me.callProp(this, shape, $(this).val())
-                            document.manager.setDirty(true)
-                            document.sync.saveState()
-                        }
+                    $(this).change(function () {
+                        me.handleChange(this, me.getShape())
+                    })
+                })
+                
+                // if we have a keypress event on an input, we will interpret this as a change if
+                // there is no onchange event, but we change shapes
+                this.$.find("#shapeProperties input").each(function () {
+                    $(this).keypress(function () {
+                        
+                        var input = this;
+                        var shape = me.getShape()
+                        
+                        me.setOpenEdit(function () {
+                            me.handleChange(input, shape)
+                        })
                     })
                 })
             },
@@ -3968,38 +3995,49 @@ Module("block.ui.shape", function (m) {
             },
             
             hide: function () {
+                this.executeOpenEdit()
                 $('#shapeProperties').hide()
                 $('#documentProperties').show()
                 this.redraw()
             },
             
+            executeOpenEdit: function () {
+                var edit = this.getOpenEdit();
+                if(edit) {
+                    edit()
+                    this.setOpenEdit(null)
+                }
+            },
+            
             setShape: function (newEle) {
+                this.executeOpenEdit()
                 this._shape = newEle
                 this.refresh(newEle);
                 this.show()
             },
             
             refresh: function (shape) {
-            	
-            	if(refreshTimeout) {
-            		clearTimeout(refreshTimeout)
-            	}
-            	
+                
+                if(refreshTimeout) {
+                    clearTimeout(refreshTimeout)
+                }
+                
                 var me = this;
                 
+                // fill in values from newly assigned shape
                 refreshTimeout = setTimeout(function () {
-                	if(shape === me.getShape()) {
-                	    $('#shapeType').html(shape.type())
-                	    me.$.find("#shapeProperties input, #shapeProperties select").each(function () {
-                	        $(this).val(me.callProp(this, shape))
-                	    })
-                	    $.colorPicker.refreshSamples()
-               	 	}
+                    if(shape === me.getShape()) {
+                        $('#shapeType').html(shape.type())
+                        me.$.find("#shapeProperties input, #shapeProperties select").each(function () {
+                            $(this).val(me.callProp(this, shape))
+                        })
+                        $.colorPicker.refreshSamples()
+                        }
                 }, 0)
             },
             
             redraw: function () {
-            	var height = this.$.height();
+                var height = this.$.height();
                 this.$.css("top",""+($(window).height() - height - 20) + "px"); // 10 is padding
                 this.$.css("width", ""+($(window).width() - 150)  + "px"); // FIXME get rid of constants
             }
@@ -4164,10 +4202,10 @@ Module("block.ui.shape", function (m) {
             propagate: function () {},
             
             touch: function () {
-            	// we are just a selection
-            	// Touching ourselves should not make the document dirty 
-            	
-            	this.updated()
+                // we are just a selection
+                // Touching ourselves should not make the document dirty 
+                
+                this.updated()
             },
             
             paste: function (target) {
@@ -4246,10 +4284,10 @@ Module("block.ui.shape", function (m) {
             },
             
             touch: function () {
-            	// we are just a selection
-            	// Touching ourselves should not make the document dirty 
-            	
-            	this.updated()
+                // we are just a selection
+                // Touching ourselves should not make the document dirty 
+                
+                this.updated()
             },
             
             selectContained: function () {
@@ -4551,18 +4589,18 @@ Module("block.ui.shape", function (m) {
         methods: {
             
             changeNode: function (curNode, newNode) {
-            	if(newNode) {
-                	if(curNode) {
-                	    curNode.removeListener(this)
-                	}
-                	newNode.addListener(this)
-            	} else {
-            		console.log("There is now newNode")
-            	}
+                if(newNode) {
+                    if(curNode) {
+                        curNode.removeListener(this)
+                    }
+                    newNode.addListener(this)
+                } else {
+                    console.log("There is now newNode")
+                }
             },
             
             updateFrom: function () {
-            	// Do nothing. Update will happen through notification from attached Shapes
+                // Do nothing. Update will happen through notification from attached Shapes
             },
             
             notify: function (shape) {
@@ -4587,16 +4625,16 @@ Module("block.ui.shape", function (m) {
             /* This currently implements a simple connection strategy based on 3 lines */
             /* and should later be refactored to allow for different connection strategires. */
             connect: function (shape1, shape2) {
-            	try {
-                	var orig = shape1;
-                	var dest = shape2;
+                try {
+                    var orig = shape1;
+                    var dest = shape2;
                 
-                	var origBottom = orig.bottom()      
-                	var destTop    = dest.top()
-            	} catch(e) {
-            		window.log(e);
-            		return
-            	}
+                    var origBottom = orig.bottom()      
+                    var destTop    = dest.top()
+                } catch(e) {
+                    window.log(e);
+                    return
+                }
                 
                 if(orig.top() > destTop) {
                     // reverse origin and destination
@@ -4696,7 +4734,7 @@ Module("block.ui.shape", function (m) {
             },
             
             updateFrom: function () {
-            	//
+                //
             },
             
             setLength: function (len) {
@@ -4750,74 +4788,74 @@ Module("block.ui.shape", function (m) {
 // File: /Users/malte/workspace/Joose2/examples/blok/block/ui/Template.js
 // ##########################
 Module("block.ui", function (m) {
-	Class("Template", {
-		has: {
-			_url: {
-				is: "rw"
-			}
-		},
-		
-		methods: {
-			loadAndDraw: function () {
-				block.ui.SyncDocument.request("GET", this.getUrl(), null, function templateFetched (template) {
-					block.ui.Guid.startReplaceSession();
-					template.paste(document.shapes)
-				})
-			}
-		}
-	})
+    Class("Template", {
+        has: {
+            _url: {
+                is: "rw"
+            }
+        },
+        
+        methods: {
+            loadAndDraw: function () {
+                block.ui.SyncDocument.request("GET", this.getUrl(), null, function templateFetched (template) {
+                    block.ui.Guid.startReplaceSession();
+                    template.paste(document.shapes)
+                })
+            }
+        }
+    })
 })
 // ##########################
 // File: /Users/malte/workspace/Joose2/examples/blok/block/ui/User.js
 // ##########################
 Module("block.ui", function (m) {
-	Class("User", {
-		
-		has: {
-			id: {
-				is: "rw",
-				init: document.paras.userName
-			}
-		},
-		
-		methods: {
-			loggedIn: function () {
-				return document.paras.userName != "";
-			},
-			
-			login: function (action) {
-				var after = window.location.href;
-				after.replace(/#.+/, "");
-				after += "&action="+action
-				window.location.href = "/login?continue="+encodeURIComponent(after)
-			},
-			
-			saveCurrentDocument: function () {
-				if(this.loggedIn()) {
-					// make sure we saved this at least once
-					document.manager.setDirty(true);
-					document.sync.saveState();
-					block.ui.SyncDocument.request("GET", "/save", { hash: document.paras.docId }, function saved (template) {
-						alert("The document was successfully saved.")
-					});
-				} else {
-					this.login("save");
-				}
-			},
-			
-			loadDocuments: function (callback) {
-				if(this.loggedIn()) {
-					block.ui.SyncDocument.request("GET", "/documents", null, function fetchDocuments (documents) {
-						callback(documents)
-					});
-				} else {
-					this.login("open")
-				}
-				
-			}
-		}
-		
-	})
+    Class("User", {
+        
+        has: {
+            id: {
+                is: "rw",
+                init: document.paras.userName
+            }
+        },
+        
+        methods: {
+            loggedIn: function () {
+                return document.paras.userName != "";
+            },
+            
+            login: function (action) {
+                var after = window.location.href;
+                after.replace(/#.+/, "");
+                after += "&action="+action
+                window.location.href = "/login?continue="+encodeURIComponent(after)
+            },
+            
+            saveCurrentDocument: function () {
+                if(this.loggedIn()) {
+                    // make sure we saved this at least once
+                    document.manager.setDirty(true);
+                    document.sync.saveState();
+                    block.ui.SyncDocument.request("GET", "/save", { hash: document.paras.docId }, function saved (template) {
+                        alert("The document was successfully saved.")
+                    });
+                } else {
+                    this.login("save");
+                }
+            },
+            
+            loadDocuments: function (callback) {
+                if(this.loggedIn()) {
+                    block.ui.SyncDocument.request("GET", "/documents", null, function fetchDocuments (documents) {
+                        callback(documents)
+                    });
+                } else {
+                    this.login("open")
+                }
+                
+            }
+        }
+        
+    })
 })
 // ##########################
 // File: /Users/malte/workspace/Joose2/examples/blok/block/ui/Sync.js
@@ -4825,6 +4863,9 @@ Module("block.ui", function (m) {
 JooseGearsInitializeGears()
 
 Module("block.ui", function (m) {
+    
+    var updateTimer;
+    
     Class("Sync", {
         
         has: {
@@ -4850,7 +4891,7 @@ Module("block.ui", function (m) {
             },
             
             _saveTimeout: {
-            	is: "rw"
+                is: "rw"
             }
         },
         
@@ -4859,7 +4900,9 @@ Module("block.ui", function (m) {
             delayedUpdate: function () {
                 var me = this;
                 
-                window.setTimeout(function syncUpdate () {
+                clearTimeout(updateTimer);
+                
+                updateTimer = window.setTimeout(function syncUpdate () {
                     me.update()
                 }, 5000) 
             },
@@ -4926,9 +4969,9 @@ Module("block.ui", function (m) {
                                 cur.getContainer().removeElement(cur)
                                 var dest = map[container.getGuid()];
                                 if(dest) {
-                                	dest.add(cur)
+                                    dest.add(cur)
                                 } else {
-                                	console.log("Cannot find "+container.getGuid())
+                                    console.log("Cannot find "+container.getGuid())
                                 }
                             }
                         }
@@ -4940,9 +4983,9 @@ Module("block.ui", function (m) {
                         } else {
                             dest = map[container.getGuid()]
                             if(dest) {
-                               	dest.add(cur)
+                                   dest.add(cur)
                             } else {
-                              	console.log("Cannot find "+container.getGuid())
+                                  console.log("Cannot find "+container.getGuid())
                             }
                         }
                         if(!shape.isDeleted()) {
@@ -4955,7 +4998,7 @@ Module("block.ui", function (m) {
             },
             
             fireFirstDraw: function () {
-            	if(this.getFirstUpdate()) {
+                if(this.getFirstUpdate()) {
                     window.onfirstdraw();
                     this.setFirstUpdate(false)
                 }
@@ -4966,24 +5009,25 @@ Module("block.ui", function (m) {
             },
             
             _saveState: function () {
-            	var timer = this.getSaveTimeout();
-            	if(timer) {
-            		clearTimeout(timer)
-            	}
-            	
-            	var me = this;
-            	this.setSaveTimeout(
-            		window.setTimeout(
-            			function () {
-            				m.SyncDocument.addData(me, false)
-            			},
-            			800)
-            		)
+                var timer = this.getSaveTimeout();
+                if(timer) {
+                    clearTimeout(timer)
+                }
+                
+                var me = this;
+                this.setSaveTimeout(
+                    window.setTimeout(
+                        function () {
+                            m.SyncDocument.addData(me, false)
+                        },
+                        2000)
+                    )
             },
             
             saveState: function () {
                 if(document.manager.getDirty()) {
-                	saveMessage("Saving...")
+                    this.delayedUpdate() // saving state delays update
+                    saveMessage("Saving...")
                     this._saveState()
                     document.manager.setDirty(false)
                 }
@@ -5034,7 +5078,7 @@ Module("block.ui", function (m) {
                         }
                         sync.updateFromArray(dataArray)
                         if(newMaxVersion > 0) {
-                        	sync.setMaxVersion(newMaxVersion);
+                            sync.setMaxVersion(newMaxVersion);
                         }
                     })
                 
@@ -5047,7 +5091,7 @@ Module("block.ui", function (m) {
                 
                 var data = JSON.stringify(sync.getDoc());
                 
-                console.log(data)
+                //console.log(data)
     
                 this.request("POST", "/add",
                     {
@@ -5058,22 +5102,22 @@ Module("block.ui", function (m) {
                         session:      document.paras.sessionId
                     },
                     function saveMessage () {
-                    	window.saveMessage("Saved")
+                        window.saveMessage("Saved")
                         console.log("save successful")
                     });
             },
             
             request: function (method, url, data, callback) {
-            	try {
-                	Joose.Gears.ajaxRequest(method, url, data, function receivedData (data) {
-                		console.log(data)
-                	    callback(JSON.parse(data))
-                	}, function onError (request) {
-                		console.log("Error fetching url "+request.url+". Response code: " + request.status + " Response text: "+request.responseText)
-                	})
-            	} catch (e) {
-            		console.log(e)
-            	}
+                try {
+                    Joose.Gears.ajaxRequest(method, url, data, function receivedData (data) {
+                        // console.log(data)
+                        callback(JSON.parse(data))
+                    }, function onError (request) {
+                        console.log("Error fetching url "+request.url+". Response code: " + request.status + " Response text: "+request.responseText)
+                    })
+                } catch (e) {
+                    console.log(e)
+                }
             }
         }
         
@@ -5085,11 +5129,11 @@ Module("block.ui", function (m) {
 // File: /Users/malte/workspace/Joose2/examples/blok/block/base.js
 // ##########################
 if(!window.console) {
-	window.console = {
-		log: function log (msg) {
-			//$("#stateDialog").html(""+msg+"<br>"+$("#stateDialog").html())
-		}
-	}
+    window.console = {
+        log: function log (msg) {
+            //$("#stateDialog").html(""+msg+"<br>"+$("#stateDialog").html())
+        }
+    }
 }
 
 
@@ -5099,189 +5143,189 @@ Joose.Storage.Unpacker.patchJSON();
 
 $(document).ready(function docReady () {
 
-	$("#leftMenu h2").click(function () {
-		$(this).parent().find('ul').toggle()
-	})
+    $("#leftMenu h2").click(function () {
+        $(this).parent().find('ul').toggle()
+    })
 
-	document.query   = new block.ui.Query();
-	
-	document.user    = new block.ui.User();
+    document.query   = new block.ui.Query();
+    
+    document.user    = new block.ui.User();
 
-	document.manager = new block.ui.Manager();
-	document.manager.setupShortcuts()
+    document.manager = new block.ui.Manager();
+    document.manager.setupShortcuts()
 
-	document.grid = new block.ui.shape.Grid({ container: $("#grid") })
-	document.grid.draw();
-	
-	$('.colorPicker').attachColorPicker();
-	
-	document.propPanel = new block.ui.shape.PropertiesPanel()
-	document.propPanel.draw()
-	
-	$(window).resize(function onResize () {
-		document.propPanel.redraw()
-		document.grid.redraw()
-	})
-	$(window).scroll(function onScroll () {
-		document.grid.redraw()
-	})
-	
-	$("#stateDialog").dialog()
-	$("#stateDialog").dialog("close")
-	
-	$("#share").focus(function () {
-		this.select()
-	})
+    document.grid = new block.ui.shape.Grid({ container: $("#grid") })
+    document.grid.draw();
+    
+    $('.colorPicker').attachColorPicker();
+    
+    document.propPanel = new block.ui.shape.PropertiesPanel()
+    document.propPanel.draw()
+    
+    $(window).resize(function onResize () {
+        document.propPanel.redraw()
+        document.grid.redraw()
+    })
+    $(window).scroll(function onScroll () {
+        document.grid.redraw()
+    })
+    
+    $("#stateDialog").dialog()
+    $("#stateDialog").dialog("close")
+    
+    $("#share").focus(function () {
+        this.select()
+    })
 
-	document.shapes = new block.ui.Container({ $: $('#shapeArea')});
+    document.shapes = new block.ui.Container({ $: $('#shapeArea')});
 
-	var doc         = new block.ui.Document({ body: document.shapes });
-	
-	document.sync   = new block.ui.Sync({ doc: doc })
-	document.sync.update();
-	
-	document.sync.startListening()
-	
-	document.undo   = new block.ui.Undo();
-	
-	document.customShapes = new block.ui.CustomShapeManager();
-	//document.customShapes.fetch("/static/custom-shapes/test.shape.json")
-	
-	$('#welcomeDialog').dialog({
-		height: "400px",
-		width:  "500px"
-	})
-	$('#welcomeDialog').dialog("close")
-	
-	$('#loadDialog').dialog({
-		height: "300px",
-		width:  "400px"
-	});
-	$('#loadDialog').dialog("close")
-	
-	
+    var doc         = new block.ui.Document({ body: document.shapes });
+    
+    document.sync   = new block.ui.Sync({ doc: doc })
+    document.sync.update();
+    
+    document.sync.startListening()
+    
+    document.undo   = new block.ui.Undo();
+    
+    document.customShapes = new block.ui.CustomShapeManager();
+    //document.customShapes.fetch("/static/custom-shapes/test.shape.json")
+    
+    $('#welcomeDialog').dialog({
+        height: "400px",
+        width:  "500px"
+    })
+    $('#welcomeDialog').dialog("close")
+    
+    $('#loadDialog').dialog({
+        height: "300px",
+        width:  "400px"
+    });
+    $('#loadDialog').dialog("close")
+    
+    
 })
 
 function loadTemplate(url) {
-	var template = new block.ui.Template({
-		url: url
-	})
-	
-	template.loadAndDraw()
+    var template = new block.ui.Template({
+        url: url
+    })
+    
+    template.loadAndDraw()
 }
 
 function closeWelcomeDialog() {
-	$('#welcomeDialog').dialog("close")
+    $('#welcomeDialog').dialog("close")
 }
 
 function showState() {
 
-	var state = document.shapes.prettyPrint()
+    var state = document.shapes.prettyPrint()
 
-	$('#stateDialog textarea').val(state)
-	$('#Dialog').dialog("open")
+    $('#stateDialog textarea').val(state)
+    $('#Dialog').dialog("open")
 }
 
 function showClipboardContent() {
-	
-	var val = document.manager.getTempStore() || "empty"
-	
-	$('#stateDialog textarea').val(val)
-	$('#stateDialog').dialog("open")
+    
+    var val = document.manager.getTempStore() || "empty"
+    
+    $('#stateDialog textarea').val(val)
+    $('#stateDialog').dialog("open")
 }
 
 function read() {
-	$('#shapeArea').html("")
-	var json        = document.getElementById("outputArea").value
-	if(json != null && json != "") {
-		document.shapes = JSON.parse(json);
-		document.shapes.draw();
-		document.shapes.redraw();
-		
-		document.sync.getDoc().setBody(document.shapes)
-	}
+    $('#shapeArea').html("")
+    var json        = document.getElementById("outputArea").value
+    if(json != null && json != "") {
+        document.shapes = JSON.parse(json);
+        document.shapes.draw();
+        document.shapes.redraw();
+        
+        document.sync.getDoc().setBody(document.shapes)
+    }
 }
 
 function changeName() {
-	var current = document.sync.getDoc().getHeader().getTitle()
-	var name = prompt('Save as:', current);
-	if(name) {
-		document.sync.getDoc().getHeader().changeTitle(name)
-		return true
-	}
-	return false
+    var current = document.sync.getDoc().getHeader().getTitle()
+    var name = prompt('Save as:', current);
+    if(name) {
+        document.sync.getDoc().getHeader().changeTitle(name)
+        return true
+    }
+    return false
 }
 
 function write() {
-	document.getElementById("outputArea").value = JSON.stringify(document.shapes)
+    document.getElementById("outputArea").value = JSON.stringify(document.shapes)
 }
 
 function saveDocument() {
-	if(changeName()) {
-		document.user.saveCurrentDocument()
-	}
+    if(changeName()) {
+        document.user.saveCurrentDocument()
+    }
 }
 
 function loadDocuments() {
 
-	var list = $("#documentList");
-	list.html("Loading...")
-	
-	$('#loadDialog').dialog("open")
-	
-	var html = "<table class=list>"
-	html    += "<tr><th>Name</th><th>Last Update</th></tr>"
-	
-	document.user.loadDocuments(function (docs) {
+    var list = $("#documentList");
+    list.html("Loading...")
+    
+    $('#loadDialog').dialog("open")
+    
+    var html = "<table class=list>"
+    html    += "<tr><th>Name</th><th>Last Update</th></tr>"
+    
+    document.user.loadDocuments(function (docs) {
 
-		var count = 0;
-		Joose.A.each(docs, function (doc) {
-			html += "<tr class=listItem onclick=\"loadDocument('"+doc.hash.html()+"')\"><td>"+doc.name.html()+"</td><td>"+doc.lastUpdate.html()+"</td></tr>\n"	
-			count++
-		})
-		
-		if(count == 0) {
-			html += "<tr><td colspan=2>You have not yet saved any documents.</td></tr>"
-		}
-		
-		html +="</table>"
-		
-		list.html(html)
-		
-	})
+        var count = 0;
+        Joose.A.each(docs, function (doc) {
+            html += "<tr class=listItem onclick=\"loadDocument('"+doc.hash.html()+"')\"><td>"+doc.name.html()+"</td><td>"+doc.lastUpdate.html()+"</td></tr>\n"    
+            count++
+        })
+        
+        if(count == 0) {
+            html += "<tr><td colspan=2>You have not yet saved any documents.</td></tr>"
+        }
+        
+        html +="</table>"
+        
+        list.html(html)
+        
+    })
 }
 
 function loadDocument(hash) {
-	location.href = "/?id="+hash
+    location.href = "/?id="+hash
 }
 
 function saveMessage(msg) {
-	$('#saveMessage').html(msg)
+    $('#saveMessage').html(msg)
 }
 
 function doInitialAction() {
-	
-	window.setTimeout(function () {document.propPanel.redraw()}, 1000) // Safari might have gotten the page height wrong before
+    
+    window.setTimeout(function () {document.propPanel.redraw()}, 1000) // Safari might have gotten the page height wrong before
 
-	// Only load initial template or display welcome dialog im document is empty
-	if(document.shapes.isEmpty()) {
-		var template = document.query.param("template")
-		if(template && template.length > 0) {
-			loadTemplate(template)
-		} else {
-			$('#welcomeDialog').dialog("open")
-		}
-	}
-	
-	var action = document.query.param("action");
-	
-	if(action == "save") {
-		saveDocument()
-	}
-	
-	if(action == "open") {
-		loadDocuments()
-	}
+    // Only load initial template or display welcome dialog im document is empty
+    if(document.shapes.isEmpty()) {
+        var template = document.query.param("template")
+        if(template && template.length > 0) {
+            loadTemplate(template)
+        } else {
+            $('#welcomeDialog').dialog("open")
+        }
+    }
+    
+    var action = document.query.param("action");
+    
+    if(action == "save") {
+        saveDocument()
+    }
+    
+    if(action == "open") {
+        loadDocuments()
+    }
 }
 
 

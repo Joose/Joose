@@ -44,9 +44,9 @@ Module("block.ui.role", function () {
         },
         
         override: {
-        	
-        	destroy: function () {
-            	document.undo.beginTransaction()
+            
+            destroy: function () {
+                document.undo.beginTransaction()
                 Joose.A.each(this.getElements(), function (shape) { shape.destroy() })
                 this.SUPER()
                 document.undo.commit()
@@ -56,7 +56,7 @@ Module("block.ui.role", function () {
                 Joose.A.each(this.getElements(), function (shape) { shape.touch() })
                 this.SUPER()
             },
-        	
+            
             updateState: function (dontMoveChildren) { // evil hack para to avoid movement ruding initialization
                 document.undo.beginTransaction()
                 
@@ -92,7 +92,7 @@ Module("block.ui.role", function () {
         },
         
         methods: {
-        	
+            
             create: function () {
                 return jQuery("<div class='group shape'></div>")
             },

@@ -1799,17 +1799,19 @@ blur: function () {this.$.find(".focusDiv").remove()
 })
 })
 Module("block.ui.role", function () {Role("Editable", {requires: ["getText", "setText", "_updateStateCore", "touch", "_updateFromCore", "updateState"],
-after: {place: function () {var me = this;this.$.dblclick(function () {me.text(prompt("Please enter Text", me.textContainer().text()));me.updateState()
+after: {place: function () {var me = this;this.$.dblclick(function () {var newValue = prompt("Please enter Text", me.textContainer().text())
+if(newValue) {me.text(newValue);me.updateState()
+}
 })
 me.text(this.getText())
 },
 _updateFromCore: function (shape) {this.text(shape.getText())
 },
-_updateStateCore: function () {this.setText(this.textContainer().text());},
-redraw: function () {this.textContainer().text(this.getText())
+_updateStateCore: function () {this.setText(this.textContainer().html());},
+redraw: function () {this.textContainer().html(this.getText().html())
 }
 },
-methods: {text: function (t) {if(arguments.length > 0) {this.textContainer().text(new String(t).html())
+methods: {text: function (t) {if(arguments.length > 0) {this.textContainer().html(new String(t).html())
 }
 return this.getText()
 },
@@ -2220,7 +2222,8 @@ methods: {beginTransaction: function () {if(this.getActiveTransaction()) {return
 this.addUndoStep(function emptyUndoStep () {}, block.ui.Shape)
 this.setActiveTransaction(true);},
 commit: function () {this.setActiveTransaction(false);},
-undo: function () {var last = this._steps.pop();if(last) {last()
+undo: function () {console.log("undoing")
+var last = this._steps.pop();if(last) {last()
 }
 },
 addUndoStep: function (step, shape) {if(!shape.meta.does(block.ui.role.Group)) {console.log("Add Undo step: "+shape)
@@ -2230,9 +2233,11 @@ this._steps.shift()
 }
 }
 },
-addUpdateStep: function (before) {var json = JSON.stringify(before);this.addUndoStep(function undoUpdate () {var copy = JSON.parse(json);copy.touch();before.updateFrom(copy);before.touch();}, before)
+addUpdateStep: function (before) {var json = JSON.stringify(before);this.addUndoStep(function undoUpdate () {console.log("Undo shape change")
+var copy = JSON.parse(json);copy.touch();before.updateFrom(copy);before.touch();}, before)
 },
-addCreateStep: function (shape) {this.addUndoStep(function undoCreate () {shape.destroy()
+addCreateStep: function (shape) {this.addUndoStep(function undoCreate () {console.log("Undo create")
+shape.destroy()
 }, shape)
 },
 addDestroyStep: function (shape) {this.addUndoStep(function undoDestroy () {console.log("Undo destroy")
@@ -2471,6 +2476,9 @@ jQueryGridParameter: function () {return [this.getDistance(), this.getDistance()
 })
 Module("block.ui.shape", function (m) {var refreshTimeout;Class("PropertiesPanel", {isa: block.ui.Shape,
 has: {_shape: {is: "rw"
+},
+_openEdit: { 
+is: "rw"
 }
 },
 methods: {callProp: function (ele, shape, value) {var $ele = $(ele);var id    = ele.id
@@ -2488,11 +2496,18 @@ return val
 } else {ele.disabled = true;return "n/a"
 }
 },
-place: function () {var me = this;this.$  = $("#properties");this.redraw()
-this.$.find("#shapeProperties input,#shapeProperties select").each(function () {var input = $(this);input.change(function () {var shape = me.getShape();if(shape) {me.callProp(this, shape, $(this).val())
-document.manager.setDirty(true)
-document.sync.saveState()
+handleChange: function (input, shape) {var me = this;if(shape) {me.setOpenEdit(null);document.undo.addUpdateStep(shape)
+me.callProp(input, shape, $(input).val())
+shape.touch()
 }
+},
+place: function () {var me = this;this.$  = $("#properties");this.redraw()
+this.$.find("#shapeProperties input,#shapeProperties select").each(function () {$(this).change(function () {me.handleChange(this, me.getShape())
+})
+})
+this.$.find("#shapeProperties input").each(function () {$(this).keypress(function () {var input = this;var shape = me.getShape()
+me.setOpenEdit(function () {me.handleChange(input, shape)
+})
 })
 })
 },
@@ -2500,11 +2515,17 @@ show: function () {$('#shapeProperties').show()
 $('#documentProperties').hide()
 this.redraw()
 },
-hide: function () {$('#shapeProperties').hide()
+hide: function () {this.executeOpenEdit()
+$('#shapeProperties').hide()
 $('#documentProperties').show()
 this.redraw()
 },
-setShape: function (newEle) {this._shape = newEle
+executeOpenEdit: function () {var edit = this.getOpenEdit();if(edit) {edit()
+this.setOpenEdit(null)
+}
+},
+setShape: function (newEle) {this.executeOpenEdit()
+this._shape = newEle
 this.refresh(newEle);this.show()
 },
 refresh: function (shape) {if(refreshTimeout) {clearTimeout(refreshTimeout)
@@ -2901,7 +2922,7 @@ loadDocuments: function (callback) {if(this.loggedIn()) {block.ui.SyncDocument.r
 })
 })
 JooseGearsInitializeGears()
-Module("block.ui", function (m) {Class("Sync", {has: {_maxVersion: {is: "rw",
+Module("block.ui", function (m) {var updateTimer;Class("Sync", {has: {_maxVersion: {is: "rw",
 init: 0
 },
 _doc: {is: "rw"
@@ -2916,7 +2937,7 @@ _syncTime: {is: "rw"
 _saveTimeout: {is: "rw"
 }
 },
-methods: {delayedUpdate: function () {var me = this;window.setTimeout(function syncUpdate () {me.update()
+methods: {delayedUpdate: function () {var me = this;clearTimeout(updateTimer);updateTimer = window.setTimeout(function syncUpdate () {me.update()
 }, 5000)
 },
 startListening: function ()  {var me = this;window.setInterval(function recoverTimer () {var last = me.getSyncTime();var now  = new Date().getTime();if(now - last > 20000) { 
@@ -2972,10 +2993,11 @@ var me = this;this.setSaveTimeout(
 window.setTimeout(
 function () {m.SyncDocument.addData(me, false)
 },
-800)
+2000)
 )
 },
-saveState: function () {if(document.manager.getDirty()) {saveMessage("Saving...")
+saveState: function () {if(document.manager.getDirty()) {this.delayedUpdate() 
+saveMessage("Saving...")
 this._saveState()
 document.manager.setDirty(false)
 }
@@ -3003,8 +3025,7 @@ sync.updateFromArray(dataArray)
 if(newMaxVersion > 0) {sync.setMaxVersion(newMaxVersion);}
 })
 },
-addData: function (sync, isSavePoint) {var me   = new m.SyncDocument();var doc  = sync.getDoc();var data = JSON.stringify(sync.getDoc());console.log(data)
-this.request("POST", "/add",
+addData: function (sync, isSavePoint) {var me   = new m.SyncDocument();var doc  = sync.getDoc();var data = JSON.stringify(sync.getDoc());this.request("POST", "/add",
 {hash:         doc.getId(),
 data:         data,
 is_savepoint: isSavePoint,
@@ -3014,8 +3035,7 @@ session:      document.paras.sessionId
 function saveMessage () {window.saveMessage("Saved")
 console.log("save successful")
 });},
-request: function (method, url, data, callback) {try {Joose.Gears.ajaxRequest(method, url, data, function receivedData (data) {console.log(data)
-callback(JSON.parse(data))
+request: function (method, url, data, callback) {try {Joose.Gears.ajaxRequest(method, url, data, function receivedData (data) {callback(JSON.parse(data))
 }, function onError (request) {console.log("Error fetching url "+request.url+". Response code: " + request.status + " Response text: "+request.responseText)
 })
 } catch (e) {console.log(e)

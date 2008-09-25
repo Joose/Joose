@@ -9,10 +9,10 @@ Module("block.ui.shape", function (m) {
             propagate: function () {},
             
             touch: function () {
-            	// we are just a selection
-            	// Touching ourselves should not make the document dirty 
-            	
-            	this.updated()
+                // we are just a selection
+                // Touching ourselves should not make the document dirty 
+                
+                this.updated()
             },
             
             paste: function (target) {

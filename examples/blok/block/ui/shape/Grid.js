@@ -1,7 +1,7 @@
 Module("block.ui.shape", function (m) {
-	
-	var firstDraw = true;
-	
+    
+    var firstDraw = true;
+    
     Class("Grid", {
         isa: block.ui.Shape,
         has: {
@@ -29,8 +29,8 @@ Module("block.ui.shape", function (m) {
                 
                 var d        = this.getDocument();
                 if(firstDraw) {
-                	d = $(window)
-                	firstDraw = false
+                    d = $(window)
+                    firstDraw = false
                 }
                 var distance = this.getDistance();
                 var width    = d.width()  - offsetLeft - 1

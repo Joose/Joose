@@ -1,6 +1,9 @@
 JooseGearsInitializeGears()
 
 Module("block.ui", function (m) {
+    
+    var updateTimer;
+    
     Class("Sync", {
         
         has: {
@@ -26,7 +29,7 @@ Module("block.ui", function (m) {
             },
             
             _saveTimeout: {
-            	is: "rw"
+                is: "rw"
             }
         },
         
@@ -35,7 +38,9 @@ Module("block.ui", function (m) {
             delayedUpdate: function () {
                 var me = this;
                 
-                window.setTimeout(function syncUpdate () {
+                clearTimeout(updateTimer);
+                
+                updateTimer = window.setTimeout(function syncUpdate () {
                     me.update()
                 }, 5000) 
             },
@@ -102,9 +107,9 @@ Module("block.ui", function (m) {
                                 cur.getContainer().removeElement(cur)
                                 var dest = map[container.getGuid()];
                                 if(dest) {
-                                	dest.add(cur)
+                                    dest.add(cur)
                                 } else {
-                                	console.log("Cannot find "+container.getGuid())
+                                    console.log("Cannot find "+container.getGuid())
                                 }
                             }
                         }
@@ -116,9 +121,9 @@ Module("block.ui", function (m) {
                         } else {
                             dest = map[container.getGuid()]
                             if(dest) {
-                               	dest.add(cur)
+                                   dest.add(cur)
                             } else {
-                              	console.log("Cannot find "+container.getGuid())
+                                  console.log("Cannot find "+container.getGuid())
                             }
                         }
                         if(!shape.isDeleted()) {
@@ -131,7 +136,7 @@ Module("block.ui", function (m) {
             },
             
             fireFirstDraw: function () {
-            	if(this.getFirstUpdate()) {
+                if(this.getFirstUpdate()) {
                     window.onfirstdraw();
                     this.setFirstUpdate(false)
                 }
@@ -142,24 +147,25 @@ Module("block.ui", function (m) {
             },
             
             _saveState: function () {
-            	var timer = this.getSaveTimeout();
-            	if(timer) {
-            		clearTimeout(timer)
-            	}
-            	
-            	var me = this;
-            	this.setSaveTimeout(
-            		window.setTimeout(
-            			function () {
-            				m.SyncDocument.addData(me, false)
-            			},
-            			800)
-            		)
+                var timer = this.getSaveTimeout();
+                if(timer) {
+                    clearTimeout(timer)
+                }
+                
+                var me = this;
+                this.setSaveTimeout(
+                    window.setTimeout(
+                        function () {
+                            m.SyncDocument.addData(me, false)
+                        },
+                        2000)
+                    )
             },
             
             saveState: function () {
                 if(document.manager.getDirty()) {
-                	saveMessage("Saving...")
+                    this.delayedUpdate() // saving state delays update
+                    saveMessage("Saving...")
                     this._saveState()
                     document.manager.setDirty(false)
                 }
@@ -210,7 +216,7 @@ Module("block.ui", function (m) {
                         }
                         sync.updateFromArray(dataArray)
                         if(newMaxVersion > 0) {
-                        	sync.setMaxVersion(newMaxVersion);
+                            sync.setMaxVersion(newMaxVersion);
                         }
                     })
                 
@@ -223,7 +229,7 @@ Module("block.ui", function (m) {
                 
                 var data = JSON.stringify(sync.getDoc());
                 
-                console.log(data)
+                //console.log(data)
     
                 this.request("POST", "/add",
                     {
@@ -234,22 +240,22 @@ Module("block.ui", function (m) {
                         session:      document.paras.sessionId
                     },
                     function saveMessage () {
-                    	window.saveMessage("Saved")
+                        window.saveMessage("Saved")
                         console.log("save successful")
                     });
             },
             
             request: function (method, url, data, callback) {
-            	try {
-                	Joose.Gears.ajaxRequest(method, url, data, function receivedData (data) {
-                		console.log(data)
-                	    callback(JSON.parse(data))
-                	}, function onError (request) {
-                		console.log("Error fetching url "+request.url+". Response code: " + request.status + " Response text: "+request.responseText)
-                	})
-            	} catch (e) {
-            		console.log(e)
-            	}
+                try {
+                    Joose.Gears.ajaxRequest(method, url, data, function receivedData (data) {
+                        // console.log(data)
+                        callback(JSON.parse(data))
+                    }, function onError (request) {
+                        console.log("Error fetching url "+request.url+". Response code: " + request.status + " Response text: "+request.responseText)
+                    })
+                } catch (e) {
+                    console.log(e)
+                }
             }
         }
         

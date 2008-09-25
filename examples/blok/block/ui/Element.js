@@ -38,7 +38,7 @@ Module("block.ui", function (m) {
             },
             
             redrawTimeout: {
-            	persistent:   false
+                persistent:   false
             }
         },
         methods: {
@@ -61,13 +61,13 @@ Module("block.ui", function (m) {
             
             // call this to make sure you only redraw once in a mass redraw of shapes
             asyncRedraw: function () {
-            	if(this.redrawTimeout) {
-            		clearTimeout(this.redrawTimeout)
-            	}
-            	var me = this;
-            	this.redrawTimeout = setTimeout(function asyncRedrawCallback () {
-            		me.redraw()
-            	}, 0)
+                if(this.redrawTimeout) {
+                    clearTimeout(this.redrawTimeout)
+                }
+                var me = this;
+                this.redrawTimeout = setTimeout(function asyncRedrawCallback () {
+                    me.redraw()
+                }, 0)
             },
             
             redraw: function () {},

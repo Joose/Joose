@@ -209,7 +209,7 @@ Module("ORM", function (module) {
         has: {
             _props: {},
             _resultSetClass: {
-            	is: "rw"
+                is: "rw"
             }
         },
         
@@ -272,29 +272,29 @@ Module("ORM", function (module) {
             },
             
             buildResultSetClass: function () {
-            	var me = this;
-            	var className = me.className() + "ResultSet";
-            	var c = new Joose.Class().createClass(className)
-            	
-            	c.meta.addSuperClass(module.ResultSet);
-            	
-            	var methods = this.getInstanceMethods();
-            	
-            	Joose.A.each(methods, function (method) {
-            		var name = method.getName();
-            		if(name != "initialize" && name != "toString") { // initialize gets called in constructor; stringify shold be default
-            			c.meta.addMethod(name, function () {
-            				for(var i = 0; i < this.length; i++) {
-            					var obj = this[i];
-            					obj[name].apply(obj, arguments)
-            				}
-            				return this
-            			})
-            		}
-            	});
-            	
-            	
-            	this.setResultSetClass(c);
+                var me = this;
+                var className = me.className() + "ResultSet";
+                var c = new Joose.Class().createClass(className)
+                
+                c.meta.addSuperClass(module.ResultSet);
+                
+                var methods = this.getInstanceMethods();
+                
+                Joose.A.each(methods, function (method) {
+                    var name = method.getName();
+                    if(name != "initialize" && name != "toString") { // initialize gets called in constructor; stringify shold be default
+                        c.meta.addMethod(name, function () {
+                            for(var i = 0; i < this.length; i++) {
+                                var obj = this[i];
+                                obj[name].apply(obj, arguments)
+                            }
+                            return this
+                        })
+                    }
+                });
+                
+                
+                this.setResultSetClass(c);
             },
             
             // get all fields of table of the class I represent
@@ -614,17 +614,17 @@ Module("ORM", function (module) {
                 var delayed;
                 var async     = true;
                 if(!processor) {
-                	async     = false;
-                	delayed   = new JooseX.DelayedExecution(me.meta.getResultSetClass());
-                	processor = function (resultSet) {
-                		delayed.__performOn(resultSet)
-                	}
+                    async     = false;
+                    delayed   = new JooseX.DelayedExecution(me.meta.getResultSetClass());
+                    processor = function (resultSet) {
+                        delayed.__performOn(resultSet)
+                    }
                 }
                 
                 var resultSet;
                 
                 var rs = module.executeSql(sql, args, function onSelectSuccessful (result) {
-                	var setClass  = me.meta.getResultSetClass();
+                    var setClass  = me.meta.getResultSetClass();
                     resultSet     = setClass.meta.instantiate();
                     
                     for(var i = 0; i < result.rows.length; i++) {
@@ -644,14 +644,14 @@ Module("ORM", function (module) {
                             console.log("Created "+o)
                     }
                     if(async || (!async && !GEARS_COMPAT)) {
-                    	processor(resultSet)
+                        processor(resultSet)
                     }
                 });
                 if(!async) {
-                	if(GEARS_COMPAT) {
-                		window.setTimeout(function () { processor(resultSet) }, 0)
-                	}
-                	return delayed
+                    if(GEARS_COMPAT) {
+                        window.setTimeout(function () { processor(resultSet) }, 0)
+                    }
+                    return delayed
                 }
             },
             
@@ -670,36 +670,36 @@ Module("ORM", function (module) {
     });
     
     Class("ResultSet", {
-    	
-    	has: {
-    		length: {
-    			init: 0
-    		}
-    	},
-    	
-    	methods: {
-    		each: function (func) {
-            	for(var i = 0; i < this.length; i++) {
-            		var obj = this[i];
-            		func.call(obj, obj)
-            	}
-            },
-            	
-            toArray: function (func) {
-            	var a = [];
-            	for(var i = 0; i < this.length; i++) {
-            		var obj = this[i];
-            		a.push(obj)
-            	}
-            	return a
-            },
-            	
-            toString: function (func) {
-            	return this.toArray().toString()
+        
+        has: {
+            length: {
+                init: 0
             }
-    		
-    	}
-    	
+        },
+        
+        methods: {
+            each: function (func) {
+                for(var i = 0; i < this.length; i++) {
+                    var obj = this[i];
+                    func.call(obj, obj)
+                }
+            },
+                
+            toArray: function (func) {
+                var a = [];
+                for(var i = 0; i < this.length; i++) {
+                    var obj = this[i];
+                    a.push(obj)
+                }
+                return a
+            },
+                
+            toString: function (func) {
+                return this.toArray().toString()
+            }
+            
+        }
+        
     })
     
 })

@@ -95,7 +95,7 @@ Module("block.ui", function (m) {
             },
             
             isEmpty: function () {
-            	return this.getElements().length == 0;
+                return this.getElements().length == 0;
             }
         }
     })
