@@ -108,13 +108,16 @@ initializeGears()
         	alert("Received content")
         }
         
-        ajaxRequest("GET", "firebug_crash.html", null, function () {
-        	test()
-        })
+        function execute () {
+        	ajaxRequest("GET", "firebug_crash.html", null, function () {
+        		test()
+        	})
+        }
 
 </script
 </head>
 
 <body>
+<input type="button" value="execute" onclick="execute()">
 </body>
 </html>
