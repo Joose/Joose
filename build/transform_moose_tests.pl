@@ -1,7 +1,9 @@
 #!/usr/bin/perl
 use strict;
 
-# dont look at this
+# Dont look at this :)
+# This tries to tranform Perl tests written for Moose into JavaScript tests
+# It reads from STDIN and writes to STDOUT
 
 while(<>) {
     s/->(\w+),/.$1(),/g;
