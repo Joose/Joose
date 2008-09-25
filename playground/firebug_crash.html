@@ -99,8 +99,12 @@ initializeGears()
             }
         }
         
-        ajaxRequest("GET", "firebug_crash.html", null, function () {
+        function test() {
         	alert("Received content")
+        }
+        
+        ajaxRequest("GET", "firebug_crash.html", null, function () {
+        	test()
         })
 
 </script
