@@ -59,16 +59,16 @@ isEq(value, 100, "Leaves correct values alone")
 // now just test plain vanilla type constraints in class attributes
 diag('type constrained vanilla class attributes');
 
-Type('attrConstraint', {
+Type('BooleanTest', {
     where: function(value) {
-            if (typeof value == 'boolean') {
-                return true;
-            }
-            return false;
-        },
-        coerce: [{
+        if (typeof value == 'boolean') {
+            return true;
+        }
+        return false;
+    },
+    coerce: [{
             from: TYPE.Integer,
-            via:  function (value) {
+             via:  function (value) {
                 if ( value == 0 )
                     return false;
                 return true;
@@ -79,26 +79,40 @@ Type('attrConstraint', {
 
 Class("BooleanTypeConstrained", {
     has: {
-        attr1: {is: 'rw',
-                isa: TYPE.attrConstraint,
-                coerce: true,
-               }
+        attr1: {
+            is: 'rw',
+            isa: TYPE.BooleanTest,
+            coerce: true
+        }
     }
 })
 
 
-var constrained = new BooleanTypeConstrained({attr1: true});
+var constrained = new BooleanTypeConstrained({attr1: false});
+ok(constrained.getAttr1() == false, "setting boolean constrained to false in constructor succeeds")
 
 ok(constrained.setAttr1(true), 'setting boolean constrained to true succeeds');
 fail(function () { constrained.setAttr1('foo')}, 
-    'The passed value [foo] is not a attrConstraint', 
+    'The passed value [foo] is not a BooleanTest', 
     'setting boolean constrained to foo fails');
 
+fail(function () { new BooleanTypeConstrained({attr1: 'foo'})}, 
+    'The passed value [foo] is not a BooleanTest', 
+    'setting boolean constrained to foo in constructor fails');
+
 fail(function () { new BooleanTypeConstrained({attr1: "one"}) }, 
-    'The passed value [one] is not a attrConstraint', 
+    'The passed value [one] is not a BooleanTest', 
     'newing up a boolean constrained with non boolean value fails');
+    
 ok(constrained.setAttr1(1), 'setting boolean to 1 succeeds');
-ok(constrained.getAttr1() == true, '1 coerces to boolean true');
+ok(constrained.getAttr1() !== 1, '...but value was not actually set to 1');
+ok(constrained.getAttr1() === true, '1 coerces to boolean true');
+
+ok(constrained.setAttr1(0), 'setting boolean to 0 succeeds');
+ok(constrained.getAttr1() !== 0, '...but value was not actually set to 0');
+ok(constrained.getAttr1() === false, '0 coerces to boolean false');
+
+ok(new BooleanTypeConstrained({attr1: 1}).getAttr1() == true, "setting boolean to 1 coerces to true in constructor")
 
 //TODO(jwall): attribute coercion tests
 
