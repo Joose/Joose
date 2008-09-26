@@ -1,4 +1,4 @@
-plan(20);
+plan(27);
 
 Type("Integer", {
     where: /^-*\d+$/
