@@ -1,5 +1,46 @@
-plan(36)
+plan(41)
 
+diag("Test constrained attributes")
+// For type constrained attributes, see 16_types.js
+
+Class("AttrClass", {});
+Role("AttrRole",   {});
+Class("AttrClassWithRole", {
+    does: [AttrRole]
+});
+
+Class("ConstrainedAttr", {
+    has: {
+        attr1: {
+            isa: AttrClass,
+            is:  "rw"
+        },
+        
+        attr2: {
+            isa: AttrRole,
+            is:  "rw"
+        }
+    }
+})
+
+var constrained = new ConstrainedAttr();
+
+ok(constrained.setAttr1(new AttrClass()), "Can set to correct class")
+fail(function () {
+   constrained.setAttr1(new AttrClassWithRole())
+}, "The attribute attr1 only accepts values that are objects of type AttrClass", "Setting to wrong type fails")
+
+ok(constrained.setAttr2(new AttrClassWithRole()), "Can set to class with correct role")
+fail(function () {
+   constrained.setAttr2(new AttrClass())
+}, "The attribute attr2 only accepts values that are objects of type AttrRole", "Setting fails if role is missing")
+
+fail(function () {
+   constrained.setAttr2("Scalar")
+}, "The attribute attr2 only accepts values that have a meta object.", "Setting fails if object is not a Joose object")
+
+
+diag("Test handles property")
 
 Class("Wheel", {
     has: {
@@ -144,6 +185,5 @@ ok(typeof t1.lazy == "string", "Attr is now initialized");
 ok(typeof t1.eager == "string", "Eager attr is initialized immediately");
 ok(t1.getEager() == "eager", "Eager attr is initialized immediately");
 ok(t1.getFoo() == "bar", "New attr is initialized")
-
 
 endTests()
