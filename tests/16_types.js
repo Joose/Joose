@@ -1,4 +1,4 @@
-plan(15);
+plan(20);
 
 Type("Integer", {
     where: /^-*\d+$/
@@ -55,5 +55,51 @@ var value = MyTypes.PositiveIntegerWithCoercion.coerce("one")
 ok(value == null, "Does not coerce wrong values")
 var value = MyTypes.PositiveIntegerWithCoercion.coerce(100)
 isEq(value, 100, "Leaves correct values alone")
+
+// now just test plain vanilla type constraints in class attributes
+diag('type constrained vanilla class attributes');
+
+Type('attrConstraint', {
+    where: function(value) {
+            if (typeof value == 'boolean') {
+                return true;
+            }
+            return false;
+        },
+        coerce: [{
+            from: TYPE.Integer,
+            via:  function (value) {
+                if ( value == 0 )
+                    return false;
+                return true;
+            }
+        }]
+    }
+);
+
+Class("BooleanTypeConstrained", {
+    has: {
+        attr1: {is: 'rw',
+                isa: TYPE.attrConstraint,
+                coerce: true,
+               }
+    }
+})
+
+
+var constrained = new BooleanTypeConstrained({attr1: true});
+
+ok(constrained.setAttr1(true), 'setting boolean constrained to true succeeds');
+fail(function () { constrained.setAttr1('foo')}, 
+    'The passed value [foo] is not a attrConstraint', 
+    'setting boolean constrained to foo fails');
+
+fail(function () { new BooleanTypeConstrained({attr1: "one"}) }, 
+    'The passed value [one] is not a attrConstraint', 
+    'newing up a boolean constrained with non boolean value fails');
+ok(constrained.setAttr1(1), 'setting boolean to 1 succeeds');
+ok(constrained.getAttr1() == true, '1 coerces to boolean true');
+
+//TODO(jwall): attribute coercion tests
 
 endTests()
