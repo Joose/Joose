@@ -10,11 +10,11 @@ Class("Joose.Class", {
 });
 
 Class("MyClass", {
-	after: {
-		initialize: function () {
-			this.test = 1
-		}
-	},
+    after: {
+        initialize: function () {
+            this.test = 1
+        }
+    },
     methods: {
         hello: function () { return 1 }
     }

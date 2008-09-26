@@ -9,12 +9,12 @@ Class("TestClass", {
     },
     
     classMethods: {
-    	classMethod1: function () {
-    		return 1
-    	},
-    	classMethod2: function () {
-    		return 2
-    	}
+        classMethod1: function () {
+            return 1
+        },
+        classMethod2: function () {
+            return 2
+        }
     }
 });
 
@@ -24,17 +24,17 @@ Class("Subclass", {
     isa: TestClass,
     
     methods: {
-    	two: function () { return "overridden" }
+        two: function () { return "overridden" }
     },
     
     classMethods: {
-    	one: function () {
-    		return "class"
-    	},
-    	
-    	classMethod2: function () {
-    		return "overridden"
-    	}
+        one: function () {
+            return "class"
+        },
+        
+        classMethod2: function () {
+            return "overridden"
+        }
     }
 });
     

@@ -46,23 +46,23 @@ fail(function () {
 diag("Custom class builder")
 
 Class("CustomPropMetaClass", {
-	isa: Joose.Class,
-	methods: {
-		handlePropcustomBuilder: function (para) {
-			ok(para == "test", "custom builder method called with correct parameter")
-		}
-	}
+    isa: Joose.Class,
+    methods: {
+        handlePropcustomBuilder: function (para) {
+            ok(para == "test", "custom builder method called with correct parameter")
+        }
+    }
 })
 
 Class("ClassWithCustomBuilder", {
-	meta: CustomPropMetaClass,
-	methods: {
-		foo: function () {
-			return "bar"
-		}
-	},
-	
-	customBuilder: "test"
+    meta: CustomPropMetaClass,
+    methods: {
+        foo: function () {
+            return "bar"
+        }
+    },
+    
+    customBuilder: "test"
 })
 
 canOk(ClassWithCustomBuilder, "foo")

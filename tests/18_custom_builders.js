@@ -1,48 +1,48 @@
 plan(14);
 
 Class("TestMeta", {
-	isa: Joose.Class,
-	
-	methods: {
-		handlePropcustomProp: function (paras, props) {
-			var me = this;
-			ok(paras, "received paras")
-			ok(props, "received class properties")
-			ok(paras.event1, "Received contents of paras")
-			ok(props.has.one, "Received correct class props")
-			Joose.O.each(paras, function (func,name) {
-				me.addMethod("custom"+name, func)
-			})
-		}
-	}
+    isa: Joose.Class,
+    
+    methods: {
+        handlePropcustomProp: function (paras, props) {
+            var me = this;
+            ok(paras, "received paras")
+            ok(props, "received class properties")
+            ok(paras.event1, "Received contents of paras")
+            ok(props.has.one, "Received correct class props")
+            Joose.O.each(paras, function (func,name) {
+                me.addMethod("custom"+name, func)
+            })
+        }
+    }
 })
 
 
 Class("TestClass", {
-	meta: TestMeta,
-	has: {
-		one: {
-			is: "rw"
-		},
-		two: {
-			is: "rw"
-		}
-	},
-	
-	methods: {
-		test: function() {
-			return true
-		}
-	},
-	
-	customProp: {
-		event1: function () {
-			return 1
-		},
-		event2: function () {
-			return 2
-		}
-	}
+    meta: TestMeta,
+    has: {
+        one: {
+            is: "rw"
+        },
+        two: {
+            is: "rw"
+        }
+    },
+    
+    methods: {
+        test: function() {
+            return true
+        }
+    },
+    
+    customProp: {
+        event1: function () {
+            return 1
+        },
+        event2: function () {
+            return 2
+        }
+    }
 })
 
 ok(TestMeta, "TestMeta class is here")
