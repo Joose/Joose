@@ -17,7 +17,7 @@ Module("block.ui.role", function () {
             },
             
             _updateFromCore: function (shape) {
-                this.text(shape.getText())
+                this.text(shape.getText().decodeHtml())
             },
             
             _updateStateCore: function () {
@@ -25,14 +25,15 @@ Module("block.ui.role", function () {
             },
             
             redraw: function () {
-                 this.textContainer().html(this.getText().html())
+                 this.textContainer().html(this.getText().decodeHtml())
             }
         },
         methods: {
             
             text: function (t) {
                 if(arguments.length > 0) {
-                    this.textContainer().html(new String(t).html())
+                	var html = new String(t).html();
+                    this.textContainer().html(html)
                 }
                 return this.getText()
             },

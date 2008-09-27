@@ -75,7 +75,9 @@ class MainPage(webapp.RequestHandler):
       uri = '/?id='+self.randomHash()
       if self.request.get('template') != "":
         uri = uri + "&template=" + self.request.get('template')
-      self.redirect(uri)
+      path = os.path.join(os.path.dirname(__file__), "redirect.t.html")
+      self.response.out.write(template.render(path, { 'uri' : uri }))
+
     else:
 
       userName = "";

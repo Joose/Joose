@@ -1710,6 +1710,9 @@ throw new SyntaxError('JSON.parse');}
 String.prototype.html = function () {var string = new String(this);string = string.replace(/\&/g, "&amp;");string = string.replace(/\</g, "&lt;");string = string.replace(/\>/g, "&gt;");string = string.replace(/"/g,  "&quot;")
 string = string.replace(/'/g,  "&#39;");return string
 }
+String.prototype.decodeHtml = function () {var string = new String(this);string = string.replace(/&lt;/g, "<");string = string.replace(/&gt;/g, ">");string = string.replace(/&quot;/g,  "\"")
+string = string.replace(/&39;/g,  "'");string = string.replace(/&amp;/g, "&");return string
+}
 Module("block.ui", function () {Class("Array", {has: {array: {is: "rw",
 init: function () { return [] }
 }
@@ -1805,13 +1808,13 @@ if(newValue) {me.text(newValue);me.updateState()
 })
 me.text(this.getText())
 },
-_updateFromCore: function (shape) {this.text(shape.getText())
+_updateFromCore: function (shape) {this.text(shape.getText().decodeHtml())
 },
 _updateStateCore: function () {this.setText(this.textContainer().html());},
-redraw: function () {this.textContainer().html(this.getText().html())
+redraw: function () {this.textContainer().html(this.getText().decodeHtml())
 }
 },
-methods: {text: function (t) {if(arguments.length > 0) {this.textContainer().html(new String(t).html())
+methods: {text: function (t) {if(arguments.length > 0) {var html = new String(t).html();this.textContainer().html(html)
 }
 return this.getText()
 },
@@ -2405,6 +2408,13 @@ type: function () {var name = this.meta.className();return name.split('.').pop()
 drawOnDoc: function () {var me = this;document.shapes.addAndDraw(me);me.touch()
 document.undo.addCreateStep(me)
 return me
+},
+overlaps: function (other) {return !(
+other.left()   > this.right() ||
+other.right()  < this.left()  ||
+other.top()    > this.bottom() ||
+other.bottom() < this.top()
+)
 }
 },
 after: {initialize: function () {this.optionalRegisterGuid();}
@@ -2817,10 +2827,8 @@ redraw: function () {if(!this.isDeleted()) {this.connect(this.getOrigin(), this.
 },
 /* This currently implements a simple connection strategy based on 3 lines */
 /* and should later be refactored to allow for different connection strategires. */
-connect: function (shape1, shape2) {try {var orig = shape1;var dest = shape2;var origBottom = orig.bottom()
+connect: function (shape1, shape2) {var orig = shape1;var dest = shape2;var origBottom = orig.bottom()
 var destTop    = dest.top()
-} catch(e) {window.log(e);return
-}
 if(orig.top() > destTop) {orig = shape2
 dest = shape1
 origBottom = orig.bottom()
@@ -2834,10 +2842,18 @@ h0.y(origBottom + vlen);h0.x(origCenter.left)
 h0.len(hlen)
 v1.draw();v1.y(origBottom + vlen);v1.x(origCenter.left + hlen)
 v1.len(vlen)
-if(origBottom > destTop) {console.log("Special case for later")
-v0.hide()
+if(origBottom > destTop) {if(orig.overlaps(dest)) {v0.hide()
 v1.hide()
 h0.hide()
+} else {v0.hide()
+v1.hide()
+h0.show()
+if(origCenter.left < destCenter.left) {h0.x(orig.right() + 1)
+h0.len(dest.left() - orig.right() - 1)
+} else {h0.x(dest.right() + 1)
+h0.len(orig.left() - dest.right() - 1)
+}
+}
 } else {v0.show()
 v1.show()
 h0.show()
