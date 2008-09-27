@@ -1,4 +1,4 @@
-plan(27);
+plan(28);
 
 Type("Integer", {
     where: /^-*\d+$/
@@ -95,6 +95,9 @@ ok(constrained.setAttr1(true), 'setting boolean constrained to true succeeds');
 fail(function () { constrained.setAttr1('foo')}, 
     'The passed value [foo] is not a BooleanTest', 
     'setting boolean constrained to foo fails');
+constrained.setAttr1('foo', function (e, type) {
+	ok(type == TYPE.BooleanTest, "Error handler invoked with correct type")
+})
 
 fail(function () { new BooleanTypeConstrained({attr1: 'foo'})}, 
     'The passed value [foo] is not a BooleanTest', 
