@@ -117,6 +117,22 @@ ok(constrained.getAttr1() === false, '0 coerces to boolean false');
 
 ok(new BooleanTypeConstrained({attr1: 1}).getAttr1() == true, "setting boolean to 1 coerces to true in constructor")
 
-//TODO(jwall): attribute coercion tests
+ok(typeof TYPE.Any != 'undefined', 'we have a Any TypeConstraint');
+
+ok(typeof TYPE.Obj != 'undefined', 'we have a Obj TypeConstraint');
+ok(TYPE.Obj._uses === TYPE.Any, 'Obj TypeConstraint uses TYPE.Any');
+ok(typeof TYPE.Null != 'undefined', 'we have a Null TypeConstraint');
+ok(TYPE.Null._uses === TYPE.Any, 'Null TypeConstraint uses TYPE.Any');
+ok(typeof TYPE.Str != 'undefined', 'we have a Str TypeConstraint');
+ok(typeof TYPE.Bool != 'undefined', 'we have a Bool TypeConstraint');
+ok(typeof TYPE.Num != 'undefined', 'we have a Num TypeConstraint');
+ok(typeof TYPE.Int != 'undefined', 'we have a Int TypeConstraint');
+ok(typeof TYPE.Float != 'undefined', 'we have a Float TypeConstraint');
+
+ok(typeof TYPE.Array != 'undefined', 'we have a Array TypeConstraint');
+ok(typeof TYPE.Func != 'undefined', 'we have a Func TypeConstraint');
+ok(typeof TYPE.Obj != 'undefined', 'we have a Object TypeConstraint');
+
+ok(typeof TYPE.Joose != 'undefined', 'we have a Joose TypeConstraint');
 
 endTests()
