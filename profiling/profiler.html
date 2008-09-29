@@ -1,0 +1,55 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Profiling</title>
+
+
+<script type="text/javascript" src="../tests/json2.js"></script>
+<script type="text/javascript" src="Profiler.js"></script>
+
+<script type="text/javascript">
+
+MyClass = function () {
+	this.attr = null;
+}
+
+var name = "attr";
+
+MyClass.prototype.getAttrClosure = function () {
+	return this[name]
+}
+
+eval('MyClass.prototype.getAttrEval = function () {return this.'+name+'}')
+
+var obj = new MyClass();
+
+new Profiler(function () {
+	var test = obj.getAttrClosure()
+}, "executing a closure based getter").run(2000000).report()
+
+new Profiler(function () {
+	var test = obj.getAttrEval()
+}, "executing an eval based getter").run(2000000).report()
+
+new Profiler(function () {
+	var test;
+	return function () { return test }
+}, "creating a closure").run(5000).report()
+
+new Profiler(function () {
+	var test;
+	eval("test = function () { return null };")
+	return test
+}, "eval'ing a function").run(5000).report()
+
+
+</script>
+
+</head>
+
+<body>
+
+
+
+</body>
+</html>
