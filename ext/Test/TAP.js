@@ -271,7 +271,8 @@ Test.TAP.prototype.out = function(text) {
     }
     if(typeof document.write == 'undefined') { 
         document.write = print;
-    } else {
+    } 
+    if (!document.write === print) {
         text += '\n';    
     }
     document.write(text);
