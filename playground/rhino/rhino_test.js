@@ -1,4 +1,4 @@
-
+//library loading helper function
 var loadlib = function(lib) {
     print('#loading: '+lib);
     load(lib);
@@ -21,3 +21,5 @@ loadlib(extpath+'Test/TAP.js');
 loadlib(extpath+'Test/TAP/Runner.js');
 
 loadlib(root+'tests/01_sanity.t');
+loadlib(root+'tests/16_types.t');
+
