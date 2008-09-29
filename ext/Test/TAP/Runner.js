@@ -80,6 +80,8 @@ Test.TAP.Runner.prototype.run_it = function(obj) {
             + (tester.counter - tester.planned) + ' tests extra');
         }
         this.diag('ran ' + tester.counter + ' tests out of ' + tester.planned);
+        this.diag('passed ' + tester.passed + ' tests out of ' + tester.planned);
+        this.diag('failed ' + tester.failed + ' tests out of ' + tester.planned);
     }
     catch(err) {
         this.diag("Test Suite Crashed!!! (" + err + ")");

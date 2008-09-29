@@ -34,6 +34,8 @@ Test.TAP is a javascript testing library that meets the needs of TDD for a comma
 Test.TAP = function() {
     this.planned = 0;
     this.counter = 0;
+    this.passed  = 0;
+    this.failed  = 0;
 };
 
 Test.TAP.prototype.mk_tap = function(ok, description){
@@ -46,11 +48,13 @@ Test.TAP.prototype.mk_tap = function(ok, description){
 }
 
 Test.TAP.prototype.pass = function(description) {
-    this.mk_tap('ok', description);    
+    this.mk_tap('ok', description);
+    this.passed++;
 };
 
 Test.TAP.prototype.fail = function(description) {
     this.mk_tap('not ok', description);
+    this.failed++;
 };
 
 /*
