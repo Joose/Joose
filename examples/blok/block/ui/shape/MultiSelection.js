@@ -24,16 +24,20 @@ Module("block.ui.shape", function (m) {
                 var found  = false;
                 
                 document.shapes.traverse(function (shape) {
-                    if(!shape.getDeleted() && shape.meta.does(block.ui.role.Focusable)) {
-                        if(shape.top()    >= top &&
-                           shape.left()   >= left &&
-                           shape.right()  <= right &&
-                           shape.bottom() <= bottom
-                          ) {
-                            group.add(shape);
-                            found = true;
-                        }
-                    }
+                	try {
+                    	if(!shape.getDeleted() && shape.meta.does(block.ui.role.Focusable)) {
+                    	    if(shape.top()    >= top &&
+                    	       shape.left()   >= left &&
+                    	       shape.right()  <= right &&
+                    	       shape.bottom() <= bottom
+                    	      ) {
+                    	        group.add(shape);
+                    	        found = true;
+                    	    }
+                    	}
+                	} catch(e) {
+                		console.log(e)
+                	}
                 })
                 
                 if(found) {

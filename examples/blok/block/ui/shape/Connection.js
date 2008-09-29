@@ -139,6 +139,11 @@ Module("block.ui.shape", function (m) {
                 var orig = shape1;
                 var dest = shape2;
                 
+                if(!orig || !dest) {
+                	console.log("Invalid parameters")
+                	return
+                }
+                
                 var origBottom = orig.bottom()      
                 var destTop    = dest.top()
                 
@@ -228,8 +233,8 @@ Module("block.ui.shape", function (m) {
         after: {
             place: function () {
                 var a = [];
-                Joose.A.each(this.getVerticals(),   function (line) { a.push(line.$.get(0)) })
-                Joose.A.each(this.getHorizontals(), function (line) { a.push(line.$.get(0)) })
+                Joose.A.each(this.getVerticals(),   function (line) { if(line.$) a.push(line.$.get(0)) })
+                Joose.A.each(this.getHorizontals(), function (line) { if(line.$) a.push(line.$.get(0)) })
                 
                 this.$ = $(a)
             }

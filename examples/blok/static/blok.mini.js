@@ -2674,11 +2674,13 @@ touch: function () {this.updated()
 },
 selectContained: function () {var top    = this.$.offset().top
 var left   = this.left();var right  = this.right();var bottom = top + this.height()
-var group  = new block.ui.shape.SelectionGroup();var found  = false;document.shapes.traverse(function (shape) {if(!shape.getDeleted() && shape.meta.does(block.ui.role.Focusable)) {if(shape.top()    >= top &&
+var group  = new block.ui.shape.SelectionGroup();var found  = false;document.shapes.traverse(function (shape) {try {if(!shape.getDeleted() && shape.meta.does(block.ui.role.Focusable)) {if(shape.top()    >= top &&
 shape.left()   >= left &&
 shape.right()  <= right &&
 shape.bottom() <= bottom
 ) {group.add(shape);found = true;}
+}
+} catch(e) {console.log(e)
 }
 })
 if(found) {group.draw()
@@ -2827,7 +2829,10 @@ redraw: function () {if(!this.isDeleted()) {this.connect(this.getOrigin(), this.
 },
 /* This currently implements a simple connection strategy based on 3 lines */
 /* and should later be refactored to allow for different connection strategires. */
-connect: function (shape1, shape2) {var orig = shape1;var dest = shape2;var origBottom = orig.bottom()
+connect: function (shape1, shape2) {var orig = shape1;var dest = shape2;if(!orig || !dest) {console.log("Invalid parameters")
+return
+}
+var origBottom = orig.bottom()
 var destTop    = dest.top()
 if(orig.top() > destTop) {orig = shape2
 dest = shape1
@@ -2870,8 +2875,8 @@ if(!this.getDestination() && this.getDestinationGuid()) {this.setDestination(doc
 }
 }
 },
-after: {place: function () {var a = [];Joose.A.each(this.getVerticals(),   function (line) { a.push(line.$.get(0)) })
-Joose.A.each(this.getHorizontals(), function (line) { a.push(line.$.get(0)) })
+after: {place: function () {var a = [];Joose.A.each(this.getVerticals(),   function (line) { if(line.$) a.push(line.$.get(0)) })
+Joose.A.each(this.getHorizontals(), function (line) { if(line.$) a.push(line.$.get(0)) })
 this.$ = $(a)
 }
 }
