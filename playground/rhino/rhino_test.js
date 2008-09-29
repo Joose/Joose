@@ -1,5 +1,3 @@
-//mock the document
-var document = {};
 
 var loadlib = function(lib) {
     print('#loading: '+lib);
