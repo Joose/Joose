@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 use strict;
 
-use FindBin;
+use FindBin qw{$Bin};
 use File::Find;
 use File::Copy;
 
@@ -25,9 +25,9 @@ my $compile_dir = "$release_dir/$joose_dir";
 
 mkdir $compile_dir || die "Cant make compile dir: $!";
 
-my $path = "$FindBin::Bin/..";
+my $path = "$Bin/..";
 
-require "release_helpers.pl";
+require "$Bin/release_helpers.pl";
 
 wipe_dir($compile_dir);
 make_single_js($path, $compile_dir, $release_dir, $joose_dir);
