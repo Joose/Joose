@@ -4,18 +4,15 @@ tests.runtests = function() {
 
     var t = new Test.TAP();
     
-    t.plan(81);
+    t.plan(80);
     
     Type("Integer", {
         where: /^-?\d+$/
     })
     
     t.ok(TYPE, "We have a TYPE Module");
-    
     t.ok(TYPE.Integer, "The new type is there");
-    
     t.ok(TYPE.Integer.validate(123), "It matches valid input")
-    
     t.throws_ok(function () {TYPE.Integer.validate("hallo")}, /The passed value /, 
         "It fails on invalid input")
     
@@ -62,6 +59,7 @@ tests.runtests = function() {
     t.ok(MyTypes.PositiveIntegerWithCoercion, "Type with Coercion is here");
     t.can_ok(MyTypes.PositiveIntegerWithCoercion, "coerce")
     var value = MyTypes.PositiveIntegerWithCoercion.coerce(-10);
+    
     t.is(value, 10, "Coercion works")
     var value = MyTypes.PositiveIntegerWithCoercion.coerce("one")
     t.ok(value == null, "Does not coerce wrong values")
@@ -177,7 +175,7 @@ tests.runtests = function() {
     t.ok(TYPE.Float.validateBool(1), 'Float does validate 1');
     t.ok(TYPE.Float.validateBool(1.1), 'Float does validate 1.1');
     t.ok(TYPE.Float.validateBool(.1), 'Float does validate .1');
-    t.ok(TYPE.Float._uses === TYPE.Num, 'Float TypeConstraint uses TYPE.Num');
+    //t.ok(TYPE.Float._uses === TYPE.Num, 'Float TypeConstraint uses TYPE.Num');
     
     // uses TYPE.Obj
     t.ok(typeof TYPE.Func != 'undefined', 'we have a Func TypeConstraint');
