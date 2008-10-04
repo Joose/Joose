@@ -12,8 +12,6 @@ ORM.transaction(function() {
 });
 
 ORM.transaction(function () {
-
-    JooseX.DOMBinding.JQueryMetaRole.meta.apply(ORM.EntityMetaClass);
     
     var notes = [];
 
