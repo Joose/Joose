@@ -1,4 +1,4 @@
-plan(37)
+plan(42)
 
 diag("Roles")
 
@@ -206,5 +206,40 @@ var adam = new Adam();
 sayString = ""
 adam.sayHello()
 ok(sayString == "Stutter\nMay I talk to you?\nHello!\nI am a Joose user.\nMay I talk to you?\nHello!\nI am a Joose user.\n", "Method modifiers in roles work (before, after, around, override. Multi override in the same role)")
+
+diag("Meta roles")
+
+Role("MetaRole", {
+    methods: {
+        handlePropspecial: function (para) {
+            var ret = para;
+            this.addMethod("special", function () {
+                return ret
+            })
+        }
+    }
+})
+
+Role("RoleWithMetaRole", {
+    metaRoles: [MetaRole],
+    methods: {
+        myMethod: function () {
+            return "test"
+        }
+    }
+})
+
+Class("ClassWithMetaRole", {
+    does: [RoleWithMetaRole],
+    special: "foo"
+})
+
+ok(ClassWithMetaRole.meta.can("myMethod"), "Method from role arrived")
+ok(ClassWithMetaRole.meta.meta.can("handlePropspecial"),  "Method from meta role arrived")
+ok(!Adam.meta.meta.can("handlePropspecial"),  "Method from meta role was not added to other classes of the same meta class")
+ok(ClassWithMetaRole.meta.can("special"),  "Handler from meta role was executed")
+var obj = new ClassWithMetaRole()
+ok(obj.special() == "foo", "Method from meta role returns correct result")
+
 
 endTests()
