@@ -166,6 +166,11 @@ Class("CoercionTest", {
             isa:    TYPE.Str,
             coerce: true,
             is:     "rw"
+        },
+        date: {
+            isa:    TYPE.Date,
+            coerce: true,
+            is:     "rw"
         }
     }
 })
@@ -193,6 +198,12 @@ ok(coerce.getStr() + 2 === "22", "Coercion from Any to Str works (result can be 
 var array = ["a", "b"];
 nofail(function () { coerce.setStr(array) }, "Setting to coercable type does not fail (Array->Str)")
 ok(coerce.getStr()     === array.toString(), "Coercion from Any to Str works")
+
+nofail(function () { coerce.setDate("1980-10-27") }, "Setting to coercable type does not fail (Str->Date)")
+var date = coerce.getDate();
+ok(date.constructor === Date, "String was coerced to date")
+ok(date.getTime()   === new Date(1980, 9, 27).getTime(), "Coercion from Str to Date works")
+fail(function () {coerce.setDate("noDate") }, "is not a Date", "Setting date to invalid string fails")
 
 
 endTests();
