@@ -19,7 +19,7 @@ my $files = [
     "Joose/Storage.js",       "Joose/Storage/Unpacker.js",
     "Joose/Decorator.js",     "Joose/Module.js",
     "Joose/Prototype.js",     "Joose/TypeConstraint.js",
-    "Joose/TypeCoercion.js"
+    "Joose/TypeCoercion.js",  "Joose/Types.js"
 ];
 
 sub compile {

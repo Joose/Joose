@@ -1,4 +1,4 @@
-plan(51);
+plan(60);
 
 Type("Integer", {
     where: /^-?\d+$/
@@ -152,5 +152,47 @@ ok(typeof TYPE.Joose != 'undefined', 'we have a Joose TypeConstraint');
 ok(TYPE.Joose._uses === TYPE.Obj, 'Joose TypeConstraint uses TYPE.Obj');
 
 //TODO(jwall): handler property tests for callbacks;
+
+//TODO(malte): Add this to new test file
+
+Class("CoercionTest", {
+    has: {
+        num: {
+            isa:    TYPE.Num,
+            coerce: true,
+            is:     "rw"
+        },
+        str: {
+            isa:    TYPE.Str,
+            coerce: true,
+            is:     "rw"
+        }
+    }
+})
+
+var coerce = new CoercionTest();
+
+
+nofail(function () { coerce.setNum("2") }, "Setting to coercable type does not fail (Num)")
+ok(coerce.getNum()     === 2, "Coercion from Str to Num works")
+ok(coerce.getNum() + 2 === 4, "Coercion from Str to Num works (result can be added)")
+var coerce = new CoercionTest();
+
+nofail(function () { coerce.setNum("-2") }, "Setting to coercable type does not fail (Num)")
+ok(coerce.getNum()     === -2, "Coercion from Str to Num works with negative numbers")
+ok(coerce.getNum() + 2 ===  0, "Coercion from Str to Num works with negative numbers (result can be added)")
+
+nofail(function () { coerce.setNum("0.5") }, "Setting to coercable type does not fail (Num)")
+ok(coerce.getNum()     === 0.5, "Coercion from Str to Num works with floats")
+ok(coerce.getNum() + 2 === 2.5, "Coercion from Str to Num works with floats (result can be added)")
+
+nofail(function () { coerce.setStr(2) }, "Setting to coercable type does not fail (Num->Str)")
+ok(coerce.getStr()     === "2", "Coercion from Any to Str works")
+ok(coerce.getStr() + 2 === "22", "Coercion from Any to Str works (result can be added with string semantics)")
+
+var array = ["a", "b"];
+nofail(function () { coerce.setStr(array) }, "Setting to coercable type does not fail (Array->Str)")
+ok(coerce.getStr()     === array.toString(), "Coercion from Any to Str works")
+
 
 endTests();
