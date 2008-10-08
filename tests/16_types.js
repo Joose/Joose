@@ -162,6 +162,16 @@ Class("CoercionTest", {
             coerce: true,
             is:     "rw"
         },
+        "int": {
+            isa:    TYPE.Int,
+            coerce: true,
+            is:     "rw"
+        },
+        bool: {
+            isa:    TYPE.Bool,
+            coerce: true,
+            is:     "rw"
+        },
         str: {
             isa:    TYPE.Str,
             coerce: true,
@@ -177,7 +187,7 @@ Class("CoercionTest", {
 
 var coerce = new CoercionTest();
 
-
+// Num
 nofail(function () { coerce.setNum("2") }, "Setting to coercable type does not fail (Num)")
 ok(coerce.getNum()     === 2, "Coercion from Str to Num works")
 ok(coerce.getNum() + 2 === 4, "Coercion from Str to Num works (result can be added)")
@@ -191,6 +201,7 @@ nofail(function () { coerce.setNum("0.5") }, "Setting to coercable type does not
 ok(coerce.getNum()     === 0.5, "Coercion from Str to Num works with floats")
 ok(coerce.getNum() + 2 === 2.5, "Coercion from Str to Num works with floats (result can be added)")
 
+// String
 nofail(function () { coerce.setStr(2) }, "Setting to coercable type does not fail (Num->Str)")
 ok(coerce.getStr()     === "2", "Coercion from Any to Str works")
 ok(coerce.getStr() + 2 === "22", "Coercion from Any to Str works (result can be added with string semantics)")
@@ -199,11 +210,44 @@ var array = ["a", "b"];
 nofail(function () { coerce.setStr(array) }, "Setting to coercable type does not fail (Array->Str)")
 ok(coerce.getStr()     === array.toString(), "Coercion from Any to Str works")
 
+
+// Date
 nofail(function () { coerce.setDate("1980-10-27") }, "Setting to coercable type does not fail (Str->Date)")
 var date = coerce.getDate();
 ok(date.constructor === Date, "String was coerced to date")
 ok(date.getTime()   === new Date(1980, 9, 27).getTime(), "Coercion from Str to Date works")
 fail(function () {coerce.setDate("noDate") }, "is not a Date", "Setting date to invalid string fails")
 
+// Bool
+var trues = ["1", 1, new Number(1)]
+for(var i = 0; i < trues.length; i++) {
+    var val = trues[i]
+    nofail(function () { coerce.setBool(val) }, "Setting to coercable type does not fail (Bool, "+val+", "+typeof(val)+")")
+    ok(coerce.getBool() === true, "Coercion from "+val+" to true works")
+}
+var falses = ["0", 0, new Number(0), "", null]
+for(var i = 0; i < falses.length; i++) {
+    var val = falses[i]
+    nofail(function () { coerce.setBool(val) }, "Setting to coercable type does not fail (Bool, "+val+", "+typeof(val)+")")
+    ok(coerce.getBool() === false, "Coercion from "+val+" to false works")
+}
+fail(function () { coerce.setBool("foo") }, "The passed value [foo] is not a Bool", "Setting to non coercable type fails (Bool)")
+
+// Int
+nofail(function () { coerce.setInt("2") }, "Setting to coercable type does not fail (Int)")
+ok(coerce.getInt()     === 2, "Coercion from Str to Int works")
+ok(coerce.getInt() + 2 === 4, "Coercion from Str to Int works (result can be added)")
+
+// Negative Int
+nofail(function () { coerce.setInt("-2") }, "Setting to coercable type does not fail (Int)")
+ok(coerce.getInt()     === -2, "Coercion from Str to Int works")
+ok(coerce.getInt() + 2 === 0, "Coercion from Str to Int works (result can be added)")
+
+var fails = ["foo", 1.5, "1.5", "-1.5"];
+for(var i = 0; i < falses.length; i++) {
+    var val = fails[i]
+    fail(function () { coerce.setInt(val) }, "is not a Int", "Setting to non coercable type fails (Int, "+val+", "+typeof(val)+")")
+    ok(coerce.getInt() != val, "... and the value was not set.")
+}
 
 endTests();
