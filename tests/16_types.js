@@ -1,4 +1,4 @@
-plan(60);
+plan(120);
 
 Type("Integer", {
     where: /^-?\d+$/
@@ -126,15 +126,15 @@ ok(new BooleanTypeConstrained({attr1: 1}).getAttr1() == true, "setting boolean t
 ok(typeof TYPE.Any != 'undefined', 'we have a Any TypeConstraint');
 
 ok(typeof TYPE.Obj != 'undefined', 'we have a Obj TypeConstraint');
-ok(TYPE.Obj._uses === TYPE.Any, 'Obj TypeConstraint uses TYPE.Any');
+ok(TYPE.Obj._uses === TYPE.NotNull, 'Obj TypeConstraint uses TYPE.NotNull');
 ok(typeof TYPE.Null != 'undefined', 'we have a Null TypeConstraint');
 ok(TYPE.Null._uses === TYPE.Any, 'Null TypeConstraint uses TYPE.Any');
 ok(typeof TYPE.Str != 'undefined', 'we have a Str TypeConstraint');
-ok(TYPE.Str._uses === TYPE.Any, 'Str TypeConstraint uses TYPE.Any');
+ok(TYPE.Str._uses === TYPE.NotNull, 'Str TypeConstraint uses TYPE.NotNull');
 ok(typeof TYPE.Bool != 'undefined', 'we have a Bool TypeConstraint');
-ok(TYPE.Bool._uses === TYPE.Any, 'Bool TypeConstraint uses TYPE.Any');
+ok(TYPE.Bool._uses === TYPE.NotNull, 'Bool TypeConstraint uses TYPE.NotNul');
 ok(typeof TYPE.Num != 'undefined', 'we have a Num TypeConstraint');
-ok(TYPE.Num._uses === TYPE.Any, 'Num TypeConstraint uses TYPE.Any');
+ok(TYPE.Num._uses === TYPE.NotNull, 'Num TypeConstraint uses TYPE.NotNull');
 ok(typeof TYPE.Int != 'undefined', 'we have a Int TypeConstraint');
 ok(TYPE.Int._uses === TYPE.Num, 'Int TypeConstraint uses TYPE.Num');
 ok(typeof TYPE.Float != 'undefined', 'we have a Float TypeConstraint');
