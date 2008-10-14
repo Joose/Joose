@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<script type="text/javascript" src="../ext/Test/TAP.js"></script>
+<script type="text/javascript" src="../ext/Test/TAP/Runner.js"></script>
+<script type="text/javascript" src="../lib/Joose.js"></script>
+</head>
+<body>
+<style type="text/css">
+.test {
+    margin-top : 10px;
+    margin-bottom : 10px;
+    border : 3px;
+    border-style : inset;
+    width : 100%;
+    height : 400px;
+    overflow : auto;
+}
+
+.fail { background-color : red; }
+.pass { background-color : green; }
+
+</style>
+<script type="text/javascript">
+    var top = this;
+    /** Configuration options
+    *
+    */
+    var tests = ['01_sanity.t.js', '16_types.t.js'];
+    var lib = '../lib';
+    var testlib = '.';
+    
+    /** Setup
+    *
+    */
+    var toLoad = Joose.prototype.components();
+    var loc = String(top.location);
+    var results = [];
+
+    function load(path) {
+        Test.TAP.prototype.diag('loading: '+path+' ...');
+        var req = new XMLHttpRequest();
+        req.open("GET", path, false);
+        req.send(null);
+        if (req.readyState == 4) {
+            return eval(req.responseText);
+        }
+    }
+ 
+    function createScriptTag(library) {
+        var path = library.replace(/\./g, '/')+'.js';
+        var script = document.createElement("script");
+        script.src = lib+'/'+path;
+        return script; 
+    }
+    
+    function loadlib(library) {
+        document.body.appendChild(createScriptTag(library));
+    }
+
+    function loadTest(test) {
+        var path = testlib+'/'+test;
+        return load(path);
+    }
+    
+    function loadComponents() {
+        for (c in toLoad) {
+            var comp = toLoad[c];
+            loadlib(comp);
+        }
+
+    }
+
+    function runtest(t) {
+        var outtxt = "";
+        var outfunc = function(text) {
+            if (text) {
+                outtxt += text; 
+                outtxt += "<br />";
+            }
+        }
+        Test.TAP.prototype.out = outfunc;
+        Test.TAP.Runner.prototype.out = outfunc;        
+        
+        loadTest(t);
+        
+        var div = document.createElement("div");
+        div.innerHTML = outtxt;
+        
+        document.body.appendChild(div);
+        
+        if (outtxt.match(/(not ok|Test Suite Crashed)/g) ) {
+            div.className = 'test fail';
+        } else {
+            div.className = 'test pass';
+        }
+        results.push(div);
+    }
+    
+    var test = loc.match(/.+#(.*)\??.*/);
+
+    loadComponents();
+   
+    window.onload = function() {
+        var testlist = [];
+        if (test) {
+            runtest(test[1]);
+        } else {
+            for (t in tests) {
+                runtest(tests[t]);
+            }
+        }
+    }
+</script>
+</body>
+</html>

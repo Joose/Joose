@@ -46,3 +46,4 @@ testobj.runtests = function() {
 };
 
 r.run_tests(testobj);
+r;

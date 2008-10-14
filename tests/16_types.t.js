@@ -138,7 +138,7 @@ tests.runtests = function() {
     t.ok(TYPE.Obj.validateBool({}), 'obj validates a object literal');
     t.diag(TYPE.Obj.validateBool(1)+'');
     t.ok(!TYPE.Obj.validateBool(1), 'obj does not validate a number literal');
-    t.ok(TYPE.Obj._uses === TYPE.Any, 'Obj TypeConstraint uses TYPE.Any');
+    t.ok(TYPE.Obj._uses === TYPE.NotNull, 'Obj TypeConstraint uses TYPE.Any');
     
     t.ok(typeof TYPE.Null != 'undefined', 'we have a Null TypeConstraint');
     t.ok(TYPE.Null.validateBool(null), 'Null validates a null');
@@ -150,19 +150,19 @@ tests.runtests = function() {
     t.ok(TYPE.Str.validateBool(""), 'Str validates a String');
     t.ok(TYPE.Str.validateBool(new String()), 'Str validates a String Object');
     t.ok(!TYPE.Str.validateBool(1), 'Str does not validate a number literal');
-    t.ok(TYPE.Str._uses === TYPE.Any, 'Str TypeConstraint uses TYPE.Any');
+    t.ok(TYPE.Str._uses === TYPE.NotNull, 'Str TypeConstraint uses TYPE.Any');
     
     t.ok(typeof TYPE.Num != 'undefined', 'we have a Num TypeConstraint');
     t.ok(TYPE.Num.validateBool(1), 'Num validates a number literal');
     t.ok(TYPE.Num.validateBool( new Number() ), 'Num validates a Number Object');
     t.ok(!TYPE.Num.validateBool(""), 'Num does not validate a String');
-    t.ok(TYPE.Num._uses === TYPE.Any, 'Num TypeConstraint uses TYPE.Any');
+    t.ok(TYPE.Num._uses === TYPE.NotNull, 'Num TypeConstraint uses TYPE.Any');
     
     t.ok(typeof TYPE.Bool != 'undefined', 'we have a Bool TypeConstraint');
     t.ok(TYPE.Bool.validateBool(true), 'Bool validates true');
     t.ok(TYPE.Bool.validateBool(false), 'Bool validates false');
     t.ok(!TYPE.Bool.validateBool(1), 'Bool does not validate an number literal');
-    t.ok(TYPE.Bool._uses === TYPE.Any, 'Bool TypeConstraint uses TYPE.Any');
+    t.ok(TYPE.Bool._uses === TYPE.NotNull, 'Bool TypeConstraint uses TYPE.Any');
     
     // uses TYPE.Num
     t.ok(typeof TYPE.Int != 'undefined', 'we have a Int TypeConstraint');
@@ -204,6 +204,5 @@ tests.runtests = function() {
     //TODO(jwall): handler property tests for callbacks;
     return t;
 };
-
 r.run_tests(tests);
 
