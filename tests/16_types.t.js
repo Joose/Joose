@@ -1,4 +1,6 @@
+(function () {
 var testobj = new Test.TAP.Class();
+testobj.plan("no_plan")
 
 testobj.testTypeConstraint = function() {
     var self = this;
@@ -198,6 +200,6 @@ testobj.testTypeConstraint = function() {
     self.ok(TYPE.Joose._uses === TYPE.Obj, 'Joose TypeConstraint uses TYPE.Obj');
     
 };
-
-testobj.run_tests();
+return testobj
+})()
 

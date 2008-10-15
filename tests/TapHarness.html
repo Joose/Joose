@@ -28,7 +28,7 @@
     /** Configuration options
     *
     */
-    var tests = ['01_sanity.t.js', '16_types.t.js'];
+    var tests = ['00_test_test.t.js', '01_sanity.t.js', '16_types.t.js'];
     var lib = '../lib';
     var testlib = '.';
     
@@ -45,7 +45,8 @@
         req.open("GET", path, false);
         req.send(null);
         if (req.readyState == 4) {
-            return eval(req.responseText);
+            var testobj = eval(req.responseText);
+            return testobj;
         }
     }
  
@@ -70,31 +71,39 @@
             var comp = toLoad[c];
             loadlib(comp);
         }
-
     }
 
     function runtest(t) {
         var outtxt = "";
         var div = document.createElement("div");
+        div.className = 'test'
         document.body.appendChild(div);
         
         var outfunc = function(text) {
             if (text) {
-                outtxt += text; 
-                outtxt += "<br />";
-                div.innerHTML = outtxt;
+                outtxt += text;
+                div.innerHTML = div.innerHTML + "\n" + text + "<br />"
             }
         }
+        
+	    // set globally for synchronous run
         Test.TAP.prototype.out = outfunc;
-        
-        loadTest(t);
-        
-        if (outtxt.match(/(not ok|Test Suite Crashed)/g) ) {
-            div.className = 'test fail';
-        } else {
-            div.className = 'test pass';
+        var testobj = loadTest(t);
+        // also set to instance for asynchronous output
+		testobj.out = outfunc
+
+        testobj.on_finished = function () {
+        	if (outtxt.match(/(not ok|Test Suite Crashed)/g) ) {
+        	    div.className = 'test fail';
+        	} else {
+        	    div.className = 'test pass';
+        	}
+        	results.push(div);
         }
-        results.push(div);
+
+		setTimeout(function () {
+        	testobj.run_tests()
+		}, 0)
     }
     
     var test = loc.match(/.+#(.*)\??.*/);

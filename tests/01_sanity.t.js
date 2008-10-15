@@ -1,4 +1,6 @@
+(function () {
 var testobj = new Test.TAP.Class();
+testobj.plan("no_plan")
 
 testobj.testSanity = function() {
     this.diag("Sanity")
@@ -39,4 +41,5 @@ testobj.testSanity = function() {
     this.ok(OK, "Object traversion order is in declaration order")
 };
 
-testobj.run_tests();
+return testobj;
+})()

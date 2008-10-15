@@ -19,6 +19,7 @@ runTestFile("15_prototype.js");
 runTestFile("16_types.js");
 runTestFile("17_meta_serialization.js");
 runTestFile("18_custom_builders.js");
+runTestFile("19_exceptions.js");
 
 runTestFile("cookbook/01_recipe1_point.js");
 runTestFile("cookbook/02_recipe2_bank_account.js");

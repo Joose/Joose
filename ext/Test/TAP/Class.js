@@ -36,7 +36,6 @@ Test.TAP.Class = function() {
     var self = this;
     // call our superclasses constructor as well
     Test.TAP.apply(self, arguments);
-    self.plan('no_plan');
 };
 
 /*
@@ -91,20 +90,58 @@ runs the tests in a list of test objects and reports on the results
 
 Test.TAP.Class.prototype.run_tests = function() {
     var self = this;
+    var counter = 0;
+    
+    var methods = [];
     for (m in self) {
         if (m.match(/^test.+/)) {
-            this.run_it(m);
+            methods.push(m)
         }
     }
-    if (self.planned > self.counter) {
-        self.diag('looks like you planned ' + self.planned + ' tests but only ran '
-        + self.counter + ' tests');
-    } else if (self.planned < self.counter) {
-        self.diag('looks like you planned ' + self.planned + ' tests but ran '
-        + (self.counter - self.planned) + ' tests extra');
+    
+    this.finished = true;
+    
+    var onFinish = function () {
+        if (self.planned > self.counter) {
+            self.diag('looks like you planned ' + self.planned + ' tests but only ran '
+            + self.counter + ' tests');
+        } else if (self.planned < self.counter) {
+            self.diag('looks like you planned ' + self.planned + ' tests but ran '
+            + (self.counter - self.planned) + ' tests extra');
+        }
+        self.diag('ran ' + self.counter + ' tests out of ' + self.planned);
+        self.diag('passed ' + self.passed + ' tests out of ' + self.planned)
+        self.diag('failed ' + self.failed + ' tests out of ' + self.planned)
     }
-    this.diag('ran ' + self.counter + ' tests out of ' + self.planned);
-    this.diag('passed ' + self.passed + ' tests out of ' + self.planned)
-    this.diag('failed ' + self.failed + ' tests out of ' + self.planned)
-    return self.tests;
+    
+    var count = 0;
+    var testRunInterval
+    var run   = function () {
+        if(self.finished) {
+            if(count > 0) {
+                if(self.on_finished) {
+                    onFinish()
+                    self.on_finished()
+                }
+            }
+            if(methods.length == 0) {
+                clearInterval(testRunInterval)
+                if(self.on_finished_all) {
+                    self.on_finished_all()
+                }
+            } else {
+                self.finished = false;
+                self.run_it(methods.shift())
+                count++
+            }
+        } else {
+            if(self.planned == "no_plan" || self.planned == 0 || self.counter >= self.planned) {
+                self.finished = true
+            }
+        }
+    };
+    testRunInterval = setInterval(run, 10)
+    run()
+    
+    return self;
 };
