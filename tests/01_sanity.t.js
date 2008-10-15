@@ -1,28 +1,24 @@
-var r = new Test.TAP.Runner();
+var testobj = new Test.TAP.Class();
 
-var testobj = {name: 'Sanity'};
-
-testobj.runtests = function() {
-    var t = new Test.TAP();
-    t.plan(12)
-    t.diag("Sanity")
-    t.ok(Joose,   "Joose is here");
-    t.ok(Joose.Builder,   "We have a builder");
-    t.ok(joose,  "joose is here");
-    t.ok(joose.init, "joose has an init method :)")
+testobj.testSanity = function() {
+    this.diag("Sanity")
+    this.ok(Joose,   "Joose is here");
+    this.ok(Joose.Builder,   "We have a builder");
+    this.ok(joose,  "joose is here");
+    this.ok(joose.init, "joose has an init method :)")
     
-    t.ok(Joose.Class, "Joose.Class is here")
-    t.ok(Joose.Role, "Joose.Role is here")
+    this.ok(Joose.Class, "Joose.Class is here")
+    this.ok(Joose.Role, "Joose.Role is here")
     // TODO test for all components
         
-    t.diag("Builders");
-    t.ok(Class, "Class");
-    t.ok(joosify, "isa")
-    t.ok(Module, "has")
-    t.ok(rw == "rw", "rw prop");
-    t.ok(ro == "ro", "ro prop");
+    this.diag("Builders");
+    this.ok(Class, "Class");
+    this.ok(joosify, "isa")
+    this.ok(Module, "has")
+    this.ok(rw == "rw", "rw prop");
+    this.ok(ro == "ro", "ro prop");
     
-    t.diag("Test object traversion order") // this is very important for builders
+    this.diag("Test object traversion order") // this is very important for builders
     var OK = true;
     for(var i = 0; i < 100; i++) {
         var test = {
@@ -40,10 +36,7 @@ testobj.runtests = function() {
         }
     }
     
-    t.ok(OK, "Object traversion order is in declaration order")
-    
-    return t;
+    this.ok(OK, "Object traversion order is in declaration order")
 };
 
-r.run_tests(testobj);
-r;
+testobj.run_tests();

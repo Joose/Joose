@@ -1,4 +1,3 @@
-plan(120);
 
 Type("Integer", {
     where: /^-?\d+$/

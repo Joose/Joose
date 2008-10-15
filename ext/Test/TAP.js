@@ -1,6 +1,26 @@
 if (typeof Test == 'undefined') {
-    Test = {};
+    Test = function() {};
 }
+
+Test.prototype.out   = function(text) {
+    this.print(text);
+};
+
+Test.prototype.diag = function(msg){
+    if (!msg) {
+        msg = " ";
+    }
+    this.out('# ' + msg.replace('#','<pound>'));
+};
+
+Test.prototype.mk_tap = function(ok, description){
+    if(!this.planned){
+        this.out("You tried to run tests without a plan.  Gotta have a plan.");
+        throw new Error("You tried to run tests without a plan.  Gotta have a plan.");
+    }
+    this.counter++;
+    this.out(ok + ' ' + this.counter + ' - ' + description);
+};
 
 /*
 
@@ -31,30 +51,35 @@ Test.TAP is a javascript testing library that meets the needs of TDD for a comma
 
 */
 
-Test.TAP = function() {
+
+Test.TAP = function(out) {
     this.planned = 0;
     this.counter = 0;
     this.passed  = 0;
     this.failed  = 0;
+    this.print = out || function(text) {
+        if(typeof document == 'undefined') {
+            document = {};
+        }
+        if(typeof document.write == 'undefined') { 
+            document.write = print;
+        } 
+        if (typeof print == 'undefined'
+            || document.write != print) {
+            text += '\n';
+        }
+        document.write(text);
+    };
 };
 
-Test.TAP.prototype.mk_tap = function(ok, description){
-    if(!this.planned){
-        this.out("You tried to run tests without a plan.  Gotta have a plan.");
-        throw new Error("You tried to run tests without a plan.  Gotta have a plan.");
-    }
-    this.counter++;
-    this.out(ok + ' ' + this.counter + ' - ' + description);
-}
+Test.TAP.prototype = new Test;
 
 Test.TAP.prototype.pass = function(description) {
-    this.mk_tap('ok', description);
-    this.passed++;
+    this.mk_tap('ok', description);    
 };
 
 Test.TAP.prototype.fail = function(description) {
     this.mk_tap('not ok', description);
-    this.failed++;
 };
 
 /*
@@ -70,11 +95,15 @@ Sets the test plan. Once set this can not be reset again. An attempt to change t
 */
 
 Test.TAP.prototype.plan = function(tests) {
-    if(this.planned > 0){
-        throw new Error("you tried to set the plan twice!");
+    if (tests == 'no_plan') {
+        this.planned = tests;
+    } else {
+        if(this.planned > 0 || this.planned == 'no_plan'){
+            throw new Error("you tried to set the plan twice!");
+        }
+        this.planned = tests;
+        this.out('1..' + tests);
     }
-    this.planned = tests;
-    this.out('1..' + tests);
 };
 
 Test.TAP.prototype._pass_if = function(func, desc){
@@ -95,10 +124,6 @@ prints out a TAP compliant diagnostic message.
 =cut
 
 */
-
-Test.TAP.prototype.diag = function(msg){
-    this.out('# ' + msg.replace('#','<pound>'));
-}
 
 
 /*
@@ -269,19 +294,6 @@ Test.TAP.prototype.lives_ok = function(func, msg) {
     this.ok(errormsg, msg);
 }
 
-Test.TAP.prototype.out = function(text) {
-    if(typeof document == 'undefined') {
-        document = {};
-    }
-    if(typeof document.write == 'undefined') { 
-        document.write = print;
-    } 
-    if (typeof print == 'undefined' 
-        || document.write != print) {
-        text += '\n';    
-    }
-    document.write(text);
-}
 
 
 /*

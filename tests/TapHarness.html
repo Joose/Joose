@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
 <script type="text/javascript" src="../ext/Test/TAP.js"></script>
-<script type="text/javascript" src="../ext/Test/TAP/Runner.js"></script>
+<script type="text/javascript" src="../ext/Test/TAP/Class.js"></script>
 <script type="text/javascript" src="../lib/Joose.js"></script>
 </head>
 <body>
@@ -75,21 +75,19 @@
 
     function runtest(t) {
         var outtxt = "";
+        var div = document.createElement("div");
+        document.body.appendChild(div);
+        
         var outfunc = function(text) {
             if (text) {
                 outtxt += text; 
                 outtxt += "<br />";
+                div.innerHTML = outtxt;
             }
         }
         Test.TAP.prototype.out = outfunc;
-        Test.TAP.Runner.prototype.out = outfunc;        
         
         loadTest(t);
-        
-        var div = document.createElement("div");
-        div.innerHTML = outtxt;
-        
-        document.body.appendChild(div);
         
         if (outtxt.match(/(not ok|Test Suite Crashed)/g) ) {
             div.className = 'test fail';

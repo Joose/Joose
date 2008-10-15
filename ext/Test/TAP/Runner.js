@@ -32,6 +32,9 @@ if (typeof Test.TAP == 'undefined') {
 */
 
 Test.TAP.Runner = function() {};
+
+Test.TAP.Runner.prototype = new Test();
+
 /*
 
 =head1 Methods
@@ -42,22 +45,11 @@ internal method inherited from L<Test.TAP> see L<Test.TAP> for useage
 
 =cut
 
-*/
-
-Test.TAP.Runner.prototype.out = Test.TAP.prototype.out;
-/*
-
 =head2 diag()
 
 internal method inherited from L<Test.TAP> see L<Test.TAP> for useage
 
 =cut
-
-*/
-
-Test.TAP.Runner.prototype.diag = Test.TAP.prototype.diag;
-
-/*
 
 =head2 run_it()
 
@@ -80,8 +72,8 @@ Test.TAP.Runner.prototype.run_it = function(obj) {
             + (tester.counter - tester.planned) + ' tests extra');
         }
         this.diag('ran ' + tester.counter + ' tests out of ' + tester.planned);
-        this.diag('passed ' + tester.passed + ' tests out of ' + tester.planned);
-        this.diag('failed ' + tester.failed + ' tests out of ' + tester.planned);
+        this.diag('passed ' + tester.passed + ' tests out of ' + tester.planned)
+        this.diag('failed ' + tester.failed + ' tests out of ' + tester.planned)
     }
     catch(err) {
         this.diag("Test Suite Crashed!!! (" + err + ")");
@@ -103,8 +95,10 @@ runs the tests in a list of test objects and reports on the results
 */
 
 Test.TAP.Runner.prototype.run_tests = function() {
+    var all = [];
     for (i=0; i<arguments.length; i++) {
-        this.run_it(arguments[i]);
+        all.push(this.run_it(arguments[i]));
         this.out('\n');
     }
+    return all;
 };

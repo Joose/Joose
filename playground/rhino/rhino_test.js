@@ -6,7 +6,7 @@ loadlib(root+'tests/' + test);
 }
 
 var all = [
-    '01_types.t.js',
+    '01_sanity.t.js',
     '16_types.t.js',
 ];
 
