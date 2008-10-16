@@ -122,6 +122,14 @@ Test.TAP.Class.prototype.run_tests = function() {
     
     var count = 0;
     var testRunInterval
+    if (typeof setInterval == 'undefined') {
+        setInterval = function() {
+        };
+    }
+    if (typeof clearInterval == 'undefined') {
+        clearInterval = function() {
+        }
+    }
     var run   = function () {
         if(self.finished) {
             if(count > 0) {
