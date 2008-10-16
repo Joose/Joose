@@ -51,12 +51,12 @@ Test.TAP is a javascript testing library that meets the needs of TDD for a comma
 
 */
 
-Test.TAP = function(args) {
+Test.TAP = function(out) {
     this.planned = 0;
     this.counter = 0;
     this.passed  = 0;
     this.failed  = 0;
-    this.print = args.out || function(text) {
+    this.print = out || function(text) {
         if(typeof document == 'undefined') {
             document = {};
         }
