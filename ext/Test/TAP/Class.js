@@ -69,7 +69,13 @@ Test.TAP.Class.prototype.run_it = function(method) {
     var fun = self[method];
     self.diag("trying to run "+method+" tests");
     try {
+        if (typeof this.setup == 'function') {
+            self.setup();
+        }
         fun.call(self);
+        if (typeof this.teardown == 'function') {
+            self.teardown();
+        }
     }
     catch(err) {
         this.diag("Test Suite Crashed!!! (" + err + ")");
