@@ -14,21 +14,34 @@
     margin-bottom : 10px;
     border : 3px;
     border-style : inset;
-    width : 100%;
-    height : 400px;
     overflow : auto;
+}
+
+.small { 
+    height : 20px;
+}
+
+.big {
+    height : 600px;
 }
 
 .fail { background-color : red; }
 .pass { background-color : green; }
 
 </style>
+Joose Browser Test Harness Click a test box to view results
 <script type="text/javascript">
     var top = this;
     /** Configuration options
     *
     */
-    var tests = ['00_test_test.t.js', '01_sanity.t.js', '16_types.t.js'];
+    var tests = [
+        '00_test_test.t.js',
+        '01_sanity.t.js',
+        '16_types.t.js',
+        '02_classcreation.t.js',
+        '03_methods.t.js'
+        ];
     var lib = '../lib';
     var testlib = '.';
     
@@ -38,88 +51,7 @@
     var toLoad = Joose.prototype.components();
     var loc = String(top.location);
     var results = [];
-
-    function load(path) {
-        Test.TAP.prototype.diag('loading: '+path+' ...');
-        var req = new XMLHttpRequest();
-        req.open("GET", path, false);
-        req.send(null);
-        if (req.readyState == 4) {
-            var testobj = eval(req.responseText);
-            return testobj;
-        }
-    }
- 
-    function createScriptTag(library) {
-        var path = library.replace(/\./g, '/')+'.js';
-        var script = document.createElement("script");
-        script.src = lib+'/'+path;
-        return script; 
-    }
-    
-    function loadlib(library) {
-        document.body.appendChild(createScriptTag(library));
-    }
-
-    function loadTest(test) {
-        var path = testlib+'/'+test;
-        return load(path);
-    }
-    
-    function loadComponents() {
-        for (c in toLoad) {
-            var comp = toLoad[c];
-            loadlib(comp);
-        }
-    }
-
-    function runtest(t) {
-        var outtxt = "";
-        var div = document.createElement("div");
-        div.className = 'test'
-        document.body.appendChild(div);
-        
-        var outfunc = function(text) {
-            if (text) {
-                outtxt += text;
-                div.innerHTML = div.innerHTML + "\n" + text + "<br />"
-            }
-        }
-        
-	    // set globally for synchronous run
-        Test.TAP.prototype.out = outfunc;
-        var testobj = loadTest(t);
-        // also set to instance for asynchronous output
-		testobj.out = outfunc
-
-        testobj.on_finished = function () {
-        	if (outtxt.match(/(not ok|Test Suite Crashed)/g) ) {
-        	    div.className = 'test fail';
-        	} else {
-        	    div.className = 'test pass';
-        	}
-        	results.push(div);
-        }
-
-		setTimeout(function () {
-        	testobj.run_tests()
-		}, 0)
-    }
-    
-    var test = loc.match(/.+#(.*)\??.*/);
-
-    loadComponents();
-   
-    window.onload = function() {
-        var testlist = [];
-        if (test) {
-            runtest(test[1]);
-        } else {
-            for (t in tests) {
-                runtest(tests[t]);
-            }
-        }
-    }
 </script>
+<script type="text/javascript" src="../ext/Test/TAPBrowser.js"></script>
 </body>
 </html>
