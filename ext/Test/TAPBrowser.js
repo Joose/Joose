@@ -70,6 +70,7 @@ function runtest(t) {
     testobj.on_finished = function () {
     	if (outtxt.match(/(not ok|Test Suite Crashed)/g) ) {
     	    div.className += ' fail';
+            div.className.replace(/small/, 'big');
     	} else {
     	    div.className += ' pass';
     	}

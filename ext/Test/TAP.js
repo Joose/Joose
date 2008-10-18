@@ -10,7 +10,7 @@ Test.prototype.diag = function(msg){
     if (!msg) {
         msg = " ";
     }
-    this.out('# ' + msg.replace('#','<pound>'));
+    this.out('# ' + msg.replace('#','*pound*'));
 };
 
 Test.prototype.mk_tap = function(ok, description){
@@ -51,6 +51,7 @@ Test.TAP is a javascript testing library that meets the needs of TDD for a comma
 
 */
 
+
 Test.TAP = function(out) {
     this.planned = 0;
     this.counter = 0;
@@ -80,6 +81,28 @@ Test.TAP.prototype.pass = function(description) {
 Test.TAP.prototype.fail = function(description) {
     this.mk_tap('not ok', description);
 };
+
+Test.TAP.prototype.todo = function(func) {
+    var self = this;
+    var tapper = self.mk_tap;
+    self.mk_tap = function(ok, desc) {
+        tapper.apply(self, [ok, "# TODO: "+desc]);
+    }
+    func();
+    self.mk_tap = tapper;
+}
+
+Test.TAP.prototype.skip = function(crit, reason, func) {
+    var self = this;
+    if (crit) {
+        var tapper = self.mk_tap;
+        self.mk_tap = function(ok, desc) {
+            tapper.apply(self, [ok, "# SKIP: "+reason]);
+        }
+        func();
+        self.mk_tap = tapper;
+    }
+}
 
 /*
 

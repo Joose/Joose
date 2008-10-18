@@ -130,7 +130,7 @@ Test.TAP.Class.prototype.run_tests = function() {
         clearInterval = function() {
         }
     }
-    var run   = function () {
+    var run = function () {
         if(self.finished) {
             if(count > 0) {
                 if(self.on_finished) {
@@ -145,8 +145,6 @@ Test.TAP.Class.prototype.run_tests = function() {
                 }
             } else {
                 self.finished = false;
-                self.run_it(methods.shift())
-                count++
             }
         } else {
             if(self.planned == "no_plan" || self.planned == 0 || self.counter >= self.planned) {
@@ -155,7 +153,12 @@ Test.TAP.Class.prototype.run_tests = function() {
         }
     };
     testRunInterval = setInterval(run, 10)
-    run()
+    run();
+    var methodname;
+    while (methodname = methods.shift()) {
+        self.run_it(methodname);
+        count++
+    }
     
     return self;
 };
