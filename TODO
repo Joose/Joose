@@ -8,7 +8,7 @@ Documentation
 - All
 
 Bugs
-
+- Method modifiers in roles should automatically be "required methods"
 
 Features
 - implement class versioning
