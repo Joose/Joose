@@ -1,6 +1,6 @@
 (function() {
 var t = new Test.TAP.Class();
-t.plan(36)
+t.plan(38)
 
 t.testRoles = function() {
     var self = this;
@@ -211,6 +211,37 @@ t.testRoles = function() {
     sayString = ""
     adam.sayHello()
     self.ok(sayString == "Stutter\nMay I talk to you?\nHello!\nI am a Joose user.\nMay I talk to you?\nHello!\nI am a Joose user.\n", "Method modifiers in roles work (before, after, around, override. Multi override in the same role)")
+    
+    self.diag("Validation errors")
+    Role("Requirer", {
+        requires: ["implementMe"]
+    })
+    self.throws_ok(function () {    
+        Class("NoImpl", {
+            does: [Requirer],
+            methods: {
+                other: function () {}
+            }
+        })
+    }, /Class NoImpl does not fully implement the role Requirer. The method is implementMe missing./,
+       "A missing required method throws correct error")
+
+    Role("ModifierRequirer", {
+        around: {
+            wrap: function () {
+    
+            }
+        }
+    })
+    self.throws_ok(function () {    
+        Class("NoModifier", {
+            does: [ModifierRequirer],
+            methods: {
+                other: function () {}
+            }
+        })
+    }, /Unable to apply around method modifier because method wrap does not exist/,
+       "If a role tries to modify a non-existant error the correct exception is thrown.")
     
     self.diag("Meta roles")
     
