@@ -10,7 +10,7 @@ Test.prototype.diag = function(msg){
     if (!msg) {
         msg = " ";
     }
-    this.out('# ' + msg.replace('#','*pound*'));
+    this.out('# ' + msg);
 };
 
 Test.prototype.mk_tap = function(ok, description){
