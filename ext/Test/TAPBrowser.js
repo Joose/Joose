@@ -1,6 +1,5 @@
-var hash = '#'
 function load(path) {
-    var url = location.pathname + "?" + encodeURIComponent(path.replace(/^\.\//, ''))
+    var url = location.pathname + "#" + encodeURIComponent(path.replace(/^\.\//, ''))
     Test.TAP.prototype.diag('loading: '+path+' <a href="'+url+'">(run in a single window)</a>...');
     var req = new XMLHttpRequest();
     req.open("GET", path, false);
