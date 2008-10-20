@@ -1,12 +1,14 @@
 load('bootstrap_rhino.js');
 
 function runtest(test) {
-loadlib(root+'tests/' + test);
-    
+    var f = readFile(root+'tests/' + test);
+    var t = eval(f);
+    t.run_tests(); 
 }
 
 var all = [
     '01_sanity.t.js',
+    '07_roles.t.js',
     '16_types.t.js',
 ];
 
