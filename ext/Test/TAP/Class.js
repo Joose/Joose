@@ -68,6 +68,13 @@ Test.TAP.Class.prototype.run_it = function(method) {
     var self = this;
     var fun = self[method];
     self.diag("trying to run "+method+" tests");
+    
+    // remember the globals that existed before the test execution
+    var originalGlobal = {};
+    for(var name in window) { // TODO Is there a better reference to the global scope?
+        originalGlobal[name] = true;
+    }
+    
     try {
         if (typeof this.setup == 'function') {
             self.setup();
@@ -79,6 +86,15 @@ Test.TAP.Class.prototype.run_it = function(method) {
     }
     catch(err) {
         this.diag("Test Suite Crashed!!! (" + err + ")");
+    }
+    finally {
+        // Delete globals which were created during test execution
+        // THis avoid conflicts between tests when running multiple tests in a row
+        for(var name in window) {
+            if(!originalGlobal[name]) {
+                delete window[name]
+            }
+        }
     }
 };
 
