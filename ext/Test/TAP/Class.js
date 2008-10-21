@@ -162,3 +162,26 @@ Test.TAP.Class.prototype.run_tests = function() {
     
     return self;
 };
+
+/*
+
+=head1 SEE ALSO
+
+L<Test.Simple>
+L<Test.AnotherWay>
+
+=head1 AUTHOR
+
+Jeremy Wall L<< jeremy@marzhillstudios.com >>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright (C) 2007 Jeremy Wall
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself, either Perl version 5.8.4 or,
+at your option, any later version of Perl 5 you may have available.
+
+=cut
+
+*/
