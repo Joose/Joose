@@ -1,11 +1,20 @@
 function load(path) {
     var url = location.pathname + "#" + encodeURIComponent(path.replace(/^\.\//, ''))
     Test.TAP.prototype.diag('loading: '+path+' <a href="'+url+'">(run in a single window)</a>...');
+    
     var req = new XMLHttpRequest();
     req.open("GET", path, false);
     req.send(null);
     if (req.readyState == 4) {
-        var testobj = eval(req.responseText);
+        if(window && window.console && console.log) {
+            console.log("Evaluating test file "+path)
+        }
+        var testobj;
+        try {
+            testobj = eval(req.responseText);
+        } catch(e) {
+            throw(e)
+        }
         return testobj;
     }
 }

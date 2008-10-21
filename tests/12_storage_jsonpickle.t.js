@@ -6,6 +6,7 @@ t.testStorageJsonPickle = function() {
     var self = this;
     self.skip(typeof JSON == 'undefined',
     'JSON is not defined',
+    43,
     function() {
         self.diag("Testing Storage Role")
         

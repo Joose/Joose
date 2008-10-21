@@ -105,6 +105,7 @@ t.testRoles = function() {
    
     self.skip(typeof has__proto__ == 'function', 
         "Experimental feature Role.unapply does not work in browser without object.__proto__", 
+        6,
         function () {
             RuntimeRole.meta.unapply(a);
             self.ok(!a.meta.does(RuntimeRole), "Role was removed")

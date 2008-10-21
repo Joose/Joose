@@ -88,19 +88,25 @@ Test.TAP.prototype.todo = function(func) {
     self.mk_tap = function(ok, desc) {
         tapper.apply(self, [ok, "# TODO: "+desc]);
     }
+    // TODO shoulnd't we at least wrap this in a exception and output unexpected successes
     func();
     self.mk_tap = tapper;
 }
 
-Test.TAP.prototype.skip = function(crit, reason, func) {
+Test.TAP.prototype.skip = function(crit, reason, count, func) {
     var self = this;
     if (crit) {
         var tapper = self.mk_tap;
         self.mk_tap = function(ok, desc) {
-            tapper.apply(self, [ok, "# SKIP: "+reason]);
+            tapper.apply(self, [ok, ]);
         }
-        func();
+        // TODO show better message
+        for(var i = 0; i < count; i++) {
+            self.pass("# SKIP "+reason)
+        }
         self.mk_tap = tapper;
+    } else {
+        func();
     }
 }
 

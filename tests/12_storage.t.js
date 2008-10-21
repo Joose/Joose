@@ -6,8 +6,9 @@ t.testStorageRole = function() {
     var self = this; 
     self.diag("Testing Storage Role")
     
-    self.skip(typeof JSON == 'undefined',
+    self.skip(typeof(JSON) != 'undefined',
     'JSON is not defined',
+    41,
     function() {
         self.ok(joose.top.JSON, "We have JSON")
         self.ok(JSON.parse && JSON.stringify, "It is the correct version of JSON (json2.js)")
@@ -16,10 +17,10 @@ t.testStorageRole = function() {
         Class("Geometry.Point", {
             does: Joose.Storage,
             has: {
-                x: {is: rw},
-                y: {is: rw},
+                x: {is: 'rw'},
+                y: {is: 'rw'},
                 $: {
-                    is:         rw,
+                    is:         'rw',
                     init:       "stuff",
                     persistent: false
                 }
@@ -53,8 +54,8 @@ t.testStorageRole = function() {
         Class("Geometry.Rectangle", {
             does: Joose.Storage,
             has: {
-                width:  {is: rw},
-                height: {is: rw}
+                width:  {is: 'rw'},
+                height: {is: 'rw'}
             }
         })
         
