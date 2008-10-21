@@ -1,6 +1,6 @@
 //library loading helper function
 var loadlib = function(lib) {
-    print('#loading: '+lib);
+    //print('#loading: '+lib);
     load(lib);
 };
 
