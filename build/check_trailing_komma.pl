@@ -1,14 +1,25 @@
 #!/usr/bin/perl
 use strict;
 
-my $path = shift or die "need path";
+use Cwd 'abs_path';
+use FindBin;
+
+my $path = (shift || "$FindBin::Bin/../lib");
+
+die("The directory '$path' doesn't exist") unless -d $path;
 
 use File::Find;
 
+my $found_trailing_commas = 0;
 
-find(sub {
-    
-    my $name = $File::Find::name;
+find({ wanted => \&wanted, no_chdir => 1 }, $path);
+
+if(!$found_trailing_commas) {
+    print "No trailing commas found$/";
+}
+
+sub wanted {
+    my $name = abs_path($File::Find::name);
     
     if($name !~ /\.js$/) {
         return
@@ -17,23 +28,17 @@ find(sub {
     my $content = "";
     my $has_error = 0;
     while(<$in>) {
-        s(\t)()g;
-        s(\s)()g;
+        s/\s+/ /gms;
         $content .= $_;
     }
     close $in;
 
-	if ($content =~ /,[}\]],/) {
-		$has_error = 1;
-		print "Trailing komma in literal in file: ".$name."\n";
-	}
-    
-    if(!$has_error) {
-        return
+    if (my @matches = ($content =~ /(.{0,30},\s*[}\]\)].{0,10})/gms) ) {
+        $found_trailing_commas = 1;
+        foreach my $near (@matches) {
+            print "Trailing komma detected\n";
+            print "File:    $name\n";
+            print "Context: $near\n\n";
+        }
     }
-
-}, $path);
-
-
-
-
+}
