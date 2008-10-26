@@ -31,7 +31,9 @@ testobj.testSanity = function() {
         }
         var s = "";
         for(var n in test) {
-            s += test[n]
+            if(test.hasOwnProperty(n)) {
+                s += test[n]
+            }
         }
         if(s != "1234") {
             OK = false
