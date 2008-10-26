@@ -206,7 +206,11 @@ Tests that a string matches the regex.
 
 Test.TAP.prototype.like = function(string, regex, desc) {
     this._pass_if(function(){
-            return string.match(regex);
+            if(regex instanceof RegExp) {
+                return string.match(regex)
+            } else {
+                return string.indexOf(regex) != -1
+            }
 	}, desc)
 }
 

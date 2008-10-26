@@ -36,23 +36,20 @@ t.testModuleClass = function() {
     
     self.ok(com.test.module.meta.alias, "There is an alias method");
     com.test.module.meta.alias(thistop)
-    self.ok(Test1, "There is something in the expected spot")
-    self.ok(Test1 === com.test.module.Test1, "Class is now global")
+    self.ok(thistop.Test1, "There is something in the expected spot")
+    self.ok(thistop.Test1 === com.test.module.Test1, "Class is now global")
     
-    self.ok(new Test1(), "We can instantiate class")
-    var o = new Test1();
+    self.ok(new thistop.Test1(), "We can instantiate class")
+    var o = new thistop.Test1();
     self.ok(o.world() == "hello", "and call methods on them")
     
     self.ok(new com.test.module.Test1(), "We can also instantiate the fully qualified name");
     self.ok(new com.test.module.Test1().world() == "hello", "and call methods on them");
     
     self.lives_ok(function () {com.test.module.meta.alias(thistop)}, "We can import again")
-    self.ok(new Test1().world() == "hello", "and call methods")
-    
-    Test1 = {};
+    self.ok(new thistop.Test1().world() == "hello", "and call methods")
     
     self.throws_ok(function () {com.test.module.meta.alias(thistop)}, "here is already something else", "Importing fails if there is already something else")
-    
     
     Module("com.test", function () {
         Class("Test1", {
