@@ -57,19 +57,49 @@
         '15_prototype.t.js',
         '16_types.t.js',
         '17_meta_serialization.t.js',
-        '18_custom_builders.t.js',
+        '18_custom_builders.t.js'
         //'19_exceptions.t.js'          // still to implement
         ];
     var lib = '../lib';
     var testlib = '.';
+    var results = [];
     
     /** Setup
     *
     */
+
+    function loadlib(library) {
+        document.body.appendChild(createScriptTag(library));
+    }
+
+    function loadComponents(toLoad){
+        for (c in toLoad) {
+            var comp = toLoad[c];
+            loadlib(comp);
+        }
+    }
+
+    function createScriptTag(library) {
+        var path = library.replace(/\./g, '/')+'.js';
+        var script = document.createElement("script");
+        script.src = lib+'/'+path;
+        return script; 
+    }
+
     var toLoad  = Joose.prototype.components();
-    var loc     = String(top.location);
-    var results = [];
+    loadComponents(toLoad);
+    
+   
+    
+
 </script>
+<script type="text/javascript" src="../ext/Test/RealWorld.js"></script>
 <script type="text/javascript" src="../ext/Test/TAPBrowser.js"></script>
+<script type="text/javascript">
+window.onload = function() {
+    var browser = new Test.TAPBrowser(".", tests)
+    browser.run()
+}
+</script>
 </body>
 </html>

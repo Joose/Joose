@@ -5,8 +5,13 @@ Test.RealWorld = function () {
 }
 
 Test.RealWorld.libLoader = function (lib) {
-    var url = this[lib]
-    document.write('<script src="'+url+'"><'+'/script>')
+    var url = this.library[lib]
+    if(!url) {
+        throw "unknown lib "+lib
+    }
+    var script = document.createElement("script")
+    script.src = url;
+    document.body.appendChild(script)
 }
 
 Test.RealWorld.library = {
