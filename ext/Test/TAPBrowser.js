@@ -49,7 +49,10 @@ Test.TAPBrowser.prototype = {
             }
             var testobj;
             try {
-                testobj = eval(req.responseText);
+                var js = req.responseText;
+                // TODO this needs to be added to every source file instead
+                js = "(function (Class, Module, Role, Type, Prototype) {\nreturn "+js+"\n}).call(window, JooseClass, JooseModule, JooseRole, JooseType, JoosePrototype)"
+                testobj = eval(js);
             } catch(e) {
                 throw(e)
             }

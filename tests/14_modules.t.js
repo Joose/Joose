@@ -1,7 +1,8 @@
-var thistop = this;
 (function() {
 var t = new Test.TAP.Class();
 t.plan(35)
+
+var thistop = Test.prototype.top
 
 t.testModuleClass = function() {
     var self = this;
