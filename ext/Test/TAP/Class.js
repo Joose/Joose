@@ -71,7 +71,8 @@ Test.TAP.Class.prototype.run_it = function(method) {
     
     // remember the globals that existed before the test execution
     var originalGlobal = {};
-    for(var name in window) { // TODO Is there a better reference to the global scope?
+    var top = self.top();
+    for(var name in top ) { 
         originalGlobal[name] = true;
     }
     
@@ -90,9 +91,9 @@ Test.TAP.Class.prototype.run_it = function(method) {
     finally {
         // Delete globals which were created during test execution
         // THis avoid conflicts between tests when running multiple tests in a row
-        for(var name in window) {
+        for(var name in top) {
             if(!originalGlobal[name]) {
-                delete window[name]
+                delete top[name]
             }
         }
     }

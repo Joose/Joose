@@ -1,5 +1,9 @@
-if (typeof Test == 'undefined') {
-    Test = function() {};
+var testtop = this;
+
+Test = function() {};
+
+Test.prototype.top = function() {
+    return testtop;
 }
 
 Test.prototype.out   = function(text) {
