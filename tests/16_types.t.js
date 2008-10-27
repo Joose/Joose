@@ -136,7 +136,7 @@ testobj.testTypeConstraint = function() {
     self.ok(TYPE.Obj.validateBool({}), 'obj validates a object literal');
     self.diag(TYPE.Obj.validateBool(1)+'');
     self.ok(!TYPE.Obj.validateBool(1), 'obj does not validate a number literal');
-    self.ok(TYPE.Obj._uses === TYPE.NotNull, 'Obj TypeConstraint uses TYPE.Any');
+    self.ok(TYPE.Obj._uses === TYPE.NotNull, 'Obj TypeConstraint uses TYPE.NotNull');
     
     self.ok(typeof TYPE.Null != 'undefined', 'we have a Null TypeConstraint');
     self.ok(TYPE.Null.validateBool(null), 'Null validates a null');
@@ -148,19 +148,19 @@ testobj.testTypeConstraint = function() {
     self.ok(TYPE.Str.validateBool(""), 'Str validates a String');
     self.ok(TYPE.Str.validateBool(new String()), 'Str validates a String Object');
     self.ok(!TYPE.Str.validateBool(1), 'Str does not validate a number literal');
-    self.ok(TYPE.Str._uses === TYPE.NotNull, 'Str TypeConstraint uses TYPE.Any');
+    self.ok(TYPE.Str._uses === TYPE.NotNull, 'Str TypeConstraint uses TYPE.NotNull');
     
     self.ok(typeof TYPE.Num != 'undefined', 'we have a Num TypeConstraint');
     self.ok(TYPE.Num.validateBool(1), 'Num validates a number literal');
     self.ok(TYPE.Num.validateBool( new Number() ), 'Num validates a Number Object');
     self.ok(!TYPE.Num.validateBool(""), 'Num does not validate a String');
-    self.ok(TYPE.Num._uses === TYPE.NotNull, 'Num TypeConstraint uses TYPE.Any');
+    self.ok(TYPE.Num._uses === TYPE.NotNull, 'Num TypeConstraint uses TYPE.NotNull');
     
     self.ok(typeof TYPE.Bool != 'undefined', 'we have a Bool TypeConstraint');
     self.ok(TYPE.Bool.validateBool(true), 'Bool validates true');
     self.ok(TYPE.Bool.validateBool(false), 'Bool validates false');
     self.ok(!TYPE.Bool.validateBool(1), 'Bool does not validate an number literal');
-    self.ok(TYPE.Bool._uses === TYPE.NotNull, 'Bool TypeConstraint uses TYPE.Any');
+    self.ok(TYPE.Bool._uses === TYPE.NotNull, 'Bool TypeConstraint uses TYPE.NotNull');
     
     // uses TYPE.Num
     self.ok(typeof TYPE.Int != 'undefined', 'we have a Int TypeConstraint');
