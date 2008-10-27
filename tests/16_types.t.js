@@ -155,6 +155,9 @@ testobj.testTypeConstraint = function() {
     self.ok(TYPE.Num.validateBool( new Number() ), 'Num validates a Number Object');
     self.ok(!TYPE.Num.validateBool(""), 'Num does not validate a String');
     self.ok(TYPE.Num._uses === TYPE.NotNull, 'Num TypeConstraint uses TYPE.NotNull');
+    self.is(TYPE.Num.coerce("123"), 123, 'Num coerces "123" to 123');
+    self.is(TYPE.Num.coerce(""), undefined, 'Num coerces "" to undefined');
+    self.is(TYPE.Num.coerce(undefined), undefined, 'Num coerces undefined to undefined');
     
     self.ok(typeof TYPE.Bool != 'undefined', 'we have a Bool TypeConstraint');
     self.ok(TYPE.Bool.validateBool(true), 'Bool validates true');
@@ -165,7 +168,10 @@ testobj.testTypeConstraint = function() {
         self.is(TYPE.Bool.coerce(v), true, 'Bool coerces '+(typeof v)+' "'+v+'" to true');
     });
     self.is(TYPE.Bool.coerce(12345), null, 'Bool coerces 12345 to null');
-    Joose.A.each(["0", 0, null, undefined, "false"], function(v) {
+    self.is(TYPE.Bool.coerce(null), undefined, 'Bool coerces null to undefined');
+    self.is(TYPE.Bool.coerce(undefined), undefined, 'Bool coerces undefined to undefined');
+    self.is(TYPE.Bool.coerce(""), undefined, 'Bool coerces "" to undefined');
+    Joose.A.each(["0", 0, "false"], function(v) {
         self.is(TYPE.Bool.coerce(v), false, 'Bool coerces '+(typeof v)+' "'+v+'" to false');
     });
     
@@ -198,6 +204,8 @@ testobj.testTypeConstraint = function() {
     self.ok(TYPE.Date.validateBool( new Date() ), 'Date does validate a Date Object');
     self.ok(!TYPE.Date.validateBool( {} ), 'Date does not validate a regular object');
     self.ok(TYPE.Date._uses === TYPE.Obj, 'Date TypeConstraint uses TYPE.Obj');
+    self.is(TYPE.Date.coerce(""), undefined, 'Date coerces "" to undefined');
+    self.ok(TYPE.Date.coerce("2008-12-31") instanceof Date, 'Date coerces "2008-12-31" to Date object');
     
     self.ok(typeof TYPE.Joose != 'undefined', 'we have a Joose TypeConstraint');
     self.ok(TYPE.Joose.validateBool( new BooleanTypeConstrained() ), 
