@@ -181,6 +181,9 @@ testobj.testTypeConstraint = function() {
     self.ok(!TYPE.Int.validateBool(1.1), 'Int does not validate 1.1');
     self.ok(!TYPE.Int.validateBool(.1), 'Int does not validate .1');
     self.ok(TYPE.Int._uses === TYPE.Num, 'Int TypeConstraint uses TYPE.Num');
+    self.is(TYPE.Int.coerce("123"), 123, 'Int coerces "123" to 123');
+    self.is(TYPE.Int.coerce(""), undefined, 'Int coerces "" to undefined');
+    self.is(TYPE.Int.coerce(undefined), undefined, 'Int coerces undefined to undefined');
     
     self.ok(typeof TYPE.Float != 'undefined', 'we have a Float TypeConstraint');
     self.ok(TYPE.Float.validateBool(1), 'Float does validate 1');
