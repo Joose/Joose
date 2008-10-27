@@ -161,6 +161,13 @@ testobj.testTypeConstraint = function() {
     self.ok(TYPE.Bool.validateBool(false), 'Bool validates false');
     self.ok(!TYPE.Bool.validateBool(1), 'Bool does not validate an number literal');
     self.ok(TYPE.Bool._uses === TYPE.NotNull, 'Bool TypeConstraint uses TYPE.NotNull');
+    Joose.A.each([1,"1","true"], function(v) {
+        self.is(TYPE.Bool.coerce(v), true, 'Bool coerces '+(typeof v)+' "'+v+'" to true');
+    });
+    self.is(TYPE.Bool.coerce(12345), null, 'Bool coerces 12345 to null');
+    Joose.A.each(["0", 0, null, undefined, "false"], function(v) {
+        self.is(TYPE.Bool.coerce(v), false, 'Bool coerces '+(typeof v)+' "'+v+'" to false');
+    });
     
     // uses TYPE.Num
     self.ok(typeof TYPE.Int != 'undefined', 'we have a Int TypeConstraint');
