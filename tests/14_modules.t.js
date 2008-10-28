@@ -2,7 +2,7 @@
 var t = new Test.TAP.Class();
 t.plan(35)
 
-var thistop = Test.prototype.top
+var thistop = Test.prototype.top()
 
 t.testModuleClass = function() {
     var self = this;
@@ -47,10 +47,14 @@ t.testModuleClass = function() {
     self.ok(new com.test.module.Test1(), "We can also instantiate the fully qualified name");
     self.ok(new com.test.module.Test1().world() == "hello", "and call methods on them");
     
-    self.lives_ok(function () {com.test.module.meta.alias(thistop)}, "We can import again")
+    self.lives_ok(function () {com.test.module.meta.alias(thistop)}, 
+        "We can import again")
     self.ok(new thistop.Test1().world() == "hello", "and call methods")
-    
-    self.throws_ok(function () {com.test.module.meta.alias(thistop)}, "here is already something else", "Importing fails if there is already something else")
+   
+    thistop.Test1 = function() {};
+    self.throws_ok(function () {com.test.module.meta.alias(thistop)}, 
+        "here is already something else",
+        "Importing fails if there is already something else")
     
     Module("com.test", function () {
         Class("Test1", {
