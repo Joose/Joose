@@ -124,7 +124,51 @@ testobj.testTypeConstraint = function() {
     self.ok(constrained.getAttr1() === false, '0 coerces to boolean false');
     
     self.ok(new BooleanTypeConstrained({attr1: 1}).getAttr1() == true, "setting boolean to 1 coerces to true in constructor")
-    
+
+    self.diag("Coerce/Validation Properties");
+
+    self.diag("'nullable' Avoids Type Checks for 'undefined' and 'null'");
+
+    Class("UndefAttrTest", {
+        has: {
+            birthDate: {
+                is: "rw",
+                coerce: true,
+                isa: TYPE.Date
+            },
+            anniversary: {
+                is: "rw",
+                isa: TYPE.Date,
+                coerce: true,
+                nullable: true
+            }
+        }
+    });
+    var undefTest = new UndefAttrTest();
+
+    self.throws_ok(function () { undefTest.setBirthDate(undefined) }, 
+        /The passed value \[undefined\] is not a Date/, 
+        'setting undefined value for non-nullable property fails');
+
+    self.throws_ok(function () { undefTest.setBirthDate(null) }, 
+        /The passed value \[null\] is not a Date/, 
+        'setting null value for non-nullable property fails');
+
+    self.throws_ok(function () { undefTest.setBirthDate("") }, 
+        /The passed value \[\] is not a Date/, 
+        'empty string coerced into undefined value (translated to null) for non-nullable property fails');
+
+    self.ok(undefTest.setAnniversary(""),
+            'empty string coerced into undefined for nullable property succeeds');
+
+    self.ok(undefTest.setAnniversary(undefined),
+            'setting undefined value for nullable property succeeds');
+
+    self.ok(undefTest.setAnniversary(null),
+            'setting null value for nullable property succeeds');
+
+    self.diag("Core Types");
+
     //TODO(jwall); self needs to live in a different namespace: Joose.Type
     //             and they should be exported?
     var undefined;
@@ -149,6 +193,63 @@ testobj.testTypeConstraint = function() {
     self.ok(TYPE.Str.validateBool(new String()), 'Str validates a String Object');
     self.ok(!TYPE.Str.validateBool(1), 'Str does not validate a number literal');
     self.ok(TYPE.Str._uses === TYPE.NotNull, 'Str TypeConstraint uses TYPE.NotNull');
+ 
+    self.ok(typeof TYPE.Enum != 'undefined', 'we have an Enum TypeConstraint');
+    self.ok(TYPE.Enum._uses === TYPE.NotNull, 'Enum TypeConstraint uses TYPE.Any');
+
+    Type("Color", {
+        uses: TYPE.Enum,
+        values: [ "red", "green", "blue" ]
+    });
+
+    Type("Rating", {
+        uses: TYPE.Enum,
+        values: [1,2,3,4,5],
+        strictMatch: true
+    });
+
+    Type("BadEnum", {
+        uses: TYPE.Enum
+    });
+
+    Class("EnumTest", {
+        has: {
+            color: {
+                is: "rw",
+                isa: TYPE.Color
+            },
+            rating: {
+                is: "rw",
+                isa: TYPE.Rating
+            },
+            bad: {
+                is: "rw",
+                isa: TYPE.BadEnum
+            }
+        }
+    });
+    var enumTest = new EnumTest();
+
+    self.throws_ok(function () { new EnumTest({bad: "potato"}) }, 
+        /Enum Type needs Array of values in 'values' property of Type declaration/, 
+        'newing up an EnumTest with invalid missing valid property fails');
+
+    self.throws_ok(function () { new EnumTest({color: "purple"}) }, 
+        /The passed value \[purple\] is not one of \[red,green,blue\]/, 
+        'newing up an EnumTest with invalid enum value fails');
+
+    self.ok(enumTest.setColor("green"), "Setting enum to allowed value succeeds");
+
+    self.ok(TYPE.Color.getProps().values.push("purple"), "Added value to enum");
+
+    self.ok(enumTest.setColor("purple"), "Setting enum to new allowed value succeeds");
+
+    self.throws_ok(function () { new EnumTest({rating: "5"}) }, 
+        /The passed value \[5\] is not \*strictly\* one of \[1,2,3,4,5\]/, 
+        'newing up an EnumTest with invalid (by strict) enum value fails');
+
+    self.ok(enumTest.setRating(5), "Setting enum to allowed strict value succeeds");
+
     
     self.ok(typeof TYPE.Num != 'undefined', 'we have a Num TypeConstraint');
     self.ok(TYPE.Num.validateBool(1), 'Num validates a number literal');
