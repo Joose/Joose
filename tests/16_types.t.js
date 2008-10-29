@@ -125,11 +125,36 @@ testobj.testTypeConstraint = function() {
     
     self.ok(new BooleanTypeConstrained({attr1: 1}).getAttr1() == true, "setting boolean to 1 coerces to true in constructor")
 
-    self.diag("Coerce/Validation Properties");
+    self.diag("'nullable' support");
 
-    self.diag("'nullable' Avoids Type Checks for 'undefined' and 'null'");
+    Type('ExplodingTest', {
+        where: function(value) {
+            throw "where type check function called!"
+        },
+        coerce: [{
+                from: TYPE.Any,
+                 via:  function (value) {
+                    throw "Coercion called!";
+                }
+            }]
+        }
+    );
 
-    Class("UndefAttrTest", {
+    Type('ValidationExplodingTest', {
+        where: function(value) {
+            throw "where type check function called!"
+        },
+        coerce: [{
+                from: TYPE.Any,
+                 via:  function (value) {
+                    // Coerce everything to undefined
+                    return undefined;
+                }
+            }]
+        }
+    );
+
+    Class("NullableAttrTest", {
         has: {
             birthDate: {
                 is: "rw",
@@ -141,30 +166,42 @@ testobj.testTypeConstraint = function() {
                 isa: TYPE.Date,
                 coerce: true,
                 nullable: true
+            },
+            exploding: {
+                is: "rw",
+                isa: TYPE.ExplodingTest,
+                coerce: true,
+                nullable: true
             }
         }
     });
-    var undefTest = new UndefAttrTest();
+    var nullableTest = new NullableAttrTest();
 
-    self.throws_ok(function () { undefTest.setBirthDate(undefined) }, 
+    self.ok(nullableTest.setExploding(null),
+            'null value passed to nullable field bypasses validation and coercion');
+
+    self.ok(nullableTest.setExploding(undefined),
+            'undefined value passed to nullable field bypasses validation and coercion');
+
+    self.throws_ok(function () { nullableTest.setBirthDate(undefined) }, 
         /The passed value \[undefined\] is not a Date/, 
         'setting undefined value for non-nullable property fails');
 
-    self.throws_ok(function () { undefTest.setBirthDate(null) }, 
+    self.throws_ok(function () { nullableTest.setBirthDate(null) }, 
         /The passed value \[null\] is not a Date/, 
         'setting null value for non-nullable property fails');
 
-    self.throws_ok(function () { undefTest.setBirthDate("") }, 
+    self.throws_ok(function () { nullableTest.setBirthDate("") }, 
         /The passed value \[\] is not a Date/, 
-        'empty string coerced into undefined value (translated to null) for non-nullable property fails');
+        'empty string coerced into undefined value (translated to null) for non-nullable Date fails');
 
-    self.ok(undefTest.setAnniversary(""),
+    self.ok(nullableTest.setAnniversary(""),
             'empty string coerced into undefined for nullable property succeeds');
 
-    self.ok(undefTest.setAnniversary(undefined),
+    self.ok(nullableTest.setAnniversary(undefined),
             'setting undefined value for nullable property succeeds');
 
-    self.ok(undefTest.setAnniversary(null),
+    self.ok(nullableTest.setAnniversary(null),
             'setting null value for nullable property succeeds');
 
     self.diag("Core Types");
@@ -259,6 +296,7 @@ testobj.testTypeConstraint = function() {
     self.is(TYPE.Num.coerce("123"), 123, 'Num coerces "123" to 123');
     self.is(TYPE.Num.coerce(""), undefined, 'Num coerces "" to undefined');
     self.is(TYPE.Num.coerce(undefined), undefined, 'Num coerces undefined to undefined');
+    self.is(TYPE.Num.coerce(null), undefined, 'Num coerces null to undefined');
     
     self.ok(typeof TYPE.Bool != 'undefined', 'we have a Bool TypeConstraint');
     self.ok(TYPE.Bool.validateBool(true), 'Bool validates true');
