@@ -38,7 +38,13 @@ Test.TAPBrowser.prototype = {
         var url = location.pathname + "#test=" + encodeURIComponent(path.replace(/^\.\//, ''))
         Test.TAP.prototype.diag('loading: '+path+' <a href="'+url+'">(run in a single window)</a>...');
     
-        var req = new XMLHttpRequest();
+        var req;
+        if(navigator.appName == 'Microsoft Internet Explorer') {
+            req = new ActiveXObject("Microsoft.XMLHTTP");
+        } else {
+            req = new XMLHttpRequest();
+        } 
+        if(!req) throw "Can't create XML HTTP Request Object"
         req.open("GET", path, false);
         req.send(null);
         
@@ -78,7 +84,14 @@ Test.TAPBrowser.prototype = {
             }
             div.className = c;
         };
-        div.addEventListener('click', onclick, true);
+
+        if(div.addEventListener) {
+            div.addEventListener('click', onclick, true);
+        } else if(div.attachEvent) {
+            div.attachEvent('onclick', onclick);
+        } else {
+            throw "Can't attach event without addEventListener or attachEvent";
+        }
 
         div.className = 'test small';
         document.body.appendChild(div);
@@ -123,5 +136,6 @@ Test.TAPBrowser.prototype = {
     }
 
 }
+
 
 

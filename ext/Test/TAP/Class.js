@@ -93,7 +93,13 @@ Test.TAP.Class.prototype.run_it = function(method) {
         // THis avoid conflicts between tests when running multiple tests in a row
         for(var name in top) {
             if(!originalGlobal[name]) {
-                delete top[name]
+                try {
+                    delete top[name]
+                } catch (e) {
+                    // Delete threw an error, so just assign undefined
+                    // IE does not allow window properties to be deleted
+                    top[name] = undefined
+                }
             }
         }
     }
