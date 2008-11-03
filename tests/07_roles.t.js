@@ -103,7 +103,7 @@ t.testRoles = function() {
     
     self.diag("Removing roles")
    
-    self.skip(typeof has__proto__ == 'function', 
+    self.skip(typeof {}.__proto__ == 'undefined', 
         "Experimental feature Role.unapply does not work in browser without object.__proto__", 
         6,
         function () {
