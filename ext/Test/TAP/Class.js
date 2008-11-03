@@ -86,7 +86,11 @@ Test.TAP.Class.prototype.run_it = function(method) {
         }
     }
     catch(err) {
-        this.diag("Test Suite Crashed!!! (" + err + ")");
+        var str = err
+        if(err.description) {
+            str = err.description
+        }
+        this.diag("Test Suite Crashed!!! (" + str + ")");
     }
     finally {
         // Delete globals which were created during test execution
