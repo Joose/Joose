@@ -7,8 +7,6 @@
 <script type="text/javascript" src="../ext/Test/TAP/Class.js"></script>
 <script type="text/javascript" src="../ext/json2.js"></script>
 <script type="text/javascript" src="../lib/Joose.js"></script>
-</head>
-<body>
 <style type="text/css">
 .test {
     margin-top : 10px;
@@ -30,6 +28,9 @@
 .pass { background-color : green; }
 
 </style>
+</head>
+<body>
+
 <h1>Joose Browser Test Harness</h1>
 <p>Click a test box to view results</p>
 <script type="text/javascript">
@@ -68,30 +69,18 @@
     *
     */
 
-    function loadlib(library) {
-        document.body.appendChild(createScriptTag(library));
-    }
-
     function loadComponents(toLoad){
-        for (c in toLoad) {
-            var comp = toLoad[c];
-            loadlib(comp);
+		var html = "";
+        for (var i = 0; i < toLoad.length; i++) {
+            var comp = toLoad[i];
+            var path = lib+"/"+comp.replace(/\./g, '/')+'.js';
+			html += "<script type='text/javascript' src='"+path+"'><"+"/script>\n"
         }
-    }
-
-    function createScriptTag(library) {
-        var path = library.replace(/\./g, '/')+'.js';
-        var script = document.createElement("script");
-        script.src = lib+'/'+path;
-        return script; 
+        document.write(html)
     }
 
     var toLoad  = Joose.prototype.components();
     loadComponents(toLoad);
-    
-   
-    
-
 </script>
 <script type="text/javascript" src="../ext/Test/RealWorld.js"></script>
 <script type="text/javascript" src="../ext/Test/TAPBrowser.js"></script>
