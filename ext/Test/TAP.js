@@ -295,7 +295,19 @@ Test.TAP.prototype.throws_ok = function(func, msg) {
         func();
     }
     catch(err) {
-        errormsg = err+'';
+        
+        var str = err;
+        if(err instanceof Error) {
+            if(err.message) {
+                str = err.message
+            }
+            else
+            if(err.description) { // IE uses non-standard property for error msg
+                str = err.description
+            }
+        }
+        
+        errormsg = str;
     }
     this.like(errormsg, msg, 'code threw [' + errormsg + '] expected: [' + msg + ']');
 }
