@@ -1,4 +1,3 @@
-
 Test.TAPBrowser = function (path, tests) {
     this.test_path = path;
     

@@ -25,7 +25,8 @@ my $files = [
 sub compile {
 	my($path, $compile_dir, $release_dir, $joose_dir) = @_; 
     foreach my $file (qw/LICENCE README INSTALL/) {
-        copy("$path/$file", "$path/joose/$file") or die "Cant copy file $file: $!";
+        copy("$path/$file", "$compile_dir/$file") 
+            or die "Cant copy file $path/$file to $compile_dir/$file: $!";
     }
     
     export_dir("$path/examples", "$compile_dir/examples");
@@ -83,9 +84,9 @@ sub make_single_js {
     
     # minify file
 
+    my $end = "\s*[\r\n]+";
     $output =~ s(^\s*//.*$)()gm;    # c++ style comments on line without code
     $output =~ s(^\s+)()gm;         # leading white space
-    my $end = "\s*[\r\n]+";
     $output =~ s(;$end)(;)g;         # no newline after ;
     $output =~ s({$end)({)g;         # no newline after {
     $output =~ s(\s+$)()mg;          # trailing space
