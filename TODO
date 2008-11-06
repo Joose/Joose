@@ -28,3 +28,4 @@ Done:
 - Moved initialization from Class-Props into meta class so it is overridable
 - Allow instance and class methods with the same name
 - Add meta roles to roles
+- Method modifiers in roles should automatically be "required methods"
