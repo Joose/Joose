@@ -1,6 +1,6 @@
 (function() {
 var t = new Test.TAP.Class();
-t.plan(38)
+t.plan(45)
 
 t.testRoles = function() {
     var self = this;
@@ -226,6 +226,12 @@ t.testRoles = function() {
         })
     }, /Class NoImpl does not fully implement the role Requirer. The method is implementMe missing./,
        "A missing required method throws correct error")
+    
+    self.throws_ok(function () {    
+        Requirer.meta.apply(adam);
+    }, /Class Adam__anon__2 does not fully implement the role Requirer. The method is implementMe missing./,
+       "A missing required method throws correct error")
+
 
     Role("ModifierRequirer", {
         around: {
