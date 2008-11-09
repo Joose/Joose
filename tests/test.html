@@ -82,11 +82,9 @@
 	    loadScriptFile("../joose.mini.js")
 	}
 	else {
-	    loadScriptFile("../lib/Joose.js");
-	    setTimeout(function () {
-			var html  = '<script type="text/javascript">joose.loadComponents("../lib")<'+'/script>'
-			document.write(html)
-	    }, 0)
+		var html  = '<script type="text/javascript" src="../lib/Joose.js"><'+'/script>'
+		    html += '<script type="text/javascript">joose.loadComponents("../lib")<'+'/script>'
+		document.write(html)
 	}
    
     
