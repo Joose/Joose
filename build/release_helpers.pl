@@ -82,19 +82,21 @@ sub make_single_js {
     # Write all JS-Code to a single file
      write_file("$compile_dir/joose.js", $output);
     
-    # minify file
-
-    my $end = "\s*[\r\n]+";
-    $output =~ s(^\s*//.*$)()gm;    # c++ style comments on line without code
-    $output =~ s(^\s+)()gm;         # leading white space
-    $output =~ s(;$end)(;)g;         # no newline after ;
-    $output =~ s({$end)({)g;         # no newline after {
-    $output =~ s(\s+$)()mg;          # trailing space
-    $output =~ s(\n+)(\n)g;          # multiple new lines
-    $output =~ s(//[^"'\n]*$)()gm;   # c++ style comments that cant be in quotes
+    # minify file, old style
+    #my $end = "\s*[\r\n]+";
+    #$output =~ s(^\s*//.*$)()gm;    # c++ style comments on line without code
+    #$output =~ s(^\s+)()gm;         # leading white space
+    #$output =~ s(;$end)(;)g;         # no newline after ;
+    #$output =~ s({$end)({)g;         # no newline after {
+    #$output =~ s(\s+$)()mg;          # trailing space
+    #$output =~ s(\n+)(\n)g;          # multiple new lines
+    #$output =~ s(//[^"'\n]*$)()gm;   # c++ style comments that cant be in quotes
 
     # Write all JS-Code to a single file
-    write_file("$compile_dir/joose.mini.js", $output);
+    # write_file("$compile_dir/joose.mini.js", $output);
+    
+    # use the YUI compressor to compress the js file
+    exe "java -jar $path/ext/yuicompressor-2.4.1.jar $compile_dir/joose.js > $compile_dir/joose.mini.js";
     
     # quick hack to get bleeding edge copy into blok
     copy_file("$compile_dir/joose.mini.js", "/ws/Joose2/examples/blok/static");
