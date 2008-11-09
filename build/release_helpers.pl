@@ -98,6 +98,8 @@ sub make_single_js {
     # use the YUI compressor to compress the js file
     exe "java -jar $path/ext/yuicompressor-2.4.1.jar $compile_dir/joose.js > $compile_dir/joose.mini.js";
     
+    gzip("$compile_dir/joose.mini.js");
+    
     # quick hack to get bleeding edge copy into blok
     copy_file("$compile_dir/joose.mini.js", "/ws/Joose2/examples/blok/static");
 
