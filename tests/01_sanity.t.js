@@ -1,6 +1,6 @@
 (function () {
 var testobj = new Test.TAP.Class();
-testobj.plan("no_plan")
+testobj.plan(12)
 
 testobj.testSanity = function() {
     this.diag("Sanity")

@@ -1,6 +1,6 @@
 (function () {
 var testobj = new Test.TAP.Class();
-testobj.plan("no_plan")
+testobj.plan(116)
 
 testobj.testTypeConstraint = function() {
     var self = this;
