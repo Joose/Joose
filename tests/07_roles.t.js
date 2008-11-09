@@ -229,7 +229,7 @@ t.testRoles = function() {
     
     self.throws_ok(function () {    
         Requirer.meta.apply(adam);
-    }, /Class Adam__anon__2 does not fully implement the role Requirer. The method is implementMe missing./,
+    }, /Class Adam__anon__\d+ does not fully implement the role Requirer. The method is implementMe missing./,
        "A missing required method throws correct error")
 
 
