@@ -6,7 +6,7 @@ t.testStorageRole = function() {
     var self = this; 
     self.diag("Testing Storage Role")
     
-    self.skip(typeof(JSON) != 'undefined',
+    self.skip(window.JSON == null,
     'JSON is not defined',
     41,
     function() {
