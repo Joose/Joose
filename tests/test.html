@@ -83,8 +83,10 @@
 	}
 	else {
 	    loadScriptFile("../lib/Joose.js");
-		var html  = '<script type="text/javascript">joose.loadComponents("../lib")<'+'/script>'
-		document.write(html)
+	    setTimeout(function () {
+			var html  = '<script type="text/javascript">joose.loadComponents("../lib")<'+'/script>'
+			document.write(html)
+	    }, 0)
 	}
    
     
