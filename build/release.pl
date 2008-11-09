@@ -19,9 +19,11 @@ use Pod::Usage;
 
 =over 2
 
-=item C<-d> direcgtory where script will build the joose release
+=item C<-d> directory where script will build the joose release
 
 =item C<-v> the version of the joose release the script is building
+
+=item C<-testable> Copy joose.js and joose.mini.js to root of working copy (Makes the accessible to tests. You should svn:ignore these files)
 
 =item C<-h> display this help
 
@@ -58,12 +60,13 @@ prepares a joose release archive containing:
 
 =cut
 
-my ($release_dir, $version, $help);
+my ($release_dir, $version, $help, $testable_libs);
 
 my $result = GetOptions(
-    "d=s" => \$release_dir,
-    "v=s" => \$version,
-    "h"   => \$help
+    "d=s"      => \$release_dir,
+    "v=s"      => \$version,
+    "testable" => \$testable_libs,
+    "h"        => \$help
     );
 
 if ($help) {
@@ -84,3 +87,8 @@ require "$Bin/release_helpers.pl";
 wipe_dir($compile_dir);
 make_single_js($path, $compile_dir, $release_dir, $joose_dir);
 compile($path, $compile_dir, $release_dir, $joose_dir);
+
+if($testable_libs) {
+	copy_file("$compile_dir/joose.js", "$path");
+	copy_file("$compile_dir/joose.mini.js", "$path");
+}

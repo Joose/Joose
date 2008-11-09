@@ -13,7 +13,7 @@ my $path = "$FindBin::Bin/..";
 my $files = [
     "Joose.js",               "Joose/Builder.js",
     "Joose/Class.js",         "Joose/Method.js",
-    "Joose/ClassMethod.js",   "Joose/Method.js",
+    "Joose/ClassMethod.js",
     "Joose/Attribute.js",     "Joose/Role.js",
     "Joose/SimpleRequest.js", "Joose/Gears.js",
     "Joose/Storage.js",       "Joose/Storage/Unpacker.js",
@@ -114,7 +114,7 @@ sub write_file {
 
 sub gzip {
     my ($file) = @_;
-    print exe qq(gzip -cf $file > $file.gz);
+    print exe qq(gzip -9 -cf $file > $file.gz);
 }
 
 sub copy_file {

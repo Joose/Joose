@@ -6,7 +6,7 @@
 <script type="text/javascript" src="../ext/Test/TAP.js"></script>
 <script type="text/javascript" src="../ext/Test/TAP/Class.js"></script>
 <script type="text/javascript" src="../ext/json2.js"></script>
-<script type="text/javascript" src="../lib/Joose.js"></script>
+
 <style type="text/css">
 .test {
     margin-top : 10px;
@@ -62,7 +62,7 @@
         '18_custom_builders.t.js'
         //'19_exceptions.t.js'          // still to implement
         ];
-    var lib = '../lib';
+    
     var testlib = '.';
     var results = [];
     
@@ -70,8 +70,8 @@
     *
     */
 
-    function loadComponents(toLoad){
-		var html = "";
+    function loadComponents(lib, toLoad){
+		var html     = '<script type="text/javascript" src="../lib/Joose.js"><'+'/script>'
         for (var i = 0; i < toLoad.length; i++) {
             var comp = toLoad[i];
             var path = lib+"/"+comp.replace(/\./g, '/')+'.js';
@@ -80,8 +80,24 @@
         document.write(html)
     }
 
-    var toLoad  = Joose.prototype.components();
-    loadComponents(toLoad);
+	function loadScriptFile(src) {
+		document.write("<script type='text/javascript' src='"+src+"'><"+"/script>\n")
+	}
+
+	var loc     = new String(location.hash);
+	if(loc.indexOf("libmode=single") != -1) {
+	    loadScriptFile("../joose.js")
+	}
+	else if(loc.indexOf("libmode=mini") != -1) {
+	    loadScriptFile("../joose.mini.js")
+	}
+	else {
+		var html  = '<script type="text/javascript" src="../lib/Joose.js"><'+'/script>'
+		    html += '<script type="text/javascript">joose.loadComponents("../lib")<'+'/script>'
+		document.write(html)
+	}
+   
+    
 </script>
 <script type="text/javascript" src="../ext/Test/RealWorld.js"></script>
 <script type="text/javascript" src="../ext/Test/TAPBrowser.js"></script>

@@ -1,8 +1,6 @@
 Joose is an meta object protocol implementation for JavaScript inspired
 by Moose: http://www.iinteractive.com/moose/
 
-This is experimental development code!
-
 For documentation see:
 http://code.google.com/p/joose-js
 
