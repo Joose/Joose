@@ -70,16 +70,6 @@
     *
     */
 
-    function loadComponents(lib, toLoad){
-		var html     = '<script type="text/javascript" src="../lib/Joose.js"><'+'/script>'
-        for (var i = 0; i < toLoad.length; i++) {
-            var comp = toLoad[i];
-            var path = lib+"/"+comp.replace(/\./g, '/')+'.js';
-			html += "<script type='text/javascript' src='"+path+"'><"+"/script>\n"
-        }
-        document.write(html)
-    }
-
 	function loadScriptFile(src) {
 		document.write("<script type='text/javascript' src='"+src+"'><"+"/script>\n")
 	}
@@ -92,8 +82,8 @@
 	    loadScriptFile("../joose.mini.js")
 	}
 	else {
-		var html  = '<script type="text/javascript" src="../lib/Joose.js"><'+'/script>'
-		    html += '<script type="text/javascript">joose.loadComponents("../lib")<'+'/script>'
+	    loadScriptFile("../lib/Joose.js");
+		var html  = '<script type="text/javascript">joose.loadComponents("../lib")<'+'/script>'
 		document.write(html)
 	}
    
