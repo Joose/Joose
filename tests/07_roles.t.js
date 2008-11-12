@@ -1,6 +1,6 @@
 (function() {
 var t = new Test.TAP.Class();
-t.plan(45)
+t.plan(47)
 
 t.testRoles = function() {
     var self = this;
@@ -206,12 +206,33 @@ t.testRoles = function() {
     var eve = new Eve();
     sayString = ""
     eve.sayHello()
-    self.ok(sayString == "May I talk to you?\nHello!\nI am a Joose user.\n", "Method modifiers in roles work (before, after)")
+    self.ok(sayString == "May I talk to you?\nHello!\nI am a Joose user.\n", "Method modifiers in roles work (before, after): "+sayString)
     
     var adam = new Adam();
     sayString = ""
     adam.sayHello()
     self.ok(sayString == "Stutter\nMay I talk to you?\nHello!\nI am a Joose user.\nMay I talk to you?\nHello!\nI am a Joose user.\n", "Method modifiers in roles work (before, after, around, override. Multi override in the same role)")
+    
+    
+    self.lives_ok(function () {
+        Class("TestMethodModifierFromRole", {
+            does: [Introduction],
+            methods: {
+                sayHello: function () {
+                    printToSayString("Hello!")
+                }
+            }
+        });
+        
+        
+    }, "Roles with modifiers can be applied to classes that implement the required roles directly");
+    try {
+        sayString = "";
+        new TestMethodModifierFromRole().sayHello();
+        self.ok(sayString == "Hello!\nI am a Joose user.\n", "Result from method modifier in Role is correct. "+sayString)
+    } catch (e) {
+        self.ok(false, "Result from method modifier in Role is correct. "+e)
+    }
     
     self.diag("Validation errors")
     Role("Requirer", {
