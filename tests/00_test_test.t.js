@@ -10,10 +10,12 @@ testobj.testSanity = function() {
     me.ok(true, "Test succeeded");
     me.ok(!false, "Test failed");
     
-    window.setTimeout(function () {
-        me.ok(true, "Asynchronous test succeeded");
-        me.ok(!false, "Asynchronous test failed");
-    }, 100)
+    if(joose.top.setTimeout) {
+        setTimeout(function () {
+            me.ok(true, "Asynchronous test succeeded");
+            me.ok(!false, "Asynchronous test failed");
+        }, 100)
+    }
 };
 return testobj
 })()

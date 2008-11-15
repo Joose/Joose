@@ -1,3 +1,7 @@
+
+this.CHAOTIC_TRAVERSION_ORDER = true;
+
+
 //library loading helper function
 var loadlib = function(lib) {
     //print('#loading: '+lib);
