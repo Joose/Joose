@@ -1,4 +1,4 @@
-// Generated: Sun Nov  9 15:15:20 2008
+// Generated: Sat Nov 15 12:20:31 2008
 
 
 // ##########################
@@ -360,6 +360,12 @@ Joose.MetaClassBootstrap.prototype = {
                     throw new Error("Called invalid builder "+name+" while creating class "+me.className())
                 }
             })
+            
+            for(var i = 0; i < this.roles.length; i++) {
+                var role = this.roles[i];
+                role.meta.applyMethodModifiers(this.c)
+            }
+            
             me.buildComplete()
             
             me.validateClass()
@@ -467,10 +473,12 @@ Joose.MetaClassBootstrap.prototype = {
     
     addRole: function (roleClass) {
         this.dieIfString(roleClass);
-        if(roleClass.meta.apply(this.getClassObject())) {
+        var c = this.getClassObject();
+        if(roleClass.meta.apply(c)) {
             this.roles.push(roleClass);
             this.myRoles.push(roleClass);
         }
+        
     },
     
     getClassObject: function () {
@@ -1945,6 +1953,7 @@ Class("Joose.Role", {
                 
                 object.detach();
                 object.meta.addRole(this.getClassObject());
+                this.applyMethodModifiers(object);
                 var throwException = true;
                 this.isImplementedBy(object, throwException)
             } else {
@@ -1967,11 +1976,7 @@ Class("Joose.Role", {
                     }
                 })
                 
-                // Apply method modifiers
-                Joose.A.each(this.methodModifiers, function applyMethodModifier (paras) {
-                    object.meta.wrapMethod.apply(object.meta, paras)
-                })
-                
+
                 // Meta roles are applied to the meta class of the class that implements us
                 if(this.metaRoles) {
                     Joose.A.each(this.metaRoles, function applyMetaRole (role) {
@@ -1980,6 +1985,15 @@ Class("Joose.Role", {
                 }
             }
             return true
+        },
+        
+        // should be called by class builder after class has been initialized from props
+        applyMethodModifiers: function (object) {
+            
+            // Apply method modifiers
+            Joose.A.each(this.methodModifiers, function applyMethodModifier (paras) {
+                object.meta.wrapMethod.apply(object.meta, paras)
+            })
         },
         
         // Checks whether classObject (can also be any Joose object) implements this role. 
