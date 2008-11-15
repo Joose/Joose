@@ -67,21 +67,21 @@ sub make_single_js {
     }
 
     # Write all JS-Code to a single file
-     write_file("$path/static/blok.js", $output);
+    write_file("$path/static/blok.js", $output);
     
     # minify file
 
-    $output =~ s(^\s*//.*$)()gm;    # c++ style comments on line without code
-    $output =~ s(^\s+)()gm;         # leading white space
-    my $end = "\s*[\r\n]+";
-    $output =~ s(;$end)(;)g;         # no newline after ;
-    $output =~ s({$end)({)g;         # no newline after {
-    $output =~ s(\s+$)()mg;          # trailing space
-    $output =~ s(\n+)(\n)g;          # multiple new lines
-    $output =~ s(//[^"'\n]*$)()gm;   # c++ style comments that cant be in quotes
-
-    # Write all JS-Code to a single file
-    write_file("$path/static/blok.mini.js", $output);
+    #$output =~ s(^\s*//.*$)()gm;    # c++ style comments on line without code
+    #$output =~ s(^\s+)()gm;         # leading white space
+    #my $end = "\s*[\r\n]+";
+    #$output =~ s(;$end)(;)g;         # no newline after ;
+    #$output =~ s({$end)({)g;         # no newline after {
+    #$output =~ s(\s+$)()mg;          # trailing space
+    #$output =~ s(\n+)(\n)g;          # multiple new lines
+    #$output =~ s(//[^"'\n]*$)()gm;   # c++ style comments that cant be in quotes
+	
+	exe("java -jar $path/../../ext/yuicompressor-2.4.1.jar $path/static/blok.js > $path/static/blok.mini.js");
+	gzip("$path/static/blok.mini.js");
 
     print "Built Mini JS-Lib\n";
 }
