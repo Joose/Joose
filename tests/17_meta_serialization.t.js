@@ -31,6 +31,7 @@ t.testMetaSerialization = function() {
     })
     
     Joose.Storage.Unpacker.patchJSON();
+    Point.meta.addRole(Joose.Storage);
     self.diag(JSON.stringify(Point.meta))
     
 }
