@@ -12,6 +12,9 @@ t.testRoles = function() {
     self.ok(Comparable.meta.meta.isa(Joose.Role), "Our meta class isa Role")
     
     Role("Eq", {
+        has: {
+            locale: {is: 'rw'}
+        },
         requires: ["isEqual"],
         methods: {
             notEqual: function (para) {
@@ -50,11 +53,16 @@ t.testRoles = function() {
     var a = new Currency({value: 1});
     var b = new Currency({value: 1});
     var c = new Currency({value: 2});
-    
+    //a.setLocale('en_us'); 
     self.ok(a.getValue() == 1, "Value set correctly")
     self.ok(b.getValue() == 1, "Value set correctly")
     self.ok(c.getValue() == 2, "Value set correctly")
-    
+    for (attr in a.meta.getAttributes()) {
+        self.diag(attr+",");
+    }
+    self.ok(a.meta.getAttribute('locale'), 'the locale attribute is in the attribute list');
+    a.setLocale('en_us');
+    self.is(a.getLocale(), 'en_us', 'the locale attribute was added also'); 
     self.ok(a.isEqual(b), "Equality works")
     self.ok(b.isEqual(a), "Equality works in both directions")
     self.ok(!a.isEqual(c), "Equality works for unequal things")
