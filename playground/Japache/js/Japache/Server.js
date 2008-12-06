@@ -42,9 +42,7 @@ Module("Japache", function() {
                 
                 count = parseInt(count, 10) + 1;
                 
-                var html = '<html><head><title>JS Cloud Test</title></head><body>'+
-                    '<form action="/request"><input name=count size=4 value="'+this.escapeHTML(count)+'"><input type=submit value=increment></form>'
-                +'</body></html>'
+                var html = JSON.stringify({ count: count })
                 
                 var response   = {
                     requestId: requestId,
@@ -55,11 +53,6 @@ Module("Japache", function() {
                 client.ajaxRequest("POST", "/response", response, function () {
                     self.log("Done: "+new Date()+" - "+url + " - Request: "+requestId+" Thread "+self.config.id)
                 })
-            },
-            
-            escapeHTML: function (html) {
-                var str = ""+html
-                return str.replace(/\"/g, "&quot;").replace(/'/g, "&apos;").replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;")
             },
             
             listen: function () {
