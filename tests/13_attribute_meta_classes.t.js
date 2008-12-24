@@ -1,6 +1,6 @@
 (function() {
 var t = new Test.TAP.Class();
-t.plan(41)
+t.plan(45)
 
 t.testConstrainedAttributes = function() {
     var self = this;
@@ -207,7 +207,37 @@ t.testConstrainedAttributes = function() {
     self.ok(typeof t1.lazy == "string", "Attr is now initialized");
     self.ok(typeof t1.eager == "string", "Eager attr is initialized immediately");
     self.ok(t1.getEager() == "eager", "Eager attr is initialized immediately");
-    self.ok(t1.getFoo() == "bar", "New attr is initialized")
+    self.ok(t1.getFoo() == "bar", "New attr is initialized");
+    
+    // Tests for Issue #8
+    Class("SuperClassWithAttr", {
+        has: {
+            test: {
+                is: "rw",
+                init: 0
+            }
+        },
+        override: {
+            getTest: function () {
+                this.test++;
+                return this.SUPER();
+            },
+            setTest: function (val) {
+                this.SUPER(val + 1)
+            }
+        }
+    })
+    Class("SubClassOfSuperClassWithAttr", {
+        isa: SuperClassWithAttr
+    })
+    var o = new SuperClassWithAttr();
+    t.is(o.getTest(), 1, "Super class shows correct behavior")
+    o.setTest(3);
+    t.is(o.getTest(), 5, "Super class shows correct behavior")
+    var o = new SubClassOfSuperClassWithAttr();
+    t.is(o.getTest(), 1, "Override of attr getter was inherited")
+    o.setTest(3);
+    t.is(o.getTest(), 5, "Override of attr setter was inherited")
 }
 
 return t;
