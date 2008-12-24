@@ -13,6 +13,7 @@ my @files = (
 	"ext/json2.js",
 	"js/Japache/CometClient.js",
 	"js/Japache/Server.js",
+	"js/Japache/ExampleApp.js",
 	"js/thread.js",
 );
 

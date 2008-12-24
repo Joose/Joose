@@ -17,6 +17,11 @@ Module("Japache", function() {
             doDisconnect: {
                 is: "rw",
                 init: false
+            },
+            
+            log: {
+                is: "rw",
+                required: true
             }
         },
         
@@ -37,7 +42,9 @@ Module("Japache", function() {
                     }
                 }
                 
-                this.ajaxRequest("POST", this.getUrl(), null, handleResponse)
+                this.ajaxRequest("POST", this.getUrl(), null, handleResponse, function (err) {
+                    self.log(err)
+                })
             },
             
             handleResponse: function (text) {

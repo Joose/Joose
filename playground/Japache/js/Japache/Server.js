@@ -16,13 +16,22 @@ Module("Japache", function() {
             motherId: {
                 is: "rw",
                 required: true
+            },
+            requestHandler: {
+                is: "rw"
             }
         },
         
         after: {
             initialize: function () {
                 var self = this;
-                this.setCometClient(new Japache.CometClient({ url: "/listen", callback: function (data) { self.handleRequest(data) } }))
+                this.setCometClient(new Japache.CometClient({ 
+                    url:      "/listen", 
+                    callback: function (data) { self.handleRequest(data) }, 
+                    log:      function (msg) {
+                        self.log(msg)
+                    }
+                }))
             }
         },
 
@@ -32,26 +41,23 @@ Module("Japache", function() {
                 var client    = this.getCometClient();
                 var url       = request.url;
                 var requestId = request.requestId;
-                var count     = request.data.count;
                 
                 this.log("Start: "+new Date()+" - "+url + " - Request: "+requestId+" Thread "+this.config.id)
                 
-                if(count == "" || count == null) {
-                    count = "1";
-                }
+                var responseData = this.getRequestHandler().handleRequest(request);
                 
-                count = parseInt(count, 10) + 1;
-                
-                var html = JSON.stringify({ count: count })
-                
+                var json = JSON.stringify(responseData)
+
                 var response   = {
                     requestId: requestId,
                     header: "Content-Type: text/html",
-                    body: html
+                    body: json
                 }
                 
                 client.ajaxRequest("POST", "/response", response, function () {
                     self.log("Done: "+new Date()+" - "+url + " - Request: "+requestId+" Thread "+self.config.id)
+                }, function onError (err) {
+                    self.log(""+err)
                 })
             },
             

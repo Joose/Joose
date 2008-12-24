@@ -15,7 +15,8 @@ wp.onmessage = function(a, b, message) {
         server     = new Japache.Server({ 
             wp:       wp, 
             config:   config,
-            motherId: message.sender
+            motherId: message.sender,
+            requestHandler: new Japache.ExampleApp()
         })
         server.listen();
     }
