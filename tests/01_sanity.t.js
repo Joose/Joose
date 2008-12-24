@@ -39,8 +39,11 @@ testobj.testSanity = function() {
             OK = false
         }
     }
-    
-    this.ok(OK, "Object traversion order is in declaration order")
+    if(!joose.top.CHAOTIC_TRAVERSION_ORDER) {
+        this.ok(OK, "Object traversion order is in declaration order")
+    } else {
+        this.ok(true, "Using compatibility mode for JS engine that uses non deterministic object traversion order")
+    }
 };
 
 return testobj;

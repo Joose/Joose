@@ -4,7 +4,7 @@ t.plan(43)
 
 t.testStorageJsonPickle = function() {
     var self = this;
-    self.skip(typeof JSON == 'undefined',
+    self.skip(typeof joose.top.JSON == 'undefined',
     'JSON is not defined',
     43,
     function() {

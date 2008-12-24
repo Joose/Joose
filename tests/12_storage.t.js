@@ -6,7 +6,7 @@ t.testStorageRole = function() {
     var self = this; 
     self.diag("Testing Storage Role")
     
-    self.skip(window.JSON == null,
+    self.skip(joose.top.JSON == null,
     'JSON is not defined',
     41,
     function() {
@@ -78,7 +78,9 @@ t.testStorageRole = function() {
             another: {a: 1}
         }
         
-        var after = JSON.parse(JSON.stringify(before), Joose.Storage.Unpacker.jsonParseFilter);
+        var json  = JSON.stringify(before);
+        self.diag(json)
+        var after = JSON.parse(json, Joose.Storage.Unpacker.jsonParseFilter);
         
         var p = after.test[0]
         
