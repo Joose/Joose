@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>A Client-Server</title>
+
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>
+
+</head>
+
+<body>
+
+<div id="clientId"></div>
+
+<div id="log"></div>
+
+<script type="text/javascript" src="http://self:8084/static/client-server.js"></script>
+<script type="text/javascript">
+var server = new Addressable.Server();
+server.addHandler(function (url) {
+	var log = $("#log");
+	log.html(url + "<br />" + log.html())
+})
+server.connect(function (id, url) {
+    $("#clientId").html("Client-Url: "+url)
+});
+
+</script>
+
+</body>
+</html>

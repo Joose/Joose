@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>A Client-Server-Tester</title>
+
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+$(document).ready(function () {
+    $("#sendButton").click(function () {
+		$("#sender").attr("action", $("#url").val())
+		$("#sender").submit()
+	})
+})
+
+</script>
+
+
+</head>
+
+<body>
+
+
+<form>Action <input name="url" id="url"></input></form>
+
+<form method="Get" id="sender">
+
+Message <input name="message">
+
+<input type="button" id="sendButton" value="Send">
+
+</form>
+
+</body>
+</html>

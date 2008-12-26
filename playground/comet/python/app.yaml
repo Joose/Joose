@@ -1,0 +1,16 @@
+application: client-server
+version: 1
+runtime: python
+api_version: 1
+
+handlers:
+
+- url: /static
+  static_dir: static
+
+- url: /gears
+  static_dir: gears
+  mime_type: application/x-gears-worker
+  
+- url: .*
+  script: main.py
