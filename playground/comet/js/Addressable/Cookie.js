@@ -42,6 +42,10 @@ Module("Addressable", function () {
              * expires must be a Date-Object
              */
             set: function(name, value, expires, secure) {
+               
+               if(value == null) {
+                   value = "";
+               }
         
                         var cookie = name + "=" + escape(value) +
                         ( ( expires ) ? "; expires=" + expires.toGMTString() : "" ) +

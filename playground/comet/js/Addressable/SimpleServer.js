@@ -1,7 +1,21 @@
 Module("Addressable", function () {
     
-    var ID_COOKIE  = "AddressableID";
-    var URL_COOKIE = "AddressableURL"
+    var ID_COOKIE       = "AddressableID";
+    var URL_COOKIE      = "AddressableURL";
+    var CHANNEL_COOKIE  = "AddressableChannel";
+    
+    var ACTIVITY_COOKIE = "AddressableActive"
+    
+    Type("AddressableChannel", {
+        uses: TYPE.Str,
+        where: function (str) {
+            if(str.match(/^\[a-z0-9]+$/)) {
+                return true
+            } else {
+                return false
+            }
+        }
+    })
     
     Class("SimpleServer", {
         has: {
@@ -33,7 +47,9 @@ Module("Addressable", function () {
             
             // channels differentiate between different windows
             channel: {
-                is: "rw"
+                isa: TYPE.AddressableChannel,
+                is: "rw",
+                init: function () { return ""+Math.floor(Math.random() * 1000) } // Taking chances
             }
         },
         
@@ -61,6 +77,9 @@ Module("Addressable", function () {
             
             setCookies: function (id, url) {
                 if(id && url) {
+                    
+                    url.replace("-[a-z0-9]+$") // remove channel from saved url
+                    
                     this.cookie.set(ID_COOKIE, id)
                     this.cookie.set(URL_COOKIE, url)
                 }
@@ -81,12 +100,31 @@ Module("Addressable", function () {
                 
                 var handleConnect = function (id, url) {
                     self.setId(id)
-                    self.setUrl(url)
-                    callback.call(self, id, url)
-                    cometClient.listen({
-                        ids:      self.getId(),
-                        referrer: self.getReferrer()
-                    });
+                    
+                    var channel = self.getChannel();
+                    if(channel) {
+                        url += "-"+channel
+                    }
+                    
+                    self.setUrl(url);
+                    callback.call(self, id, url);
+                    
+                    var listen = function () {
+                        cometClient.listen({
+                            ids:      self.getId(),
+                            referrer: self.getReferrer()
+                        });
+                    }
+                    
+                    var interval = setInterval(function () {
+                        if(self.passiveMode()) {
+                            self.pollDataStore()
+                        } else {
+                            clearInterval(interval)
+                            self.log("Start listening")
+                            listen()
+                        }
+                    }, 500)
                 }
                
                 if(this.id && this.url) {
@@ -108,28 +146,71 @@ Module("Addressable", function () {
                 return false
             },
             
+            sendToOtherChannel: function (request) {
+                var name = CHANNEL_COOKIE+"-"+request.channel;
+                this.cookie.set(name, JSON.stringify(request))
+            },
+            
+            pollDataStore: function () {
+                var name = CHANNEL_COOKIE+"-"+this.getChannel();
+                var value = this.cookie.get(name);
+                if(value) {
+                    this.cookie.set(name,"");
+                    var request = JSON.parse(value);
+                    this.processRequest(request)
+                }
+            },
+            
+            passiveMode: function () {
+                var val = this.cookie.get(ACTIVITY_COOKIE)
+                var now = new Date().getTime()
+                if(val && now - parseInt(val,10) < 5000) {
+                    this.log("passive")
+                    return true
+                }
+                this.log("active")
+                return false
+            },
+            
+            signalActivity: function () {
+                var now    = new Date().getTime()
+                this.cookie.set(ACTIVITY_COOKIE, now)
+            },
+            
+            processRequest: function (request) {
+                var self      = this;
+                var handlers  = self.getHandlers();
+                var found     = false;
+                var myChannel = self.getChannel();
+                var channel   = request.channel
+                if(channel   != myChannel) {
+                    self.sendToOtherChannel(request)
+                    return // continue
+                }
+                var url     = request.url;
+                var paras   = request.paras;
+                self.log("Handling url "+url)
+                Joose.A.each(handlers, function (handler) {
+                    if(!found) {
+                        var prefix   = handler[0];
+                        var callback = handler[1];
+                        if(url.indexOf(prefix) === 0) {
+                            callback.call(request, url, paras)
+                        }
+                        found = true;
+                    }
+                })
+            },
+            
             requestHandler: function () {
                 var self = this;
                 
                 return function requestCallback (data) {
-                    var handlers = self.getHandlers();
-                    var found    = false;
+                    self.signalActivity();
                     var requests = data[self.getId()];
                     if(requests) {
                         Joose.A.each(requests, function (request) {
-                            var url   = request.url;
-                            var paras = request.paras;
-                            self.log("Handling url "+url)
-                            Joose.A.each(handlers, function (handler) {
-                                if(!found) {
-                                    var prefix   = handler[0];
-                                    var callback = handler[1];
-                                    if(url.indexOf(prefix) === 0) {
-                                        callback.call(request, url, paras)
-                                    }
-                                    found = true;
-                                }
-                            })
+                            self.processRequest(request)
                         })
                     }
                 }

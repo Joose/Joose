@@ -17,14 +17,14 @@
 
 <script type="text/javascript" src="http://self:8084/static/client-server.js"></script>
 <script type="text/javascript">
-var server = new Addressable.Server();
+var server = new Addressable.Server({ useGears: false });
 server.addHandler(function (url) {
 	var log = $("#log");
 	log.html(url + "<br />" + log.html())
 })
 server.connect(function (id, url) {
     $("#clientId").html("Client-Url: "+url)
-});
+})
 
 </script>
 

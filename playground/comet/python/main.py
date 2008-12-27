@@ -48,6 +48,8 @@ class SendRequest(webapp.RequestHandler):
 
   def get(self,id):
   
+    (id,channel) = id.split("-");
+  
     key   = "client-"+id;
     
     logging.info("Sending to key "+key)
@@ -67,7 +69,7 @@ class SendRequest(webapp.RequestHandler):
     
     url  = path + "?" + self.request.query_string
     
-    requests.append({ 'url' : url, 'remote_addr' : self.request.remote_addr, 'paras' : paras });
+    requests.append({ 'url' : url, 'remote_addr' : self.request.remote_addr, 'paras' : paras, 'channel' : channel });
     memcache.set(key, requests)
       
     self.response.out.write("Message Queued")
@@ -118,7 +120,7 @@ def main():
                                          ('/', Redirect),
                                          ('/connect', ClientConnect),
                                          ('/listen', Listen),
-                                         (r'/get/(\w+)', SendRequest)
+                                         (r'/get/(\w+-*\w*)', SendRequest)
                                        ],
                                        debug=True)
   wsgiref.handlers.CGIHandler().run(application)

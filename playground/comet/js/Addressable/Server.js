@@ -8,7 +8,7 @@ Module("Addressable", function () {
             
             channel: {
                 is: "rw"
-            }
+            },
             
             useGears: {
                 is: "rw",

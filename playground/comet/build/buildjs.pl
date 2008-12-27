@@ -9,6 +9,7 @@ my $base     = "$FindBin::Bin/..";
 my $path     = "$base/python";
 
 my @files = (
+	"ext/json2.js",
 	"ext/joose.js",
 	"js/Addressable/Cookie.js",
 	"js/Addressable/Constants.js",
@@ -28,7 +29,6 @@ my @js_files = (
 make_single_js(\@js_files, "static/client-server.js");
 
 my @gears_files = (
-	"ext/json2.js",
 	@files,
 	"js/Addressable/GearsServer.js",
 	"js/Addressable/GearsRequest.js",
