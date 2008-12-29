@@ -1,4 +1,7 @@
 Module("Addressable", function () {
+    
+    var timer = google.gears.factory.create('beta.timer');
+    
     Class("GearsServer", {
         isa: Addressable.SimpleServer,
         
@@ -7,8 +10,29 @@ Module("Addressable", function () {
             referrer: {
                 is: "rw"
             },
-            requestCallback: {
-                is: "rw"
+            cookie: {
+                init: function () { return new Addressable.GearsDBHash({name: "cookie"}) }
+            },
+            ids: {
+                init: function () { 
+                    return new Addressable.GearsDBHash({
+                        name: "ids2",
+                        expires: Addressable.Constants.activeChannelExpirationSeconds()
+                    }) 
+                }
+            },
+            channel: {}
+        },
+        
+        before: {
+            handleConnect: function (callback, id, url) {
+                var self = this;
+                self.ids.clear()
+                var active = function () {
+                    self.ids.set(id, true)
+                }
+                active();
+                self.getTimer().setInterval(active, Addressable.Constants.activeChannelExpirationSeconds() - 1) // keep us in the set of watched ids
             }
         },
         
@@ -18,15 +42,10 @@ Module("Addressable", function () {
             setCookies: function () {},
             getCookies: function () { return {} },
             
-            requestHandler: function () {
-                var self     = this;
-                var callback = this.getRequestCallback();
-                
-                return function (data) {
-                    if(data[self.getId()].length > 0) {
-                        callback(data)
-                    }
-                }
+            getListenIds: function () {
+                var ids = this.ids.keys().join(",");
+                this.log("Listening to ids "+ids)
+                return ids;
             },
             
             useGears: function () {
@@ -34,7 +53,14 @@ Module("Addressable", function () {
             },
             
             log: function (msg) {
-                sendLog(msg) // global defined in gearsWorker.js
+                sendLog(this.meta.className() + ": "+ msg) // global defined in gearsWorker.js
+            },
+            
+            getTimer: function () {
+                if(!timer) {
+                    timer = google.gears.factory.create('beta.timer');
+                }
+                return timer
             }
         }
     })

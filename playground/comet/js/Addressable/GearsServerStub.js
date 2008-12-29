@@ -26,7 +26,8 @@ Module("Addressable", function () {
                         id:  cookie.id || "",
                         url: cookie.url || "",
                         referrer: location.href,
-                        channel:  self.channel
+                        channel:  self.channel,
+                        isLocal:  Addressable.Constants.isLocal(),
                     }
                 }, this.workerId)
                 
@@ -36,7 +37,7 @@ Module("Addressable", function () {
                     var body = message.body;
                     
                     if(body.event == "connect") {
-                        self.log("received connect event")
+                        self.log("received connect event "+body.data.url)
                         if(onConnect) {
                             onConnect(body.data.id, body.data.url)    
                         }
@@ -44,8 +45,8 @@ Module("Addressable", function () {
                     }
                     else
                     if(body.event == "request") {
-                        self.log("received request event "+body.data[self.getId()])
-                        requestHandler(body.data)
+                        self.log("received request event "+body.data.message)
+                        self.handleMessage(body.data)
                     }
                     else
                     if(body.event == "log") {

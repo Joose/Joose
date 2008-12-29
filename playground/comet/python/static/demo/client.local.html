@@ -23,10 +23,9 @@
   <input type="submit" value="Submit (Will open a new window) and display message here">
 </form>
 
-<p><a href="http://joose-js.blogspot.com" target="_top">More Info</a></p>
-
-<script type="text/javascript" src="http://universal-comet.appspot.com/static/client-server.js"></script>
+<script type="text/javascript" src="http://self:8084/static/client-server.js"></script>
 <script type="text/javascript">
+window.__LOCAL__ = true;
 var server = new Addressable.Server({ useGears: true });
 
 server.onmessage = function (message) {

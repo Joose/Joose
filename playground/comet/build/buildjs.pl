@@ -29,9 +29,11 @@ my @js_files = (
 make_single_js(\@js_files, "static/client-server.js");
 
 my @gears_files = (
+	"js/gearsPrelude.js",
 	@files,
 	"js/Addressable/GearsServer.js",
 	"js/Addressable/GearsRequest.js",
+	"js/Addressable/GearsDBHash.js",
 	"js/gearsWorker.js",
 );
 
@@ -46,6 +48,8 @@ sub make_single_js {
     my $now = localtime;
 
     my $output = "// Generated: $now\n\n";
+    
+    $output .= "(function () {\n";
 
     foreach my $filename (@$files)
     {
@@ -66,6 +70,8 @@ sub make_single_js {
 
         $output .= join "", @content;
     }
+    
+    $output .= "\n})()";
 
     # Write all JS-Code to a single file
     write_file("$path/$js_filename", $output);

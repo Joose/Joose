@@ -158,9 +158,12 @@
 // Create a JSON object only if one does not already exist. We create the
 // methods in a closure to avoid creating global variables.
 
-if (!this.JSON) {
-    JSON = {};
-}
+//
+
+
+// MOdified
+
+ var JSON = {};
 (function () {
 
     function f(n) {

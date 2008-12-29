@@ -13,6 +13,10 @@ Module("Addressable", function () {
             useGears: {
                 is: "rw",
                 init: true
+            },
+            
+            onmessage: {
+                is: "rw"
             }
         },
         
@@ -27,15 +31,11 @@ Module("Addressable", function () {
                 this.implementation.connect(onConnect)
             },
             
-            addHandler: function (urlPrefix, callback) {
-                this.implementation.addHandler.apply(this.implementation, arguments)
-            },
-            
             _serverFactory: function () {
                 if(this.clientCanGears()) {
-                    return new Addressable.GearsServerStub();
+                    return new Addressable.GearsServerStub({ facade: this });
                 } else {
-                    return new Addressable.SimpleServer();
+                    return new Addressable.SimpleServer({ facade: this });
                 }
             },
             

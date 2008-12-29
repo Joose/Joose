@@ -33,7 +33,11 @@ class ClientConnect(webapp.RequestHandler):
   def get(self):
     id = self.randomHash();
     
-    url  = "http://self:8084"+"/get/" + id
+    host = "universal-comet.appspot.com"
+    if self.request.get("__test__") == "1":
+      host = "self:8084"
+    
+    url  = "http://"+host+"/message/" + id
     
     requestStrategy = self.request.get("__STRATEGY__");
     
@@ -54,9 +58,7 @@ class SendRequest(webapp.RequestHandler):
     
     logging.info("Sending to key "+key)
     
-    paras = {}
-    for name in self.request.arguments():
-      paras[name] = self.request.get(name);
+    message  = self.request.get("message");
     
     requests = memcache.get(key)
     
@@ -65,11 +67,11 @@ class SendRequest(webapp.RequestHandler):
       self.response.out.write("Client not found")
       return
     
-    path = self.request.path.replace("/get/"+id, "", 1)
+    path = self.request.path.replace("/message/"+id, "", 1)
     
     url  = path + "?" + self.request.query_string
     
-    requests.append({ 'url' : url, 'remote_addr' : self.request.remote_addr, 'paras' : paras, 'channel' : channel });
+    requests.append({ 'url' : url, 'remote_addr' : self.request.remote_addr, 'message' : message, 'channel' : channel });
     memcache.set(key, requests)
       
     self.response.out.write("Message Queued")
@@ -112,7 +114,7 @@ class Listen(webapp.RequestHandler):
 
 class Redirect(webapp.RequestHandler):
   def get(self):
-    self.redirect("/s/demo/client.html")
+    self.redirect("/static/demo/client.html")
 
 def main():
   application = webapp.WSGIApplication(
@@ -120,7 +122,7 @@ def main():
                                          ('/', Redirect),
                                          ('/connect', ClientConnect),
                                          ('/listen', Listen),
-                                         (r'/get/(\w+-*\w*)', SendRequest)
+                                         (r'/message/(\w+-*\w*)', SendRequest)
                                        ],
                                        debug=True)
   wsgiref.handlers.CGIHandler().run(application)

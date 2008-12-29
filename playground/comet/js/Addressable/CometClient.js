@@ -12,6 +12,11 @@ Module("Addressable", function() {
                 required: true
             },
             
+            server: {
+                is: "rw",
+                required: true
+            },
+            
             doDisconnect: {
                 is: "rw",
                 init: false
@@ -43,34 +48,32 @@ Module("Addressable", function() {
                 this.setDoDisconnect(true)
             },
         
-            listen: function (paras) {
+            listen: function () {
                 var self    = this;
-                paras       = paras || {};
-                paras.count = this.requestCounter++
                 var handleResponse = function (text) {
                     self.handleResponse(text);
                     if(!self.doDisconnect) {
                         self.getTimer().setTimeout(function () {
-                            self.listen(paras);
-                        }, 2000)
+                            self.listen();
+                        }, Addressable.Constants.cometRequestInterval())
                     }
                 }
                 
-                this.connection.get(this.getUrl(), paras, handleResponse, function (err) {
+                this.connection.get(this.getUrl(), this.getServer().getListenParas(), handleResponse, function (err) {
                     self.logger.log(err)
                 })
             },
             
             handleResponse: function () {
-                try {
+                //try {
                     this.getCallback().apply(this, arguments)
-                } catch(e) {
-                    this.logger.log("Error: "+e)
-                }
+                //} catch(e) {
+                //    this.logger.log("Error: "+e)
+                //}
             },
             
             getTimer: function () {
-                return this.useGears ? google.gears.factory.create('beta.timer') : window
+                return this.getServer().getTimer()
             }
         }
 
