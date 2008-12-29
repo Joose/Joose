@@ -9,6 +9,10 @@ Module("Addressable", function (m) {
                 return Addressable.GEARS ? true : false // global set in gearsWorkers.js
             },
             
+            gearsWorkerFile: function () {
+                return this.isLocal() ? "/gears/gears-client-server.js" : "/gears/gears-client-server-mini.js"
+            },
+            
             activeChannelExpirationSeconds: function () {
                 return 5
             },

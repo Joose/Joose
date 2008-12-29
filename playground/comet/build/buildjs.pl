@@ -26,7 +26,7 @@ my @js_files = (
 	"js/Addressable/ScriptRequest.js",
 );
 
-make_single_js(\@js_files, "static/client-server.js");
+make_single_js(\@js_files, "static/client-server");
 
 my @gears_files = (
 	"js/gearsPrelude.js",
@@ -37,7 +37,7 @@ my @gears_files = (
 	"js/gearsWorker.js",
 );
 
-make_single_js(\@gears_files, "gears/gears-client-server.js");
+make_single_js(\@gears_files, "gears/gears-client-server");
 
 sub make_single_js {
 	my($files, $js_filename) = @_;
@@ -74,7 +74,7 @@ sub make_single_js {
     $output .= "\n})()";
 
     # Write all JS-Code to a single file
-    write_file("$path/$js_filename", $output);
+    write_file("$path/$js_filename.js", $output);
     
     # minify file
 
@@ -89,7 +89,7 @@ sub make_single_js {
 	
 	chdir($base) || die "Cant chdir to $base";
 	
-	#exe("cat skyres/js/basic.merged.js | java -jar build/yuicompressor-2.4.1.jar --type js --charset utf8 > skyres/js/basic.mini.js");
+	exe("cat $path/$js_filename.js | java -jar ../../ext/yuicompressor-2.4.1.jar --type js --charset utf8 > $path/$js_filename-mini.js");
 	#gzip("$path/basic.mini.js");
 
     print "Built Mini JS-Lib\n";
