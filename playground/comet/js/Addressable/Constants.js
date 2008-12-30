@@ -18,7 +18,7 @@ Module("Addressable", function (m) {
             },
             
             cometRequestInterval: function () {
-                return 2000
+                return 1000
             },
             
             isLocal: function () {

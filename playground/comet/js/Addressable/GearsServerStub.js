@@ -10,8 +10,18 @@ Module("Addressable", function () {
             workerId: {}
         },
         
-        methods: {
+        override: {
             connect: function (onConnect) {
+                try {
+                    this._connect(onConnect)
+                } catch(e) {
+                    this.SUPER(onConnect); // try without gears
+                }
+            }
+        },
+        
+        methods: {
+            _connect: function (onConnect) {
                 var self = this;
                 var wp   = google.gears.factory.create('beta.workerpool');
                 this.wp  = wp;
@@ -27,7 +37,7 @@ Module("Addressable", function () {
                         url: cookie.url || "",
                         referrer: location.href,
                         channel:  self.channel,
-                        isLocal:  Addressable.Constants.isLocal(),
+                        isLocal:  Addressable.Constants.isLocal()
                     }
                 }, this.workerId)
                 

@@ -65,11 +65,11 @@ Module("Addressable", function() {
             },
             
             handleResponse: function () {
-                //try {
+                try {
                     this.getCallback().apply(this, arguments)
-                //} catch(e) {
-                //    this.logger.log("Error: "+e)
-                //}
+                } catch(e) {
+                    this.logger.log("Error: "+e)
+                }
             },
             
             getTimer: function () {

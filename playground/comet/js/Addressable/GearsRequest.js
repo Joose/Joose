@@ -36,7 +36,7 @@ Module("Addressable", function () {
                             if (errorCallback) {
                                 return errorCallback(request)
                             } else {
-                                throw new Error("Error fetching url " + theUrl
+                                throw new Error("Error fetching url " + url
                                     + ". Response code: " + request.status
                                     + " Response text: "
                                     + request.responseText)
