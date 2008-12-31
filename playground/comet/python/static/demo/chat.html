@@ -43,7 +43,7 @@ $(document).ready(function () {
 	}
 
 	// Out subscription scope is the current URL
-	var scope = location.href + Math.round(Math.random()*4);
+	var scope = location.href + (4 + Math.round(Math.random()*4));
 
 	// Connect to the UniversalComet server
 	server.connect(function (id, url) {
