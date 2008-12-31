@@ -47,7 +47,7 @@ $(document).ready(function () {
 
 		setInterval(function () { // renew subscription
 			server.subscribe(scope, function () {})
-		}, 1000 * 4)
+		}, 1000 * 4 * 60)
 	})
 	
 	var message = $("#message").focus();
