@@ -25,37 +25,45 @@
 
 $(document).ready(function () {
 
-    var log$ = $("#log");
+	// Output a message
+	var log$ = $("#log");
 	function log(msg) {
 		log$.text(""+msg + "\n" + log$.text())
 	}
-	
+
+	// Make me a server with Google Gears support enabled
 	var server = new Addressable.Server({ useGears: true });
 
+	// When a message arrives, just "log" it
 	server.onmessage = function (message) {
 		log(message)
 	}
 
+	// Out subscription scope is the current URL
 	var scope = location.href;
 
+	// Connect to the UniversalComet server
 	server.connect(function (id, url) {
 	    log("Connected.")
+	    // When connected subcribe to the scope
 	    server.subscribe(scope, function () { 
 		    log("Joined channnel")
-		    server.post(scope, "Hi All")
+		    // When subscribed, post "Hi All"
+		    //server.post(scope, "Hi All")
 		})
-
+		
+		// Subscription expire after 5 Minutes. Renew ours every 4 Minutes.
 		setInterval(function () { // renew subscription
 			server.subscribe(scope, function () {})
 		}, 1000 * 4 * 60)
 	})
 	
+	// When the "chatForm" is submitted post the message to the scope on UniversalComet
 	var message = $("#message").focus();
-
 	$("#chatForm").submit(function (e) {
 		server.post(scope, message.val())
 		message.val("")
-		e.preventDefault()
+		e.preventDefault() // Dont really submit the form
 	})
 
 })
