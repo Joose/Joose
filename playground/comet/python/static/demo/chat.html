@@ -42,6 +42,7 @@ $(document).ready(function () {
 	    log("Connected.")
 	    server.subscribe(scope, function () { 
 		    log("Joined channnel")
+		    server.post(scope, "Hi All")
 		})
 
 		setInterval(function () { // renew subscription
