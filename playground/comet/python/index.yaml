@@ -9,3 +9,9 @@ indexes:
 # manually, move them above the marker line.  The index.yaml file is
 # automatically uploaded to the admin console when you next deploy
 # your application using appcfg.py.
+
+# Used 10 times in query history.
+- kind: Subscription
+  properties:
+  - name: subscription
+  - name: creationTime

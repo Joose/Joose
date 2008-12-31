@@ -163,7 +163,7 @@ Module("Addressable", function () {
                 if(Addressable.Constants.isLocal()) {
                     paras.__test__ = 1;
                 }
-                connection.get(this.connectUrl(), {}, function (data) {
+                connection.get(this.connectUrl(), paras, function (data) {
                     self.log("Connection successful "+data.url + "id: "+data.id)
                     self.handleConnect(callback, data.id, data.url)
                     self.setCookies(data.id, data.url)
@@ -250,6 +250,26 @@ Module("Addressable", function () {
                         })
                     })
                 }
+            },
+            
+            // subscribe to a scope
+            subscribe: function (scope, onSuccess) {
+                
+                var id  = encodeURIComponent(this.getId()+"-"+this.getChannel());
+                scope   = encodeURIComponent(scope);
+                
+                var url = "http://"+Addressable.Constants.appHost()+"/subscribe/"+id+"/"+scope
+                
+                Addressable.XDomainRequest.getConnection().get(url, null, onSuccess)
+            },
+            
+            // posts to a subscription/scope
+            post: function (scope, message, onSuccess) {
+                scope   = encodeURIComponent(scope);
+                
+                var url = "http://"+Addressable.Constants.appHost()+"/post/"+scope
+                
+                Addressable.XDomainRequest.getConnection().get(url, { message: message }, onSuccess)
             },
             
             connectUrl: function () {

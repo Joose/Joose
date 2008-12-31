@@ -1,6 +1,12 @@
-// Generated: Fri Dec 26 21:40:26 2008
+// Generated: Wed Dec 31 00:57:26 2008
 
+(function () {
 
+;
+// ##########################
+// File: /js/gearsPrelude.js
+// ##########################
+google.gears.workerPool.allowCrossOrigin()
 ;
 // ##########################
 // File: /ext/json2.js
@@ -165,9 +171,12 @@
 // Create a JSON object only if one does not already exist. We create the
 // methods in a closure to avoid creating global variables.
 
-if (!this.JSON) {
-    JSON = {};
-}
+//
+
+
+// MOdified
+
+ var JSON = {};
 (function () {
 
     function f(n) {
@@ -3933,6 +3942,10 @@ Module("Addressable", function () {
              * expires must be a Date-Object
              */
             set: function(name, value, expires, secure) {
+               
+               if(value == null) {
+                   value = "";
+               }
         
                         var cookie = name + "=" + escape(value) +
                         ( ( expires ) ? "; expires=" + expires.toGMTString() : "" ) +
@@ -3954,11 +3967,27 @@ Module("Addressable", function (m) {
     Class("Constants", {
         classMethods: {
             appHost: function () {
-                return "self:8084"
+                return this.isLocal() ? "self:8084" : "universal-comet.appspot.com"
             },
             
             insideGearsWorker: function () {
                 return Addressable.GEARS ? true : false // global set in gearsWorkers.js
+            },
+            
+            gearsWorkerFile: function () {
+                return this.isLocal() ? "/gears/gears-client-server.js" : "/gears/gears-client-server-mini.js"
+            },
+            
+            activeChannelExpirationSeconds: function () {
+                return 5
+            },
+            
+            cometRequestInterval: function () {
+                return 2000
+            },
+            
+            isLocal: function () {
+                return window.__LOCAL__ == true
             }
         }
     })
@@ -3986,6 +4015,11 @@ Module("Addressable", function() {
                 required: true
             },
             callback: {
+                is: "rw",
+                required: true
+            },
+            
+            server: {
                 is: "rw",
                 required: true
             },
@@ -4021,20 +4055,18 @@ Module("Addressable", function() {
                 this.setDoDisconnect(true)
             },
         
-            listen: function (paras) {
+            listen: function () {
                 var self    = this;
-                paras       = paras || {};
-                paras.count = this.requestCounter++
                 var handleResponse = function (text) {
                     self.handleResponse(text);
                     if(!self.doDisconnect) {
                         self.getTimer().setTimeout(function () {
-                            self.listen(paras);
-                        }, 2000)
+                            self.listen();
+                        }, Addressable.Constants.cometRequestInterval())
                     }
                 }
                 
-                this.connection.get(this.getUrl(), paras, handleResponse, function (err) {
+                this.connection.get(this.getUrl(), this.getServer().getListenParas(), handleResponse, function (err) {
                     self.logger.log(err)
                 })
             },
@@ -4048,7 +4080,7 @@ Module("Addressable", function() {
             },
             
             getTimer: function () {
-                return this.useGears ? google.gears.factory.create('beta.timer') : window
+                return this.getServer().getTimer()
             }
         }
 
@@ -4060,14 +4092,22 @@ Module("Addressable", function() {
 // ##########################
 Module("Addressable", function () {
     
+    var connection;
+    
     Class("XDomainRequest", {
         classMethods: {
             getConnection: function () {
-                if(Addressable.Constants.insideGearsWorker()) {
-                    return new Addressable.GearsRequest();
-                } else {
-                    return new Addressable.ScriptRequest();
+        
+                if(connection) {
+                    return connection
                 }
+        
+                if(Addressable.Constants.insideGearsWorker()) {
+                    connection = new Addressable.GearsRequest();
+                } else {
+                    connection = new Addressable.ScriptRequest();
+                }
+                return connection
             }
         }
     })
@@ -4084,9 +4124,17 @@ Module("Addressable", function () {
                 is: "rw"
             },
             
+            channel: {
+                is: "rw"
+            },
+            
             useGears: {
                 is: "rw",
                 init: true
+            },
+            
+            onmessage: {
+                is: "rw"
             }
         },
         
@@ -4101,15 +4149,11 @@ Module("Addressable", function () {
                 this.implementation.connect(onConnect)
             },
             
-            addHandler: function (urlPrefix, callback) {
-                this.implementation.addHandler.apply(this.implementation, arguments)
-            },
-            
             _serverFactory: function () {
                 if(this.clientCanGears()) {
-                    return new Addressable.GearsServerStub();
+                    return new Addressable.GearsServerStub({ facade: this });
                 } else {
-                    return new Addressable.SimpleServer();
+                    return new Addressable.SimpleServer({ facade: this });
                 }
             },
             
@@ -4119,7 +4163,17 @@ Module("Addressable", function () {
                     return window.google && google.gears
                 }
                 return false
-            }
+            },
+            
+            subscribe: function (scope, onSuccess) {
+                
+                this.implementation.subscribe(scope, onSuccess)
+            },
+            
+            // posts to a subscription/scope
+            post: function (scope, message, onSuccess) {
+                this.implementation.post(scope, message, onSuccess)
+            },
         }
         
     })
@@ -4130,18 +4184,29 @@ Module("Addressable", function () {
 // ##########################
 Module("Addressable", function () {
     
-    var ID_COOKIE  = "AddressableID";
-    var URL_COOKIE = "AddressableURL"
+    var ID_COOKIE       = "AddressableID";
+    var URL_COOKIE      = "AddressableURL";
+    var CHANNEL_COOKIE  = "AddressableChannel";
+    
+    var ACTIVITY_COOKIE = "AddressableActive";
+    
+    var REQUEST_COUNT   = 0;
+    
+    Type("AddressableChannel", {
+        uses: TYPE.Str,
+        where: function (str) {
+            if(str.match(/^\[a-z0-9]+$/)) {
+                return true
+            } else {
+                return false
+            }
+        }
+    })
     
     Class("SimpleServer", {
         has: {
             cometClient: {
                 is: "rw"
-            },
-            
-            handlers: {
-                is: "rw",
-                init: function () { return [] }
             },
             
             id: {
@@ -4159,6 +4224,26 @@ Module("Addressable", function () {
             
             cookie: {
                 init: function () { return new Addressable.Cookie() }
+            },
+            
+            // channels differentiate between different windows
+            // If there is anything in window.name we use that, otherwise we set window.name to make the channel name persistent per session
+            channel: {
+                isa: TYPE.AddressableChannel,
+                is: "rw",
+                init: function () { 
+                    if(window.name) {
+                        return window.name
+                    } else {
+                        window.name = "ch"+Math.floor(Math.random() * 1000);
+                        return window.name
+                    }
+                } // Taking chances
+            },
+            
+            // the Addressable.Server object
+            facade: {
+                is: "rw"
             }
         },
         
@@ -4184,11 +4269,56 @@ Module("Addressable", function () {
                 }
             },
             
+            clearUrl: function (url) { // remove channel from saved url
+                url = url.replace(/-[a-z0-9]+$/, "")
+                return url
+            },
+            
             setCookies: function (id, url) {
                 if(id && url) {
+                    
+                    url = this.clearUrl(url);
+                    
                     this.cookie.set(ID_COOKIE, id)
                     this.cookie.set(URL_COOKIE, url)
                 }
+            },
+            
+            getListenIds: function () { // Be default only one id
+                return this.getId()
+            },
+            
+            getListenParas: function () {
+                return {
+                    ids:      this.getListenIds(),
+                    referrer: this.getReferrer(),
+                    count:    REQUEST_COUNT++
+                }
+            },
+            
+            handleConnect: function (callback, id, url) {
+                var self = this;
+                self.setId(id)
+                
+                var channel = self.getChannel();
+                if(channel) {
+                    self.log("URL "+url)
+                    url  = this.clearUrl(url) // remove channel from saved url
+                    url += "-"+channel
+                }
+                
+                self.setUrl(url);
+                callback.call(self, id, url);
+                
+                var interval = self.getTimer().setInterval(function () {
+                    if(self.passiveMode()) {
+                        self.pollDataStore()
+                    } else {
+                        self.getTimer().clearInterval(interval)
+                        self.log("Start listening")
+                        self.getCometClient().listen();
+                    }
+                }, 500)
             },
             
             connect: function (callback) {
@@ -4197,35 +4327,29 @@ Module("Addressable", function () {
             
                 var cometClient = new Addressable.CometClient({
                     connection: connection,
+                    server:     self,
                     callback:   self.requestHandler(),
                     logger:     self,
                     url:        self.listenUrl(),
                     useGears:   self.useGears()
                 })
                 self.setCometClient(cometClient)
-                
-                var handleConnect = function (id, url) {
-                    self.setId(id)
-                    self.setUrl(url)
-                    callback.call(self, id, url)
-                    cometClient.listen({
-                        ids:      self.getId(),
-                        referrer: self.getReferrer()
-                    });
-                }
-                
                
                 if(this.id && this.url) {
-                    handleConnect(this.id, this.url)
+                    self.handleConnect(callback, this.id, this.url)
                     self.log("Saved connection "+this.url + "id: "+this.id)
                     return
                 }
                 
-                connection.get(this.connectUrl(), { 
+                var paras = { 
                     time: new Date().getTime()
-                }, function (data) {
+                }
+                if(Addressable.Constants.isLocal()) {
+                    paras.__test__ = 1;
+                }
+                connection.get(this.connectUrl(), paras, function (data) {
                     self.log("Connection successful "+data.url + "id: "+data.id)
-                    handleConnect(data.id, data.url)
+                    self.handleConnect(callback, data.id, data.url)
                     self.setCookies(data.id, data.url)
                 })
             },
@@ -4234,39 +4358,102 @@ Module("Addressable", function () {
                 return false
             },
             
+            sendToOtherChannel: function (request) {
+                var name = CHANNEL_COOKIE+"-"+request.id+"-"+request.channel;
+                this.log("Send to "+name)
+                this.cookie.set(name, JSON.stringify(request))
+            },
+            
+            pollDataStore: function () {
+                var name = CHANNEL_COOKIE+"-"+this.id+"-"+this.getChannel();
+                var value = this.cookie.get(name);
+                if(value) {
+                    this.log("Got value from data store")
+                    this.cookie.set(name,"");
+                    var request = JSON.parse(value);
+                    this.processRequest(request, request.id)
+                }
+            },
+            
+            passiveMode: function () {
+                var val = this.cookie.get(ACTIVITY_COOKIE)
+                var now = new Date().getTime()
+                //this.log("Las activity "+val)
+                if(val && now - parseInt(val,10) < Addressable.Constants.activeChannelExpirationSeconds() * 1000) {
+                    //this.log("passive")
+                    return true
+                }
+                this.log("active")
+                return false
+            },
+            
+            signalActivity: function () {
+                var now    = new Date().getTime()
+                //this.log("Signal activity")
+                this.cookie.set(ACTIVITY_COOKIE, now)
+            },
+            
+            processRequest: function (request, id) {
+                var self      = this;
+                var myChannel = self.getChannel();
+                request.id    = id;
+                var channel   = request.channel;
+                if(channel   != myChannel || id != this.id) {
+                    self.sendToOtherChannel(request)
+                    return // continue
+                }
+                var message   = request.message;
+                
+                self.handleMessage(request)
+            },
+            
+            handleMessage: function (request) {
+                if(this.facade.onmessage) {
+                    this.facade.onmessage.call(request, request.message)
+                } else {
+                    this.postMessage(request.message)
+                }
+            },
+            
+            postMessage: function (message) {
+                if(window.postMessage) {
+                    var event = document.createEvent("MessageEvent");
+                    event.initMessageEvent("message", false, false, message, "client-server.appspot.com", location.href, window);
+                    window.dispatchEvent(event)
+                }
+            },
+            
             requestHandler: function () {
                 var self = this;
                 
                 return function requestCallback (data) {
-                    var handlers = self.getHandlers();
-                    var found    = false;
-                    var requests = data[self.getId()];
-                    if(requests) {
+                    self.signalActivity();
+                    Joose.O.each(data, function (requests, id) {
                         Joose.A.each(requests, function (request) {
-                            var url   = request.url;
-                            var paras = request.paras;
-                            self.log("Handling url "+url)
-                            Joose.A.each(handlers, function (handler) {
-                                if(!found) {
-                                    var prefix   = handler[0];
-                                    var callback = handler[1];
-                                    if(url.indexOf(prefix) === 0) {
-                                        callback.call(request, url, paras)
-                                    }
-                                    found = true;
-                                }
-                            })
+                            self.processRequest(request, id)
                         })
-                    }
+                    })
                 }
             },
             
-            addHandler: function (urlPrefix, callback) {
-                if(typeof urlPrefix == "function" && arguments.length == 1) {
-                    callback  = urlPrefix
-                    urlPrefix = ""
-                }
-                this.handlers.push([urlPrefix, callback])
+            // subscribe to a scope
+            subscribe: function (scope, onSuccess) {
+                
+                var id  = encodeURIComponent(this.getId()+"-"+this.getChannel());
+                scope   = encodeURIComponent(scope);
+                
+                var url = "http://"+Addressable.Constants.appHost()+"/subscribe/"+id+"/"+scope
+                
+                Addressable.XDomainRequest.getConnection().get(url, null, onSuccess)
+            },
+            
+            // posts to a subscription/scope
+            post: function (scope, message, onSuccess) {
+                scope   = encodeURIComponent(scope);
+                
+                var url = "http://"+Addressable.Constants.appHost()+"/post/"+scope
+                
+                Addressable.XDomainRequest.getConnection().get(url, { message: message }, onSuccess)
             },
             
             connectUrl: function () {
@@ -4279,7 +4466,11 @@ Module("Addressable", function () {
             
             log: function (msg) {
                 if(window.console)
-                    console.log(msg)
+                    console.log(this.meta.className() + ": "+ msg)
+            },
+            
+            getTimer: function () {
+                return window
             }
         }
     })
@@ -4300,8 +4491,18 @@ Module("Addressable", function () {
             workerId: {}
         },
         
-        methods: {
+        override: {
             connect: function (onConnect) {
+                try {
+                    this._connect(onConnect)
+                } catch(e) {
+                    this.SUPER(onConnect); // try without gears
+                }
+            }
+        },
+        
+        methods: {
+            _connect: function (onConnect) {
                 var self = this;
                 var wp   = google.gears.factory.create('beta.workerpool');
                 this.wp  = wp;
@@ -4315,7 +4516,9 @@ Module("Addressable", function () {
                     data: {
                         id:  cookie.id || "",
                         url: cookie.url || "",
-                        referrer: location.href
+                        referrer: location.href,
+                        channel:  self.channel,
+                        isLocal:  Addressable.Constants.isLocal()
                     }
                 }, this.workerId)
                 
@@ -4325,7 +4528,7 @@ Module("Addressable", function () {
                     var body = message.body;
                     
                     if(body.event == "connect") {
-                        self.log("received connect event")
+                        self.log("received connect event "+body.data.url)
                         if(onConnect) {
                             onConnect(body.data.id, body.data.url)    
                         }
@@ -4333,8 +4536,8 @@ Module("Addressable", function () {
                     }
                     else
                     if(body.event == "request") {
-                        self.log("received request event "+body.data[self.getId()])
-                        requestHandler(body.data)
+                        self.log("received request event "+body.data.message)
+                        self.handleMessage(body.data)
                     }
                     else
                     if(body.event == "log") {
@@ -4353,6 +4556,9 @@ Module("Addressable", function () {
 // File: /js/Addressable/GearsServer.js
 // ##########################
 Module("Addressable", function () {
+    
+    var timer = google.gears.factory.create('beta.timer');
+    
     Class("GearsServer", {
         isa: Addressable.SimpleServer,
         
@@ -4361,8 +4567,29 @@ Module("Addressable", function () {
             referrer: {
                 is: "rw"
             },
-            requestCallback: {
-                is: "rw"
+            cookie: {
+                init: function () { return new Addressable.GearsDBHash({name: "cookie"}) }
+            },
+            ids: {
+                init: function () { 
+                    return new Addressable.GearsDBHash({
+                        name: "ids2",
+                        expires: Addressable.Constants.activeChannelExpirationSeconds()
+                    }) 
+                }
+            },
+            channel: {}
+        },
+        
+        before: {
+            handleConnect: function (callback, id, url) {
+                var self = this;
+                self.ids.clear()
+                var active = function () {
+                    self.ids.set(id, true)
+                }
+                active();
+                self.getTimer().setInterval(active, Addressable.Constants.activeChannelExpirationSeconds() - 1) // keep us in the set of watched ids
             }
         },
         
@@ -4372,15 +4599,10 @@ Module("Addressable", function () {
             setCookies: function () {},
             getCookies: function () { return {} },
             
-            requestHandler: function () {
-                var self     = this;
-                var callback = this.getRequestCallback();
-                
-                return function (data) {
-                    if(data[self.getId()].length > 0) {
-                        callback(data)
-                    }
-                }
+            getListenIds: function () {
+                var ids = this.ids.keys().join(",");
+                this.log("Listening to ids "+ids)
+                return ids;
             },
             
             useGears: function () {
@@ -4388,7 +4610,14 @@ Module("Addressable", function () {
             },
             
             log: function (msg) {
-                sendLog(msg) // global defined in gearsWorker.js
+                sendLog(this.meta.className() + ": "+ msg) // global defined in gearsWorker.js
+            },
+            
+            getTimer: function () {
+                if(!timer) {
+                    timer = google.gears.factory.create('beta.timer');
+                }
+                return timer
             }
         }
     })
@@ -4430,12 +4659,13 @@ Module("Addressable", function () {
                     if (request.readyState == 4) {
                         if (request.status >= 200 && request.status < 400) {
                             var res = request.responseText;
+                            sendLog(res)
                             callback(JSON.parse(res))
                         } else {
                             if (errorCallback) {
                                 return errorCallback(request)
                             } else {
-                                throw new Error("Error fetching url " + theUrl
+                                throw new Error("Error fetching url " + url
                                     + ". Response code: " + request.status
                                     + " Response text: "
                                     + request.responseText)
@@ -4458,14 +4688,120 @@ Module("Addressable", function () {
 })
 ;
 // ##########################
+// File: /js/Addressable/GearsDBHash.js
+// ##########################
+Module("Addressable", function () {
+    
+    Class("GearsDBHash", {
+        
+        has: {
+        
+            _name: {
+            	isa: TYPE.Str,
+            	required: true
+            },
+        
+            db: {},
+            
+            expires: { // in seconds
+                is: "rw",
+                init: 0
+            }
+        },
+        
+        after: {
+        	initialize: function () {
+                var db = google.gears.factory.create('beta.database');
+                db.open('key-value-store');
+                db.execute('create table if not exists '+this.tableName() +
+                    ' (id text PRIMARY KEY, value text, expirationTime int)');
+                this.db = db;
+            }
+        },
+    
+        methods: {
+            tableName: function () {
+                return "pair"+this._name
+            },
+            
+            _now: function () {
+                return Math.round(new Date().getTime() / 1000)
+            },
+            
+            get: function (key) {
+                var select = "SELECT value, expirationTime FROM "+this.tableName()+" WHERE id = ?";
+                var rs     = this.db.execute(select, [key])
+                var value, time;
+                var count  = 0;
+                while (rs.isValidRow()) {
+                    value = rs.field(0);
+                    time  = rs.field(1);
+                    rs.next();
+                    count++;
+                }
+                
+                if(count == 0) {
+                    return null
+                }
+                
+                if(time && this._now() > time) {
+                    return null
+                }
+                
+                return value
+            },
+            
+            set: function (key, value, expires) { // expire in seconds;
+                var insert = "REPLACE INTO "+this.tableName()+" VALUES(?, ?, ?)";
+                
+                if(expires == null) {
+                    expires = this.expires;
+                }
+                if(expires) {
+                    expires = this._now() + expires
+                }
+                if(!expires) {
+                    expires = 0;
+                }
+                
+                var rs     = this.db.execute(insert, [key, value, expires]);
+            },
+            
+            keys: function () {
+                return this._rsToArray(this.db.execute("SELECT id FROM "+this.tableName() + " WHERE expirationTime = 0 OR expirationTime > ?", [this._now()]))
+            },
+            
+            values: function () {
+                return this._rsToArray(this.db.execute("SELECT value FROM "+this.tableName() + " WHERE expirationTime = 0 OR expirationTime > ?", [this._now()]))
+            },
+            
+            clear: function () {
+                this.db.execute("DELETE FROM "+this.tableName()+" WHERE expirationTime > 0 AND expirationTime > ?", [this._now()])
+            },
+            
+            _rsToArray: function (rs) {
+                var a = [];
+                while (rs.isValidRow()) {
+                    var val  = rs.field(0);
+                    a.push(val)
+                    rs.next();
+                }
+                return a
+            }
+        }
+        
+    })
+})
+;
+// ##########################
 // File: /js/gearsWorker.js
 // ##########################
 // Central entry point for Gears worker based implementation
 
-google.gears.workerPool.allowCrossOrigin()
-
 var wp       = google.gears.workerPool;
 var server, sendLog;
+
+var window   = {}
 
 Addressable.GEARS = true;
 
@@ -4474,24 +4810,29 @@ wp.onmessage = function(a, b, message) {
     sendLog = function (msg) {
         wp.sendMessage({ event: "log", msg: msg }, message.sender)
     }
-    
-    
-    
+
     var event = message.body.event
     var data  = message.body.data
     
     if(event == "connect" && !server) {
         sendLog("Initializing server "+data.referrer)
+        window.__LOCAL__ = data.isLocal;
         server = new Addressable.GearsServer({
             id: data.id,
             url: data.url,
             referrer: data.referrer,
-            requestCallback: function (data) { // forward everything to stub
-                wp.sendMessage({ event: "request", data: data }, message.sender)
+            channel:  data.channel,
+            facade: {
+                onmessage: function () { // forward everything to stub
+                    var request = this;
+                    wp.sendMessage({ event: "request", data: request }, message.sender)
+                }
             }
         })
+        
         server.connect(function (id, url) {
             wp.sendMessage({ event: "connect", data: { id: id, url: url }}, message.sender)
         })
     }
 }
+})()

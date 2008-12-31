@@ -45,7 +45,17 @@ Module("Addressable", function () {
                     return window.google && google.gears
                 }
                 return false
-            }
+            },
+            
+            subscribe: function (scope, onSuccess) {
+                
+                this.implementation.subscribe(scope, onSuccess)
+            },
+            
+            // posts to a subscription/scope
+            post: function (scope, message, onSuccess) {
+                this.implementation.post(scope, message, onSuccess)
+            },
         }
         
     })

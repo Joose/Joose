@@ -40,8 +40,10 @@ Module("Addressable", function () {
                     tag:      script,
                     callback: function () {
                         this.target.removeChild(this.tag)
-                        callback.apply(window, arguments)
                         delete self.meta.c.Requests[data.__REQUEST__ID__] 
+                        if(typeof callback == "function") {
+                            callback.apply(window, arguments)
+                        } 
                     }
                 }
             }

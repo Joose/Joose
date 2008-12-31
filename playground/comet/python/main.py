@@ -21,11 +21,37 @@ import json
 # Dear reader: I learned just as much Python to get this somewhat working. I'm sorry.
 
 class ClientActivity(db.Model):
-  clientId    = db.StringProperty()
+  clientId    = db.StringProperty() # use if *Id is unfortunate
   referrer    = db.StringProperty()
   created     = db.DateTimeProperty(auto_now_add=True)
 
-class ClientConnect(webapp.RequestHandler):
+class Subscription(db.Model):
+  client        = db.StringProperty()
+  subscription  = db.StringProperty()
+  creationTime  = db.IntegerProperty()
+
+class JSONOrJSONPHandler(webapp.RequestHandler):
+
+  def sendError(self,message):
+    
+    self.sendResponse({ 'isError': True, 'message': message })
+
+  def sendResponse(self, data):
+  
+    requestStrategy = self.request.get("__STRATEGY__");
+    callback        = self.request.get("callback");
+    jsonString = json.write(data)
+    
+    # TODO add mime-types
+    if requestStrategy == 'script':
+      self.response.out.write('window.Addressable.ScriptRequest.Requests["'+self.request.get('__REQUEST__ID__')+'"].callback('+jsonString+')')
+    else:
+      if callback is not None and callback != "":
+        self.response.out.write(callback+"("+jsonString+")")
+      else:
+        self.response.out.write(jsonString)
+
+class ClientConnect(JSONOrJSONPHandler):
 
   def randomHash(self):
     return hashlib.sha1(str(random.random())).hexdigest();
@@ -39,27 +65,32 @@ class ClientConnect(webapp.RequestHandler):
     
     url  = "http://"+host+"/message/" + id
     
-    requestStrategy = self.request.get("__STRATEGY__");
-    
-    jsonString = json.write({ 'url' : url, 'id' : id })
-    
-    if requestStrategy == 'script':
-      self.response.out.write('window.Addressable.ScriptRequest.Requests["'+self.request.get('__REQUEST__ID__')+'"].callback('+jsonString+')')
-    else:
-      self.response.out.write(jsonString)
+    self.sendResponse({ 'url' : url, 'id' : id })
 
-class SendRequest(webapp.RequestHandler):
+class Subscribe(JSONOrJSONPHandler):
 
-  def get(self,id):
-  
-    (id,channel) = id.split("-");
-  
+  def get(self,id,scope):
+    
+    if scope == "":
+      return sendError("Need scope parameter.")
+    
+    key = "key:"+id+"/"+scope
+    
+    sub              = Subscription.get_or_insert(key)
+    sub.client       = id;
+    sub.subscription = scope;
+    sub.creationTime = int(time.clock());
+    sub.put()
+    
+    self.sendResponse({ 'success' : True })
+	
+class SendRequest(JSONOrJSONPHandler):
+
+  def sendMessage(self, id, channel, message):
     key   = "client-"+id;
     
     logging.info("Sending to key "+key)
-    
-    message  = self.request.get("message");
-    
+
     requests = memcache.get(key)
     
     if requests is None: # racy
@@ -73,10 +104,38 @@ class SendRequest(webapp.RequestHandler):
     
     requests.append({ 'url' : url, 'remote_addr' : self.request.remote_addr, 'message' : message, 'channel' : channel });
     memcache.set(key, requests)
-      
-    self.response.out.write("Message Queued")
+
+
+  def get(self,id):
+  
+    (id,channel) = id.split("-");
     
-class Listen(webapp.RequestHandler):
+    message  = self.request.get("message");
+    
+    self.sendMessage(id, channel, message)
+          
+    self.sendResponse({ 'success' : True })
+
+class PostToSubscription(SendRequest):
+  
+  def get(self,scope):
+  
+    message  = self.request.get("message");
+    
+    expiration = int(time.clock() - 5 * 60);
+    
+    subscriptions = Subscription.gql("WHERE subscription = :1 AND creationTime > :2", scope, expiration);
+    
+    count = 0;
+    for sub in subscriptions:
+      (id,channel) = sub.client.split("-");
+      self.sendMessage(id, channel, message)
+      count = count + 1
+    
+    self.sendResponse({ 'success' : True, 'count' : count }) # TODO remove count from response
+      
+  
+class Listen(JSONOrJSONPHandler):
   def get(self):
     
     ids = self.request.get("ids").split(",")
@@ -90,26 +149,13 @@ class Listen(webapp.RequestHandler):
       res[id] = jobs
       
       count = int(self.request.get("count"))
-      if count % 100 == 0:
+      if count == 0: # log activity on the first request of a client in a particular session
         activity          = ClientActivity()
         activity.clientId = id;
         activity.referrer = self.request.get("referrer")
         activity.put()
     
-    requestStrategy = self.request.get("__STRATEGY__");
-    
-    jsonString = json.write(res)
-    
-    logging.info(jsonString)
-    
-    if requestStrategy == 'script':
-      self.response.out.write('window.Addressable.ScriptRequest.Requests["'+self.request.get('__REQUEST__ID__')+'"].callback('+jsonString+')')
-    else:
-      self.response.out.write(jsonString)
-    
-    
-    count = int(self.request.get("count"))
-    
+    self.sendResponse(res)
     
 
 class Redirect(webapp.RequestHandler):
@@ -122,6 +168,8 @@ def main():
                                          ('/', Redirect),
                                          ('/connect', ClientConnect),
                                          ('/listen', Listen),
+                                         (r'/subscribe/(\w+-*\w*)/(.+)', Subscribe),
+                                         (r'/post/(.+)', PostToSubscription),
                                          (r'/message/(\w+-*\w*)', SendRequest)
                                        ],
                                        debug=True)

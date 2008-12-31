@@ -31,6 +31,7 @@ Module("Addressable", function () {
                     if (request.readyState == 4) {
                         if (request.status >= 200 && request.status < 400) {
                             var res = request.responseText;
+                            sendLog(res)
                             callback(JSON.parse(res))
                         } else {
                             if (errorCallback) {

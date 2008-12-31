@@ -1,13 +1,21 @@
 Module("Addressable", function () {
     
+    var connection;
+    
     Class("XDomainRequest", {
         classMethods: {
             getConnection: function () {
-                if(Addressable.Constants.insideGearsWorker()) {
-                    return new Addressable.GearsRequest();
-                } else {
-                    return new Addressable.ScriptRequest();
+        
+                if(connection) {
+                    return connection
                 }
+        
+                if(Addressable.Constants.insideGearsWorker()) {
+                    connection = new Addressable.GearsRequest();
+                } else {
+                    connection = new Addressable.ScriptRequest();
+                }
+                return connection
             }
         }
     })
