@@ -355,9 +355,9 @@ testobj.testTypeConstraint = function() {
         self.is(Joose.Type.Bool.coerce(v), true, 'Bool coerces '+(typeof v)+' "'+v+'" to true');
     });
     self.is(Joose.Type.Bool.coerce(12345), null, 'Bool coerces 12345 to null');
-    self.is(Joose.Type.Bool.coerce(null), undefined, 'Bool coerces null to undefined');
-    self.is(Joose.Type.Bool.coerce(undefined), undefined, 'Bool coerces undefined to undefined');
-    self.is(Joose.Type.Bool.coerce(""), undefined, 'Bool coerces "" to undefined');
+    self.is(Joose.Type.Bool.coerce(null), false, 'Bool coerces null to false');
+    self.is(Joose.Type.Bool.coerce(undefined), false, 'Bool coerces undefined to false');
+    self.is(Joose.Type.Bool.coerce(""), false, 'Bool coerces "" to false');
     Joose.A.each(["0", 0, "false"], function(v) {
         self.is(Joose.Type.Bool.coerce(v), false, 'Bool coerces '+(typeof v)+' "'+v+'" to false');
     });
