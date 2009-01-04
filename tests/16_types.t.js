@@ -1,6 +1,6 @@
 (function () {
 var testobj = new Test.TAP.Class();
-testobj.plan(117)
+testobj.plan(123)
 
 testobj.testTypeConstraint = function() {
     var self = this;
@@ -17,7 +17,7 @@ testobj.testTypeConstraint = function() {
     
     Module("MyTypes", function () {
         Type("PositiveInteger", {
-            isa: Joose.Type.Integer,
+            uses: Joose.Type.Integer,
             where: function (value) {
                 return value > 0
             }
@@ -204,11 +204,58 @@ testobj.testTypeConstraint = function() {
 
     self.ok(nullableTest.setAnniversary(null),
             'setting null value for nullable property succeeds');
-
+    
+    self.diag("Anonymous type")
+    
+    Class("TestAnonTypes", {
+        has: {
+            anon: {
+                isa: Type({ where: /^abc$/ }),
+                is: "rw"
+            },
+            justRegExp: {
+                isa: Type(/\d+/),
+                is: "rw"
+            },
+            justFunction: {
+                isa: Type(function (value) { return value > 0 }),
+                is: "rw"
+            }
+        }
+    })
+    
+    self.lives_ok(function () {
+        var o = new TestAnonTypes();
+        o.setAnon("abc")
+    }, "Anon type accepts correct values")
+    
+    self.lives_ok(function () {
+        var o = new TestAnonTypes();
+        o.setJustRegExp("123")
+    }, "Just RegExp anon type accepts correct values")
+    
+    self.lives_ok(function () {
+        var o = new TestAnonTypes();
+        o.setJustFunction(123)
+    }, "Just Function anon type accepts correct values")
+    
+    self.throws_ok(function () {
+        var o = new TestAnonTypes();
+        o.setAnon("")
+    }, /The passed value/, "Anon type denies values")
+    
+    self.throws_ok(function () {
+        var o = new TestAnonTypes();
+        o.setJustRegExp("abc")
+    }, /The passed value/, "Just RegExp anon type denies wrong values")
+    
+    self.throws_ok(function () {
+        var o = new TestAnonTypes();
+        o.setJustFunction(-1)
+    }, /The passed value/, "Just Function anon type denies wrong values")
+    
     self.diag("Core Types");
 
-    //TODO(jwall); self needs to live in a different namespace: Joose.Type
-    //             and they should be exported?
     var undefined;
     
     self.ok(typeof Joose.Type.Any != 'undefined', 'we have a Any TypeConstraint');
