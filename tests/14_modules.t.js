@@ -1,6 +1,6 @@
 (function() {
 var t = new Test.TAP.Class();
-t.plan(35)
+t.plan(38)
 
 var thistop = Test.prototype.top()
 
@@ -23,6 +23,10 @@ t.testModuleClass = function() {
     self.ok(Com.test.module.meta.meta.isa(Joose.Module), "And it is a Module")
     self.ok(Com.test.module.meta.meta.isa(Joose.Module), "And it is a Module")
     self.ok(Com.test.module.meta.getName() == "Com.test.module", "The name is correct")
+    
+    self.ok(Com instanceof Joose.NameSpace, "The actual object containers are instances of Joose.NameSpace")
+    self.ok(Com.test instanceof Joose.NameSpace, "The actual object containers are instances of Joose.NameSpace")
+    self.ok(Com.test.module instanceof Joose.NameSpace, "The actual object containers are instances of Joose.NameSpace")
     
     self.ok(Com.test.module.Test1, "There is also something in the class spot")
     self.ok(Com.test.module.Test1.meta, "and it has a meta object")
@@ -74,7 +78,6 @@ t.testModuleClass = function() {
     self.ok(new Com.test.Test2(), "we can make modules on a lower hierarchy. The new class is here.")
     
     self.throws_ok(function () {
-        console.log("bad test")
         Module("Joose.SimpleRequest", function () {
             Class("FooBar", {})
         })
