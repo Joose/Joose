@@ -1,6 +1,6 @@
 (function () {
 var testobj = new Test.TAP.Class();
-testobj.plan(116)
+testobj.plan(117)
 
 testobj.testTypeConstraint = function() {
     var self = this;
@@ -8,15 +8,16 @@ testobj.testTypeConstraint = function() {
         where: /^-?\d+$/
     })
     
-    self.ok(TYPE, "We have a TYPE Module");
-    self.ok(TYPE.Integer, "The new type is there");
-    self.ok(TYPE.Integer.validate(123), "It matches valid input")
-    self.throws_ok(function () {TYPE.Integer.validate("hallo")}, /The passed value /, 
+    self.ok(Joose.Type, "We have a Joose.Type Module");
+    self.ok(Joose.Type === Joose.Type, "TYPE is an alias to Joose.Type Module");
+    self.ok(Joose.Type.Integer, "The new type is there");
+    self.ok(Joose.Type.Integer.validate(123), "It matches valid input")
+    self.throws_ok(function () {Joose.Type.Integer.validate("hallo")}, /The passed value /, 
         "It fails on invalid input")
     
     Module("MyTypes", function () {
         Type("PositiveInteger", {
-            isa: TYPE.Integer,
+            isa: Joose.Type.Integer,
             where: function (value) {
                 return value > 0
             }
@@ -41,12 +42,12 @@ testobj.testTypeConstraint = function() {
     
     Module("MyTypes", function () {
         Type("PositiveIntegerWithCoercion", {
-            isa: TYPE.Integer,
+            isa: Joose.Type.Integer,
             where: function (value) {
                 return value > 0
             },
             coerce: [{
-                from: TYPE.Integer,
+                from: Joose.Type.Integer,
                 via:  function (value) {
                     return Math.abs(value)
                 }
@@ -75,7 +76,7 @@ testobj.testTypeConstraint = function() {
             return false;
         },
         coerce: [{
-                from: TYPE.Integer,
+                from: Joose.Type.Integer,
                  via:  function (value) {
                     if ( value == 0 )
                         return false;
@@ -89,7 +90,7 @@ testobj.testTypeConstraint = function() {
         has: {
             attr1: {
                 is: 'rw',
-                isa: TYPE.BooleanTest,
+                isa: Joose.Type.BooleanTest,
                 coerce: true
             }
         }
@@ -104,7 +105,7 @@ testobj.testTypeConstraint = function() {
         /The passed value \[foo\] is not a BooleanTest/, 
         'setting boolean constrained to foo fails');
     constrained.setAttr1('foo', function (e, type) {
-    	self.ok(type == TYPE.BooleanTest, "Error handler invoked with correct type")
+    	self.ok(type == Joose.Type.BooleanTest, "Error handler invoked with correct type")
     })
     
     self.throws_ok(function () { new BooleanTypeConstrained({attr1: 'foo'})}, 
@@ -132,7 +133,7 @@ testobj.testTypeConstraint = function() {
             throw "where type check function called!"
         },
         coerce: [{
-                from: TYPE.Any,
+                from: Joose.Type.Any,
                  via:  function (value) {
                     throw "Coercion called!";
                 }
@@ -145,7 +146,7 @@ testobj.testTypeConstraint = function() {
             throw "where type check function called!"
         },
         coerce: [{
-                from: TYPE.Any,
+                from: Joose.Type.Any,
                  via:  function (value) {
                     // Coerce everything to undefined
                     return undefined;
@@ -159,17 +160,17 @@ testobj.testTypeConstraint = function() {
             birthDate: {
                 is: "rw",
                 coerce: true,
-                isa: TYPE.Date
+                isa: Joose.Type.Date
             },
             anniversary: {
                 is: "rw",
-                isa: TYPE.Date,
+                isa: Joose.Type.Date,
                 coerce: true,
                 nullable: true
             },
             exploding: {
                 is: "rw",
-                isa: TYPE.ExplodingTest,
+                isa: Joose.Type.ExplodingTest,
                 coerce: true,
                 nullable: true
             }
@@ -210,58 +211,58 @@ testobj.testTypeConstraint = function() {
     //             and they should be exported?
     var undefined;
     
-    self.ok(typeof TYPE.Any != 'undefined', 'we have a Any TypeConstraint');
-    self.ok(TYPE.Any.validateBool(1), 'any validates a defined value');
+    self.ok(typeof Joose.Type.Any != 'undefined', 'we have a Any TypeConstraint');
+    self.ok(Joose.Type.Any.validateBool(1), 'any validates a defined value');
 
-    self.ok(typeof TYPE.Obj != 'undefined', 'we have a Obj TypeConstraint');
-    self.ok(TYPE.Obj.validateBool({}), 'obj validates a object literal');
-    self.diag(TYPE.Obj.validateBool(1)+'');
-    self.ok(!TYPE.Obj.validateBool(1), 'obj does not validate a number literal');
-    self.ok(TYPE.Obj._uses === TYPE.NotNull, 'Obj TypeConstraint uses TYPE.NotNull');
+    self.ok(typeof Joose.Type.Obj != 'undefined', 'we have a Obj TypeConstraint');
+    self.ok(Joose.Type.Obj.validateBool({}), 'obj validates a object literal');
+    self.diag(Joose.Type.Obj.validateBool(1)+'');
+    self.ok(!Joose.Type.Obj.validateBool(1), 'obj does not validate a number literal');
+    self.ok(Joose.Type.Obj._uses === Joose.Type.NotNull, 'Obj TypeConstraint uses Joose.Type.NotNull');
     
-    self.ok(typeof TYPE.Null != 'undefined', 'we have a Null TypeConstraint');
-    self.ok(TYPE.Null.validateBool(null), 'Null validates a null');
-    self.ok(!TYPE.Null.validateBool(undefined), 'Null does not validate an undefined value');
-    self.ok(!TYPE.Null.validateBool({}), 'Null does not validate an object');
-    self.ok(TYPE.Null._uses === TYPE.Any, 'Null TypeConstraint uses TYPE.Any');
+    self.ok(typeof Joose.Type.Null != 'undefined', 'we have a Null TypeConstraint');
+    self.ok(Joose.Type.Null.validateBool(null), 'Null validates a null');
+    self.ok(!Joose.Type.Null.validateBool(undefined), 'Null does not validate an undefined value');
+    self.ok(!Joose.Type.Null.validateBool({}), 'Null does not validate an object');
+    self.ok(Joose.Type.Null._uses === Joose.Type.Any, 'Null TypeConstraint uses Joose.Type.Any');
     
-    self.ok(typeof TYPE.Str != 'undefined', 'we have a Str TypeConstraint');
-    self.ok(TYPE.Str.validateBool(""), 'Str validates a String');
-    self.ok(TYPE.Str.validateBool(new String()), 'Str validates a String Object');
-    self.ok(!TYPE.Str.validateBool(1), 'Str does not validate a number literal');
-    self.ok(TYPE.Str._uses === TYPE.NotNull, 'Str TypeConstraint uses TYPE.NotNull');
+    self.ok(typeof Joose.Type.Str != 'undefined', 'we have a Str TypeConstraint');
+    self.ok(Joose.Type.Str.validateBool(""), 'Str validates a String');
+    self.ok(Joose.Type.Str.validateBool(new String()), 'Str validates a String Object');
+    self.ok(!Joose.Type.Str.validateBool(1), 'Str does not validate a number literal');
+    self.ok(Joose.Type.Str._uses === Joose.Type.NotNull, 'Str TypeConstraint uses Joose.Type.NotNull');
  
-    self.ok(typeof TYPE.Enum != 'undefined', 'we have an Enum TypeConstraint');
-    self.ok(TYPE.Enum._uses === TYPE.NotNull, 'Enum TypeConstraint uses TYPE.Any');
+    self.ok(typeof Joose.Type.Enum != 'undefined', 'we have an Enum TypeConstraint');
+    self.ok(Joose.Type.Enum._uses === Joose.Type.NotNull, 'Enum TypeConstraint uses Joose.Type.Any');
 
     Type("Color", {
-        uses: TYPE.Enum,
+        uses: Joose.Type.Enum,
         values: [ "red", "green", "blue" ]
     });
 
     Type("Rating", {
-        uses: TYPE.Enum,
+        uses: Joose.Type.Enum,
         values: [1,2,3,4,5],
         strictMatch: true
     });
 
     Type("BadEnum", {
-        uses: TYPE.Enum
+        uses: Joose.Type.Enum
     });
 
     Class("EnumTest", {
         has: {
             color: {
                 is: "rw",
-                isa: TYPE.Color
+                isa: Joose.Type.Color
             },
             rating: {
                 is: "rw",
-                isa: TYPE.Rating
+                isa: Joose.Type.Rating
             },
             bad: {
                 is: "rw",
-                isa: TYPE.BadEnum
+                isa: Joose.Type.BadEnum
             }
         }
     });
@@ -277,7 +278,7 @@ testobj.testTypeConstraint = function() {
 
     self.ok(enumTest.setColor("green"), "Setting enum to allowed value succeeds");
 
-    self.ok(TYPE.Color.getProps().values.push("purple"), "Added value to enum");
+    self.ok(Joose.Type.Color.getProps().values.push("purple"), "Added value to enum");
 
     self.ok(enumTest.setColor("purple"), "Setting enum to new allowed value succeeds");
 
@@ -288,73 +289,73 @@ testobj.testTypeConstraint = function() {
     self.ok(enumTest.setRating(5), "Setting enum to allowed strict value succeeds");
 
     
-    self.ok(typeof TYPE.Num != 'undefined', 'we have a Num TypeConstraint');
-    self.ok(TYPE.Num.validateBool(1), 'Num validates a number literal');
-    self.ok(TYPE.Num.validateBool( new Number() ), 'Num validates a Number Object');
-    self.ok(!TYPE.Num.validateBool(""), 'Num does not validate a String');
-    self.ok(TYPE.Num._uses === TYPE.NotNull, 'Num TypeConstraint uses TYPE.NotNull');
-    self.is(TYPE.Num.coerce("123"), 123, 'Num coerces "123" to 123');
-    self.is(TYPE.Num.coerce(""), undefined, 'Num coerces "" to undefined');
-    self.is(TYPE.Num.coerce(undefined), undefined, 'Num coerces undefined to undefined');
-    self.is(TYPE.Num.coerce(null), undefined, 'Num coerces null to undefined');
+    self.ok(typeof Joose.Type.Num != 'undefined', 'we have a Num TypeConstraint');
+    self.ok(Joose.Type.Num.validateBool(1), 'Num validates a number literal');
+    self.ok(Joose.Type.Num.validateBool( new Number() ), 'Num validates a Number Object');
+    self.ok(!Joose.Type.Num.validateBool(""), 'Num does not validate a String');
+    self.ok(Joose.Type.Num._uses === Joose.Type.NotNull, 'Num TypeConstraint uses Joose.Type.NotNull');
+    self.is(Joose.Type.Num.coerce("123"), 123, 'Num coerces "123" to 123');
+    self.is(Joose.Type.Num.coerce(""), undefined, 'Num coerces "" to undefined');
+    self.is(Joose.Type.Num.coerce(undefined), undefined, 'Num coerces undefined to undefined');
+    self.is(Joose.Type.Num.coerce(null), undefined, 'Num coerces null to undefined');
     
-    self.ok(typeof TYPE.Bool != 'undefined', 'we have a Bool TypeConstraint');
-    self.ok(TYPE.Bool.validateBool(true), 'Bool validates true');
-    self.ok(TYPE.Bool.validateBool(false), 'Bool validates false');
-    self.ok(!TYPE.Bool.validateBool(1), 'Bool does not validate an number literal');
-    self.ok(TYPE.Bool._uses === TYPE.NotNull, 'Bool TypeConstraint uses TYPE.NotNull');
+    self.ok(typeof Joose.Type.Bool != 'undefined', 'we have a Bool TypeConstraint');
+    self.ok(Joose.Type.Bool.validateBool(true), 'Bool validates true');
+    self.ok(Joose.Type.Bool.validateBool(false), 'Bool validates false');
+    self.ok(!Joose.Type.Bool.validateBool(1), 'Bool does not validate an number literal');
+    self.ok(Joose.Type.Bool._uses === Joose.Type.NotNull, 'Bool TypeConstraint uses Joose.Type.NotNull');
     Joose.A.each([1,"1","true"], function(v) {
-        self.is(TYPE.Bool.coerce(v), true, 'Bool coerces '+(typeof v)+' "'+v+'" to true');
+        self.is(Joose.Type.Bool.coerce(v), true, 'Bool coerces '+(typeof v)+' "'+v+'" to true');
     });
-    self.is(TYPE.Bool.coerce(12345), null, 'Bool coerces 12345 to null');
-    self.is(TYPE.Bool.coerce(null), undefined, 'Bool coerces null to undefined');
-    self.is(TYPE.Bool.coerce(undefined), undefined, 'Bool coerces undefined to undefined');
-    self.is(TYPE.Bool.coerce(""), undefined, 'Bool coerces "" to undefined');
+    self.is(Joose.Type.Bool.coerce(12345), null, 'Bool coerces 12345 to null');
+    self.is(Joose.Type.Bool.coerce(null), undefined, 'Bool coerces null to undefined');
+    self.is(Joose.Type.Bool.coerce(undefined), undefined, 'Bool coerces undefined to undefined');
+    self.is(Joose.Type.Bool.coerce(""), undefined, 'Bool coerces "" to undefined');
     Joose.A.each(["0", 0, "false"], function(v) {
-        self.is(TYPE.Bool.coerce(v), false, 'Bool coerces '+(typeof v)+' "'+v+'" to false');
+        self.is(Joose.Type.Bool.coerce(v), false, 'Bool coerces '+(typeof v)+' "'+v+'" to false');
     });
     
-    // uses TYPE.Num
-    self.ok(typeof TYPE.Int != 'undefined', 'we have a Int TypeConstraint');
-    self.ok(TYPE.Int.validateBool(1), 'Int validates 1');
-    self.ok(!TYPE.Int.validateBool(1.1), 'Int does not validate 1.1');
-    self.ok(!TYPE.Int.validateBool(.1), 'Int does not validate .1');
-    self.ok(TYPE.Int._uses === TYPE.Num, 'Int TypeConstraint uses TYPE.Num');
-    self.is(TYPE.Int.coerce("123"), 123, 'Int coerces "123" to 123');
-    self.is(TYPE.Int.coerce(""), undefined, 'Int coerces "" to undefined');
-    self.is(TYPE.Int.coerce(undefined), undefined, 'Int coerces undefined to undefined');
+    // uses Joose.Type.Num
+    self.ok(typeof Joose.Type.Int != 'undefined', 'we have a Int TypeConstraint');
+    self.ok(Joose.Type.Int.validateBool(1), 'Int validates 1');
+    self.ok(!Joose.Type.Int.validateBool(1.1), 'Int does not validate 1.1');
+    self.ok(!Joose.Type.Int.validateBool(.1), 'Int does not validate .1');
+    self.ok(Joose.Type.Int._uses === Joose.Type.Num, 'Int TypeConstraint uses Joose.Type.Num');
+    self.is(Joose.Type.Int.coerce("123"), 123, 'Int coerces "123" to 123');
+    self.is(Joose.Type.Int.coerce(""), undefined, 'Int coerces "" to undefined');
+    self.is(Joose.Type.Int.coerce(undefined), undefined, 'Int coerces undefined to undefined');
     
-    self.ok(typeof TYPE.Float != 'undefined', 'we have a Float TypeConstraint');
-    self.ok(TYPE.Float.validateBool(1), 'Float does validate 1');
-    self.ok(TYPE.Float.validateBool(1.1), 'Float does validate 1.1');
-    self.ok(TYPE.Float.validateBool(.1), 'Float does validate .1');
-    //self.ok(TYPE.Float._uses === TYPE.Num, 'Float TypeConstraint uses TYPE.Num');
+    self.ok(typeof Joose.Type.Float != 'undefined', 'we have a Float TypeConstraint');
+    self.ok(Joose.Type.Float.validateBool(1), 'Float does validate 1');
+    self.ok(Joose.Type.Float.validateBool(1.1), 'Float does validate 1.1');
+    self.ok(Joose.Type.Float.validateBool(.1), 'Float does validate .1');
+    //self.ok(Joose.Type.Float._uses === Joose.Type.Num, 'Float TypeConstraint uses Joose.Type.Num');
     
-    // uses TYPE.Obj
-    self.ok(typeof TYPE.Func != 'undefined', 'we have a Func TypeConstraint');
-    self.ok(TYPE.Func.validateBool( function() {} ), 'Func does validate a function');
-    self.ok(!TYPE.Func.validateBool( {} ), 'Func does not validate an object');
-    self.ok(TYPE.Func._uses === TYPE.Obj, 'Func TypeConstraint uses TYPE.Obj');
+    // uses Joose.Type.Obj
+    self.ok(typeof Joose.Type.Func != 'undefined', 'we have a Func TypeConstraint');
+    self.ok(Joose.Type.Func.validateBool( function() {} ), 'Func does validate a function');
+    self.ok(!Joose.Type.Func.validateBool( {} ), 'Func does not validate an object');
+    self.ok(Joose.Type.Func._uses === Joose.Type.Obj, 'Func TypeConstraint uses Joose.Type.Obj');
     
-    self.ok(typeof TYPE.Array != 'undefined', 'we have a Array TypeConstraint');
-    self.ok(TYPE.Array.validateBool( [] ), 'Array does validate a []');
-    self.ok(TYPE.Array.validateBool( new Array() ), 'Array does validate a new Array()');
-    self.ok(!TYPE.Array.validateBool( {} ), 'Array does not validate an object');
-    self.ok(TYPE.Array._uses === TYPE.Obj, 'Array TypeConstraint uses TYPE.Obj');
+    self.ok(typeof Joose.Type.Array != 'undefined', 'we have a Array TypeConstraint');
+    self.ok(Joose.Type.Array.validateBool( [] ), 'Array does validate a []');
+    self.ok(Joose.Type.Array.validateBool( new Array() ), 'Array does validate a new Array()');
+    self.ok(!Joose.Type.Array.validateBool( {} ), 'Array does not validate an object');
+    self.ok(Joose.Type.Array._uses === Joose.Type.Obj, 'Array TypeConstraint uses Joose.Type.Obj');
     
-    self.ok(typeof TYPE.Date != 'undefined', 'we have a Date TypeConstraint');
-    self.ok(TYPE.Date.validateBool( new Date() ), 'Date does validate a Date Object');
-    self.ok(!TYPE.Date.validateBool( {} ), 'Date does not validate a regular object');
-    self.ok(TYPE.Date._uses === TYPE.Obj, 'Date TypeConstraint uses TYPE.Obj');
-    self.is(TYPE.Date.coerce(""), undefined, 'Date coerces "" to undefined');
-    self.ok(TYPE.Date.coerce("2008-12-31") instanceof Date, 'Date coerces "2008-12-31" to Date object');
+    self.ok(typeof Joose.Type.Date != 'undefined', 'we have a Date TypeConstraint');
+    self.ok(Joose.Type.Date.validateBool( new Date() ), 'Date does validate a Date Object');
+    self.ok(!Joose.Type.Date.validateBool( {} ), 'Date does not validate a regular object');
+    self.ok(Joose.Type.Date._uses === Joose.Type.Obj, 'Date TypeConstraint uses Joose.Type.Obj');
+    self.is(Joose.Type.Date.coerce(""), undefined, 'Date coerces "" to undefined');
+    self.ok(Joose.Type.Date.coerce("2008-12-31") instanceof Date, 'Date coerces "2008-12-31" to Date object');
     
-    self.ok(typeof TYPE.Joose != 'undefined', 'we have a Joose TypeConstraint');
-    self.ok(TYPE.Joose.validateBool( new BooleanTypeConstrained() ), 
+    self.ok(typeof Joose.Type.Joose != 'undefined', 'we have a Joose TypeConstraint');
+    self.ok(Joose.Type.Joose.validateBool( new BooleanTypeConstrained() ), 
         'Joose does validate a Joose Object');
-    self.ok(!TYPE.Joose.validateBool( { } ), 
+    self.ok(!Joose.Type.Joose.validateBool( { } ), 
         'Joose does not validate a regular Object');
-    self.ok(TYPE.Joose._uses === TYPE.Obj, 'Joose TypeConstraint uses TYPE.Obj');
+    self.ok(Joose.Type.Joose._uses === Joose.Type.Obj, 'Joose TypeConstraint uses Joose.Type.Obj');
     
 };
 return testobj

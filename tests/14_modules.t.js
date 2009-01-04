@@ -74,6 +74,7 @@ t.testModuleClass = function() {
     self.ok(new Com.test.Test2(), "we can make modules on a lower hierarchy. The new class is here.")
     
     self.throws_ok(function () {
+        console.log("bad test")
         Module("Joose.SimpleRequest", function () {
             Class("FooBar", {})
         })
