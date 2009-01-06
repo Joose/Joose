@@ -1,12 +1,16 @@
 (function () {
 var testobj = new Test.TAP.Class();
-testobj.plan(1)
+testobj.plan(5)
 
 testobj.testSanity = function() {
-    this.diag("Gene")
-    this.ok(Joose.Kernel.GENE,   "GENE is here");
-    this.ok(Joose.Kernel.GENE == Joose.Kernel.GENE.meta && Joose.Kernel.GENE.meta == Joose.Kernel.GENE.meta.meta, "GENE's meta is perfectly circular");
-    this.ok(Joose.Kernel.GENE.meta.hasMethod('hasMethod'), "GENE's has hasMethod");
+    this.diag("Fissiparity")
+    this.ok(Joose.Kernel.Fissiparity, "Fissiparity is here");
+    this.ok(Joose.Kernel.Fissiparity == Joose.Kernel.Fissiparity.meta && Joose.Kernel.Fissiparity.meta == Joose.Kernel.Fissiparity.meta.meta, "Fissiparity's meta is perfectly circular");
+    this.ok(Joose.Kernel.Fissiparity.meta.hasMethod('hasMethod'), "Fissiparity's has hasMethod");
+    this.ok(Joose.Kernel.Gene.meta.methods['hasMethod'], "Gene's also has hasMethod, though it is 'potencial ability for nextGenerations'");
+    this.ok(Joose.Kernel.Gene.methods['hasMethod'], "Gene is the meta for itself");
+    
+//    this.ok(Joose.Kernel.Gene.meta.methods['hasMethod'], "Gene's also has hasMethod, though");
 //    this.ok(Joose.Builder,   "We have a builder");
 //    this.ok(joose,  "joose is here");
 //    this.ok(joose.init, "joose has an init method :)")
