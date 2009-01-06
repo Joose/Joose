@@ -85,7 +85,7 @@ my $path = "$Bin/..";
 require "$Bin/release_helpers.pl";
 
 wipe_dir($compile_dir);
-make_single_js($path, $compile_dir, $release_dir, $joose_dir);
+make_single_js($path, $compile_dir, $release_dir, $joose_dir, $version);
 compile($path, $compile_dir, $release_dir, $joose_dir);
 
 if($testable_libs) {

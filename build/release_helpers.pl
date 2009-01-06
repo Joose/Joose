@@ -41,7 +41,7 @@ sub compile {
 }
 
 sub single_js {
-	my($path) = @_;
+	my($path,$version) = @_;
 	# JS-Lib
     print "Building JS-Lib\n";
 
@@ -49,7 +49,9 @@ sub single_js {
 
     my $now     = localtime;
 
-    my $output  = "// Generated: $now\n\n";
+    my $output  = "// This is Joose $version
+// For documentation see http://code.google.com/p/joose-js/
+// Generated: $now\n\n";
     foreach my $filename (@$files)
     {
         open my $in, "$filename" or die "Cant open $filename due to $!";
@@ -72,12 +74,12 @@ sub single_js {
 }
 
 sub make_single_js {
-	my($path, $compile_dir, $release_dir, $joose_dir) = @_; 
+	my($path, $compile_dir, $release_dir, $joose_dir, $version) = @_; 
 	
     # JS-Lib
     print "Building JS-Lib\n";
 
-    my $output = single_js($path);
+    my $output = single_js($path, $version);
 
     # Write all JS-Code to a single file
      write_file("$compile_dir/joose.js", $output);
@@ -101,7 +103,7 @@ sub make_single_js {
     gzip("$compile_dir/joose.mini.js");
     
     # quick hack to get bleeding edge copy into blok
-    copy_file("$compile_dir/joose.mini.js", "/ws/Joose2/examples/blok/static");
+    copy_file("$compile_dir/joose.mini.js", "/ws/Joose/examples/blok/static");
 
     print "Built Mini JS-Lib\n";
 }
