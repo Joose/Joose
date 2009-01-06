@@ -15,6 +15,7 @@ my $files = [
     "Joose/Class.js",         "Joose/Method.js",
     "Joose/ClassMethod.js",
     "Joose/Attribute.js",     "Joose/Role.js",
+    "Joose/Singleton.js",
     "Joose/SimpleRequest.js", "Joose/Gears.js",
     "Joose/Storage.js",       "Joose/Storage/Unpacker.js",
     "Joose/Decorator.js",     "Joose/Module.js",
