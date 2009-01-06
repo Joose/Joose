@@ -1,16 +1,17 @@
 (function () {
 var testobj = new Test.TAP.Class();
-testobj.plan(5)
+testobj.plan(1)
 
 testobj.testSanity = function() {
-    this.diag("Fissiparity")
-    this.ok(Joose.Kernel.Fissiparity, "Fissiparity is here");
-    this.ok(Joose.Kernel.Fissiparity == Joose.Kernel.Fissiparity.meta && Joose.Kernel.Fissiparity.meta == Joose.Kernel.Fissiparity.meta.meta, "Fissiparity's meta is perfectly circular");
-    this.ok(Joose.Kernel.Fissiparity.meta.hasMethod('hasMethod'), "Fissiparity's has hasMethod");
-    this.ok(Joose.Kernel.Gene.meta.methods['hasMethod'], "Gene's also has hasMethod, though its hidden from direct usage - only via instances (childs of Gene)'");
-    this.ok(Joose.Kernel.Gene.methods['hasMethod'], "Gene is the meta for itself");
+    this.diag("Parthenogenesis")
+    this.ok(Joose.Kernel.Parthenogenesis, "Parthenogenesis is here");
     
-    this.ok(Joose.Kernel.Fissiparity.toString() == 'a Joose.Kernel.Fissiparity', "Fissiparity stringified correctly");
+    this.diag(Joose.Kernel.Parthenogenesis.toString());
+    this.ok(Joose.Kernel.Parthenogenesis.toString() == 'Joose.Kernel.Parthenogenesis', "Parthenogenesis stringified correctly");
+//    this.ok(Joose.Kernel.Fissiparity == Joose.Kernel.Fissiparity.meta && Joose.Kernel.Fissiparity.meta == Joose.Kernel.Fissiparity.meta.meta, "Fissiparity's meta is perfectly circular");
+//    this.ok(Joose.Kernel.Fissiparity.meta.hasMethod('hasMethod'), "Fissiparity's has hasMethod");
+//    this.ok(Joose.Kernel.Gene.meta.methods['hasMethod'], "Gene's also has hasMethod, though it is 'potencial ability for nextGenerations'");
+//    this.ok(Joose.Kernel.Gene.methods['hasMethod'], "Gene is the meta for itself");
     
 //    this.ok(Joose.Kernel.Gene.meta.methods['hasMethod'], "Gene's also has hasMethod, though");
 //    this.ok(Joose.Builder,   "We have a builder");
