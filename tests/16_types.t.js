@@ -9,7 +9,7 @@ testobj.testTypeConstraint = function() {
     })
     
     self.ok(Joose.Type, "We have a Joose.Type Module");
-    self.ok(Joose.Type === Joose.Type, "TYPE is an alias to Joose.Type Module");
+    self.ok(TYPE === Joose.Type, "TYPE is an alias to Joose.Type Module");
     self.ok(Joose.Type.Integer, "The new type is there");
     self.ok(Joose.Type.Integer.validate(123), "It matches valid input")
     self.throws_ok(function () {Joose.Type.Integer.validate("hallo")}, /The passed value /, 
