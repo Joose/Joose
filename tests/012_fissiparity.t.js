@@ -10,6 +10,7 @@ testobj.testSanity = function() {
     this.ok(Joose.Kernel.Gene.meta.methods['hasMethod'], "Gene's also has hasMethod, though its hidden from direct usage - only via instances (childs of Gene)'");
     this.ok(Joose.Kernel.Gene.methods['hasMethod'], "Gene is the meta for itself");
     
+    this.ok(Joose.Kernel.Fissiparity.meta.hasMethod('toString'), "Fissiparity's has toString");
     this.ok(Joose.Kernel.Fissiparity.toString() == 'a Joose.Kernel.Fissiparity', "Fissiparity stringified correctly");
     
 //    this.ok(Joose.Kernel.Gene.meta.methods['hasMethod'], "Gene's also has hasMethod, though");

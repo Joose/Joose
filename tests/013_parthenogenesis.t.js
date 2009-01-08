@@ -6,7 +6,7 @@ testobj.testSanity = function() {
     this.diag("Parthenogenesis")
     this.ok(Joose.Kernel.Parthenogenesis, "Parthenogenesis is here");
     
-    this.diag(Joose.Kernel.Parthenogenesis.toString());
+    this.ok(Joose.Kernel.Parthenogenesis.meta.getName() == 'Joose.Kernel.Parthenogenesis', "Parthenogenesis stringified correctly");
     this.ok(Joose.Kernel.Parthenogenesis.toString() == 'Joose.Kernel.Parthenogenesis', "Parthenogenesis stringified correctly");
 //    this.ok(Joose.Kernel.Fissiparity == Joose.Kernel.Fissiparity.meta && Joose.Kernel.Fissiparity.meta == Joose.Kernel.Fissiparity.meta.meta, "Fissiparity's meta is perfectly circular");
 //    this.ok(Joose.Kernel.Fissiparity.meta.hasMethod('hasMethod'), "Fissiparity's has hasMethod");
