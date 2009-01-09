@@ -3,11 +3,12 @@ var testobj = new Test.TAP.Class();
 testobj.plan(1)
 
 testobj.testSanity = function() {
-    this.diag("Parthenogenesis")
-    this.ok(Joose.Kernel.Parthenogenesis, "Parthenogenesis is here");
+    this.diag("Viviparity")
+    this.ok(Joose.Kernel.Viviparity, "Viviparity is here");
     
-    this.ok(Joose.Kernel.Parthenogenesis.meta.getName() == 'Joose.Kernel.Parthenogenesis', "Parthenogenesis stringified correctly");
-    this.ok(Joose.Kernel.Parthenogenesis.toString() == 'Joose.Kernel.Parthenogenesis', "Parthenogenesis stringified correctly");
+    this.is("" + Joose.Kernel.Viviparity.meta,'a Joose.Kernel.Parthenogenesis', "Viviparity's meta is a Parthenogenesis");
+    this.ok(Joose.Kernel.Viviparity.meta.hasMethod('defaultClassFunctionBody'), 'Viviparity has defaultClassFunctionBody');
+    
 //    this.ok(Joose.Kernel.Fissiparity == Joose.Kernel.Fissiparity.meta && Joose.Kernel.Fissiparity.meta == Joose.Kernel.Fissiparity.meta.meta, "Fissiparity's meta is perfectly circular");
 //    this.ok(Joose.Kernel.Fissiparity.meta.hasMethod('hasMethod'), "Fissiparity's has hasMethod");
 //    this.ok(Joose.Kernel.Gene.meta.methods['hasMethod'], "Gene's also has hasMethod, though it is 'potencial ability for nextGenerations'");
