@@ -6,54 +6,18 @@ testobj.testSanity = function() {
     this.diag("Species")
     this.ok(Joose.Kernel.Species, "Species is here");
     
+    this.is("" + Joose.Kernel.Species,'Joose.Kernel.Species', "Joose.Kernel.Species stringified correctly");
+    this.diag(Joose.Kernel.Species.meta._name);
+    this.diag(Joose.Kernel.Species.meta.meta._name);
+    this.diag(Joose.Kernel.Species.meta.meta.meta._name);
     this.is("" + Joose.Kernel.Species.meta,'a Joose.Kernel.Viviparity', "Species's meta is a Viviparity");
-    this.ok(Joose.Kernel.Species.meta.hasMethod('defaultClassFunctionBody'), 'Species has defaultClassFunctionBody - inherited(!)');
+//    this.ok(Joose.Kernel.Species.meta.isa(Joose.Kernel.Viviparity), "Species's meta ISA Viviparity");
     
-//    this.ok(Joose.Kernel.Fissiparity == Joose.Kernel.Fissiparity.meta && Joose.Kernel.Fissiparity.meta == Joose.Kernel.Fissiparity.meta.meta, "Fissiparity's meta is perfectly circular");
-//    this.ok(Joose.Kernel.Fissiparity.meta.hasMethod('hasMethod'), "Fissiparity's has hasMethod");
-//    this.ok(Joose.Kernel.Gene.meta.methods['hasMethod'], "Gene's also has hasMethod, though it is 'potencial ability for nextGenerations'");
-//    this.ok(Joose.Kernel.Gene.methods['hasMethod'], "Gene is the meta for itself");
-    
-//    this.ok(Joose.Kernel.Gene.meta.methods['hasMethod'], "Gene's also has hasMethod, though");
-//    this.ok(Joose.Builder,   "We have a builder");
-//    this.ok(joose,  "joose is here");
-//    this.ok(joose.init, "joose has an init method :)")
-//    
-//    this.ok(Joose.Class, "Joose.Class is here")
-//    this.ok(Joose.Role, "Joose.Role is here")
-//    // TODO test for all components
-//        
-//    this.diag("Builders");
-//    this.ok(Class, "Class");
-//    this.ok(joosify, "isa")
-//    this.ok(Module, "has")
-//    this.ok(rw == "rw", "rw prop");
-//    this.ok(ro == "ro", "ro prop");
-//    
-//    this.diag("Test object traversion order") // this is very important for builders
-//    var OK = true;
-//    for(var i = 0; i < 100; i++) {
-//        var test = {
-//            b: 1,
-//            d: 2,
-//            a: 3,
-//            z: 4
-//        }
-//        var s = "";
-//        for(var n in test) {
-//            if(test.hasOwnProperty(n)) {
-//                s += test[n]
-//            }
-//        }
-//        if(s != "1234") {
-//            OK = false
-//        }
-//    }
-//    if(!joose.top.CHAOTIC_TRAVERSION_ORDER) {
-//        this.ok(OK, "Object traversion order is in declaration order")
-//    } else {
-//        this.ok(true, "Using compatibility mode for JS engine that uses non deterministic object traversion order")
-//    }
+    this.ok(Joose.Kernel.Species.meta.hasMethod('hasMethod'), 'Species has hasMethod');
+    this.ok(Joose.Kernel.Species.meta.hasMethod('toString'), "Species has toString");
+
+    this.ok(Joose.Kernel.Species.meta.hasMethod('defaultClassFunctionBody'), 'Species can defaultClassFunctionBody - inherited(!)');
+    this.ok(Joose.Kernel.Species.meta.hasMethod('attributeMetaclass'), 'Species can attributeMetaclass - inherited(!)');
 };
 
 return testobj;
