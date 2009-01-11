@@ -3436,6 +3436,10 @@ Class('PureMVC', {
         
         addInitializer: function () {
             this.addMethod("initialize", function () {})
+        },
+        
+        buildComplete: function () {
+            Objs.register(this.className(), this.c);
         }
     },
     
