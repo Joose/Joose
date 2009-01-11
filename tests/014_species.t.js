@@ -7,10 +7,11 @@ testobj.testSanity = function() {
     this.ok(Joose.Kernel.Species, "Species is here");
     
     this.is("" + Joose.Kernel.Species,'Joose.Kernel.Species', "Joose.Kernel.Species stringified correctly");
-    this.diag(Joose.Kernel.Species.meta._name);
-    this.diag(Joose.Kernel.Species.meta.meta._name);
-    this.diag(Joose.Kernel.Species.meta.meta.meta._name);
-    this.is("" + Joose.Kernel.Species.meta,'a Joose.Kernel.Viviparity', "Species's meta is a Viviparity");
+    this.is("" + Joose.Kernel.Species.meta,'a Joose.Kernel.Viviparity', "Species's meta stringified to Viviparity");
+    
+    this.ok(Joose.Kernel.Species.meta.classIsa(Joose.Kernel.Species), "Species ISA Viviparity");
+    this.ok(Joose.Kernel.Species.meta.classIsa(Joose.Kernel.Viviparity), "Species ISA Viviparity");
+    this.ok(Joose.Kernel.Species.meta.classIsa(Joose.Kernel.Parthenogenesis), "Species ISA Parthenogenesis");
     
     this.ok(Joose.Kernel.Species.meta.isa(Joose.Kernel.Viviparity), "Species's meta ISA Viviparity");
     this.ok(Joose.Kernel.Species.meta.isa(Joose.Kernel.Parthenogenesis), "Species's meta ISA Parthenogenesis");

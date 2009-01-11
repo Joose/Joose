@@ -7,11 +7,12 @@ testobj.testSanity = function() {
     this.ok(Joose.Kernel.Reptiles, "Reptiles is here");
     
     this.is("" + Joose.Kernel.Reptiles,'Joose.Kernel.Reptiles', "Joose.Kernel.Reptiles stringified correctly");
-    this.is("" + Joose.Kernel.Reptiles.meta,'a Joose.Kernel.Species', "Reptiles's meta is a Viviparity");
+    this.is("" + Joose.Kernel.Reptiles.meta,'a Joose.Kernel.Species', "Reptiles's meta stringified to Species");
     
-    this.ok(Joose.Kernel.Reptiles.meta.isa(Joose.Kernel.Species), "Reptiles's meta ISA Species");
-    this.ok(Joose.Kernel.Reptiles.meta.isa(Joose.Kernel.Species), "Reptiles's meta ISA Viviparity");
-    this.ok(Joose.Kernel.Reptiles.meta.isa(Joose.Kernel.Species), "Reptiles's meta ISA Parthenogenesis");
+    this.ok(Joose.Kernel.Reptiles.meta.classIsa(Joose.Kernel.Reptiles), "Reptiles ISA Reptiles");
+    this.ok(Joose.Kernel.Reptiles.meta.classIsa(Joose.Kernel.Species), "Reptiles ISA Species");
+    this.ok(Joose.Kernel.Reptiles.meta.classIsa(Joose.Kernel.Viviparity), "Reptiles ISA Viviparity");
+    this.ok(Joose.Kernel.Reptiles.meta.classIsa(Joose.Kernel.Parthenogenesis), "Reptiles ISA Parthenogenesis");
     
     this.ok(Joose.Kernel.Reptiles.meta.hasMethod('hasMethod'), 'Reptiles has hasMethod');
     this.ok(Joose.Kernel.Reptiles.meta.hasMethod('toString'), "Reptiles has toString");

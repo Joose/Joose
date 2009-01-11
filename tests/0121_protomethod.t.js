@@ -7,7 +7,7 @@ testobj.testSanity = function() {
     this.ok(Joose.Kernel.ProtoMethod, "ProtoMethod is here");
     
     this.is("" + Joose.Kernel.ProtoMethod,'Joose.Kernel.ProtoMethod', "Joose.Kernel.ProtoMethod stringified correctly");
-    this.is("" + Joose.Kernel.ProtoMethod.meta,'a Joose.Kernel.Parthenogenesis', "ProtoMethod's meta is a Parthenogenesis");
+    this.is("" + Joose.Kernel.ProtoMethod.meta,'a Joose.Kernel.Parthenogenesis', "ProtoMethod's meta stringified to Parthenogenesis");
     
     this.ok(Joose.Kernel.ProtoMethod.meta.hasMethod('hasMethod'), 'ProtoMethod has hasMethod');
     this.ok(Joose.Kernel.ProtoMethod.meta.hasMethod('toString'), "ProtoMethod has toString");

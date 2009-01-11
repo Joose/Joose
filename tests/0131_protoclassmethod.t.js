@@ -7,11 +7,13 @@ testobj.testSanity = function() {
     this.ok(Joose.Kernel.ProtoClassMethod, "ProtoClassMethod is here");
     
     this.is("" + Joose.Kernel.ProtoClassMethod,'Joose.Kernel.ProtoClassMethod', "Joose.Kernel.ProtoClassMethod stringified correctly");
-    this.is("" + Joose.Kernel.ProtoClassMethod.meta,'a Joose.Kernel.Viviparity', "ProtoClassMethod's meta is a Viviparity");
+    this.is("" + Joose.Kernel.ProtoClassMethod.meta,'a Joose.Kernel.Viviparity', "ProtoClassMethod's meta stringified to Viviparity");
     
     this.ok(Joose.Kernel.ProtoClassMethod.meta.hasMethod('hasMethod'), 'ProtoClassMethod has hasMethod');
     this.ok(Joose.Kernel.ProtoClassMethod.meta.hasMethod('toString'), "ProtoClassMethod has toString");
     this.ok(Joose.Kernel.ProtoClassMethod.meta.hasMethod('addToClass'), 'ProtoClassMethod has addToClass');
+    
+    this.ok(Joose.Kernel.ProtoClassMethod.meta.classIsa(Joose.Kernel.ProtoMethod), 'ProtoClassMethod ISA ProtoMethod');
 };
 
 return testobj;

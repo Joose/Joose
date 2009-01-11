@@ -9,7 +9,10 @@ testobj.testSanity = function() {
     this.is("" + Joose.Kernel.Viviparity,'Joose.Kernel.Viviparity', "Joose.Kernel.Viviparity stringified correctly");
     this.is("" + Joose.Kernel.Viviparity.meta,'a Joose.Kernel.Parthenogenesis', "Viviparity's meta is a Parthenogenesis");
     
-    this.ok(Joose.Kernel.Viviparity.meta.isa(Joose.Kernel.Parthenogenesis), "Viviparity's meta ISA Parthenogenesis");
+    this.ok(Joose.Kernel.Viviparity.meta.classIsa(Joose.Kernel.Viviparity), "Viviparity ISA Viviparity");
+    this.ok(Joose.Kernel.Viviparity.meta.classIsa(Joose.Kernel.Parthenogenesis), "Viviparity ISA Parthenogenesis");
+    
+	this.ok(Joose.Kernel.Viviparity.meta.isa(Joose.Kernel.Parthenogenesis), "Viviparity's meta ISA Parthenogenesis");    
     
     this.ok(Joose.Kernel.Viviparity.meta.hasMethod('hasMethod'), 'Viviparity has hasMethod');
     this.ok(Joose.Kernel.Viviparity.meta.hasMethod('toString'), "Viviparity has toString");

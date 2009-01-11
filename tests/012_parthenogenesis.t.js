@@ -7,7 +7,7 @@ testobj.testSanity = function() {
     this.ok(Joose.Kernel.Parthenogenesis, "Parthenogenesis is here");
     
     this.is("" + Joose.Kernel.Parthenogenesis,'Joose.Kernel.Parthenogenesis', "Joose.Kernel.Parthenogenesis stringified correctly");
-    this.is("" + Joose.Kernel.Parthenogenesis.meta,'a Joose.Kernel.Gene', "Parthenogenesis's meta is a Gene");
+    this.is("" + Joose.Kernel.Parthenogenesis.meta,'a Joose.Kernel.Gene', "Parthenogenesis's meta stringified to Gene");
     
     this.ok(Joose.Kernel.Parthenogenesis.meta.hasMethod('hasMethod'), 'Parthenogenesis has hasMethod');
     this.ok(Joose.Kernel.Parthenogenesis.meta.hasMethod('toString'), "Parthenogenesis has toString");
