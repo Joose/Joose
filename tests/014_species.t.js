@@ -18,6 +18,7 @@ testobj.testSanity = function() {
     
     this.ok(Joose.Kernel.Species.meta.hasMethod('hasMethod'), 'Species has hasMethod');
     this.ok(Joose.Kernel.Species.meta.hasMethod('toString'), "Species has toString");
+    this.ok(Joose.Kernel.Species.meta.hasMethod('addClassMethod'), "Species has addClassMethod");
 
     this.ok(Joose.Kernel.Species.meta.hasMethod('defaultClassFunctionBody'), 'Species can defaultClassFunctionBody - inherited(!)');
     this.ok(Joose.Kernel.Species.meta.hasMethod('attributeMetaclass'), 'Species can attributeMetaclass - inherited(!)');

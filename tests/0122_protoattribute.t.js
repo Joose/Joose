@@ -12,6 +12,8 @@ testobj.testSanity = function() {
     this.ok(Joose.Kernel.ProtoAttribute.meta.hasMethod('hasMethod'), 'ProtoAttribute has hasMethod');
     this.ok(Joose.Kernel.ProtoAttribute.meta.hasMethod('toString'), "ProtoAttribute has toString");
     this.ok(Joose.Kernel.ProtoAttribute.meta.hasMethod('apply'), 'ProtoAttribute has apply');
+    
+    this.ok(Joose.Kernel.ProtoAttribute.meta.classIsa(Joose.Kernel.ProtoAttribute), 'ProtoAttribute has ProtoAttribute');
 };
 
 return testobj;

@@ -14,11 +14,25 @@ testobj.testSanity = function() {
     this.ok(Joose.Kernel.Reptiles.meta.classIsa(Joose.Kernel.Viviparity), "Reptiles ISA Viviparity");
     this.ok(Joose.Kernel.Reptiles.meta.classIsa(Joose.Kernel.Parthenogenesis), "Reptiles ISA Parthenogenesis");
     
+    this.ok(Joose.Kernel.Reptiles.meta.isa(Joose.Kernel.Species), "Reptiles's meta ISA Species");
+    
     this.ok(Joose.Kernel.Reptiles.meta.hasMethod('hasMethod'), 'Reptiles has hasMethod');
     this.ok(Joose.Kernel.Reptiles.meta.hasMethod('toString'), "Reptiles has toString");
 
     this.ok(Joose.Kernel.Reptiles.meta.hasMethod('defaultClassFunctionBody'), 'Reptiles can defaultClassFunctionBody - inherited(!)');
     this.ok(Joose.Kernel.Reptiles.meta.hasMethod('attributeMetaclass'), 'Reptiles can attributeMetaclass - inherited(!)');
+    
+    Joose.Kernel.Reptiles.meta.addClassMethod('works', function () { return 'works'} );
+    this.ok(Joose.Kernel.Reptiles.meta.hasMethod('works'), "Reptiles has works");
+    this.ok(Joose.Kernel.Reptiles.meta.classCan('works'), "Reptiles classCan works");
+    this.ok(!Joose.Kernel.Reptiles.meta.can('works'), "Reptiles can't works");
+    this.is(Joose.Kernel.Reptiles.works(), 'works', 'ClassMethod works');
+    
+    this.ok(Joose.Kernel.Reptiles.isA(Joose.Kernel.Reptiles), "Reptiles ISA Reptiles");
+    this.ok(Joose.Kernel.Reptiles.isA(Joose.Kernel.Species), "Reptiles ISA Species");
+    this.ok(Joose.Kernel.Reptiles.isA(Joose.Kernel.Viviparity), "Reptiles ISA Viviparity");
+    this.ok(Joose.Kernel.Reptiles.isA(Joose.Kernel.Parthenogenesis), "Reptiles ISA Parthenogenesis");
+    
 };
 
 return testobj;
