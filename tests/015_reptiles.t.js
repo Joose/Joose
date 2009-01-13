@@ -28,10 +28,10 @@ testobj.testSanity = function() {
     this.ok(!Joose.Kernel.Reptiles.meta.can('works'), "Reptiles can't works");
     this.is(Joose.Kernel.Reptiles.works(), 'works', 'ClassMethod works');
     
-    this.ok(Joose.Kernel.Reptiles.isA(Joose.Kernel.Reptiles), "Reptiles ISA Reptiles");
-    this.ok(Joose.Kernel.Reptiles.isA(Joose.Kernel.Species), "Reptiles ISA Species");
-    this.ok(Joose.Kernel.Reptiles.isA(Joose.Kernel.Viviparity), "Reptiles ISA Viviparity");
-    this.ok(Joose.Kernel.Reptiles.isA(Joose.Kernel.Parthenogenesis), "Reptiles ISA Parthenogenesis");
+    this.ok(Joose.Kernel.Reptiles.isa(Joose.Kernel.Reptiles), "Reptiles ISA Reptiles");
+    this.ok(Joose.Kernel.Reptiles.isa(Joose.Kernel.Species), "Reptiles ISA Species");
+    this.ok(Joose.Kernel.Reptiles.isa(Joose.Kernel.Viviparity), "Reptiles ISA Viviparity");
+    this.ok(Joose.Kernel.Reptiles.isa(Joose.Kernel.Parthenogenesis), "Reptiles ISA Parthenogenesis");
     
 };
 

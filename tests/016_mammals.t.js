@@ -14,12 +14,11 @@ testobj.testSanity = function() {
     
     this.ok(Joose.Kernel.Mammals.meta.isa(Joose.Kernel.Species), "Mammals's meta ISA Reptiles");
     
-    this.ok(Joose.Kernel.Mammals.meta.hasMethod('isA'), "Mammals has isA");
-    this.ok(Joose.Kernel.Mammals.meta.classCan('isA'), "Mammals classCan isA");
-    this.ok(!Joose.Kernel.Mammals.meta.can('isA'), "Mammals can't isA");
+    this.ok(Joose.Kernel.Mammals.meta.hasMethod('isa'), "Mammals has isa - class method inheritance works");
+    this.ok(Joose.Kernel.Mammals.meta.classCan('isa'), "Mammals classCan isa");
     
-    this.ok(Joose.Kernel.Mammals.isA(Joose.Kernel.Mammals), "Mammals ISA Mammals");
-    this.ok(Joose.Kernel.Mammals.isA(Joose.Kernel.Species), "Mammals ISA Species");
+    this.ok(Joose.Kernel.Mammals.isa(Joose.Kernel.Mammals), "Mammals ISA Mammals");
+    this.ok(Joose.Kernel.Mammals.isa(Joose.Kernel.Species), "Mammals ISA Species");
     
 };
 
