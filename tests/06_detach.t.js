@@ -1,6 +1,6 @@
 (function() {
 var t = new Test.TAP.Class();
-t.plan(8)
+t.plan(7)
 
 t.testDetach = function() {
 
