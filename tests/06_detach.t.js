@@ -1,6 +1,6 @@
 (function() {
 var t = new Test.TAP.Class();
-t.plan(7)
+t.plan(8)
 
 t.testDetach = function() {
 
@@ -38,6 +38,16 @@ t.testDetach = function() {
     t.ok(o3.one() == 1 && o3.two() == 2, "Methods of new object return correct results for non detached object after detach of object of same class");
     t.ok(o4.one() == 3 && o4.two() == 2, "Methods of new object return correct results in detached object");
 
+    
+//    TODO
+//    SubClass.meta.addMethod('three', function () { return 3 });
+//    
+//    if (typeof o2.three != 'function') {
+//    	t.ok(true, "Detached instance is not affected by changes in original class");
+//    } else {
+//    	t.ok(false, "Detached instance is not affected by changes in original class");
+//    }
+    
 }
 return t;
 })();
