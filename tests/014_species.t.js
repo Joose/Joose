@@ -13,8 +13,8 @@ testobj.testSanity = function() {
     this.ok(Joose.Kernel.Species.meta.classIsa(Joose.Kernel.Viviparity), "Species ISA Viviparity");
     this.ok(Joose.Kernel.Species.meta.classIsa(Joose.Kernel.Parthenogenesis), "Species ISA Parthenogenesis");
     
-    this.ok(Joose.Kernel.Species.meta.isa(Joose.Kernel.Viviparity), "Species's meta ISA Viviparity");
-    this.ok(Joose.Kernel.Species.meta.isa(Joose.Kernel.Parthenogenesis), "Species's meta ISA Parthenogenesis");
+    this.ok(Joose.Kernel.Species.meta.meta.isa(Joose.Kernel.Viviparity), "Species's meta ISA Viviparity");
+    this.ok(Joose.Kernel.Species.meta.meta.isa(Joose.Kernel.Parthenogenesis), "Species's meta ISA Parthenogenesis");
     
     this.ok(Joose.Kernel.Species.meta.hasMethod('hasMethod'), 'Species has hasMethod');
     this.ok(Joose.Kernel.Species.meta.hasMethod('toString'), "Species has toString");

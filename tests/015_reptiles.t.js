@@ -14,7 +14,7 @@ testobj.testSanity = function() {
     this.ok(Joose.Kernel.Reptiles.meta.classIsa(Joose.Kernel.Viviparity), "Reptiles ISA Viviparity");
     this.ok(Joose.Kernel.Reptiles.meta.classIsa(Joose.Kernel.Parthenogenesis), "Reptiles ISA Parthenogenesis");
     
-    this.ok(Joose.Kernel.Reptiles.meta.isa(Joose.Kernel.Species), "Reptiles's meta ISA Species");
+    this.ok(Joose.Kernel.Reptiles.meta.meta.isa(Joose.Kernel.Species), "Reptiles's meta ISA Species");
     
     this.ok(Joose.Kernel.Reptiles.meta.hasMethod('hasMethod'), 'Reptiles has hasMethod');
     this.ok(Joose.Kernel.Reptiles.meta.hasMethod('toString'), "Reptiles has toString");

@@ -11,8 +11,7 @@ testobj.testSanity = function() {
     
     this.ok(Joose.Kernel.Viviparity.meta.classIsa(Joose.Kernel.Viviparity), "Viviparity ISA Viviparity");
     this.ok(Joose.Kernel.Viviparity.meta.classIsa(Joose.Kernel.Parthenogenesis), "Viviparity ISA Parthenogenesis");
-    
-	this.ok(Joose.Kernel.Viviparity.meta.isa(Joose.Kernel.Parthenogenesis), "Viviparity's meta ISA Parthenogenesis");    
+	this.ok(Joose.Kernel.Viviparity.meta.isa(Joose.Kernel.Parthenogenesis), "Viviparity's Parthenogenesis");    
     
     this.ok(Joose.Kernel.Viviparity.meta.hasMethod('hasMethod'), 'Viviparity has hasMethod');
     this.ok(Joose.Kernel.Viviparity.meta.hasMethod('toString'), "Viviparity has toString");
