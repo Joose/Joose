@@ -1,0 +1,315 @@
+(function() {
+var t = new Test.TAP.Class();
+t.plan(1)
+
+t.testRoles = function() {
+    var self = this;
+    self.diag("Proto Roles")
+    
+    this.ok(Joose.Kernel.ProtoRole, "ProtoRole is here");
+    
+    var comparableMeta = new Joose.Kernel.ProtoRole('Comparable');
+    Comparable = comparableMeta.getClassObject(); 
+    
+    self.ok(Comparable, "We can make a Role");
+    self.throws_ok( function () {new Comparable()}, /Roles may not be instantiated./, "Roles cannot be instantiated.")
+    self.ok(Comparable.meta.meta.isa(Joose.Kernel.ProtoRole), "Our meta class isa ProtoRole")
+    
+    
+    Eq = (new Joose.Kernel.ProtoRole('Eq')).getClassObject();
+    Eq.meta.addGenes({
+    	locale : null,
+    	
+        notEqual: function (para) {
+            return !this.isEqual(para)
+        }
+    });
+    Eq.meta.addRequirement('isEqual');
+    
+    
+    
+    Currency = (new Joose.Kernel.Reptiles("Currency")).getClassObject();
+    Currency.meta.addRole(Eq);
+    Currency.meta.addGenes({
+    	value : null,
+    	initialize : Joose.emptyFunction,
+        isEqual: function (cur) {
+            return this.value == cur.value
+        }    
+    });
+    Eq.meta.applyMethodModifiers(Currency);
+    
+    self.ok(Currency.meta.does(Eq), "does works for roles");
+    
+    SubCurrency = (new Joose.Kernel.Reptiles("SubCurrency")).getClassObject();
+    SubCurrency.meta.addSuperClass(Currency);
+    
+    TestClass = (new Joose.Kernel.Reptiles("TestClass")).getClassObject();
+    TestClass.meta.addGenes({
+    	initialize : Joose.emptyFunction,
+        orig: function () {
+            return true
+        }
+    });
+    
+    Currency.meta.validateClass()
+    
+    var a = new Currency(); a.value = 1;
+    var b = new Currency(); b.value = 1;
+    var c = new Currency(); c.value = 2;
+    
+    self.ok(a.meta.getAttribute('locale'), 'the locale attribute is in the attribute list');
+    a.locale = 'en_us';
+    self.is(a.locale, 'en_us', 'the locale attribute was added also'); 
+    self.ok(a.isEqual(b), "Equality works")
+    self.ok(b.isEqual(a), "Equality works in both directions")
+    self.ok(!a.isEqual(c), "Equality works for unequal things")
+    
+    self.ok(a.meta.can("notEqual"), "notEqual method arrived")
+    self.ok(a.notEqual(c), "Role composition works and notEqual works")
+    self.ok(!a.notEqual(b), "Role composition works and notEqual works for equal things")
+    
+    self.ok(a.meta.does(Eq), "Class object does Role")
+    self.ok(Currency.meta.does(Eq), "Class does Role")
+    self.ok(!TestClass.meta.does(Eq), "TestClass doesnt do Role")
+    self.ok(!new TestClass().meta.does(Eq), "TestClass object doesnt do Role")
+    
+    self.ok(SubCurrency.meta.does(Eq), "does works for inherited roles")
+    
+//    self.diag("Runtime role application")
+//    
+//    Class("RuntimeRole", {
+//        meta: Joose.Role,
+//        requires: "getValue",
+//        methods: {
+//            appliedAtRuntime: function () { return true }
+//        },
+//        
+//        around: {
+//            getValue: function () {
+//                return 12345678
+//            }
+//        }
+//    })
+//    
+//    //alert(a.hasOwnProperty("appliedAtRuntime"))
+//    RuntimeRole.meta.apply(a);
+//    //alert(a.hasOwnProperty("appliedAtRuntime"))
+//    self.ok(!TestClass.meta.does(RuntimeRole), "Role was only applied to object")
+//    self.ok(typeof a.constructor.prototype.appliedAtRuntime == "function", "... object got method from runtime role (in prototype)")
+//    self.ok(typeof a.appliedAtRuntime == "function", "object got method from runtime role")
+//    self.ok(a.appliedAtRuntime(), "object can call method");
+//    self.ok(!b.appliedAtRuntime, "other object does not have it");
+//    self.ok(!new Currency(2).appliedAtRuntime, "New object do not have it either")
+//    self.ok(a.meta.className() != "Currency", "a is no longer of exact type Currency: "+a.meta.className());
+//    self.ok(a.meta.isa(Currency), "but a is still a currency")
+//    self.ok(a.getValue() == 12345678, "Method modifier from runtime role works")
+//    
+//    self.ok(a.meta.does(RuntimeRole), "does works for runtime roles")
+//    
+//    self.diag("Removing roles")
+//   
+//    self.skip(typeof {}.__proto__ == 'undefined', 
+//        "Experimental feature Role.unapply does not work in browser without object.__proto__", 
+//        6,
+//        function () {
+//            RuntimeRole.meta.unapply(a);
+//            self.ok(!a.meta.does(RuntimeRole), "Role was removed")
+//            self.ok(!a.meta.can("appliedAtRuntime"), "... object reports that method from removed role is gone")
+//            self.ok(typeof a.constructor.prototype.appliedAtRuntime == "undefined", "... method from role is gone from prototype")
+//            self.ok(typeof a.appliedAtRuntime == "undefined", "... method from role is gone")
+//            self.ok(a.getValue() != 12345678, "... method modifier is gone")
+//            self.ok(a.meta.isa(Currency), "but a is still a currency")
+//    
+//    })
+//    self.diag("Role inheritance");
+//    
+//    self.ok(Joose.Role.meta.c === Joose.Role, "The Joose.Role meta class knows about the Joose.Role class")
+//    
+//    self.throws_ok(function () {
+//        Class("EqLevel2", {
+//            isa: Eq,
+//            methods: {
+//                level2: function () { return 2 }
+//            }
+//        })
+//    }, /Roles may not inherit from a super class./, "Roles may not inherit from a super class.")
+//    
+//    self.diag("Method modifiers in roles")
+//    
+//    var sayString = ""
+//    function printToSayString(msg) {
+//        sayString += msg + "\n"
+//    }
+//    
+//    Class("Person", {
+//        methods: {
+//            sayHello: function () {
+//                printToSayString("Hello!")
+//            }
+//        }
+//    })
+//    
+//    Role("Stuttering", {
+//        around: {
+//            // say it twice
+//            sayHello: function (orig) {
+//                orig()
+//                orig()
+//            }
+//        },
+//        override: {
+//            // say Stutter and and say what was defined before
+//            sayHello: function () {
+//                printToSayString("Stutter")
+//                this.SUPER()
+//            }
+//        }
+//    })
+//    
+//    Role("ShyPerson", {
+//        before: {
+//            sayHello: function () {
+//                printToSayString("May I talk to you?")
+//            }
+//        }
+//    })
+//    
+//    Role("Introduction", {
+//        after: {
+//            sayHello: function () {
+//                printToSayString("I am a Joose user.")
+//            }
+//        }
+//    })
+//    
+//    Class("Person", {
+//        methods: {
+//            sayHello: function () {
+//                printToSayString("Hello!")
+//            }
+//        }
+//    })
+//    
+//    
+//    Class("Eve", {
+//        isa: Person,
+//        does: [
+//            Introduction,
+//            ShyPerson
+//        ]
+//    })
+//    
+//    Class("Adam", {
+//        isa: Person,
+//        does: [
+//            Introduction,
+//            ShyPerson,
+//            Stuttering
+//        ]
+//    })
+//    
+//    var eve = new Eve();
+//    sayString = ""
+//    eve.sayHello()
+//    self.ok(sayString == "May I talk to you?\nHello!\nI am a Joose user.\n", "Method modifiers in roles work (before, after): "+sayString)
+//    
+//    var adam = new Adam();
+//    sayString = ""
+//    adam.sayHello()
+//    self.ok(sayString == "Stutter\nMay I talk to you?\nHello!\nI am a Joose user.\nMay I talk to you?\nHello!\nI am a Joose user.\n", "Method modifiers in roles work (before, after, around, override. Multi override in the same role)")
+//    
+//    
+//    self.lives_ok(function () {
+//        Class("TestMethodModifierFromRole", {
+//            does: [Introduction],
+//            methods: {
+//                sayHello: function () {
+//                    printToSayString("Hello!")
+//                }
+//            }
+//        });
+//        
+//        
+//    }, "Roles with modifiers can be applied to classes that implement the required roles directly");
+//    try {
+//        sayString = "";
+//        new TestMethodModifierFromRole().sayHello();
+//        self.ok(sayString == "Hello!\nI am a Joose user.\n", "Result from method modifier in Role is correct. "+sayString)
+//    } catch (e) {
+//        self.ok(false, "Result from method modifier in Role is correct. "+e)
+//    }
+//    
+//    self.diag("Validation errors")
+//    Role("Requirer", {
+//        requires: ["implementMe"]
+//    })
+//    self.throws_ok(function () {    
+//        Class("NoImpl", {
+//            does: [Requirer],
+//            methods: {
+//                other: function () {}
+//            }
+//        })
+//    }, /Class NoImpl does not fully implement the role Requirer. The method is implementMe missing./,
+//       "A missing required method throws correct error")
+//    
+//    self.throws_ok(function () {    
+//        Requirer.meta.apply(adam);
+//    }, /Class Adam__anon__\d+ does not fully implement the role Requirer. The method is implementMe missing./,
+//       "A missing required method throws correct error")
+//
+//
+//    Role("ModifierRequirer", {
+//        around: {
+//            wrap: function () {
+//    
+//            }
+//        }
+//    })
+//    self.throws_ok(function () {    
+//        Class("NoModifier", {
+//            does: [ModifierRequirer],
+//            methods: {
+//                other: function () {}
+//            }
+//        })
+//    }, /Unable to apply around method modifier because method wrap does not exist/,
+//       "If a role tries to modify a non-existant error the correct exception is thrown.")
+//    
+//    self.diag("Meta roles")
+//    
+//    Role("MetaRole", {
+//        methods: {
+//            handlePropspecial: function (para) {
+//                var ret = para;
+//                this.addMethod("special", function () {
+//                    return ret
+//                })
+//            }
+//        }
+//    })
+//    
+//    Role("RoleWithMetaRole", {
+//        metaRoles: [MetaRole],
+//        methods: {
+//            myMethod: function () {
+//                return "test"
+//            }
+//        }
+//    })
+//    
+//    Class("ClassWithMetaRole", {
+//        does: [RoleWithMetaRole],
+//        special: "foo"
+//    })
+//    
+//    self.ok(ClassWithMetaRole.meta.can("myMethod"), "Method from role arrived")
+//    self.ok(ClassWithMetaRole.meta.meta.can("handlePropspecial"),  "Method from meta role arrived")
+//    self.ok(!Adam.meta.meta.can("handlePropspecial"),  "Method from meta role was not added to other classes of the same meta class")
+//    self.ok(ClassWithMetaRole.meta.can("special"),  "Handler from meta role was executed")
+//    var obj = new ClassWithMetaRole()
+//    self.ok(obj.special() == "foo", "Method from meta role returns correct result")
+}
+return t;
+})();
