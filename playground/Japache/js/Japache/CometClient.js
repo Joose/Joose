@@ -6,8 +6,7 @@ Module("Japache", function() {
         
         has: {
             url: {
-                is: "rw",
-                required: true
+                is: "rw"
             },
             callback: {
                 is: "rw",
@@ -31,18 +30,18 @@ Module("Japache", function() {
                 this.setDoDisconnect(true)
             },
         
-            listen: function () {
+            listen: function (paras) {
                 var self = this;
                 var handleResponse = function (text) {
                     self.handleResponse(text);
                     if(!self.doDisconnect) {
                         timer.setTimeout(function () {
-                            self.listen();
+                            self.listen(paras);
                         }, 500)
                     }
                 }
                 
-                this.ajaxRequest("POST", this.getUrl(), null, handleResponse, function (err) {
+                this.ajaxRequest("POST", this.getUrl(), paras, handleResponse, function (err) {
                     self.log(err)
                 })
             },
