@@ -1,6 +1,6 @@
 (function () {
 var testobj = new Test.TAP.Class();
-testobj.plan(32)
+testobj.plan(39)
 
 testobj.testMethodSignatures = function() {
     var t = this;
@@ -40,6 +40,15 @@ testobj.testMethodSignatures = function() {
     // builder syntax
     t.diag("Testing builder syntax for typed methods")
     
+    Class("SomeClass", {
+    })
+    
+    Class("SomeSubClass", {
+        isa: SomeClass,
+        does: Joose.Storage
+    })
+    
+    
     Class("TypedMethodLiteral", {
         methods: {
             typed: {
@@ -51,6 +60,13 @@ testobj.testMethodSignatures = function() {
                 signature: [Joose.Type.Int, Joose.Type.Int],
                 method:    function add (a, b) { return a + b },
                 coerce:    true
+            },
+            
+            withTypeClassAndRole: {
+                signature: [Joose.Type.Str, SomeClass, Joose.Storage],
+                method:    function (str, anObject, role) {  
+                    return "test"
+                }
             }
         }
     })
@@ -87,6 +103,36 @@ testobj.testMethodSignatures = function() {
     t.throws_ok(function () {
         o.add("str", 1)
     }, /The passed value/, "Calling with incoercable types throws exception")
+    
+    // Types, Classes and Roles
+    t.diag("Types, Classes and Roles")
+    
+    t.ok(o.meta.can("withTypeClassAndRole"), "Typed method is there");
+    t.ok(typeof o.withTypeClassAndRole === "function", "There is actually a function in the spot");
+    
+    
+    var obj = new SomeClass();
+    var sub = new SomeSubClass(); // does Joose.Storage
+    
+    t.lives_ok(function () {
+        o.withTypeClassAndRole("test", obj, sub);
+    }, "setting correct types throws no exception (class, role)")
+    
+    t.lives_ok(function () {
+        o.withTypeClassAndRole("test", sub, sub);
+    }, "setting correct types throws no exception (subclass, role)")
+
+    t.throws_ok(function () {
+        o.withTypeClassAndRole(1, obj, sub)
+    }, /The passed value/, "Calling with incorrect types throws exception (no str)")
+    
+    t.throws_ok(function () {
+        o.withTypeClassAndRole("test", obj, obj)
+    }, /The parameter 2 only accepts values that are objects of type Joose.Storage/, "Calling with incorrect types throws exception (role missing)")
+    
+    t.throws_ok(function () {
+        o.withTypeClassAndRole("test", o, sub)
+    }, /The parameter 1 only accepts values that are objects of type SomeClass/, "Calling with incorrect types throws exception (not correct class)")
     
     t.diag("inheritance")
     Class("SubTypedMethodLiteral", {
@@ -166,6 +212,8 @@ testobj.testMethodSignatures = function() {
     t.throws_ok(function () {
         o.multiply(1, 2, "foo")
     }, /The passed value/, "Calling with incorrect types throws exception")
+    
+    t.diag("Example")
 
 };
 
