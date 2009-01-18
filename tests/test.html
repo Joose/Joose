@@ -66,7 +66,8 @@
         '18_custom_builders.t.js',
         //'19_exceptions.t.js'          // still to implement
         '20_singleton.t.js',
-        '21_method_signatures.t.js'
+        '21_method_signatures.t.js',
+        '22_multi_method.t.js'
         ];
     
     var testlib = '.';
@@ -88,8 +89,9 @@
 	    loadScriptFile("../joose.mini.js")
 	}
 	else {
-		var html  = '<script type="text/javascript" src="../lib/Joose.js"><'+'/script>'
-		    html += '<script type="text/javascript">joose.loadComponents("../lib")<'+'/script>'
+		var html  = '<script type="text/javascript" src="../lib/Joose.js"><'+'/script>';
+		    html += '<script type="text/javascript">joose.loadComponents("../lib")<'+'/script>';
+		    html += '<script type="text/javascript" src="../lib/JooseX/MultiMethod.js" ><'+'/script>';
 		document.write(html)
 	}
    
