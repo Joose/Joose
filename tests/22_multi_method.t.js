@@ -1,6 +1,6 @@
 (function () {
 var testobj = new Test.TAP.Class();
-testobj.plan(7)
+testobj.plan(10)
 
 testobj.testMultiMethod = function() {
     var t = this;
@@ -23,29 +23,11 @@ testobj.testMultiMethod = function() {
             }
         },
         {
-            signature : [TYPE.Str],
-            fun       : function() {
-                return "fooString";
-            }
-        },
-        {
-            signature : [Array],
-            fun       : function() {
-                return "fooArray";
-            }
-        },
-        {
             signature : [TYPE.Str, TYPE.Func],
             fun       : function() {
                 return "fooStringFunc";
             }
         },
-        {
-            signature : [Object],
-            fun       : function() {
-                return "fooObject";
-            }
-        }
     ];
     method.setPatterns(patterns);
     MultiMethodTestClass.meta.addMethodObject(method);
@@ -54,12 +36,25 @@ testobj.testMultiMethod = function() {
     
     t.ok(o.meta.can("multi"), "Method is there");
     t.ok(typeof o.multi === "function", "There is actually a function in the spot");
-    
+   
+    var result;
     t.lives_ok(function () {
         result = o.multi();
     }, "calling with correct argument signature lives")
+    
+    t.is(result, "foo", "result from method call is correct")
    
-    t.ok(result === "foo", "result from method call is correct")
+    var result2;
+    t.lives_ok(function () {
+        result2 = o.multi("blah", function() {});
+    }, "calling with a different correct argument signature lives")
+   
+    t.ok(result != result2, 
+        "result from method calls with different signatures "
+         + "produce different results")
+    
+    t.is(result2, "fooStringFunc", "result from second signature for method" 
+        + "call is correct")
     
     // exceptions
     t.throws_ok(function () {
