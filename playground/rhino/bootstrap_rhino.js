@@ -18,5 +18,4 @@ for ( x in comps ) {
 
 var extpath = root+'ext/';
 loadlib(extpath+'Test/TAP.js');
-loadlib(extpath+'Test/TAP/Runner.js');
 loadlib(extpath+'Test/TAP/Class.js');
