@@ -1,6 +1,6 @@
 (function () {
 var testobj = new Test.TAP.Class();
-testobj.plan(10)
+testobj.plan(13);
 
 testobj.testMultiMethod = function() {
     var t = this;
@@ -18,7 +18,7 @@ testobj.testMultiMethod = function() {
     var patterns = [
         {
             signature : [],
-            fun       : function() {
+            method       : function() {
                 return "foo";
             }
         },
@@ -27,13 +27,13 @@ testobj.testMultiMethod = function() {
         // this is considered a feature
         {
             signature : ["quux", TYPE.Func],
-            fun       : function() {
+            method       : function() {
                 return "fooQUUX";
             }
         },
         {
             signature : [TYPE.Str, TYPE.Func],
-            fun       : function() {
+            method       : function() {
                 return "fooStringFunc";
             }
         }
@@ -76,6 +76,41 @@ testobj.testMultiMethod = function() {
     // builder syntax
     //t.diag("Testing builder syntax for typed methods")
     
+    Class('MultiDispatchClassSyntax', {
+        has: { 
+            infoLog: {is: 'rw'}
+            , debugLog: {is: 'rw'}
+        },
+        methods: {
+            log: [
+                {
+                    signature: ["info", TYPE.Str],
+                    method:    function(type, str) {
+                        this.setInfoLog(str);
+                    }
+                }
+                , {
+                    signature: ["debug", TYPE.Str],
+                    method:    function(type, str) {
+                        this.setDebugLog(str);
+                    }
+                }
+                , {
+                    signature: [TYPE.Str, Object],
+                    method:    function(type, obj) {
+                        this.log(type, "Object: foo Encountered");
+                    }
+                }
+            ]
+        }
+    });
+
+    var testobj = new MultiDispatchClassSyntax();
+    t.ok(typeof testobj.log == 'function', 'our function is there');
+    
+    testobj.log("info", "log one for info");
+    t.is(testobj.getInfoLog(), "log one for info", 
+        'the method dispatched correctly');
 };
 
 return testobj;
