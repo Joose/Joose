@@ -6,7 +6,7 @@ testobj.testMultiMethod = function() {
     var t = this;
     t.diag("Sanity");
     t.ok(Joose,   "Joose is here");
-    t.ok(JooseX.MultiMethod,   "We have the MultiMethod class");
+    t.ok(Joose.MultiMethod,   "We have the MultiMethod class");
 
     Class("MultiMethodTestClass", {
         methods: {
@@ -14,7 +14,7 @@ testobj.testMultiMethod = function() {
         }
     });
     
-    var method = new JooseX.MultiMethod("multi", function () {}, {});
+    var method = new Joose.MultiMethod("multi", function () {}, {});
     var patterns = [
         {
             signature : [],
