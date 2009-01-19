@@ -22,6 +22,9 @@ testobj.testMultiMethod = function() {
                 return "foo";
             }
         },
+        // Order matters. So this signature has to come before the other
+        // Rule of thumb more specific matches go before more general matches.
+        // this is considered a feature
         {
             signature : ["quux", TYPE.Func],
             fun       : function() {
