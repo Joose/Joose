@@ -23,11 +23,17 @@ testobj.testMultiMethod = function() {
             }
         },
         {
+            signature : ["quux", TYPE.Func],
+            fun       : function() {
+                return "fooQUUX";
+            }
+        },
+        {
             signature : [TYPE.Str, TYPE.Func],
             fun       : function() {
                 return "fooStringFunc";
             }
-        },
+        }
     ];
     method.setPatterns(patterns);
     MultiMethodTestClass.meta.addMethodObject(method);
@@ -61,7 +67,9 @@ testobj.testMultiMethod = function() {
         o.multi(1,2,3)
     }, /multi-method type method call with no matching signature/, 
         "Calling with incorrect signature throws exception")
-    
+
+    t.is(o.multi("quux", function() {}), "fooQUUX",
+        'dispatched on value also')    
     // builder syntax
     //t.diag("Testing builder syntax for typed methods")
     
