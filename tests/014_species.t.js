@@ -22,6 +22,8 @@ testobj.testSanity = function() {
 
     this.ok(Joose.Kernel.Species.meta.hasMethod('defaultClassFunctionBody'), 'Species can defaultClassFunctionBody - inherited(!)');
     this.ok(Joose.Kernel.Species.meta.hasMethod('attributeMetaclass'), 'Species can attributeMetaclass - inherited(!)');
+    
+    this.ok(Joose.Kernel.Species.meta.methodConstructor == Joose.Kernel.ProtoMethod, "Species's methods are ProtoMethods");
 };
 
 return testobj;

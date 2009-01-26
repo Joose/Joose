@@ -33,6 +33,7 @@ testobj.testSanity = function() {
     this.ok(Joose.Kernel.Reptiles.isa(Joose.Kernel.Viviparity), "Reptiles ISA Viviparity");
     this.ok(Joose.Kernel.Reptiles.isa(Joose.Kernel.Parthenogenesis), "Reptiles ISA Parthenogenesis");
     
+    this.ok(Joose.Kernel.Reptiles.meta.methodConstructor == Joose.Kernel.ProtoMethod, "Reptiles's methods are ProtoMethods");
 };
 
 return testobj;
