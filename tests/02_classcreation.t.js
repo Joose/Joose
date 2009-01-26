@@ -7,7 +7,7 @@ t.diag("MetaClass");
 
 t.testClassCreation = function () {
     this.ok(Joose.Class, "We have the meta class")
-    this.ok(Joose.Class.meta.isa(Joose.MetaClass), "meta class isa MetaClass")
+    this.ok(Joose.Class.meta.isa(Joose.Kernel.MetaClass), "meta class isa MetaClass")
             
     this.diag("Class creation");
     Class("TestClass", {

@@ -29,7 +29,6 @@ testobj.testSanity = function() {
 
     this.ok(metaClass.meta.attributeConstructor == Joose.Kernel.AdvancedProtoAttribute, "Attributes upgraded");
     this.ok(metaClass.prototype.attributeConstructor == Joose.Kernel.AdvancedProtoAttribute, "Attributes upgraded #2");
-    this.ok(metaClass.prototype.attributeConstructor == Joose.Kernel.ProtoAttribute, "Attributes upgraded #3");
     
 };
 
