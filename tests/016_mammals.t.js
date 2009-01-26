@@ -20,6 +20,17 @@ testobj.testSanity = function() {
     this.ok(Joose.Kernel.Mammals.isa(Joose.Kernel.Mammals), "Mammals ISA Mammals");
     this.ok(Joose.Kernel.Mammals.isa(Joose.Kernel.Species), "Mammals ISA Species");
     
+    this.ok(Joose.Kernel.Mammals.meta.methodConstructor == Joose.Kernel.ProtoMethod, "Mammals's methods are ProtoMethods");
+    this.ok(Joose.Kernel.Mammals.prototype.methodConstructor == Joose.Kernel.ProtoMethod, "Mammals's methods are ProtoMethods #2");
+    
+    var metaClassMeta = new Joose.Kernel.Mammals('Joose.Kernel.MetaClass');
+	metaClassMeta.addSuperClass(Joose.Kernel.Mammals);
+	var metaClass = metaClassMeta.getClassObject();
+
+    this.ok(metaClass.meta.attributeConstructor == Joose.Kernel.AdvancedProtoAttribute, "Attributes upgraded");
+    this.ok(metaClass.prototype.attributeConstructor == Joose.Kernel.AdvancedProtoAttribute, "Attributes upgraded #2");
+    this.ok(metaClass.prototype.attributeConstructor == Joose.Kernel.ProtoAttribute, "Attributes upgraded #3");
+    
 };
 
 return testobj;
