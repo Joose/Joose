@@ -1,6 +1,6 @@
-// This is Joose 2.0rc2
+// This is Joose 2.0rc3
 // For documentation see http://code.google.com/p/joose-js/
-// Generated: Sat Jan 24 20:18:09 2009
+// Generated: Mon Jan 26 23:00:12 2009
 
 
 // ##########################
@@ -142,6 +142,7 @@ Joose.prototype = {
             "Joose.Types",
             "Joose.Prototype",
             "Joose.TypedMethod",
+            "Joose.MultiMethod"
         ]
     },
 
@@ -1017,7 +1018,15 @@ Joose.MetaClassBootstrap.prototype = {
             // if func is already a method object, we use that
             if(typeof func !== "function") {
                 var props  = func; // the function must now be a property hash
-                var method = Joose.TypedMethod.newFromProps(name, props)
+                var method;
+                if (props instanceof Array) {
+                    var patterns = props; // the props are actually an array
+                                          // for MultiMethod dispatch.
+                    method = new Joose.MultiMethod
+                        .newFromPatterns(name, patterns);
+                } else {
+                    method = Joose.TypedMethod.newFromProps(name, props)
+                }
                 me.addMethodObject(method)
             } 
             // otherwise we create a method object from the function
@@ -3568,3 +3577,193 @@ Class("Joose.PrototypeLazyMetaObjectProxy", {
 Joose.bootstrap3()
 
 })(JooseClass);
+
+// ##########################
+// File: Joose/TypedMethod.js
+// ##########################
+(function (Class, Type) {
+
+Class("Joose.TypedMethod", {
+    isa: Joose.Method,
+    
+    has: {
+        types: {
+            isa: Joose.Type.Array,
+            is:  "rw",
+            init: function () { return [] }
+        },
+        
+        typeCheckers: {
+            init: function () { return [] }
+        }
+    },
+    
+    after: {
+        setTypes: function () {
+            var self         = this;
+            var typeCheckers = [];
+            var props        = this.getProps();
+            
+            Joose.A.each(this.getTypes(), function (type, index) {
+                if(type === null) {
+                    // if there is no type in a spot, dont push a type checker
+                    typeCheckers.push(null)
+                } else {
+                    typeCheckers.push(Joose.TypeChecker.makeTypeChecker(type, props, "parameter", index))
+                }
+            })
+            
+            this.typeCheckers = typeCheckers
+        }
+    },
+    
+    override: {
+        copy: function () {
+            var self = this.SUPER();
+            // copy types;
+            var copy = [].concat(this.types)
+            self.setTypes( copy ); 
+            return self;
+        }
+    },
+    
+    methods: {
+        
+        wrapTypeChecker: function(body) {
+            var self = this;
+            return function typeCheckWrapper () {
+                var checkers = self.typeCheckers;
+                var args = [];
+                // iterate over type checkers and arguments
+                for(var i = 0, len = checkers.length; i < len; ++i) {
+                    var checker = checkers[i]
+                    if(checker !== null) {
+                        var argument = arguments[i]
+                        args[i]      = checker(argument)
+                    } 
+                    // If the type checker is null, dont type check
+                    else {
+                        args[i]      = arguments[i]
+                    }
+                }
+                return body.apply(this, args)
+            }
+        },
+        
+        // Returns the function that will later be added to objects
+        asFunction: function () {
+            return this.wrapTypeChecker(this._body)
+        }
+    },
+    
+    classMethods: {
+        newFromProps: function (name, props) {
+            var method = props.method;
+            if(typeof method !== "function") {
+                throw new Error("Property method in method declaration ["+name+"] must be a function.")
+            }
+            var self   = this.meta.instantiate(name, method, props);
+            self.setTypes(props.signature);
+            return self;
+        }
+    }
+
+})
+
+})(JooseClass, JooseType);
+
+// ##########################
+// File: Joose/MultiMethod.js
+// ##########################
+Module('Joose.Type', function() {
+    Type('MethodPatternList', {
+        uses: Joose.Type.Array,
+        where: function(p) {
+            var ok = 0;
+            for (var i in p) {
+                var pattern = p[i];
+                if (pattern.signature instanceof Array
+                    && typeof pattern.method == 'function') {
+                    ok++;
+                }
+            }
+            return p.length == ok;
+        }
+    });
+});
+
+Class('Joose.MultiMethod', {
+    isa: Joose.Method,
+    
+    has: {
+        patterns: {
+            is: 'rw',
+            isa: Joose.Type.MethodPatternList,
+            init: function() { return [] }
+        }
+    },
+   
+    override: {
+        copy: function() {
+            var self = this.SUPER();
+            var patternCopy = [].concat(this.getPatterns());
+            self.setPatterns( patternCopy );
+            return self;
+        }
+    },
+
+    methods: {
+        // return the correct signature for
+        // our argument list or a function that 
+        // will throw an error
+        getFunForSignature: function() {
+            var args = arguments;
+            var self = this;
+            for (var item in self.getPatterns()) {
+                var method = self.getPatterns()[item];
+                var sig = method.signature;
+                var matches = 0;
+                if (sig.length == args.length) {
+                    if (sig.length > 0) {
+                        for (var i=0; i < sig.length; i++) {
+                            if (sig[i] instanceof Joose.TypeConstraint
+                                && sig[i].validateBool(args[i])) {
+                                    matches++;
+                            } else if (sig[i] instanceof Object 
+                                && args[i] instanceof sig[i]) {
+                                    matches++;
+                            } else if (args[i] == sig[i]) {
+                                matches++;
+                            }
+                        }
+                    }
+                    if (matches == sig.length)
+                        return method.method;
+                }
+            }
+            return function () {
+                    throw new ReferenceError("multi-method type method call " 
+                        +"with no matching signature");
+                };
+        },
+        // returns a closure that will always dispatch on the correct method
+        // for our signature but can be attached to an object as a method
+        asFunction: function() {
+            var self = this;
+            //TODO(jwall): perform caching of method returns?
+            return function() {
+                var myself = this;
+                var args = arguments;
+                var fun = self.getFunForSignature.apply(self, args);
+                return fun.apply(myself, args);
+            }
+        }
+    },
+    classMethods: {
+        newFromPatterns: function(name, patterns) {
+            method = new Joose.MultiMethod(name, function() {}, {});
+            method.setPatterns(patterns);
+            return method;
+        }
+    }
+});
