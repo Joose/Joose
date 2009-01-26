@@ -214,6 +214,31 @@ testobj.testMethodSignatures = function() {
     }, /The passed value/, "Calling with incorrect types throws exception")
     
     t.diag("Example")
+    
+    var form = { addMe: { value: 2 } }
+    
+    // Make a class thats adds to its instance variable "amount"
+    Class("Adder", {
+        has: {
+            amount: { is: "rw" }
+        },
+        methods: {
+            // add is a method with a signature
+            add: {
+                signature: [Joose.Type.Int], // the first parameter must be an integer
+                method:    function add (num) {
+                    return num + this.amount // add the argument num to our instance var amount
+                },
+                coerce:    true // enable coercions for arguments
+            }
+        }
+    })
+    
+    // Make an adder that always adds 3
+    var addTo3 = new Adder({ amount: 3 })
+    
+    // add 3 to the value of the input field
+    //alert(addTo3.add(form.addMe.value));
 
 };
 
