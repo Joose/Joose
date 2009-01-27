@@ -80,8 +80,8 @@ t.testMetaClass = function() {
     self.ok(o.meta instanceof TestMeta, "first meta level is instanceof TestMeta")
     self.ok(TestMeta.meta instanceof Joose.Class, "Meta Class of TestMeta is Joose.Class")
     self.ok(o.meta.meta instanceof Joose.Class, "second meta level is instanceof Joose.Class")
-    self.ok(o.meta.meta.meta instanceof Joose.MetaClass, "third meta level is instanceof Joose.MetaClass")
-    self.ok(o.meta.meta.meta.meta instanceof Joose.MetaClassBootstrap, "fourth meta level is instanceof Joose.MetaClassBootstrap")
+    self.ok(o.meta.meta.meta instanceof Joose.Kernel.MetaClass, "third meta level is instanceof Joose.Kernel.MetaClass")
+    self.ok(o.meta.meta.meta.meta instanceof Joose.Kernel.Mammals, "fourth meta level is instanceof Joose.Kernel.Mammals")
     
     
     self.can_ok(o.meta, "addMethod")

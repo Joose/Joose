@@ -9,7 +9,7 @@ testobj.testSanity = function() {
     this.is("" + Joose.Kernel.ProtoModule,'Joose.Kernel.ProtoModule', "Joose.Kernel.ProtoModule stringified correctly");
     this.is("" + Joose.Kernel.ProtoModule.meta,'a Joose.Kernel.Mammals', "ProtoModule's meta stringified to Mammals");
     
-    this.ok(Joose.Kernel.ProtoModule.meta.methodConstructor == Joose.Kernel.ProtoMethod, "Mammals's methods are ProtoMethods");
+    this.ok(Joose.Kernel.ProtoModule.meta.methodConstructor == Joose.Kernel.ProtoMethod, "ProtoModule's methods are ProtoMethods");
     
 //    this.ok(Joose.Kernel.ProtoModule.meta.classIsa(Joose.Kernel.ProtoModule), "ProtoModule ISA ProtoModule");
 //    this.ok(Joose.Kernel.ProtoModule.meta.classIsa(Joose.Kernel.Reptiles), "ProtoModule ISA Reptiles");
