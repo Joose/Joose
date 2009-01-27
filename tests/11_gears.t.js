@@ -105,6 +105,7 @@ t.testGearsSupport = function() {
     
     var gt = new HardWork();
     
+    self.ok(gt, "HardWork was instantiated")
     //alert("Gears")
     
     self.ok(gt.data, "Data member is here")
