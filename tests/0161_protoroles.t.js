@@ -28,7 +28,7 @@ t.testRoles = function() {
     
     
     
-    Currency = (new Joose.Kernel.Reptiles("Currency")).getClassObject();
+    Currency = (new Joose.Kernel.Mammals("Currency")).getClassObject();
     Currency.meta.addRole(Eq);
     Currency.meta.addGenes({
     	value : null,
@@ -41,10 +41,10 @@ t.testRoles = function() {
     
     self.ok(Currency.meta.does(Eq), "does works for roles");
     
-    SubCurrency = (new Joose.Kernel.Reptiles("SubCurrency")).getClassObject();
+    SubCurrency = (new Joose.Kernel.Mammals("SubCurrency")).getClassObject();
     SubCurrency.meta.addSuperClass(Currency);
     
-    TestClass = (new Joose.Kernel.Reptiles("TestClass")).getClassObject();
+    TestClass = (new Joose.Kernel.Mammals("TestClass")).getClassObject();
     TestClass.meta.addGenes({
     	initialize : Joose.emptyFunction,
         orig: function () {

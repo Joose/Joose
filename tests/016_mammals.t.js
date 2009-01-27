@@ -23,13 +23,7 @@ testobj.testSanity = function() {
     this.ok(Joose.Kernel.Mammals.meta.methodConstructor == Joose.Kernel.ProtoMethod, "Mammals's methods are ProtoMethods");
     this.ok(Joose.Kernel.Mammals.prototype.methodConstructor == Joose.Kernel.ProtoMethod, "Mammals's methods are ProtoMethods #2");
     
-    var metaClassMeta = new Joose.Kernel.Mammals('Joose.Kernel.MetaClass');
-	metaClassMeta.addSuperClass(Joose.Kernel.Mammals);
-	var metaClass = metaClassMeta.getClassObject();
-
-    this.ok(metaClass.meta.attributeConstructor == Joose.Kernel.AdvancedProtoAttribute, "Attributes upgraded");
-    this.ok(metaClass.prototype.attributeConstructor == Joose.Kernel.AdvancedProtoAttribute, "Attributes upgraded #2");
-    
+    this.ok(Joose.Kernel.Mammals.meta.attributeConstructor == Joose.Kernel.ProtoAttribute, "Mammals's attributes are ProtoAttributes");
 };
 
 return testobj;
