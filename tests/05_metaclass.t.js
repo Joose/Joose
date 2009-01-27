@@ -80,7 +80,10 @@ t.testMetaClass = function() {
     self.ok(o.meta instanceof TestMeta, "first meta level is instanceof TestMeta")
     self.ok(TestMeta.meta instanceof Joose.Class, "Meta Class of TestMeta is Joose.Class")
     self.ok(o.meta.meta instanceof Joose.Class, "second meta level is instanceof Joose.Class")
+    
+    self.diag("3rd level: " + o.meta.meta.meta);
     self.ok(o.meta.meta.meta instanceof Joose.Kernel.MetaClass, "third meta level is instanceof Joose.Kernel.MetaClass")
+    self.diag("4th level: " + o.meta.meta.meta.meta);
     self.ok(o.meta.meta.meta.meta instanceof Joose.Kernel.Mammals, "fourth meta level is instanceof Joose.Kernel.Mammals")
     
     
