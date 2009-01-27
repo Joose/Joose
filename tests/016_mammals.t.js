@@ -24,6 +24,8 @@ testobj.testSanity = function() {
     this.ok(Joose.Kernel.Mammals.prototype.methodConstructor == Joose.Kernel.ProtoMethod, "Mammals's methods are ProtoMethods #2");
     
     this.ok(Joose.Kernel.Mammals.meta.attributeConstructor == Joose.Kernel.ProtoAttribute, "Mammals's attributes are ProtoAttributes");
+    
+    this.ok(Joose.Kernel.Mammals.meta.isAbstract === false, "Attributes added via addGenes are initilized correctly");
 };
 
 return testobj;

@@ -13,11 +13,11 @@ testobj.testSanity = function() {
     this.ok(Joose.Kernel.MetaClass.prototype.methodConstructor == Joose.Kernel.ProtoMethod, "MetaClass's methods are ProtoMethods");
     
     var testClassMeta = new Joose.Kernel.MetaClass('TestClass');
-	testClassMeta.addSuperClass(Joose.Kernel.Mammals);
+	testClassMeta.addSuperClass(Joose.Kernel.MetaClass);
 	var TestClass = testClassMeta.getClassObject();
 
-    this.ok(TestClass.meta.attributeConstructor == Joose.Kernel.AdvancedProtoAttribute, "Attributes upgraded");
-    this.ok(TestClass.prototype.attributeConstructor == Joose.Kernel.AdvancedProtoAttribute, "Attributes upgraded #2");
+    this.ok(TestClass.meta.attributeConstructor == Joose.Attribute, "Attributes of MetaClass itself were upgraded to Joose.Attribute");
+    this.ok(TestClass.prototype.attributeConstructor == Joose.Attribute, "Attributes of further classes were also upgraded");
     
     
 //    this.ok(Joose.Kernel.MetaClass.meta.classIsa(Joose.Kernel.MetaClass), "MetaClass ISA MetaClass");
