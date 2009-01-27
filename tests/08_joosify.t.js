@@ -1,6 +1,6 @@
 (function() {
 var t = new Test.TAP.Class();
-t.plan(16)
+t.plan(15)
 
 t.testJoosify = function() {
     var self = this;
@@ -36,7 +36,7 @@ t.testBootstrap = function() {
     var self = this;
     self.diag("Bootstrap");
     
-    self.ok(Joose.Method.meta.getAttribute("_props"), "Joose.Method has attribute _props")
+//    self.ok(Joose.Method.meta.getAttribute("_props"), "Joose.Method has attribute _props")
     self.ok(Joose.Method.meta.getAttribute("_name"), "Joose.Method has attribute _name")
     self.ok(Joose.Method.meta.getAttribute("_body"), "Joose.Method has attribute _body")
     
