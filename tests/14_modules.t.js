@@ -1,6 +1,6 @@
 (function() {
 var t = new Test.TAP.Class();
-t.plan(35)
+t.plan(34)
 
 var thistop = Test.prototype.top()
 
@@ -94,7 +94,7 @@ t.testModuleClass = function() {
     
     self.ok(__global__.nomodule, "There is a global module")
     
-    self.ok(__global__.nomodule.meta.meta.isa(Joose.Module), "it is actually a module :)")
+    self.ok(__global__.nomodule.meta.meta.isa(Joose.Kernel.ProtoModule), "it is actually a proto module :)")
     
     self.ok(Joose.A.exists(__global__.nomodule.meta.getNames(), "Joose.Class"), "Joose.Class is in it")
     
