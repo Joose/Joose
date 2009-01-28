@@ -5,11 +5,12 @@ t.plan(0);
 t.testMetaSerialization = function() {
     var self = this;
     Joose.Storage.meta.apply(Joose.Class)
-    Joose.MetaClass.meta.addMethod("toJSON", function () {
+    Joose.Kernel.MetaClass.meta.addMethod("toJSON", function () {
         return "__META__"
     })
     Joose.Storage.meta.apply(Joose.Attribute);
     Joose.Storage.meta.apply(Joose.Method);
+    Joose.Storage.meta.apply(Joose.ClassMethod);
     
     Class("Point", {
         has: {

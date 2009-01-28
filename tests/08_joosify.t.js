@@ -43,7 +43,7 @@ t.testBootstrap = function() {
     self.ok(Joose.Attribute.meta.getAttribute("_props"), "Joose.Attribute has attribute _props")
     self.ok(Joose.Attribute.meta.getAttribute("_name"), "Joose.Attribute has attribute _name")
     
-    self.ok(Joose.Method.meta.meta.className()    == "Joose.Class", "Joose.Method's meta class is of correct type")
+    self.ok(Joose.Method.meta.meta.className()    == "Joose.Kernel.MetaClass", "Joose.Method's meta class is of correct type")
     self.ok(Joose.Attribute.meta.meta.className() == "Joose.Kernel.MetaClass", "Joose.Attribute's meta class is of correct type")
 }
 
