@@ -1,6 +1,6 @@
-// This is Joose 2.0rc3
+// This is Joose 2.0
 // For documentation see http://code.google.com/p/joose-js/
-// Generated: Mon Jan 26 23:00:12 2009
+// Generated: Sat Jan 31 22:15:47 2009
 
 
 // ##########################
@@ -3329,7 +3329,7 @@ Class("Joose.TypeCoercion", {
 
 
 	Type('Null', {
-	    uses: TYPE.Any,
+	    uses: Joose.Type.Any,
 	    where: function(o) {
 	        if (o === null) {
 	            return true;
@@ -3339,7 +3339,7 @@ Class("Joose.TypeCoercion", {
 	});
 	
 	Type('NotNull', {
-	    uses: TYPE.Any,
+	    uses: Joose.Type.Any,
 	    where: function(o) {
 	        if (o === null) {
 	            return false;
@@ -3349,7 +3349,7 @@ Class("Joose.TypeCoercion", {
 	});
 
 	Type('Enum', {
-	    uses: TYPE.NotNull,
+	    uses: Joose.Type.NotNull,
 	    message: function(v) {
 	        return "The passed value ["+v+"] is not "+
 	               (this.getProps().strictMatch?"*strictly* ":"")+
@@ -3373,7 +3373,7 @@ Class("Joose.TypeCoercion", {
 	});
 
 	Type('Obj', {
-	    uses: TYPE.NotNull,
+	    uses: Joose.Type.NotNull,
 	    where: function (o) {
 	        if ( o instanceof Object ) {
 	            return true;
@@ -3383,7 +3383,7 @@ Class("Joose.TypeCoercion", {
 	});
 
 	Type('Str', {
-	    uses: TYPE.NotNull,
+	    uses: Joose.Type.NotNull,
 	    where: function(S) {
 	        if ( typeof S == 'string' || S instanceof String ) {
 	            return true;
@@ -3391,7 +3391,7 @@ Class("Joose.TypeCoercion", {
 	        return false
 	    },
 	    coerce: [{
-	        from: TYPE.Any,
+	        from: Joose.Type.Any,
 	        via:  function (value) {
 	            if(value == null) {
 	                return ""
@@ -3403,7 +3403,7 @@ Class("Joose.TypeCoercion", {
 	});
 
 	Type('Num', {
-	    uses: TYPE.NotNull,
+	    uses: Joose.Type.NotNull,
 	    where: function(N) {
 	        if ( typeof N == 'number' || N instanceof Number ) {
 	            return true;
@@ -3411,7 +3411,7 @@ Class("Joose.TypeCoercion", {
 	        return false
 	    },
 	    coerce: [{
-	        from: TYPE.Str,
+	        from: Joose.Type.Str,
 	        via:  function (value) {
 	            if(value == null || value == "") return undefined;
 	            // TODO parse for valid format
@@ -3421,7 +3421,7 @@ Class("Joose.TypeCoercion", {
 	});
 
 	Type('Bool', {
-	    uses: TYPE.NotNull,
+	    uses: Joose.Type.NotNull,
 	    where: function(B) {
 	        if (B === true || B === false) {
 	            return true;
@@ -3429,7 +3429,7 @@ Class("Joose.TypeCoercion", {
 	        return false;
 	    },
 	    coerce: [{
-	        from: TYPE.Any,
+	        from: Joose.Type.Any,
 	        via:  function (value) {
 	            if(value == null || value === "") return false;
 	            if(value == 1 || value == "1" || value == "true") {
@@ -3444,7 +3444,7 @@ Class("Joose.TypeCoercion", {
 	});
 
 	Type('Int', {
-	    uses: TYPE.Num,
+	    uses: Joose.Type.Num,
 	    where: function(n) {
 	        var sn = String(n);
 	        if ( sn.match(/^\d*\.\d$/) ) {
@@ -3453,7 +3453,7 @@ Class("Joose.TypeCoercion", {
 	        return true;
 	    },
 	    coerce: [{
-	        from: TYPE.Str,
+	        from: Joose.Type.Str,
 	        via:  function (value) {
 	            if(value == null || value == "") return undefined;
 	            if(value.match(/^-{0,1}\d+$/)) {
@@ -3466,16 +3466,16 @@ Class("Joose.TypeCoercion", {
 
 	//TODO(jwall): Float is starting to look superfluous Floats are a superset of Int
 	//and javascript has no good way to differentiate between Num and Float
-	//It's only benefit is semantic sugar. TYPE.Float = TYPE.Num?
+	//It's only benefit is semantic sugar. Joose.Type.Float = Joose.Type.Num?
 	Type('Float', {
-	    uses: TYPE.Num,
+	    uses: Joose.Type.Num,
 	    where: function(n) {
 	        return true
 	    }
 	});
 
 	Type('Func', {
-	    uses: TYPE.Obj,
+	    uses: Joose.Type.Obj,
 	    where: function (f) {
 	        if ( typeof f == 'function' ) {
 	            return true;
@@ -3485,7 +3485,7 @@ Class("Joose.TypeCoercion", {
 	});
 
 	Type('Array', {
-	    uses: TYPE.Obj,
+	    uses: Joose.Type.Obj,
 	    where: function (A) {
 	        if ( Object.prototype.toString.call(A) === '[object Array]' ) {
 	            return true;
@@ -3495,7 +3495,7 @@ Class("Joose.TypeCoercion", {
 	});
 
 	Type('Date', {
-	    uses: TYPE.Obj,
+	    uses: Joose.Type.Obj,
 	    where: function (D) {
 	        if ( D instanceof Date ) {
 	            return true;
@@ -3503,7 +3503,7 @@ Class("Joose.TypeCoercion", {
 	        return false;
 	    },
 	    coerce: [{
-	        from: TYPE.Str,
+	        from: Joose.Type.Str,
 	        via:  function (value) {
 	            var match;
 	            if(value == undefined || value == "") {
@@ -3517,7 +3517,7 @@ Class("Joose.TypeCoercion", {
 	});
 
 	Type('Joose', {
-	    uses: TYPE.Obj,
+	    uses: Joose.Type.Obj,
 	    where: function (o) {
 	        //TODO not sure if this is correct yet.
 	        if ( o.meta && o.meta.meta.isa(Joose.Class) ) {
@@ -3719,26 +3719,29 @@ Class('Joose.MultiMethod', {
         getFunForSignature: function() {
             var args = arguments;
             var self = this;
-            for (var item in self.getPatterns()) {
-                var method = self.getPatterns()[item];
-                var sig = method.signature;
-                var matches = 0;
-                if (sig.length == args.length) {
-                    if (sig.length > 0) {
-                        for (var i=0; i < sig.length; i++) {
-                            if (sig[i] instanceof Joose.TypeConstraint
-                                && sig[i].validateBool(args[i])) {
+            var patterns = self.getPatterns();
+            for (var item in patterns) {
+                if(patterns.hasOwnProperty(item)) {
+                    var method = patterns[item];
+                    var sig = method.signature;
+                    var matches = 0;
+                    if (sig.length == args.length) {
+                        if (sig.length > 0) {
+                            for (var i=0; i < sig.length; i++) {
+                                if (sig[i] instanceof Joose.TypeConstraint
+                                    && sig[i].validateBool(args[i])) {
+                                        matches++;
+                                } else if (sig[i] instanceof Object 
+                                    && args[i] instanceof sig[i]) {
+                                        matches++;
+                                } else if (args[i] == sig[i]) {
                                     matches++;
-                            } else if (sig[i] instanceof Object 
-                                && args[i] instanceof sig[i]) {
-                                    matches++;
-                            } else if (args[i] == sig[i]) {
-                                matches++;
+                                }
                             }
                         }
+                        if (matches == sig.length)
+                            return method.method;
                     }
-                    if (matches == sig.length)
-                        return method.method;
                 }
             }
             return function () {
