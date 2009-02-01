@@ -6,3 +6,5 @@ perl release.pl -v "VERSION_STRING" -d PATH_TO_RELEASE_DIR
 The script will create a directory called joose-VERSION_STRING inside
 the directory PATH_TO_RELEASE_DIR. If the directory is already present 
 it will be wiped and overriden with the new release.
+
+Next the script will assemble a .tgz archive from the directory.
