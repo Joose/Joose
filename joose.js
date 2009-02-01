@@ -1,6 +1,6 @@
 // This is Joose 2.0
 // For documentation see http://code.google.com/p/joose-js/
-// Generated: Sat Jan 31 22:15:47 2009
+// Generated: Sun Feb  1 16:34:40 2009
 
 
 // ##########################
@@ -167,7 +167,7 @@ Joose.copyObject = function (source, target) {
 
 Joose.emptyFunction = function () {};
 
-var joose = new Joose();
+this.joose = new Joose();
 
 // Rhino is the only popular JS engine that does not traverse objects in insertion order
 // Check for Rhino (which uses the global Packages function) and set CHAOTIC_TRAVERSION_ORDER to true
