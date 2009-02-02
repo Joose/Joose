@@ -8,14 +8,26 @@ t.testModuleClass = function() {
     var self = this;
     self.ok(Joose.Module, "The module class is here")
     
-    Module("Com.test.module", function () {
-        Class("Test1", {
-            methods: { world: function () { return "hello" } }
-        });
-        Class("Test2", {
-            methods: { world: function () { return "hello" } }
-        })
-    })
+//    Module("Com.test.module", function () {
+//        Class("Test1", {
+//            methods: { world: function () { return "hello" } }
+//        });
+//        Class("Test2", {
+//            methods: { world: function () { return "hello" } }
+//        })
+//    })
+    
+    Module("Com.test.module", {
+	    body : function () {
+	        Class("Test1", {
+	            methods: { world: function () { return "hello" } }
+	        });
+	        Class("Test2", {
+	            methods: { world: function () { return "hello" } }
+	        })
+	    }
+    });
+    
     
     self.ok(Com.test.module, "There is something in the module spot")
     self.ok(Com.test.module.meta, "And is has a meta object")
