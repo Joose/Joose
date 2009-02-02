@@ -7,7 +7,7 @@ testobj.testSanity = function() {
     this.ok(Joose.Kernel.MetaClass, "Joose.Kernel.MetaClass is here");
     
     this.is("" + Joose.Kernel.MetaClass,'Joose.Kernel.MetaClass', "Joose.Kernel.MetaClass stringified correctly");
-    this.is("" + Joose.Kernel.MetaClass.meta,'a Joose.Kernel.Roles', "Joose.Kernel.MetaClass's meta stringified to Joose.Kernel.Roles");
+    this.is("" + Joose.Kernel.MetaClass.meta,'a Joose.Kernel.ProtoModule', "Joose.Kernel.MetaClass's meta stringified to Joose.Kernel.ProtoModule");
     
     this.ok(Joose.Kernel.MetaClass.meta.methodConstructor == Joose.Kernel.ProtoMethod, "Methods of Joose.Kernel.MetaClass's meta are Joose.Kernel.ProtoMethods");
     this.ok(Joose.Kernel.MetaClass.meta.attributeConstructor == Joose.Kernel.AdvancedProtoAttribute, "Attributes of Joose.Kernel.MetaClass's meta are Joose.Kernel.AdvancedProtoAttribute");

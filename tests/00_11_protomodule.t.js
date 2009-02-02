@@ -11,8 +11,10 @@ testobj.testSanity = function() {
     
     this.ok(Joose.Kernel.ProtoModule.meta.methodConstructor == Joose.Kernel.ProtoMethod, "Joose.Kernel.ProtoModule's methods are Joose.Kernel.ProtoMethod");
     
-    this.is("" + __global__.meta, 'a Joose.Kernel.ProtoModule', "__global__'s meta stringified to Joose.Kernel.ProtoModule");
-    this.ok(__global__.meta.meta.isa(Joose.Kernel.ProtoModule), "__global__'s meta isa Joose.Kernel.ProtoModule");
+    this.ok(__JOOSE_MODULE__.meta.meta.isa(Joose.Kernel.ProtoModule), "__JOOSE_MODULE__'s meta isa Joose.Kernel.ProtoModule");
+    this.is("" + __JOOSE_MODULE__, '__global__', "__JOOSE_MODULE__ stringified to __global__");
+    
+    this.ok(!__JOOSE_MODULE__.meta.namespaceFilled, "__JOOSE_MODULE__'s namespace is not filled");
 };
 
 return testobj;
