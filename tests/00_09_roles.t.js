@@ -7,7 +7,7 @@ testobj.testSanity = function() {
     this.ok(Joose.Kernel.Roles, "Joose.Kernel.Roles is here");
     
     this.is("" + Joose.Kernel.Roles,'Joose.Kernel.Roles', "Joose.Kernel.Roles stringified correctly");
-    this.is("" + Joose.Kernel.Roles.meta,'a Joose.Kernel.Handlers', "Joose.Kernel.Roles's meta stringified to Joose.Kernel.Handlers");
+    this.is("" + Joose.Kernel.Roles.meta,'a Joose.Kernel.ProtoModule', "Joose.Kernel.Roles's meta stringified to Joose.Kernel.ProtoModule");
     
     this.ok(Joose.Kernel.Roles.meta.classIsa(Joose.Kernel.Roles), "Joose.Kernel.Roles ISA Joose.Kernel.Roles");
     this.ok(Joose.Kernel.Roles.meta.classIsa(Joose.Kernel.Handlers), "Joose.Kernel.Roles ISA Joose.Kernel.Handlers");
@@ -22,9 +22,9 @@ testobj.testSanity = function() {
     this.ok(Joose.Kernel.Roles.meta.methodConstructor == Joose.Kernel.ProtoMethod, "Joose.Kernel.Roles's methods are Joose.Kernel.ProtoMethod");
     this.ok(Joose.Kernel.Roles.prototype.methodConstructor == Joose.Kernel.ProtoMethod, "Joose.Kernel.Roles's methods are Joose.Kernel.ProtoMethod #2");
     
-    this.ok(Joose.Kernel.Roles.meta.attributeConstructor == Joose.Kernel.ProtoAttribute, "Joose.Kernel.Roles's attributes are Joose.Kernel.ProtoAttribute");
+    this.ok(Joose.Kernel.Roles.meta.attributeConstructor == Joose.Kernel.AdvancedProtoAttribute, "Joose.Kernel.Roles's attributes are Joose.Kernel.AdvancedProtoAttribute");
     
-    this.ok(Joose.Kernel.Roles.meta.isAbstract === false, "Attributes added via addGenes are initilized correctly");
+    this.ok(Joose.Kernel.Roles.meta.isAbstract === false, "Attributes are initilized correctly");
 };
 
 return testobj;
