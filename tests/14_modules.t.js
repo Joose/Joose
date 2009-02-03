@@ -8,14 +8,8 @@ t.testModuleClass = function() {
     var self = this;
     self.ok(Joose.Kernel.ProtoModule, "The Joose.Kernel.ProtoModule class is here")
     
-//    Module("Com.test.module", function () {
-//        Class("Test1", {
-//            methods: { world: function () { return "hello" } }
-//        });
-//        Class("Test2", {
-//            methods: { world: function () { return "hello" } }
-//        })
-//    })
+    self.ok(__global__, "There is a global module")
+    self.ok(__global__.meta.meta.isa(Joose.Kernel.ProtoModule), "And it is a Joose.Kernel.ProtoModule")
     
     Module("Com.test.module", {
 	    body : function () {
@@ -32,15 +26,24 @@ t.testModuleClass = function() {
     self.ok(Com.meta, "And is has a meta object")
     self.ok(Com.meta.meta, "And a meta meta object")
     self.ok(Com.meta.meta.isa(Joose.Kernel.ProtoModule), "And it is a Joose.Kernel.ProtoModule")
-    self.ok(Com.meta.meta.isa(Joose.Kernel.ProtoModule), "And it is a Joose.Kernel.ProtoModule")
     self.ok(Com.meta.getName() == "Com", "The name is correct")
+    
+    self.throws_ok(
+    	function () { new Com() }, 
+        "Modules may not be instantiated.",
+        "Not filled Modules can't be instantiated"
+	)
 
     self.ok(Com.test.module, "There is something in the module spot")
-    self.ok(Com.test.module.meta, "And is has a meta object")
-    self.ok(Com.test.module.meta.meta, "And a meta meta object")
-    self.ok(Com.test.module.meta.meta.isa(Joose.Kernel.ProtoModule), "And it is a Joose.Kernel.ProtoModule")
     self.ok(Com.test.module.meta.meta.isa(Joose.Kernel.ProtoModule), "And it is a Joose.Kernel.ProtoModule")
     self.ok(Com.test.module.meta.getName() == "Com.test.module", "The name is correct")
+
+    self.throws_ok(
+    	function () { new Com.test.module() }, 
+        "Modules may not be instantiated.",
+        "Not filled Modules can't be instantiated #2"
+	)
+    
     
     self.ok(Com.test.module.Test1, "There is also something in the class spot")
     self.ok(Com.test.module.Test1.meta, "and it has a meta object")
@@ -72,14 +75,16 @@ t.testModuleClass = function() {
     self.throws_ok(function () {Com.test.module.meta.alias(__global__)}, 
         "Adding namespace element failed: namespace element [Test1] already exists",
         "Importing fails if there is already something else")
-    
+
+        
     Module("Com.test", function () {
         Class("Test1", {
             methods: { one: function () { return 1 } }
         })
     })
     
-    self.ok(new Com.test.Test1(), "we can make modules on a lower hierarchy")
+    self.ok(Com.test.Test1, "we can make modules on a lower hierarchy")
+    self.ok(new Com.test.Test1(), "we can instantiate modules on a lower hierarchy")
     
     Module("Com.test", function () {
         Class("Test2", {
@@ -87,8 +92,18 @@ t.testModuleClass = function() {
         })
     })
     
-    self.ok(new Com.test.Test1(), "We can do declare modules multiple times. The formerly declared class is still there")
+    self.ok(new Com.test.Test1(), "We can declare modules multiple times. The formerly declared class is still there")
     self.ok(new Com.test.Test2(), "we can make modules on a lower hierarchy. The new class is here.")
+
+    
+    Module("Com", function () {
+        Class("test", {
+            methods: { one: function () { return 1 } }
+        })
+    })
+    
+    self.ok(new Com.test().one() == 1, "We can declare classes on the place of empty module")
+
     
     Module("Joose.SimpleRequest", function () {
         Class("FooBar", {})
@@ -107,11 +122,6 @@ t.testModuleClass = function() {
             
         })
     }, "Module names may not include a part called 'meta'.", "meta is not allowed in a module name")
-    
-    
-    self.ok(__global__, "There is a global module")
-    
-    self.ok(__global__.meta.meta.isa(Joose.Kernel.ProtoModule), "it is actually a proto module")
 }
 
 return t;

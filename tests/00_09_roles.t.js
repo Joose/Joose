@@ -10,6 +10,7 @@ testobj.testSanity = function() {
     this.is("" + Joose.Kernel.Roles.meta,'a Joose.Kernel.ProtoModule', "Joose.Kernel.Roles's meta stringified to Joose.Kernel.ProtoModule");
     
     this.ok(Joose.Kernel.Roles.meta.classIsa(Joose.Kernel.Roles), "Joose.Kernel.Roles ISA Joose.Kernel.Roles");
+    this.ok(Joose.Kernel.Roles.meta.classIsa(Joose.Kernel.ProtoModule), "Joose.Kernel.Roles ISA Joose.Kernel.ProtoModule");
     this.ok(Joose.Kernel.Roles.meta.classIsa(Joose.Kernel.Handlers), "Joose.Kernel.Roles ISA Joose.Kernel.Handlers");
     this.ok(Joose.Kernel.Roles.meta.isa(Joose.Kernel.ClassMethods), "Joose.Kernel.Roles ISA Joose.Kernel.ClassMethods");
     

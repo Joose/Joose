@@ -11,7 +11,7 @@ testobj.testSanity = function() {
     
     this.ok(Joose.Kernel.ProtoModule.meta.methodConstructor == Joose.Kernel.ProtoMethod, "Joose.Kernel.ProtoModule's methods are Joose.Kernel.ProtoMethod");
     
-    this.ok(__global__.meta.meta.isa(Joose.Kernel.ProtoModule), "__global__'s meta isa Joose.Kernel.ProtoModule");
+    this.ok(__global__.meta.meta.isa(Joose.Kernel.Namespace), "__global__'s meta isa Joose.Kernel.Namespace");
     this.is("" + __global__, '', "__global__ stringified to empty string");
 };
 
