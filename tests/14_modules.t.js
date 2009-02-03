@@ -1,15 +1,16 @@
 (function() {
 var t = new Test.TAP.Class();
-t.plan(34)
+t.plan(45)
 
 var thistop = Test.prototype.top()
 
 t.testModuleClass = function() {
     var self = this;
     self.ok(Joose.Kernel.ProtoModule, "The Joose.Kernel.ProtoModule class is here")
+    self.ok(Joose.Kernel.Namespace, "The Joose.Kernel.Namespace class is here")
     
     self.ok(__global__, "There is a global module")
-    self.ok(__global__.meta.meta.isa(Joose.Kernel.ProtoModule), "And it is a Joose.Kernel.ProtoModule")
+    self.ok(__global__.meta.meta.isa(Joose.Kernel.Namespace), "And it is a Joose.Kernel.Namespace")
     
     Module("Com.test.module", {
 	    body : function () {
@@ -25,7 +26,7 @@ t.testModuleClass = function() {
     self.ok(Com, "There is something in the Com spot")
     self.ok(Com.meta, "And is has a meta object")
     self.ok(Com.meta.meta, "And a meta meta object")
-    self.ok(Com.meta.meta.isa(Joose.Kernel.ProtoModule), "And it is a Joose.Kernel.ProtoModule")
+    self.ok(Com.meta.meta.isa(Joose.Kernel.Namespace), "And it is a Joose.Kernel.Namespace")
     self.ok(Com.meta.getName() == "Com", "The name is correct")
     
     self.throws_ok(
@@ -35,7 +36,7 @@ t.testModuleClass = function() {
 	)
 
     self.ok(Com.test.module, "There is something in the module spot")
-    self.ok(Com.test.module.meta.meta.isa(Joose.Kernel.ProtoModule), "And it is a Joose.Kernel.ProtoModule")
+    self.ok(Com.test.module.meta.meta.isa(Joose.Kernel.Namespace), "And it is a Joose.Kernel.Namespace")
     self.ok(Com.test.module.meta.getName() == "Com.test.module", "The name is correct")
 
     self.throws_ok(
@@ -61,8 +62,8 @@ t.testModuleClass = function() {
     self.ok(thistop.Test1, "There is something in the expected spot")
     self.ok(thistop.Test1 === Com.test.module.Test1, "Class is now global")
     
-    self.ok(new thistop.Test1(), "We can instantiate class")
     var o = new thistop.Test1();
+    self.ok(o, "We can instantiate class")
     self.ok(o.world() == "hello", "and call methods on them")
     
     self.ok(new Com.test.module.Test1(), "We can also instantiate the fully qualified name");
@@ -74,7 +75,7 @@ t.testModuleClass = function() {
     thistop.Test1 = function() {};
     self.throws_ok(function () {Com.test.module.meta.alias(__global__)}, 
         "Adding namespace element failed: namespace element [Test1] already exists",
-        "Importing fails if there is already something else")
+        "Importing fails if there is already something different")
 
         
     Module("Com.test", function () {
@@ -88,12 +89,12 @@ t.testModuleClass = function() {
     
     Module("Com.test", function () {
         Class("Test2", {
-            methods: { one: function () { return 1 } }
+            methods: { two: function () { return 2 } }
         })
     })
     
-    self.ok(new Com.test.Test1(), "We can declare modules multiple times. The formerly declared class is still there")
-    self.ok(new Com.test.Test2(), "we can make modules on a lower hierarchy. The new class is here.")
+    self.ok((new Com.test.Test1()).one() == 1, "We can declare modules multiple times. The formerly declared class is still there")
+    self.ok((new Com.test.Test2()).two() == 2, "We can make modules on a lower hierarchy. The new class is here.")
 
     
     Module("Com", function () {
@@ -103,7 +104,25 @@ t.testModuleClass = function() {
     })
     
     self.ok(new Com.test().one() == 1, "We can declare classes on the place of empty module")
-
+    self.ok(Com.test.Test1 && Com.test.Test2, "Further classes in namespace chain are kept untouched")
+    self.ok((new Com.test.Test1()).one() == 1 && (new Com.test.Test2()).two() == 2, "Further classes in namespace chain are kept untouched #2")
+    
+    self.throws_ok(
+    	function () { Com.test.meta.addClassMethod('Test1') }, 
+        "Collision between existing namespace element [Com.test.Test1] and a new classMethod [Test1]",
+        "Collision between namespace element and classmethod is detecting"
+	)
+	
+	var testFunc = function(){};
+	testFunc.toString = function () { return 'testFunc'};
+	Com.test.meta.addClassMethod('classMethod', testFunc);
+    self.throws_ok(
+    	function () { 
+    		Class('Com.test.classMethod', {}); 
+    	}, 
+        "Trying to setup module Com.test.classMethod failed. There is already something: testFunc",
+        "Collision between classmethod and namespace element is detecting"
+	)
     
     Module("Joose.SimpleRequest", function () {
         Class("FooBar", {})
