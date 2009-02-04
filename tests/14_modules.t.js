@@ -1,6 +1,6 @@
 (function() {
 var t = new Test.TAP.Class();
-t.plan(53)
+t.plan(55)
 
 var thistop = Test.prototype.top()
 
@@ -142,44 +142,7 @@ t.testModuleClass = function() {
         })
     }, "Module names may not include a part called 'meta'.", "meta is not allowed in a module name")
     
-    
-//    Module("Com.test", function () {
-//        
-//        var delay2 = function() {
-//	        Module("Nested.Copy", function () {
-//	            Class("NestTesting", {
-//	            	methods : {
-//	            		four : function () { return 4 }
-//	            	}
-//	            })
-//	        });
-//	        
-//	        var delay1 = function() {
-//		        Module("Nested", function () {
-//		            Class("NestTesting", {
-//		            	methods : {
-//		            		three : function () { return 3 }
-//		            	}
-//		            })
-//		        });
-//		        
-//			    self.ok(Com.test.Nested, "Something in the nested module spot");
-//			    self.ok(Com.test.Nested.meta.meta.isa(Joose.Kernel.Namespace), "And its a Joose.Kernel.Namespace");
-//			    self.ok(Com.test.Nested.NestTesting, "Something in the nested class spot");
-//			    self.ok(new Com.test.Nested.NestTesting().three() == 3, "And its a correct class");
-//			
-//			    self.ok(Com.test.Nested.Copy, "Something in the nested module spot #2");
-//			    self.ok(Com.test.Nested.Copy.meta.meta.isa(Joose.Kernel.Namespace), "And its a Joose.Kernel.Namespace");
-//			    self.ok(Com.test.Nested.Copy.NestTesting, "Something in the nested class spot #2");
-//			    self.ok(new Com.test.Nested.Copy.NestTesting().four() == 4, "And its a correct class #2");
-//	        }
-//	        setTimeout(delay1, 500);
-//	        
-//        }
-//        setTimeout(delay1, 100);
-//    })
-    
-    
+    self.diag("Nesting modules")
     
     Module("Com.test", function () {
         Module("Nested", function () {
@@ -209,6 +172,45 @@ t.testModuleClass = function() {
     self.ok(Com.test.Nested.Copy.meta.meta.isa(Joose.Kernel.Namespace), "And its a Joose.Kernel.Namespace");
     self.ok(Com.test.Nested.Copy.NestTesting, "Something in the nested class spot #2");
     self.ok(new Com.test.Nested.Copy.NestTesting().four() == 4, "And its a correct class #2");
+    
+    self.diag("Asynchronous Nesting modules")
+    
+    Module("COM.test", function () {
+    	
+    	var COM_COPY = COM;
+        
+        setTimeout(function () {
+	        Module("Nested.Copy", function () {
+	            Class("NestTesting", {
+	            	methods : {
+	            		four : function () { return 4 }
+	            	}
+	            })
+	        });
+	        
+	        setTimeout( function() {
+		        Module("Nested", function () {
+		            Class("NestTesting", {
+		            	methods : {
+		            		three : function () { return 3 }
+		            	}
+		            })
+		        });
+		        
+			    self.ok(COM_COPY.test.Nested, "Something in the nested module spot");
+			    self.ok(COM_COPY.test.Nested.meta.meta.isa(Joose.Kernel.Namespace), "And its a Joose.Kernel.Namespace");
+			    self.ok(COM_COPY.test.Nested.NestTesting, "Something in the nested class spot");
+			    self.ok(new COM_COPY.test.Nested.NestTesting().three() == 3, "And its a correct class");
+			
+			    self.ok(COM_COPY.test.Nested.Copy, "Something in the nested module spot #2");
+			    self.ok(COM_COPY.test.Nested.Copy.meta.meta.isa(Joose.Kernel.Namespace), "And its a Joose.Kernel.Namespace");
+			    self.ok(COM_COPY.test.Nested.Copy.NestTesting, "Something in the nested class spot #2");
+			    self.ok(new COM_COPY.test.Nested.Copy.NestTesting().four() == 4, "And its a correct class #2");
+	        }, 500);
+	        
+        }, 100);
+    })
+    
 }
 
 return t;
