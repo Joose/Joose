@@ -1,7 +1,7 @@
 (function() {
 var t = new Test.TAP.Class();
 
-t.plan(35)
+t.plan(36)
     
 t.diag("MetaClass");
 
@@ -66,7 +66,12 @@ t.testClassCreation = function () {
         }
     });
         
+    this.ok(TestClass.meta.hasAttribute('test'), 'Attribute remains untouched after class extension')
+    this.ok(TestClass.meta.hasAttribute('another'), 'New attribute appears after class extension')
     
+    
+    this.diag(TestClass.meta.attributes['another'].meta)
+    this.ok(TestClass.meta.attributes['another'].meta.isa(Joose.Attribute), 'Attributes of Joose.Class are Joose.Attributes')
     
     this.ok(o.another, "The first object now has the attribute another ");
         
@@ -86,7 +91,6 @@ t.testClassCreation = function () {
     })
     
     this.ok(o4.test == "newVal", "Initializer works");
-    this.ok(o4.another == "fooBar", "Initializer works for another parameter")
     this.ok(o4.another == "fooBar", "Initializer works for another parameter")
     this.ok(o4.third   == 3, "Initializer uses setter")
     this.ok(o4.third   != "ignoreMe, because custom setter ignores para", "Initializer uses setter")
