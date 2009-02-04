@@ -7,7 +7,6 @@ t.testMetaClass = function() {
     var self = this;
     self.diag("Meta class Extention");
     
-    
     Class("TestClass", {
         has: {
             another: {is: rw, init: true},
@@ -21,7 +20,7 @@ t.testMetaClass = function() {
         }
     });
         
-    this.diag(TestClass.meta.attributes['another'].meta)
+    this.ok(TestClass.meta.meta.isa(Joose.Class), "TestClass's meta isa Joose.Class")
     this.ok(TestClass.meta.attributes['another'].meta.isa(Joose.Attribute), 'Attributes of Joose.Class are Joose.Attributes')
         
     Class("Joose.Class", {
