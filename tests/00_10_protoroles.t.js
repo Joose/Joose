@@ -1,4 +1,5 @@
-(function() {
+(function (Class, Module, Role, Type, Prototype) {
+return (function () {
 var t = new Test.TAP.Class();
 t.plan(1)
 
@@ -77,4 +78,5 @@ t.testRoles = function() {
     self.ok(SubCurrency.meta.does(Eq), "does works for inherited roles")
 }
 return t;
-})();
+})()
+}).call(window, JooseClass, JooseModule, JooseRole, JooseType, JoosePrototype);

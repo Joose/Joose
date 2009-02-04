@@ -1,4 +1,5 @@
-(function () {
+(function (Class, Module, Role, Type, Prototype) {
+return (function () {
 var testobj = new Test.TAP.Class();
 testobj.plan(116)
 
@@ -359,4 +360,5 @@ testobj.testTypeConstraint = function() {
 };
 return testobj
 })()
+}).call(window, JooseClass, JooseModule, JooseRole, JooseType, JoosePrototype)
 
