@@ -66,12 +66,8 @@ t.testClassCreation = function () {
         }
     });
         
-    this.ok(TestClass.meta.hasAttribute('test'), 'Attribute remains untouched after class extension')
+    this.ok(TestClass.meta.hasAttribute('test'), 'Attribute test remains untouched after class extension')
     this.ok(TestClass.meta.hasAttribute('another'), 'New attribute appears after class extension')
-    
-    
-    this.diag(TestClass.meta.attributes['another'].meta)
-    this.ok(TestClass.meta.attributes['another'].meta.isa(Joose.Attribute), 'Attributes of Joose.Class are Joose.Attributes')
     
     this.ok(o.another, "The first object now has the attribute another ");
         

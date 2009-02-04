@@ -5,6 +5,23 @@ t.plan(29)
 t.testMetaClass = function() {
     var self = this;
     self.diag("Meta class Extention");
+    
+    
+    Class("TestClass", {
+        has: {
+            another: {is: rw, init: true},
+            third:   {is: rw, init: 2}
+        },
+        
+        methods: {
+            setThird: function () {
+                this.third = 3
+            }
+        }
+    });
+        
+    this.diag(TestClass.meta.attributes['another'].meta)
+    this.ok(TestClass.meta.attributes['another'].meta.isa(Joose.Attribute), 'Attributes of Joose.Class are Joose.Attributes')
         
     Class("Joose.Class", {
         methods: {
