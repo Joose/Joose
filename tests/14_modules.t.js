@@ -143,6 +143,44 @@ t.testModuleClass = function() {
     }, "Module names may not include a part called 'meta'.", "meta is not allowed in a module name")
     
     
+//    Module("Com.test", function () {
+//        
+//        var delay2 = function() {
+//	        Module("Nested.Copy", function () {
+//	            Class("NestTesting", {
+//	            	methods : {
+//	            		four : function () { return 4 }
+//	            	}
+//	            })
+//	        });
+//	        
+//	        var delay1 = function() {
+//		        Module("Nested", function () {
+//		            Class("NestTesting", {
+//		            	methods : {
+//		            		three : function () { return 3 }
+//		            	}
+//		            })
+//		        });
+//		        
+//			    self.ok(Com.test.Nested, "Something in the nested module spot");
+//			    self.ok(Com.test.Nested.meta.meta.isa(Joose.Kernel.Namespace), "And its a Joose.Kernel.Namespace");
+//			    self.ok(Com.test.Nested.NestTesting, "Something in the nested class spot");
+//			    self.ok(new Com.test.Nested.NestTesting().three() == 3, "And its a correct class");
+//			
+//			    self.ok(Com.test.Nested.Copy, "Something in the nested module spot #2");
+//			    self.ok(Com.test.Nested.Copy.meta.meta.isa(Joose.Kernel.Namespace), "And its a Joose.Kernel.Namespace");
+//			    self.ok(Com.test.Nested.Copy.NestTesting, "Something in the nested class spot #2");
+//			    self.ok(new Com.test.Nested.Copy.NestTesting().four() == 4, "And its a correct class #2");
+//	        }
+//	        setTimeout(delay1, 500);
+//	        
+//        }
+//        setTimeout(delay1, 100);
+//    })
+    
+    
+    
     Module("Com.test", function () {
         Module("Nested", function () {
             Class("NestTesting", {
