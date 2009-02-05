@@ -1,4 +1,5 @@
-(function() {
+(function (Class, Module, Role, Type, Prototype) {
+return (function () {
 var t = new Test.TAP.Class();
 t.plan(47)
 
@@ -126,7 +127,7 @@ t.testRoles = function() {
     })
     self.diag("Role inheritance");
     
-    self.ok(Joose.Role.meta.c === Joose.Role, "The Joose.Role meta class knows about the Joose.Role class")
+    self.ok(Joose.Role.meta.nextGeneration === Joose.Role, "The Joose.Role meta class knows about the Joose.Role class")
     
     self.throws_ok(function () {
         Class("EqLevel2", {
@@ -185,13 +186,13 @@ t.testRoles = function() {
         }
     })
     
-    Class("Person", {
-        methods: {
-            sayHello: function () {
-                printToSayString("Hello!")
-            }
-        }
-    })
+//    Class("Person", {
+//        methods: {
+//            sayHello: function () {
+//                printToSayString("Hello!")
+//            }
+//        }
+//    })
     
     
     Class("Eve", {
@@ -314,4 +315,5 @@ t.testRoles = function() {
     self.ok(obj.special() == "foo", "Method from meta role returns correct result")
 }
 return t;
-})();
+})()
+}).call(window, JooseClass, JooseModule, JooseRole, JooseType, JoosePrototype);

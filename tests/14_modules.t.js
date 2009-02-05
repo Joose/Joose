@@ -1,6 +1,7 @@
-(function() {
+(function (Class, Module, Role, Type, Prototype) {
+return (function () {
 var t = new Test.TAP.Class();
-t.plan(38)
+t.plan(34)
 
 var thistop = Test.prototype.top()
 
@@ -23,10 +24,6 @@ t.testModuleClass = function() {
     self.ok(Com.test.module.meta.meta.isa(Joose.Module), "And it is a Module")
     self.ok(Com.test.module.meta.meta.isa(Joose.Module), "And it is a Module")
     self.ok(Com.test.module.meta.getName() == "Com.test.module", "The name is correct")
-    
-    self.ok(Com instanceof Joose.NameSpace, "The actual object containers are instances of Joose.NameSpace")
-    self.ok(Com.test instanceof Joose.NameSpace, "The actual object containers are instances of Joose.NameSpace")
-    self.ok(Com.test.module instanceof Joose.NameSpace, "The actual object containers are instances of Joose.NameSpace")
     
     self.ok(Com.test.module.Test1, "There is also something in the class spot")
     self.ok(Com.test.module.Test1.meta, "and it has a meta object")
@@ -60,6 +57,7 @@ t.testModuleClass = function() {
         "here is already something else",
         "Importing fails if there is already something else")
     
+//    debugger;
     Module("Com.test", function () {
         Class("Test1", {
             methods: { one: function () { return 1 } }
@@ -98,7 +96,7 @@ t.testModuleClass = function() {
     
     self.ok(__global__.nomodule, "There is a global module")
     
-    self.ok(__global__.nomodule.meta.meta.isa(Joose.Module), "it is actually a module :)")
+    self.ok(__global__.nomodule.meta.meta.isa(Joose.Kernel.ProtoModule), "it is actually a proto module :)")
     
     self.ok(Joose.A.exists(__global__.nomodule.meta.getNames(), "Joose.Class"), "Joose.Class is in it")
     
@@ -107,3 +105,4 @@ t.testModuleClass = function() {
 
 return t;
 })()
+}).call(window, JooseClass, JooseModule, JooseRole, JooseType, JoosePrototype)

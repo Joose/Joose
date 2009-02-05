@@ -1,4 +1,5 @@
-(function() {
+(function (Class, Module, Role, Type, Prototype) {
+return (function () {
 var t = new Test.TAP.Class();
 t.plan(12)
 
@@ -105,6 +106,7 @@ t.testGearsSupport = function() {
     
     var gt = new HardWork();
     
+    self.ok(gt, "HardWork was instantiated")
     //alert("Gears")
     
     self.ok(gt.data, "Data member is here")
@@ -129,3 +131,4 @@ t.testGearsSupport = function() {
 
 return t;
 })()
+}).call(window, JooseClass, JooseModule, JooseRole, JooseType, JoosePrototype)

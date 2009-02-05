@@ -1,10 +1,27 @@
-(function() {
+(function (Class, Module, Role, Type, Prototype) {
+return (function () {
 var t = new Test.TAP.Class();
 t.plan(29)
 
 t.testMetaClass = function() {
     var self = this;
     self.diag("Meta class Extention");
+    
+    Class("TestClass", {
+        has: {
+            another: {is: rw, init: true},
+            third:   {is: rw, init: 2}
+        },
+        
+        methods: {
+            setThird: function () {
+                this.third = 3
+            }
+        }
+    });
+        
+    this.ok(TestClass.meta.meta.isa(Joose.Class), "TestClass's meta isa Joose.Class")
+    this.ok(TestClass.meta.attributes['another'].meta.isa(Joose.Attribute), 'Attributes of Joose.Class are Joose.Attributes')
         
     Class("Joose.Class", {
         methods: {
@@ -80,8 +97,11 @@ t.testMetaClass = function() {
     self.ok(o.meta instanceof TestMeta, "first meta level is instanceof TestMeta")
     self.ok(TestMeta.meta instanceof Joose.Class, "Meta Class of TestMeta is Joose.Class")
     self.ok(o.meta.meta instanceof Joose.Class, "second meta level is instanceof Joose.Class")
-    self.ok(o.meta.meta.meta instanceof Joose.MetaClass, "third meta level is instanceof Joose.MetaClass")
-    self.ok(o.meta.meta.meta.meta instanceof Joose.MetaClassBootstrap, "fourth meta level is instanceof Joose.MetaClassBootstrap")
+    
+    self.diag("3rd level: " + o.meta.meta.meta);
+    self.ok(o.meta.meta.meta instanceof Joose.Kernel.MetaClass, "third meta level is instanceof Joose.Kernel.MetaClass")
+    self.diag("4th level: " + o.meta.meta.meta.meta);
+    self.ok(o.meta.meta.meta.meta instanceof Joose.Kernel.Roles, "fourth meta level is instanceof Joose.Kernel.Roles")
     
     
     self.can_ok(o.meta, "addMethod")
@@ -101,4 +121,5 @@ t.testMetaClass = function() {
 }
 
 return t;
-})();
+})()
+}).call(window, JooseClass, JooseModule, JooseRole, JooseType, JoosePrototype);

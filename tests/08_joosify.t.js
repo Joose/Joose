@@ -1,6 +1,7 @@
-(function() {
+(function (Class, Module, Role, Type, Prototype) {
+return (function () {
 var t = new Test.TAP.Class();
-t.plan(16)
+t.plan(15)
 
 t.testJoosify = function() {
     var self = this;
@@ -36,16 +37,17 @@ t.testBootstrap = function() {
     var self = this;
     self.diag("Bootstrap");
     
-    self.ok(Joose.Method.meta.getAttribute("_props"), "Joose.Method has attribute _props")
+//    self.ok(Joose.Method.meta.getAttribute("_props"), "Joose.Method has attribute _props")
     self.ok(Joose.Method.meta.getAttribute("_name"), "Joose.Method has attribute _name")
     self.ok(Joose.Method.meta.getAttribute("_body"), "Joose.Method has attribute _body")
     
     self.ok(Joose.Attribute.meta.getAttribute("_props"), "Joose.Attribute has attribute _props")
     self.ok(Joose.Attribute.meta.getAttribute("_name"), "Joose.Attribute has attribute _name")
     
-    self.ok(Joose.Method.meta.meta.className()    == "Joose.Class", "Joose.Method's meta class is of correct type")
-    self.ok(Joose.Attribute.meta.meta.className() == "Joose.Class", "Joose.Attribute's meta class is of correct type")
+    self.ok(Joose.Method.meta.meta.className()    == "Joose.Kernel.MetaClass", "Joose.Method's meta class is of correct type")
+    self.ok(Joose.Attribute.meta.meta.className() == "Joose.Kernel.MetaClass", "Joose.Attribute's meta class is of correct type")
 }
 
 return t;
 })()
+}).call(window, JooseClass, JooseModule, JooseRole, JooseType, JoosePrototype)
