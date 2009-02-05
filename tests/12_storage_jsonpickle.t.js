@@ -1,4 +1,5 @@
-(function() {
+(function (Class, Module, Role, Type, Prototype) {
+return (function () {
 var t = new Test.TAP.Class();
 t.plan(43)
 
@@ -173,3 +174,4 @@ t.testStorageJsonPickle = function() {
 
 return t;
 })()
+}).call(window, JooseClass, JooseModule, JooseRole, JooseType, JoosePrototype)

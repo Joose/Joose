@@ -1,4 +1,5 @@
-(function() {
+(function (Class, Module, Role, Type, Prototype) {
+return (function () {
 var t = new Test.TAP.Class();
 t.plan(47)
 
@@ -314,4 +315,5 @@ t.testRoles = function() {
     self.ok(obj.special() == "foo", "Method from meta role returns correct result")
 }
 return t;
-})();
+})()
+}).call(window, JooseClass, JooseModule, JooseRole, JooseType, JoosePrototype);

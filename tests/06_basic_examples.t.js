@@ -1,4 +1,5 @@
-(function() {
+(function (Class, Module, Role, Type, Prototype) {
+return (function () {
 var t = new Test.TAP.Class();
 t.plan(21)
 
@@ -73,4 +74,5 @@ t.testBasic = function() {
     self.ok(g.meta.can("barksAt"), "Gs can bark")
 }
 return t;
-})();
+})()
+}).call(window, JooseClass, JooseModule, JooseRole, JooseType, JoosePrototype);

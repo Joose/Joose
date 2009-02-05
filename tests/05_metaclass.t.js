@@ -1,10 +1,27 @@
-(function() {
+(function (Class, Module, Role, Type, Prototype) {
+return (function () {
 var t = new Test.TAP.Class();
 t.plan(29)
 
 t.testMetaClass = function() {
     var self = this;
     self.diag("Meta class Extention");
+    
+    Class("TestClass", {
+        has: {
+            another: {is: rw, init: true},
+            third:   {is: rw, init: 2}
+        },
+        
+        methods: {
+            setThird: function () {
+                this.third = 3
+            }
+        }
+    });
+        
+    this.ok(TestClass.meta.meta.isa(Joose.Class), "TestClass's meta isa Joose.Class")
+    this.ok(TestClass.meta.attributes['another'].meta.isa(Joose.Attribute), 'Attributes of Joose.Class are Joose.Attributes')
         
     Class("Joose.Class", {
         methods: {
@@ -104,4 +121,5 @@ t.testMetaClass = function() {
 }
 
 return t;
-})();
+})()
+}).call(window, JooseClass, JooseModule, JooseRole, JooseType, JoosePrototype);

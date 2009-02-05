@@ -1,4 +1,5 @@
-(function() {
+(function (Class, Module, Role, Type, Prototype) {
+return (function () {
 var t = new Test.TAP.Class();
 t.plan(1)
 
@@ -9,14 +10,14 @@ t.testRoles = function() {
     this.ok(Joose.Kernel.ProtoRole, "Joose.Kernel.ProtoRole is here");
     
     var comparableMeta = new Joose.Kernel.ProtoRole('Comparable');
-    Comparable = comparableMeta.getClassObject(); 
+    var Comparable = comparableMeta.getClassObject(); 
     
     self.ok(Comparable, "We can make a Role");
     self.throws_ok( function () {new Comparable()}, /Roles may not be instantiated./, "Roles cannot be instantiated.")
     self.ok(Comparable.meta.meta.isa(Joose.Kernel.ProtoRole), "Our meta class isa ProtoRole")
     
     
-    Eq = (new Joose.Kernel.ProtoRole('Eq')).getClassObject();
+    var Eq = (new Joose.Kernel.ProtoRole('Eq')).getClassObject();
     Eq.meta.addGenes({
     	locale : null,
     	
@@ -28,7 +29,7 @@ t.testRoles = function() {
     
     
     
-    Currency = (new Joose.Kernel.Roles("Currency")).getClassObject();
+    var Currency = (new Joose.Kernel.Roles("Currency")).getClassObject();
     Currency.meta.addRole(Eq);
     Currency.meta.addGenes({
     	value : null,
@@ -41,10 +42,10 @@ t.testRoles = function() {
     
     self.ok(Currency.meta.does(Eq), "does works for roles");
     
-    SubCurrency = (new Joose.Kernel.Roles("SubCurrency")).getClassObject();
+    var SubCurrency = (new Joose.Kernel.Roles("SubCurrency")).getClassObject();
     SubCurrency.meta.addSuperClass(Currency);
     
-    TestClass = (new Joose.Kernel.Roles("TestClass")).getClassObject();
+    var TestClass = (new Joose.Kernel.Roles("TestClass")).getClassObject();
     TestClass.meta.addGenes({
     	initialize : Joose.emptyFunction,
         orig: function () {
@@ -77,4 +78,5 @@ t.testRoles = function() {
     self.ok(SubCurrency.meta.does(Eq), "does works for inherited roles")
 }
 return t;
-})();
+})()
+}).call(window, JooseClass, JooseModule, JooseRole, JooseType, JoosePrototype);
