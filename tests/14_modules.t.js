@@ -1,7 +1,7 @@
 (function (Class, Module, Role, Type, Prototype) {
 return (function () {
 var t = new Test.TAP.Class();
-t.plan(55)
+t.plan(50)
 
 var thistop = Test.prototype.top()
 
@@ -97,6 +97,7 @@ t.testModuleClass = function() {
     self.ok((new Com.test.Test1()).one() == 1, "We can declare modules multiple times. The formerly declared class is still there")
     self.ok((new Com.test.Test2()).two() == 2, "We can make modules on a lower hierarchy. The new class is here.")
 
+    Com.test.userProperty = 'direct';
     
     Module("Com", function () {
         Class("test", {
@@ -106,16 +107,23 @@ t.testModuleClass = function() {
     
     self.ok(new Com.test().one() == 1, "We can declare classes on the place of empty module")
     self.ok(Com.test.Test1 && Com.test.Test2, "Further classes in namespace chain are kept untouched")
+    self.ok(Com.test.userProperty == 'direct', "Hidden (directly added) properties are kept untouched")
     self.ok((new Com.test.Test1()).one() == 1 && (new Com.test.Test2()).two() == 2, "Further classes in namespace chain are kept untouched #2")
     
+    //==================================================================================================================================================================================
+    self.diag("Collisions between class methods and namespace elements")
+    
+    var testFunc = function(){};
+    testFunc.toString = function () { return 'testFunc'};
+    
     self.throws_ok(
-    	function () { Com.test.meta.addClassMethod('Test1') }, 
+    	function () { Com.test.meta.addClassMethod('Test1', testFunc) }, 
         "Collision between existing namespace element [Com.test.Test1] and a new classMethod [Test1]",
         "Collision between namespace element and classmethod is detecting"
 	)
 	
-	var testFunc = function(){};
-	testFunc.toString = function () { return 'testFunc'};
+	
+	
 	Com.test.meta.addClassMethod('classMethod', testFunc);
     self.throws_ok(
     	function () { 
@@ -174,43 +182,44 @@ t.testModuleClass = function() {
     self.ok(Com.test.Nested.Copy.NestTesting, "Something in the nested class spot #2");
     self.ok(new Com.test.Nested.Copy.NestTesting().four() == 4, "And its a correct class #2");
     
-    self.diag("Asynchronous Nesting modules")
     
-    Module("COM.test", function () {
-    	
-    	var COM_COPY = COM;
-        
-        setTimeout(function () {
-	        Module("Nested.Copy", function () {
-	            Class("NestTesting", {
-	            	methods : {
-	            		four : function () { return 4 }
-	            	}
-	            })
-	        });
-	        
-	        setTimeout( function() {
-		        Module("Nested", function () {
-		            Class("NestTesting", {
-		            	methods : {
-		            		three : function () { return 3 }
-		            	}
-		            })
-		        });
-		        
-			    self.ok(COM_COPY.test.Nested, "Something in the nested module spot");
-			    self.ok(COM_COPY.test.Nested.meta.meta.isa(Joose.Kernel.Namespace), "And its a Joose.Kernel.Namespace");
-			    self.ok(COM_COPY.test.Nested.NestTesting, "Something in the nested class spot");
-			    self.ok(new COM_COPY.test.Nested.NestTesting().three() == 3, "And its a correct class");
-			
-			    self.ok(COM_COPY.test.Nested.Copy, "Something in the nested module spot #2");
-			    self.ok(COM_COPY.test.Nested.Copy.meta.meta.isa(Joose.Kernel.Namespace), "And its a Joose.Kernel.Namespace");
-			    self.ok(COM_COPY.test.Nested.Copy.NestTesting, "Something in the nested class spot #2");
-			    self.ok(new COM_COPY.test.Nested.Copy.NestTesting().four() == 4, "And its a correct class #2");
-	        }, 500);
-	        
-        }, 100);
-    })
+//    self.diag("Asynchronous Nesting modules")
+//    
+//    Module("COM.test", function () {
+//    	
+//    	var COM_COPY = COM;
+//        
+//        setTimeout(function () {
+//	        Module("Nested.Copy", function () {
+//	            Class("NestTesting", {
+//	            	methods : {
+//	            		four : function () { return 4 }
+//	            	}
+//	            })
+//	        });
+//	        
+//	        setTimeout( function() {
+//		        Module("Nested", function () {
+//		            Class("NestTesting", {
+//		            	methods : {
+//		            		three : function () { return 3 }
+//		            	}
+//		            })
+//		        });
+//		        
+//			    self.ok(COM_COPY.test.Nested, "Something in the nested module spot");
+//			    self.ok(COM_COPY.test.Nested.meta.meta.isa(Joose.Kernel.Namespace), "And its a Joose.Kernel.Namespace");
+//			    self.ok(COM_COPY.test.Nested.NestTesting, "Something in the nested class spot");
+//			    self.ok(new COM_COPY.test.Nested.NestTesting().three() == 3, "And its a correct class");
+//			
+//			    self.ok(COM_COPY.test.Nested.Copy, "Something in the nested module spot #2");
+//			    self.ok(COM_COPY.test.Nested.Copy.meta.meta.isa(Joose.Kernel.Namespace), "And its a Joose.Kernel.Namespace");
+//			    self.ok(COM_COPY.test.Nested.Copy.NestTesting, "Something in the nested class spot #2");
+//			    self.ok(new COM_COPY.test.Nested.Copy.NestTesting().four() == 4, "And its a correct class #2");
+//	        }, 500);
+//	        
+//        }, 100);
+//    })
     
 }
 
