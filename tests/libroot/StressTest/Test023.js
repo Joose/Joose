@@ -1,25 +1,28 @@
-if (typeof StressTest.Test023 == 'function') {
-	StressTest000.doubleDeclarations = true;
+if (typeof StressTest.Test023 == 'function' && StressTest.Test023.meta.meta.isa(Joose.Class)) {
+	StressTest.doubleDeclarations = true;
 	throw "Double declaration of StressTest.Test023";
 }
-//if (typeof StressTest.Test023 == 'function') throw "Double declaration of StressTest.Test023";
 
 Class('StressTest.Test023', {
 	use : [ 
 	   
-	       'StressTest.Test028',
+	       'StressTest.Test026',
 	   
-	       'StressTest.Test058',
+	       'StressTest.Test030',
 	   
-	       'StressTest.Test064',
+	       'StressTest.Test031',
 	   
-	       'StressTest.Test068',
+	       'StressTest.Test056',
 	   
-	       'StressTest.Test085',
+	       'StressTest.Test062',
 	   
-	       'StressTest.Test094',
+	       'StressTest.Test081',
 	   
-	       'StressTest.Test095',
+	       'StressTest.Test082',
+	   
+	       'StressTest.Test083',
+	   
+	       'StressTest.Test087',
 	   
 	       'StressTest.Test098'
 	   

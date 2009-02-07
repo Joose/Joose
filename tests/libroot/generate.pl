@@ -20,11 +20,10 @@ use Template;
 
 
 my $class_template = <<TEMPLATE
-if (typeof [% class_name %] == 'function') {
-	StressTest000.doubleDeclarations = true;
+if (typeof [% class_name %] == 'function' && [% class_name %].meta.meta.isa(Joose.Class)) {
+	StressTest.doubleDeclarations = true;
 	throw "Double declaration of [% class_name %]";
 }
-//if (typeof [% class_name %] == 'function') throw "Double declaration of [% class_name %]";
 
 Class('[% class_name %]', {
 	use : [ 

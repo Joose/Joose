@@ -8,23 +8,21 @@ var thistop = Test.prototype.top()
 t.testModuleClass = function() {
     var self = this;
 
-    
-    
     Module("StressTest");
     self.ok(StressTest, "Root module created");
     StressTest.doubleDeclarations = false;
     
-    var copyOfStressTest = StressTest;
     Module("StressTest", {
 	    use : 'StressTest.Test001',
         
         //body is executing after the all dependencies are satisfied
         body : function(){
-            self.ok(!copyOfStressTest000.doubleDeclarations, "Stress testing passed without redeclarations");
+            self.ok(!StressTest.doubleDeclarations, "Stress testing passed without redeclarations");
             
-            
-            self.ok(copyOfStressTest000.Test001, "StressTest.Test001 class created");
-            self.ok(new copyOfStressTest000.Test001().result() == 1, 'StressTest.Test001 can be instantiated');
+            self.ok(StressTest.Test001, "StressTest.Test001 module created");
+            self.ok(StressTest.Test001.meta.meta.isa(Joose.Class), "StressTest.Test001 class created");
+            self.ok(StressTest.Test001.meta.can('result'), "StressTest.Test001 has method 'result'");
+            self.ok(new StressTest.Test001().result() == 1, 'StressTest.Test001 can be instantiated');
         }
     });
 }
