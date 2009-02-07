@@ -38,7 +38,10 @@ Class('[% class_name %]', {
 	
 	body : function(){
        [%- FOREACH dep IN class_dependencies %]
-			if (![% dep %].meta.meta.isa(Joose.Class)) { throw "Dependency [% dep %] is not satisfied for class [% class_name %]"; }
+			if (![% dep %].meta.meta.isa(Joose.Class)) { 
+				StressTest.unSatisfiedDeps = true;
+				throw "Dependency [% dep %] is not satisfied for class [% class_name %]"; 
+			}
        [%- END %]
 	}
 })

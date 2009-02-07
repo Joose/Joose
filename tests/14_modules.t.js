@@ -155,7 +155,7 @@ t.testModuleClass = function() {
     
     
     //==================================================================================================================================================================================
-    self.diag("Nesting modules")
+    self.diag("Basic nesting modules")
     
     Module("Com.test", function () {
         Module("Nested", function () {
@@ -185,46 +185,6 @@ t.testModuleClass = function() {
     self.ok(Com.test.Nested.Copy.meta.meta.isa(Joose.Kernel.Namespace), "And its a Joose.Kernel.Namespace");
     self.ok(Com.test.Nested.Copy.NestTesting, "Something in the nested class spot #2");
     self.ok(new Com.test.Nested.Copy.NestTesting().four() == 4, "And its a correct class #2");
-    
-    
-//    self.diag("Asynchronous Nesting modules")
-//    
-//    Module("COM.test", function () {
-//    	
-//    	var COM_COPY = COM;
-//        
-//        setTimeout(function () {
-//	        Module("Nested.Copy", function () {
-//	            Class("NestTesting", {
-//	            	methods : {
-//	            		four : function () { return 4 }
-//	            	}
-//	            })
-//	        });
-//	        
-//	        setTimeout( function() {
-//		        Module("Nested", function () {
-//		            Class("NestTesting", {
-//		            	methods : {
-//		            		three : function () { return 3 }
-//		            	}
-//		            })
-//		        });
-//		        
-//			    self.ok(COM_COPY.test.Nested, "Something in the nested module spot");
-//			    self.ok(COM_COPY.test.Nested.meta.meta.isa(Joose.Kernel.Namespace), "And its a Joose.Kernel.Namespace");
-//			    self.ok(COM_COPY.test.Nested.NestTesting, "Something in the nested class spot");
-//			    self.ok(new COM_COPY.test.Nested.NestTesting().three() == 3, "And its a correct class");
-//			
-//			    self.ok(COM_COPY.test.Nested.Copy, "Something in the nested module spot #2");
-//			    self.ok(COM_COPY.test.Nested.Copy.meta.meta.isa(Joose.Kernel.Namespace), "And its a Joose.Kernel.Namespace");
-//			    self.ok(COM_COPY.test.Nested.Copy.NestTesting, "Something in the nested class spot #2");
-//			    self.ok(new COM_COPY.test.Nested.Copy.NestTesting().four() == 4, "And its a correct class #2");
-//	        }, 500);
-//	        
-//        }, 100);
-//    })
-    
 }
 
 return t;

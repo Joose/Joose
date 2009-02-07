@@ -1,7 +1,7 @@
 (function (Class, Module, Role, Type, Prototype) {
 return (function () {
 var t = new Test.TAP.Class();
-t.plan(6)
+t.plan(7)
 
 var thistop = Test.prototype.top()
 
@@ -11,13 +11,17 @@ t.testModuleClass = function() {
     Module("StressTest");
     self.ok(StressTest, "Root module created");
     StressTest.doubleDeclarations = false;
-    
+    StressTest.unSatisfiedDeps = false;
+    //==================================================================================================================================================================================
+    self.diag("Advanced nesting modules")
+
     Module("StressTest", {
 	    use : 'StressTest.Test001',
         
         //body is executing after the all dependencies are satisfied
         body : function(){
             self.ok(!StressTest.doubleDeclarations, "Stress testing passed without redeclarations");
+            self.ok(!StressTest.unSatisfiedDeps, "Stress testing passed with all dependencies satisfied");
             
             self.ok(StressTest.Test001, "StressTest.Test001 module created");
             self.ok(StressTest.Test001.meta.meta.isa(Joose.Class), "StressTest.Test001 class created");
@@ -38,6 +42,7 @@ t.testModuleClass = function() {
             }
         }
     });
+    
 }
 
 return t;

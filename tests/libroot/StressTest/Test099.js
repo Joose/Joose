@@ -13,6 +13,9 @@ Class('StressTest.Test099', {
 	},
 	
 	body : function(){
-			if (!StressTest.Test100.meta.meta.isa(Joose.Class)) { throw "Dependency StressTest.Test100 is not satisfied for class StressTest.Test099"; }
+			if (!StressTest.Test100.meta.meta.isa(Joose.Class)) { 
+				StressTest.unSatisfiedDeps = true;
+				throw "Dependency StressTest.Test100 is not satisfied for class StressTest.Test099"; 
+			}
 	}
 })
