@@ -27,13 +27,19 @@ if (typeof [% class_name %] == 'function' && [% class_name %].meta.meta.isa(Joos
 
 Class('[% class_name %]', {
 	use : [ 
-	   [% FOREACH dep IN class_dependencies %]
+	   [%- FOREACH dep IN class_dependencies %]
 	       '[% dep %]'[% UNLESS loop.last; %],[% END %]
-	   [% END %]
+	   [%- END %]
 	],
 	
 	methods : {
 		result : function () { return [% class_number %] }
+	},
+	
+	body : function(){
+       [%- FOREACH dep IN class_dependencies %]
+			if (![% dep %].meta.meta.isa(Joose.Class)) { throw "Dependency [% dep %] is not satisfied for class [% class_name %]"; }
+       [%- END %]
 	}
 })
 TEMPLATE

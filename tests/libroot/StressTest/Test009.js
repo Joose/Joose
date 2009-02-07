@@ -5,34 +5,20 @@ if (typeof StressTest.Test009 == 'function' && StressTest.Test009.meta.meta.isa(
 
 Class('StressTest.Test009', {
 	use : [ 
-	   
-	       'StressTest.Test027',
-	   
-	       'StressTest.Test048',
-	   
-	       'StressTest.Test049',
-	   
-	       'StressTest.Test059',
-	   
-	       'StressTest.Test060',
-	   
-	       'StressTest.Test072',
-	   
-	       'StressTest.Test080',
-	   
-	       'StressTest.Test081',
-	   
-	       'StressTest.Test084',
-	   
-	       'StressTest.Test085',
-	   
-	       'StressTest.Test089',
-	   
-	       'StressTest.Test092'
-	   
+	       'StressTest.Test017',
+	       'StressTest.Test041',
+	       'StressTest.Test045',
+	       'StressTest.Test067'
 	],
 	
 	methods : {
 		result : function () { return 9 }
+	},
+	
+	body : function(){
+			if (!StressTest.Test017.meta.meta.isa(Joose.Class)) { throw "Dependency StressTest.Test017 is not satisfied for class StressTest.Test009"; }
+			if (!StressTest.Test041.meta.meta.isa(Joose.Class)) { throw "Dependency StressTest.Test041 is not satisfied for class StressTest.Test009"; }
+			if (!StressTest.Test045.meta.meta.isa(Joose.Class)) { throw "Dependency StressTest.Test045 is not satisfied for class StressTest.Test009"; }
+			if (!StressTest.Test067.meta.meta.isa(Joose.Class)) { throw "Dependency StressTest.Test067 is not satisfied for class StressTest.Test009"; }
 	}
 })

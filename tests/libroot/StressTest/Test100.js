@@ -5,10 +5,12 @@ if (typeof StressTest.Test100 == 'function' && StressTest.Test100.meta.meta.isa(
 
 Class('StressTest.Test100', {
 	use : [ 
-	   
 	],
 	
 	methods : {
 		result : function () { return 100 }
+	},
+	
+	body : function(){
 	}
 })
