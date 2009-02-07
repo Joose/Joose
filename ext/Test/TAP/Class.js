@@ -96,7 +96,8 @@ Test.TAP.Class.prototype.run_it = function(method) {
         // Delete globals which were created during test execution
         // THis avoid conflicts between tests when running multiple tests in a row
         for(var name in top) {
-            if(!originalGlobal[name]) {
+            //XXX need to keep it
+            if(!originalGlobal[name] && name != 'StressTest') {
                 try {
                     delete top[name]
                 } catch (e) {
