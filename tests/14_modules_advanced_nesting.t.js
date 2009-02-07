@@ -1,7 +1,7 @@
 (function (Class, Module, Role, Type, Prototype) {
 return (function () {
 var t = new Test.TAP.Class();
-t.plan(7)
+t.plan(8)
 
 var thistop = Test.prototype.top()
 
@@ -9,7 +9,7 @@ t.testModuleClass = function() {
     var self = this;
 
     //==================================================================================================================================================================================
-    self.diag("Nesting modules with dependencies");
+    self.diag("Advanced nesting modules");
     
     Module("StressTest.Nested", {
         use : 'StressTest.Test035',
@@ -27,7 +27,7 @@ t.testModuleClass = function() {
                             three : function () { return 3 }
                         },
                         body : function (){
-                            self.ok(StressTest.Nested.Level1.Level2, "Something in the nested module spot, at level 2, #1");
+                            self.ok(new StressTest.Nested.Level1.Level2().three() == 3, "StressTest.Nested.Level1.Level2 works correctly #1");
                         }
                     })
                     self.ok(StressTest.Nested.Level1.Level2, "Something in the nested module spot, at level 2, #1");
@@ -44,9 +44,10 @@ t.testModuleClass = function() {
                             four : function () { return 4 }
                         },
                         body : function (){
-                            self.ok(StressTest.Nested.Level1.Level2, "Something in the nested module spot, at level 2, #2");
+                            self.ok(new StressTest.Nested.Level1.Level2().four() == 4, "StressTest.Nested.Level1.Level2 works correctly #2");
                         }
                     })
+                    self.ok(StressTest.Nested.Level1.Level2, "Something in the nested module spot, at level 2, #2");
                 }
             });
             self.ok(StressTest.Nested.Level1, "Something in the nested module spot, at level 1, #2");

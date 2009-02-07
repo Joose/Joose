@@ -13,7 +13,7 @@ t.testModuleClass = function() {
     StressTest.doubleDeclarations = false;
     StressTest.unSatisfiedDeps = false;
     //==================================================================================================================================================================================
-    self.diag("Advanced nesting modules")
+    self.diag("Stress testing of dependencies loading");
 
     Module("StressTest", {
 	    use : 'StressTest.Test001',
