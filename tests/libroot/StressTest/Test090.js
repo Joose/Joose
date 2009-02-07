@@ -4,6 +4,8 @@ if (typeof StressTest.Test090 == 'function' && StressTest.Test090.meta.meta.isa(
 }
 
 Class('StressTest.Test090', {
+	version : 0.1,
+	
 	use : [ 
 	       'StressTest.Test091',
 	       'StressTest.Test092',

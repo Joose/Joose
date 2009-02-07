@@ -4,20 +4,21 @@ if (typeof StressTest.Test032 == 'function' && StressTest.Test032.meta.meta.isa(
 }
 
 Class('StressTest.Test032', {
+	version : 0.1,
+	
 	use : [ 
-	       'StressTest.Test035',
-	       'StressTest.Test036',
-	       'StressTest.Test040',
-	       'StressTest.Test042',
-	       'StressTest.Test043',
-	       'StressTest.Test051',
-	       'StressTest.Test052',
-	       'StressTest.Test059',
-	       'StressTest.Test062',
-	       'StressTest.Test069',
-	       'StressTest.Test091',
+	       'StressTest.Test048',
+	       'StressTest.Test055',
+	       'StressTest.Test060',
+	       'StressTest.Test074',
+	       'StressTest.Test075',
+	       'StressTest.Test076',
+	       'StressTest.Test084',
+	       'StressTest.Test088',
+	       'StressTest.Test089',
+	       'StressTest.Test093',
 	       'StressTest.Test094',
-	       'StressTest.Test098'
+	       'StressTest.Test099'
 	],
 	
 	methods : {
@@ -25,57 +26,53 @@ Class('StressTest.Test032', {
 	},
 	
 	body : function(){
-			if (!StressTest.Test035.meta.meta.isa(Joose.Class)) { 
+			if (!StressTest.Test048.meta.meta.isa(Joose.Class)) { 
 				StressTest.unSatisfiedDeps = true;
-				throw "Dependency StressTest.Test035 is not satisfied for class StressTest.Test032"; 
+				throw "Dependency StressTest.Test048 is not satisfied for class StressTest.Test032"; 
 			}
-			if (!StressTest.Test036.meta.meta.isa(Joose.Class)) { 
+			if (!StressTest.Test055.meta.meta.isa(Joose.Class)) { 
 				StressTest.unSatisfiedDeps = true;
-				throw "Dependency StressTest.Test036 is not satisfied for class StressTest.Test032"; 
+				throw "Dependency StressTest.Test055 is not satisfied for class StressTest.Test032"; 
 			}
-			if (!StressTest.Test040.meta.meta.isa(Joose.Class)) { 
+			if (!StressTest.Test060.meta.meta.isa(Joose.Class)) { 
 				StressTest.unSatisfiedDeps = true;
-				throw "Dependency StressTest.Test040 is not satisfied for class StressTest.Test032"; 
+				throw "Dependency StressTest.Test060 is not satisfied for class StressTest.Test032"; 
 			}
-			if (!StressTest.Test042.meta.meta.isa(Joose.Class)) { 
+			if (!StressTest.Test074.meta.meta.isa(Joose.Class)) { 
 				StressTest.unSatisfiedDeps = true;
-				throw "Dependency StressTest.Test042 is not satisfied for class StressTest.Test032"; 
+				throw "Dependency StressTest.Test074 is not satisfied for class StressTest.Test032"; 
 			}
-			if (!StressTest.Test043.meta.meta.isa(Joose.Class)) { 
+			if (!StressTest.Test075.meta.meta.isa(Joose.Class)) { 
 				StressTest.unSatisfiedDeps = true;
-				throw "Dependency StressTest.Test043 is not satisfied for class StressTest.Test032"; 
+				throw "Dependency StressTest.Test075 is not satisfied for class StressTest.Test032"; 
 			}
-			if (!StressTest.Test051.meta.meta.isa(Joose.Class)) { 
+			if (!StressTest.Test076.meta.meta.isa(Joose.Class)) { 
 				StressTest.unSatisfiedDeps = true;
-				throw "Dependency StressTest.Test051 is not satisfied for class StressTest.Test032"; 
+				throw "Dependency StressTest.Test076 is not satisfied for class StressTest.Test032"; 
 			}
-			if (!StressTest.Test052.meta.meta.isa(Joose.Class)) { 
+			if (!StressTest.Test084.meta.meta.isa(Joose.Class)) { 
 				StressTest.unSatisfiedDeps = true;
-				throw "Dependency StressTest.Test052 is not satisfied for class StressTest.Test032"; 
+				throw "Dependency StressTest.Test084 is not satisfied for class StressTest.Test032"; 
 			}
-			if (!StressTest.Test059.meta.meta.isa(Joose.Class)) { 
+			if (!StressTest.Test088.meta.meta.isa(Joose.Class)) { 
 				StressTest.unSatisfiedDeps = true;
-				throw "Dependency StressTest.Test059 is not satisfied for class StressTest.Test032"; 
+				throw "Dependency StressTest.Test088 is not satisfied for class StressTest.Test032"; 
 			}
-			if (!StressTest.Test062.meta.meta.isa(Joose.Class)) { 
+			if (!StressTest.Test089.meta.meta.isa(Joose.Class)) { 
 				StressTest.unSatisfiedDeps = true;
-				throw "Dependency StressTest.Test062 is not satisfied for class StressTest.Test032"; 
+				throw "Dependency StressTest.Test089 is not satisfied for class StressTest.Test032"; 
 			}
-			if (!StressTest.Test069.meta.meta.isa(Joose.Class)) { 
+			if (!StressTest.Test093.meta.meta.isa(Joose.Class)) { 
 				StressTest.unSatisfiedDeps = true;
-				throw "Dependency StressTest.Test069 is not satisfied for class StressTest.Test032"; 
-			}
-			if (!StressTest.Test091.meta.meta.isa(Joose.Class)) { 
-				StressTest.unSatisfiedDeps = true;
-				throw "Dependency StressTest.Test091 is not satisfied for class StressTest.Test032"; 
+				throw "Dependency StressTest.Test093 is not satisfied for class StressTest.Test032"; 
 			}
 			if (!StressTest.Test094.meta.meta.isa(Joose.Class)) { 
 				StressTest.unSatisfiedDeps = true;
 				throw "Dependency StressTest.Test094 is not satisfied for class StressTest.Test032"; 
 			}
-			if (!StressTest.Test098.meta.meta.isa(Joose.Class)) { 
+			if (!StressTest.Test099.meta.meta.isa(Joose.Class)) { 
 				StressTest.unSatisfiedDeps = true;
-				throw "Dependency StressTest.Test098 is not satisfied for class StressTest.Test032"; 
+				throw "Dependency StressTest.Test099 is not satisfied for class StressTest.Test032"; 
 			}
 	}
 })

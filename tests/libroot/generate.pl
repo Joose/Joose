@@ -26,6 +26,8 @@ if (typeof [% class_name %] == 'function' && [% class_name %].meta.meta.isa(Joos
 }
 
 Class('[% class_name %]', {
+	version : 0.1,
+	
 	use : [ 
 	   [%- FOREACH dep IN class_dependencies %]
 	       '[% dep %]'[% UNLESS loop.last; %],[% END %]
