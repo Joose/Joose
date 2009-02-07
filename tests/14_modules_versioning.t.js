@@ -18,7 +18,7 @@ t.testModuleClass = function() {
             self.ok(StressTest.Versioning, "Something in the Versioning module spot");
             self.ok(true, "StressTest.Test035 has higher version than required");
             
-            //TODO Global exceptions interrupting
+            //TODO Global exceptions intercepting
             //self.throws_ok(function(){
                 Module("Level1_1", {
                     use : { Module : 'StressTest.Test050', version : 1.01 },
@@ -35,7 +35,7 @@ t.testModuleClass = function() {
                         self.ok(StressTest.Nested.Level1_1.Level2_1, "Something in the nested module spot, at level 2, #1");
                     }
                 });
-            //TODO Global exceptions interrupting
+            //TODO Global exceptions intercepting
             //}, 'Loaded dependency StressTest.Test050 has lower version [0.1] than required [1.01]', 'StressTest.Test050 has lower version than required');
             self.ok(!StressTest.Versioning.Level1_1.meta.meta.isa(Joose.Class), "There is no class in the StressTest.Versioning.Level1_1 module spot");
         }
