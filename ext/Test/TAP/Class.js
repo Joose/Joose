@@ -97,7 +97,7 @@ Test.TAP.Class.prototype.run_it = function(method) {
         // THis avoid conflicts between tests when running multiple tests in a row
         for(var name in top) {
             //XXX need to keep it
-            if(!originalGlobal[name] && name != 'StressTest') {
+            if(!originalGlobal[name] && name != 'StressTest' && name != 'OnLoadTest1') {
                 try {
                     delete top[name]
                 } catch (e) {

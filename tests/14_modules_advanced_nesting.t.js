@@ -1,7 +1,7 @@
 (function (Class, Module, Role, Type, Prototype) {
 return (function () {
 var t = new Test.TAP.Class();
-t.plan(8)
+t.plan(9)
 
 var thistop = Test.prototype.top()
 
@@ -53,6 +53,15 @@ t.testModuleClass = function() {
             self.ok(StressTest.Nested.Level1_2, "Something in the nested module spot, at level 1, #2");
         }
     })
+    
+    //==================================================================================================================================================================================
+    self.diag("Basic testing of dependencies loading");
+    Module("Basic", {
+        use : 'OnLoadTest1',
+        body : function(){
+            self.ok(OnLoadTest1.meta.meta.isa(Joose.Class), 'Basic dependencies loading passed');
+        }
+    });
     
 }
 
