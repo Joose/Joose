@@ -1,4 +1,4 @@
-Class('OnLoadTest2', {
+Class('BasicTest2', {
     version : 0.1,
     
     methods : {

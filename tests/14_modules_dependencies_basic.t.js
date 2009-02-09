@@ -1,7 +1,7 @@
 (function (Class, Module, Role, Type, Prototype) {
 return (function () {
 var t = new Test.TAP.Class();
-t.plan(1)
+t.plan(2)
 
 var thistop = Test.prototype.top()
 
@@ -11,10 +11,14 @@ t.testModuleClass = function() {
     //==================================================================================================================================================================================
     self.diag("Basic testing of dependencies loading");
     Module("Basic", {
-        use : 'OnLoadTest1',
+        use : 'BasicTest1',
         body : function(){
-            self.ok(OnLoadTest1.meta.meta.isa(Joose.Class), 'Basic dependencies loading passed');
+            self.ok(BasicTest1.meta.meta.isa(Joose.Class), 'Basic dependencies loading passed');
         }
+    });
+    
+    use('BasicTest3', function(){
+        self.ok(BasicTest3.meta.meta.isa(Joose.Class), 'Dynamic (in code context) basic dependencies loading passed');
     });
     
 }

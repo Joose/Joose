@@ -1,8 +1,8 @@
-Class('OnLoadTest1', {
+Class('BasicTest1', {
 	version : 0.1,
 	
 	use : [ 
-	       'OnLoadTest2'
+	       'BasicTest2'
 	],
 	
 	methods : {
