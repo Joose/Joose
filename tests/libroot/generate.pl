@@ -56,6 +56,8 @@ my $tt = Template->new();
 my $class_number = 100;
 my $class_name_prefix = 'StressTest.Test';
 
+srand(1);
+
 for (my $i = 1; $i <= $class_number; $i++) {
 	my @deps = ();
 	
