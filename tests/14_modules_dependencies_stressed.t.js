@@ -1,7 +1,7 @@
 (function (Class, Module, Role, Type, Prototype) {
 return (function () {
 var t = new Test.TAP.Class();
-t.plan(351)
+t.plan(339)
 
 var thistop = Test.prototype.top()
 
