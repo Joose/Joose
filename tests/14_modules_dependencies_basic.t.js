@@ -1,7 +1,7 @@
 (function (Class, Module, Role, Type, Prototype) {
 return (function () {
 var t = new Test.TAP.Class();
-t.plan(3)
+t.plan(5)
 
 var thistop = Test.prototype.top()
 
@@ -34,18 +34,24 @@ t.testModuleClass = function() {
     });
         
     
+    var bodyCalled = false;
+    
     Module("GMapEngine", {
         
         use : 'GMapLoader',
         
-//        BEGIN : function(ready){
-//            google.load('maps','2',{
-//                language : 'ru',
-//                callback : ready
-//            });
-//        },
+        BEGIN : function(ready){
+            self.ok(!bodyCalled, 'BEGIN called before body');
+            
+            google.load('maps','2',{
+                language : 'ru',
+                callback : ready
+            });
+        },
         
-        body : function(){
+        body : function() {
+            bodyCalled = true;
+            self.ok(google.maps && google.maps.Map2, "Google Maps engine was loaded correctly")
         }
     });
     
