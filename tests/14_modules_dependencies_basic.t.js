@@ -1,7 +1,7 @@
 (function (Class, Module, Role, Type, Prototype) {
 return (function () {
 var t = new Test.TAP.Class();
-t.plan(2)
+t.plan(3)
 
 var thistop = Test.prototype.top()
 
@@ -19,6 +19,34 @@ t.testModuleClass = function() {
     
     use('BasicTest3', function(){
         self.ok(BasicTest3.meta.meta.isa(Joose.Class), 'Dynamic (in code context) basic dependencies loading passed');
+    });
+    
+    
+    Module("GMapLoader", {
+        use : {
+            //google loader
+            url : 'http://www.google.com/jsapi?key=ABQIAAAAa2oCDn-vJ2FYnkpuhajy_BQ8NCDMUx9yLS_m39ZE2Zv5G19HFRS1GJOvVuFnjwGNLUSMM6CiGDlA7g'
+        },
+        
+        body : function(){
+            self.ok(google && google.load, "Google loader was loaded correctly")
+        }
+    });
+        
+    
+    Module("GMapEngine", {
+        
+        use : 'GMapLoader',
+        
+//        BEGIN : function(ready){
+//            google.load('maps','2',{
+//                language : 'ru',
+//                callback : ready
+//            });
+//        },
+        
+        body : function(){
+        }
     });
     
 }
