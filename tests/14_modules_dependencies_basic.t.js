@@ -76,7 +76,7 @@ t.testModuleClass = function() {
     
     
     //==================================================================================================================================================================================
-    self.diag("Transport switching && synchronous loading");
+    self.diag("Transport switching & synchronous loading");
     
     Module("Testy2", {
         use : { Module : 'BasicTest5', transport : 'ajaxSync' }
