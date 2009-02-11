@@ -102,7 +102,8 @@ Test.TAP.Class.prototype.run_it = function(method) {
                 BasicTest1 : '',
                 BasicTest3 : '',
                 google     : '',
-                BasicTest4 : ''
+                BasicTest4 : '',
+                BasicTest6 : ''
             };
             
             if(!originalGlobal[name] && !(name in keep) ) {
