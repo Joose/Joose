@@ -1,7 +1,7 @@
 (function (Class, Module, Role, Type, Prototype) {
 return (function () {
 var t = new Test.TAP.Class();
-t.plan(5)
+t.plan(7)
 
 var thistop = Test.prototype.top()
 
@@ -17,11 +17,15 @@ t.testModuleClass = function() {
         }
     });
     
+    //==================================================================================================================================================================================
+    self.diag("Dynamic (in-code) dependency loading");
     use('BasicTest3', function(){
         self.ok(BasicTest3.meta.meta.isa(Joose.Class), 'Dynamic (in code context) basic dependencies loading passed');
     });
     
     
+    //==================================================================================================================================================================================
+    self.diag("Loading from external url");
     Module("GMapLoader", {
         use : {
             //google loader
@@ -33,6 +37,9 @@ t.testModuleClass = function() {
         }
     });
         
+    
+    //==================================================================================================================================================================================
+    self.diag("Controllbale ready-ness of Module");
     
     var bodyCalled = false;
     
@@ -52,6 +59,18 @@ t.testModuleClass = function() {
         body : function() {
             bodyCalled = true;
             self.ok(google.maps && google.maps.Map2, "Google Maps engine was loaded correctly")
+        }
+    });
+    
+    //==================================================================================================================================================================================
+    self.diag("List of searchable paths (@INC)");
+
+    Module("Testy", {
+        use : 'BasicTest4',
+        
+        body : function(){
+            self.ok(BasicTest4 && BasicTest4.meta.meta.isa(Joose.Class), "Class successfully loaded from secondary libroot");
+            self.ok(new BasicTest4().result() == 4, "And it work as expected");
         }
     });
     

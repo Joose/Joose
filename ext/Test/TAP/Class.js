@@ -98,10 +98,11 @@ Test.TAP.Class.prototype.run_it = function(method) {
         for(var name in top) {
             //XXX need to keep it
             var keep = {
-                'StressTest' : '',
-                'BasicTest1' : '',
-                'BasicTest3' : '',
-                'google'     : ''
+                StressTest : '',
+                BasicTest1 : '',
+                BasicTest3 : '',
+                google     : '',
+                BasicTest4 : ''
             };
             
             if(!originalGlobal[name] && !(name in keep) ) {
