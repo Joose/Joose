@@ -82,9 +82,18 @@ t.testModuleClass = function() {
         use : { Module : 'BasicTest5', transport : 'ajaxSync' }
     });
     
-    self.ok(BasicTest5 && BasicTest5.meta.meta.isa(Joose.Class), "Class successfully loaded via switched transport");
+    self.ok(BasicTest5 && BasicTest5.meta.meta.isa(Joose.Class), "Class successfully loaded via switched transport - synchronously");
     self.ok(new BasicTest5().result() == 5, "And it work as expected");
     
+    //==================================================================================================================================================================================
+    self.diag("Non-Joose dependencies (no Namespace meta)");
+    
+    Module("Testy3", {
+        use : { Module : 'BasicTest5', presence : function(){ return BasicTest5 } }
+    });
+    
+    self.ok(BasicTest5 && BasicTest5.meta.meta.isa(Joose.Class), "Class successfully loaded via switched transport - synchronously");
+    self.ok(new BasicTest5().result() == 5, "And it work as expected");
 }
 
 return t;
