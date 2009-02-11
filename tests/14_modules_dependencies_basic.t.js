@@ -1,7 +1,7 @@
 (function (Class, Module, Role, Type, Prototype) {
 return (function () {
 var t = new Test.TAP.Class();
-t.plan(7)
+t.plan(9)
 
 var thistop = Test.prototype.top()
 
@@ -73,6 +73,17 @@ t.testModuleClass = function() {
             self.ok(new BasicTest4().result() == 4, "And it work as expected");
         }
     });
+    
+    
+    //==================================================================================================================================================================================
+    self.diag("Transport switching && synchronous loading");
+    
+    Module("Testy2", {
+        use : { Module : 'BasicTest5', transport : 'ajaxSync' }
+    });
+    
+    self.ok(BasicTest5 && BasicTest5.meta.meta.isa(Joose.Class), "Class successfully loaded via switched transport");
+    self.ok(new BasicTest5().result() == 5, "And it work as expected");
     
 }
 
