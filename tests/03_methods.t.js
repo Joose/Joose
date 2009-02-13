@@ -1,7 +1,7 @@
 (function (Class, Module, Role, Type, Prototype) {
 return (function () {
 var t = new Test.TAP.Class();
-t.plan(31);
+t.plan(30);
     
 t.testMethodMetaClass = function() {
     var self = this;
@@ -31,7 +31,7 @@ t.testMethodMetaClass = function() {
     self.ok(o.identity2(1, 2) == 2, "We can call methods with two parameters");
     
     var m = o.meta.getMethodObject("one")
-    self.ok(m, "Mthod has meta object")
+//    self.ok(m, "Method has meta object")
     self.is(m.getName(), "one", "name is correct")
     self.ok(!m.isFromSuperClass(), "method is not from super classs")
     

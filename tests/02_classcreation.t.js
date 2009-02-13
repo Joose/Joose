@@ -37,6 +37,7 @@ t.testClassCreation = function () {
         
     this.diag("Multiple Classes")
         
+//    debugger;
     Class("TestClass2", {
         has: {test2: {is: rw, init: 1}}
     });
