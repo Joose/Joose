@@ -1,7 +1,7 @@
 (function (Class, Module, Role, Type, Prototype) {
 return (function () {
 var t = new Test.TAP.Class();
-t.plan(15)
+t.plan(13)
 
 var thistop = Test.prototype.top()
 
@@ -104,8 +104,6 @@ t.testModuleClass = function() {
                 
                 body : function(){
                     self.ok(!__global__.nonJooseDoubleDeclared, "Non-Joose dependencies are not loading twicely #2");
-                    self.ok(BasicTest6, "Non-Joose dependency was succesfully loaded");
-                    self.ok(new BasicTest6().result() == 6, "And it work as expected");
                 }
             });
         }
