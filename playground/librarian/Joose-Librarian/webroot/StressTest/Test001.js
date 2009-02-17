@@ -1,19 +1,21 @@
-
+var declared = false;
 try {
-	if (typeof StressTest.Test001 == 'function' && StressTest.Test001.meta.meta.isa(Joose.Class)) {
-		StressTest.doubleDeclarations = true;
-		throw "Double declaration of StressTest.Test001";
-	}
+	declared = typeof StressTest.Test001 == 'function';
 } catch (e) {
 	
+}
+
+if (declared && StressTest.Test001.meta.meta.isa(Joose.Class)) {
+    StressTest.doubleDeclarations = true;
+    throw "Double declaration of StressTest.Test001";
 }
 
 Class('StressTest.Test001', {
 	version : 0.1,
 	
 	use : [ 
-	       'StressTest.Test002',
-	       'StressTest.Test007',
+        { Module : 'StressTest.Test002', version : 0.1 },
+            'StressTest.Test007',
 	       'StressTest.Test015',
 	       'StressTest.Test024',
 	       'StressTest.Test035',

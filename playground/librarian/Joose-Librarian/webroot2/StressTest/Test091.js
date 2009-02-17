@@ -1,11 +1,13 @@
-
+var declared = false;
 try {
-	if (typeof StressTest.Test091 == 'function' && StressTest.Test091.meta.meta.isa(Joose.Class)) {
-		StressTest.doubleDeclarations = true;
-		throw "Double declaration of StressTest.Test091";
-	}
+	declared = typeof StressTest.Test091 == 'function';
 } catch (e) {
 	
+}
+
+if (declared && StressTest.Test091.meta.meta.isa(Joose.Class)) {
+    StressTest.doubleDeclarations = true;
+    throw "Double declaration of StressTest.Test091";
 }
 
 Class('StressTest.Test091', {

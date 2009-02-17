@@ -20,14 +20,16 @@ use Template;
 
 
 my $class_template = <<TEMPLATE
-
+var declared = false;
 try {
-	if (typeof [% class_name %] == 'function' && [% class_name %].meta.meta.isa(Joose.Class)) {
-		StressTest.doubleDeclarations = true;
-		throw "Double declaration of [% class_name %]";
-	}
+	declared = typeof [% class_name %] == 'function';
 } catch (e) {
 	
+}
+
+if (declared && [% class_name %].meta.meta.isa(Joose.Class)) {
+    StressTest.doubleDeclarations = true;
+    throw "Double declaration of [% class_name %]";
 }
 
 Class('[% class_name %]', {

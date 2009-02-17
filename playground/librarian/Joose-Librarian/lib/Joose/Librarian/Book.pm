@@ -10,6 +10,7 @@ use Path::Class;
 use JavaScript;
 use Moose::Util::TypeConstraints;
 use JavaScript::Minifier::XS;
+use JSON::XS;
 
 
 #================================================================================================================================================================================================================================================
@@ -25,33 +26,64 @@ has 'file_name' => (
     trigger => sub { shift->source(JavaScript::Minifier::XS::minify("" . file(shift)->slurp)) }
 );
 
-
 has 'source' => ( is => 'rw' );
 
 
 
 #================================================================================================================================================================================================================================================
-subtype 'Joose.Librarian.Dependencies' 
-    => as 'ArrayRef[HashRef]';
+subtype 'Joose.Librarian.Book.Dependencies' 
+    => as 'HashRef[HashRef]';
     
-coerce 'Joose.Librarian.Dependencies' 
+coerce 'Joose.Librarian.Book.Dependencies' 
     => from 'Any'
     => via {
-	    my ($deps) = @_;
-	    $deps = [ $deps ] unless ref $deps eq 'ARRAY';
-	    foreach my $dep (@{$deps}) {
+	    my ($deps_array) = @_;
+	    $deps_array = [ $deps_array ] unless ref $deps_array eq 'ARRAY';
+	    
+	    my $deps_hash = {};
+	    
+	    foreach my $dep (@{$deps_array}) {
 	        $dep = { Module => $dep } unless ref $dep eq 'HASH';
+	        
+	        next if $dep->{url};
+	        
+	        my $module_name = $dep->{Module};
+	        $deps_hash->{$module_name} = $dep;
 	    }
-	    return $deps;
+	    
+	    return $deps_hash;
 	};
     
-has 'dependencies' => (
+has 'direct_dependencies' => (
     is => 'rw',
-    isa => 'Joose.Librarian.Dependencies',
+    isa => 'Joose.Librarian.Book.Dependencies',
     coerce => 1
 );
 
-has 'dep_source' => (
+has 'direct_dep_source' => (
+    is => 'rw'
+);
+
+
+has 'all_dependencies' => (
+    is => 'rw',
+    isa => 'Joose.Librarian.Book.Dependencies',
+    predicate => 'has_all_dependencies',
+    trigger => sub {
+    	my ($self, $hash_deps) = @_;
+    	
+    	my $array_deps = [];
+    	foreach my $module_name (keys(%$hash_deps)) {
+    		push @$array_deps, $hash_deps->{$module_name};
+    	};
+    	 
+        $self->all_dep_source(
+            JavaScript::Minifier::XS::minify(encode_json($array_deps))
+        ) 
+    }
+);
+
+has 'all_dep_source' => (
     is => 'rw'
 );
 
@@ -85,7 +117,7 @@ EOF
 
 #================================================================================================================================================================================================================================================
 #================================================================================================================================================================================================================================================
-sub extract_dependencies {
+sub extract_direct_dependencies {
 	my $self = shift;
 	
 	my $rt = JavaScript::Runtime->new();
@@ -101,103 +133,80 @@ sub extract_dependencies {
 	die "Extracted name [$name] doesnt match the name of this instance: " . $self->name unless $name eq $self->name;
 	
 	$self->version($version);
-	$self->dependencies($deps);
-	$self->dep_source($deps_source);
+	$self->direct_dependencies($deps);
+	$self->direct_dep_source(JavaScript::Minifier::XS::minify($deps_source));
 }
 
 
+#================================================================================================================================================================================================================================================
+#================================================================================================================================================================================================================================================
+sub extract_all_dependencies {
+    my $self = shift;
+    
+    return if $self->has_all_dependencies;
+    
+    if (!$self->direct_dependencies) {
+    	$self->extract_direct_dependencies();
+    }
+    
+    my $all = { %{$self->direct_dependencies} };
+    
+    foreach my $module_name (keys(%$all)) {
+    	my $book = Joose::Librarian->get_book($module_name);
+    	
+    	$book->extract_all_dependencies();
+    	
+    	$self->accumulate_to($all, $book->all_dependencies)
+    }
+    $self->all_dependencies($all);
+}
 
 
-=head1 NAME
-
-Joose::Librarian::Book - The great new Joose::Librarian::Book!
-
-=head1 VERSION
-
-Version 0.01
-
-=cut
-
-=head1 SYNOPSIS
-
-Quick summary of what the module does.
-
-Perhaps a little code snippet.
-
-    use Joose::Librarian::Book;
-
-    my $foo = Joose::Librarian::Book->new();
-    ...
-
-=head1 EXPORT
-
-A list of functions that can be exported.  You can delete this section
-if you don't export anything, such as for a purely object-oriented module.
-
-=head1 FUNCTIONS
-
-=head2 function1
-
-=cut
-  
-=head2 function2
-
-=cut
-
-=head1 AUTHOR
-
-Nickolay Platonov aka SamuraiJack, C<< <me at samuraijack.org> >>
-
-=head1 BUGS
-
-Please report any bugs or feature requests to C<bug-joose-librarian at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Joose-Librarian>.  I will be notified, and then you'll
-automatically be notified of progress on your bug as I make changes.
+#================================================================================================================================================================================================================================================
+#================================================================================================================================================================================================================================================
+sub accumulate_to {
+    my ($self, $destination, $deps) = @_;
+    
+    foreach my $module_name (keys(%$deps)) {
+    	my $from_deps = $deps->{$module_name};
+    	
+    	if (!defined $destination->{$module_name}) {
+            $destination->{$module_name} = $from_deps;
+            next;
+        } 
+    	
+    	my $from_dest = $destination->{$module_name};
+    	
+    	if ($from_dest->{version} && $from_deps->{version} && $from_dest->{version} < $from_deps->{version}) {
+    		$destination->{$module_name} = $from_deps;
+    	} elsif (!$from_dest->{version} && $from_deps->{version}) {
+            $destination->{$module_name} = $from_deps;
+        }
+    }
+    
+}
 
 
+#================================================================================================================================================================================================================================================
+#================================================================================================================================================================================================================================================
+sub update_direct_dependencies {
+    my ($self) = @_;
+    
+    $self->extract_all_dependencies();
+    
+    my $source = $self->source();
+    
+    my $direct_source = $self->direct_dep_source;
+    $direct_source =~ s/"/'/g;
+    $direct_source = quotemeta $direct_source;
+    
+    my $all_source = $self->all_dep_source;
+    $all_source =~ s/"/'/g;
+
+    $source =~ s/$direct_source/$all_source/s;
+    
+    $self->source($source);
+}
 
 
-=head1 SUPPORT
-
-You can find documentation for this module with the perldoc command.
-
-    perldoc Joose::Librarian::Book
-
-
-You can also look for information at:
-
-=over 4
-
-=item * RT: CPAN's request tracker
-
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Joose-Librarian>
-
-=item * AnnoCPAN: Annotated CPAN documentation
-
-L<http://annocpan.org/dist/Joose-Librarian>
-
-=item * CPAN Ratings
-
-L<http://cpanratings.perl.org/d/Joose-Librarian>
-
-=item * Search CPAN
-
-L<http://search.cpan.org/dist/Joose-Librarian/>
-
-=back
-
-
-=head1 ACKNOWLEDGEMENTS
-
-
-=head1 COPYRIGHT & LICENSE
-
-Copyright 2009 Nickolay Platonov aka SamuraiJack, all rights reserved.
-
-This program is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself.
-
-
-=cut
-
-1; # End of Joose::Librarian::Book
+1;
