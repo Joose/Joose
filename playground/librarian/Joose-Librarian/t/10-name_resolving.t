@@ -1,8 +1,9 @@
 #!perl
 
 use Test::More tests => 4;
+use lib "lib";
 
-$ENV{JOOSE_INC} = "/home/catalyst/Workspace/EclipseWorkspace/Joose-Dependencies/playground/librarian/Joose-Librarian/webroot;/home/catalyst/Workspace/EclipseWorkspace/Joose-Dependencies/playground/librarian/Joose-Librarian/webroot2";
+$ENV{JOOSE_INC} = "web/root1;web/root2";
 
 use Joose::Librarian;
 
