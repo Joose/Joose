@@ -7,8 +7,9 @@ our $VERSION = '0.01';
 
 
 use Moose;
-
 use Path::Class;
+
+use Joose::Librarian::Book;
 
 __PACKAGE__->meta()->make_immutable();
 

@@ -1,3 +1,13 @@
+
+try {
+	if (typeof StressTest.Test001 == 'function' && StressTest.Test001.meta.meta.isa(Joose.Class)) {
+		StressTest.doubleDeclarations = true;
+		throw "Double declaration of StressTest.Test001";
+	}
+} catch (e) {
+	
+}
+
 Class('StressTest.Test001', {
 	version : 0.1,
 	

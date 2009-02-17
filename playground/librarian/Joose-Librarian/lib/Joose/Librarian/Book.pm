@@ -7,7 +7,6 @@ our $VERSION = '0.01';
 
 use Moose;
 use Path::Class;
-use Joose::Librarian;
 use JavaScript;
 use Moose::Util::TypeConstraints;
 use JavaScript::Minifier::XS;

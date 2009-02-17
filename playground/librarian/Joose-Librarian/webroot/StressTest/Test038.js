@@ -1,6 +1,11 @@
-if (typeof StressTest.Test038 == 'function' && StressTest.Test038.meta.meta.isa(Joose.Class)) {
-	StressTest.doubleDeclarations = true;
-	throw "Double declaration of StressTest.Test038";
+
+try {
+	if (typeof StressTest.Test038 == 'function' && StressTest.Test038.meta.meta.isa(Joose.Class)) {
+		StressTest.doubleDeclarations = true;
+		throw "Double declaration of StressTest.Test038";
+	}
+} catch (e) {
+	
 }
 
 Class('StressTest.Test038', {
