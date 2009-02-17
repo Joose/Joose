@@ -6,7 +6,6 @@ use strict;
 our $VERSION = '0.01';
 
 use Moose;
-use Path::Class;
 use Joose::Librarian;
 use JavaScript;
 
@@ -19,7 +18,7 @@ has 'version' => ( is => 'rw' );
 
 has 'file_name' => ( 
     is => 'rw',
-    trigger => sub { shift->source("" . file(shift)->slurp) }
+    trigger => sub { shift->source(file(shift)->slurp) }
 );
 
 
@@ -27,7 +26,7 @@ has 'source' => ( is => 'rw' );
 
 has 'dependencies' => (
     is => 'rw',
-    isa => 'Maybe[HashRef[HashRef]]'
+    isa => 'HashRef[HashRef]'
 );
 
 
@@ -43,16 +42,13 @@ sub BUILD {
 }
 
 
-my $enviroment_start = <<EOF
+my $enviroment = <<EOF
+    
     var __name__, __props__;
     Class = Module = function (name, props) {
     	__name__ = name;
     	__props__ = props || {};
-    };
-    
-EOF
-;
-my $enviroment_end = <<EOF
+    }
     
     __JOOSE_LIBRARIAN__EXTRACT__(__name__, __props__.use, __props__.use && __props__.use.toSource(), __props__.version);
 EOF
@@ -67,16 +63,13 @@ sub extract_dependencies {
 	my $rt = JavaScript::Runtime->new();
 	my $cx = $rt->create_context();
 	
-
 	my ($name, $deps, $deps_source, $version);
 	
 	$cx->bind_function('__JOOSE_LIBRARIAN__EXTRACT__' => sub { ($name, $deps, $deps_source, $version) = @_ });
 	
-	$cx->eval($enviroment_start . $self->source . $enviroment_end);
-	die "Class definition contain errors: $@" if $@;
-	
-	$self->version($version);
-	$self->dependencies($deps);
+	$cx->eval($enviroment);
+	$cx->eval_file($self->file_name);
+	die "Class definition contain errors" if $@;
 }
 
 

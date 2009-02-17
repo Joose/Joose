@@ -19,9 +19,8 @@
 #     PL_FILES => {  }
 #     PREREQ_PM => { Test::More=>q[0], ExtUtils::MakeMaker=>q[6.44] }
 #     VERSION => q[0.01]
-#     clean => { FILES=>q[META.yml] }
 #     dist => { PREOP=>q[$(PERL) -I. "-MModule::Install::Admin" -e "dist_preop(q($(DISTVNAME)))"] }
-#     test => { TESTS=>q[t/00-load.t t/boilerplate.t t/pod-coverage.t t/pod.t] }
+#     test => { TESTS=>q[t/00-load.t t/10-name_resolving.t t/20-info_extracting.t] }
 
 # --- MakeMaker post_initialize section:
 
@@ -164,7 +163,7 @@ O_FILES  =
 H_FILES  = 
 MAN1PODS = 
 MAN3PODS = lib/Joose/Librarian.pm \
-	lib/Joose/Librarian/Scheme.pm
+	lib/Joose/Librarian/Book.pm
 
 # Where is the Config information that we are using/depend on
 CONFIGDEP = $(PERL_ARCHLIB)$(DFSEP)Config.pm $(PERL_INC)$(DFSEP)config.h
@@ -187,12 +186,12 @@ PERL_ARCHIVE_AFTER =
 
 
 TO_INST_PM = lib/Joose/Librarian.pm \
-	lib/Joose/Librarian/Scheme.pm
+	lib/Joose/Librarian/Book.pm
 
-PM_TO_BLIB = lib/Joose/Librarian.pm \
-	blib/lib/Joose/Librarian.pm \
-	lib/Joose/Librarian/Scheme.pm \
-	blib/lib/Joose/Librarian/Scheme.pm
+PM_TO_BLIB = lib/Joose/Librarian/Book.pm \
+	blib/lib/Joose/Librarian/Book.pm \
+	lib/Joose/Librarian.pm \
+	blib/lib/Joose/Librarian.pm
 
 
 # --- MakeMaker platform_constants section:
@@ -412,11 +411,11 @@ POD2MAN = $(POD2MAN_EXE)
 
 
 manifypods : pure_all  \
-	lib/Joose/Librarian.pm \
-	lib/Joose/Librarian/Scheme.pm
+	lib/Joose/Librarian/Book.pm \
+	lib/Joose/Librarian.pm
 	$(NOECHO) $(POD2MAN) --section=3 --perm_rw=$(PERM_RW) \
-	  lib/Joose/Librarian.pm $(INST_MAN3DIR)/Joose::Librarian.$(MAN3EXT) \
-	  lib/Joose/Librarian/Scheme.pm $(INST_MAN3DIR)/Joose::Librarian::Scheme.$(MAN3EXT) 
+	  lib/Joose/Librarian/Book.pm $(INST_MAN3DIR)/Joose::Librarian::Book.$(MAN3EXT) \
+	  lib/Joose/Librarian.pm $(INST_MAN3DIR)/Joose::Librarian.$(MAN3EXT) 
 
 
 
@@ -459,7 +458,7 @@ clean :: clean_subdirs
 	  perl.exe so_locations \
 	  $(BASEEXT).exp 
 	- $(RM_RF) \
-	  META.yml blib 
+	  blib 
 	- $(MV) $(FIRST_MAKEFILE) $(MAKEFILE_OLD) $(DEV_NULL)
 
 
@@ -743,7 +742,7 @@ $(MAKE_APERL_FILE) : $(FIRST_MAKEFILE) pm_to_blib
 TEST_VERBOSE=0
 TEST_TYPE=test_$(LINKTYPE)
 TEST_FILE = test.pl
-TEST_FILES = t/00-load.t t/boilerplate.t t/pod-coverage.t t/pod.t
+TEST_FILES = t/00-load.t t/10-name_resolving.t t/20-info_extracting.t
 TESTDB_SW = -d
 
 testdb :: testdb_$(LINKTYPE)
@@ -787,8 +786,8 @@ ppd :
 
 pm_to_blib : $(TO_INST_PM)
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', '\''$(PM_FILTER)'\'')' -- \
-	  lib/Joose/Librarian.pm blib/lib/Joose/Librarian.pm \
-	  lib/Joose/Librarian/Scheme.pm blib/lib/Joose/Librarian/Scheme.pm 
+	  lib/Joose/Librarian/Book.pm blib/lib/Joose/Librarian/Book.pm \
+	  lib/Joose/Librarian.pm blib/lib/Joose/Librarian.pm 
 	$(NOECHO) $(TOUCH) pm_to_blib
 
 

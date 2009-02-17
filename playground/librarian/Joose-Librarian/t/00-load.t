@@ -1,9 +1,9 @@
 #!perl -T
 
-use Test::More tests => 1;
+use Test::More tests => 2;
 
 BEGIN {
-	use_ok( 'Joose::Librarian::Scheme' );
+	use_ok( 'Joose::Librarian' );
+	use_ok( 'Joose::Librarian::Book' );
 }
 
-diag( "Testing Joose::Librarian::Scheme $Joose::Librarian::Scheme::VERSION, Perl $], $^X" );

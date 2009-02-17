@@ -3,6 +3,58 @@ package Joose::Librarian;
 use warnings;
 use strict;
 
+our $VERSION = '0.01';
+
+
+use Moose;
+use MooseX::ClassAttribute;
+
+use Path::Class;
+
+
+class_has 'INC' => (
+    is => 'rw',
+    reader => 'get_INC',
+    writer => 'set_INC'
+);
+
+
+__PACKAGE__->meta()->make_immutable();
+
+no Moose;
+no MooseX::ClassAttribute;
+
+
+
+sub get_INC { 
+	return ( split(";", $INC{JOOSE_INC}) ); 
+}
+
+
+sub set_INC {
+	my ($self, $value) = @_;
+	$INC{JOOSE_INC} = $value;
+}
+
+
+sub resolve_name {
+	my ($self, $name) = @_;
+	
+	my @file_name = split("\.", $name);
+	$file_name[-1] = $file_name[-1] . '.js';
+	$name = file(@file_name);
+	
+	my @INC = $self->INC();
+	
+	foreach my $inc (@INC) {
+		my $book_file = $name->relative( dir($inc) );
+		if (-e $book_file) { return $book_file }
+	}
+	
+	return undef;
+}
+
+
 =head1 NAME
 
 Joose::Librarian - The great new Joose::Librarian!
@@ -12,11 +64,6 @@ Joose::Librarian - The great new Joose::Librarian!
 Version 0.01
 
 =cut
-
-our $VERSION = '0.01';
-
-
-use Moose;
 
 =head1 SYNOPSIS
 
@@ -28,27 +75,6 @@ Perhaps a little code snippet.
 
     my $foo = Joose::Librarian->new();
     ...
-
-=head1 EXPORT
-
-A list of functions that can be exported.  You can delete this section
-if you don't export anything, such as for a purely object-oriented module.
-
-=head1 FUNCTIONS
-
-=head2 function1
-
-=cut
-
-sub function1 {
-}
-
-=head2 function2
-
-=cut
-
-sub function2 {
-}
 
 =head1 AUTHOR
 

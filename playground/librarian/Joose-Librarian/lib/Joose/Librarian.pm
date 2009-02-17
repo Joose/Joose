@@ -1,7 +1,38 @@
 package Joose::Librarian;
 
-use warnings;
-use strict;
+#use warnings;
+#use strict;
+
+our $VERSION = '0.01';
+
+
+use Moose;
+
+use Path::Class;
+
+__PACKAGE__->meta()->make_immutable();
+
+no Moose;
+
+
+
+sub resolve_name {
+	my ($self, $name) = @_;
+	
+	my @file_name = split(m!\.!, $name);
+	$file_name[-1] = $file_name[-1] . '.js';
+	$name = file(@file_name);
+	
+	my @INC = split(/;/, $ENV{JOOSE_INC});
+	
+	foreach my $inc (@INC) {
+		my $book_file = $name->absolute( dir($inc) );
+		if (-e $book_file) { return $book_file }
+	}
+	
+	return undef;
+}
+
 
 =head1 NAME
 
@@ -13,13 +44,6 @@ Version 0.01
 
 =cut
 
-our $VERSION = '0.01';
-
-
-use Moose;
-use MooseX::ClassAttribute;
-
-
 =head1 SYNOPSIS
 
 Quick summary of what the module does.
@@ -30,27 +54,6 @@ Perhaps a little code snippet.
 
     my $foo = Joose::Librarian->new();
     ...
-
-=head1 EXPORT
-
-A list of functions that can be exported.  You can delete this section
-if you don't export anything, such as for a purely object-oriented module.
-
-=head1 FUNCTIONS
-
-=head2 function1
-
-=cut
-
-sub function1 {
-}
-
-=head2 function2
-
-=cut
-
-sub function2 {
-}
 
 =head1 AUTHOR
 
