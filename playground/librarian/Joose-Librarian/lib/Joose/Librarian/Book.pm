@@ -9,7 +9,11 @@ use Moose;
 use Path::Class;
 use Joose::Librarian;
 use JavaScript;
+use Moose::Util::TypeConstraints;
+use JavaScript::Minifier::XS;
 
+
+#================================================================================================================================================================================================================================================
 has 'name' => ( 
     is => 'ro',
     required => 1 
@@ -19,17 +23,38 @@ has 'version' => ( is => 'rw' );
 
 has 'file_name' => ( 
     is => 'rw',
-    trigger => sub { shift->source("" . file(shift)->slurp) }
+    trigger => sub { shift->source(JavaScript::Minifier::XS::minify("" . file(shift)->slurp)) }
 );
 
 
 has 'source' => ( is => 'rw' );
 
+
+
+#================================================================================================================================================================================================================================================
+subtype 'Joose.Librarian.Dependencies' 
+    => as 'ArrayRef[HashRef]';
+    
+coerce 'Joose.Librarian.Dependencies' 
+    => from 'Any'
+    => via {
+	    my ($deps) = @_;
+	    $deps = [ $deps ] unless ref $deps eq 'ARRAY';
+	    foreach my $dep (@{$deps}) {
+	        $dep = { Module => $dep } unless ref $dep eq 'HASH';
+	    }
+	    return $deps;
+	};
+    
 has 'dependencies' => (
     is => 'rw',
-    isa => 'Maybe[HashRef[HashRef]]'
+    isa => 'Joose.Librarian.Dependencies',
+    coerce => 1
 );
 
+has 'dep_source' => (
+    is => 'rw'
+);
 
 #================================================================================================================================================================================================================================================
 #================================================================================================================================================================================================================================================
@@ -74,9 +99,11 @@ sub extract_dependencies {
 	
 	$cx->eval($enviroment_start . $self->source . $enviroment_end);
 	die "Class definition contain errors: $@" if $@;
+	die "Extracted name [$name] doesnt match the name of this instance: " . $self->name unless $name eq $self->name;
 	
 	$self->version($version);
 	$self->dependencies($deps);
+	$self->dep_source($deps_source);
 }
 
 
