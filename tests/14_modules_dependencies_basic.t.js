@@ -92,7 +92,7 @@ t.testModuleClass = function() {
     __global__.nonJooseDoubleDeclared = false;
     
     Module("Testy3", {
-        use : 'BasicTest6',
+        use : 'ext://BasicTest6',
         
         body : function(){
             self.ok(!__global__.nonJooseDoubleDeclared, "Non-Joose dependencies are not loading twicely");
@@ -100,7 +100,7 @@ t.testModuleClass = function() {
             self.ok(new BasicTest6().result() == 6, "And it work as expected");
             
             Module("Testy4", {
-                use : 'BasicTest6',
+                use : 'ext://BasicTest6',
                 
                 body : function(){
                     self.ok(!__global__.nonJooseDoubleDeclared, "Non-Joose dependencies are not loading twicely #2");
