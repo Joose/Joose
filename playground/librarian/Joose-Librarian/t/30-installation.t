@@ -1,13 +1,12 @@
 #!perl
 
-use Test::More tests => 1;
+use Test::More tests => 6;
 use lib "lib";
 
 $ENV{JOOSE_INC} = "localLib/root1;localLib/root2;localLib/root3";
 $ENV{JOOSE_LIB} = "localLib/library";
 
 use Joose::Librarian;
-use JavaScript::Beautifier qw/js_beautify/;
 use Path::Class;
 
 my $lib_dir = dir($ENV{JOOSE_LIB});
@@ -15,23 +14,52 @@ my $lib_dir = dir($ENV{JOOSE_LIB});
 $lib_dir->rmtree();
 $lib_dir->mkpath();
 
-#file("web/library/StressTest/Test001.js")->remove();
-#
-#my $book = Joose::Librarian->get_book('StressTest.Test001');
-#
-#$book->update_direct_dependencies();
-#
-#Joose::Librarian->install_book($book);
-#
-#ok(-e "web/library/StressTest/Test001.js", "File appears");
-#
-#
-#for (my $i = 2; $i <= 100; $i++) {
-#	my $book_name = sprintf("StressTest.Test%03d", $i);
-#	
-#	$book = Joose::Librarian->get_book($book_name);
-#	$book->update_direct_dependencies();
-#	Joose::Librarian->install_book($book);
-#}
-#
-##diag("source = " . js_beautify($book->source));
+
+#================================================================================================================================================================================================================================================
+#book A
+#================================================================================================================================================================================================================================================
+my $a = Joose::Librarian->get_book('A');
+$a->update_direct_dependencies();
+Joose::Librarian->install_book($a);
+
+ok(-e file('A.js')->absolute($lib_dir), "File A.js appears");
+ok(!is_file_in_libdir(qw(B C D E F G H I J)), "... and only A.js appears");
+
+
+
+#================================================================================================================================================================================================================================================
+#book E
+#================================================================================================================================================================================================================================================
+my $e = Joose::Librarian->get_book('E');
+$e->update_direct_dependencies();
+Joose::Librarian->install_book($e);
+
+ok(-e file('E.js')->absolute($lib_dir), "File E.js appears");
+ok(!is_file_in_libdir(qw(B C D F G H I J)), "... and only E.js appears");
+
+
+
+#================================================================================================================================================================================================================================================
+#book C
+#================================================================================================================================================================================================================================================
+my $c = Joose::Librarian->get_book('C');
+$c->update_direct_dependencies();
+Joose::Librarian->install_book($c);
+
+ok(-e file('C.js')->absolute($lib_dir), "File C.js appears");
+ok(!is_file_in_libdir(qw(B D F G H I J)), "... and only E.js appears");
+
+
+
+#================================================================================================================================================================================================================================================
+sub is_file_in_libdir {
+	my (@files) = @_;
+	
+	my $res = 0;
+	
+	foreach my $file (@files) {
+		$res = 1 if -e file($file)->absolute($lib_dir);
+	}
+	
+	return $res;
+}

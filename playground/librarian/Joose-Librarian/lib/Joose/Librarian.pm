@@ -59,21 +59,25 @@ sub install_book {
 sub create_bundle {
     my ($self, $deps_array, $md5hash) = @_;
     
+    return if !defined $deps_array;
+    
     my @bundle = ();
     
     $deps_array = [ $deps_array ] unless ref $deps_array eq 'ARRAY';
         
     foreach my $dep (@{$deps_array}) {
-        $dep = { Module => $dep } unless ref $dep eq 'HASH';
-            
         next if $dep->{url};
+        
+        $dep = { Module => $dep } unless ref $dep eq 'HASH';
             
         my $module_name = $dep->{Module} . ($dep->{version} ? '-' . $dep->{version} : '');
         push @bundle, $module_name;
     }
     
+    @bundle = sort(@bundle);
+    
     my $new_hash = md5_hex(join(",",@bundle));
-    die "Passed md5 hash [$md5hash] doesnt match with computed [$new_hash]" unless !$md5hash || ($new_hash eq $md5hash);
+    die "Passed md5 hash [$md5hash] doesnt match with computed [$new_hash]" if $md5hash && ($new_hash ne $md5hash);
     
     my $lib_dir = dir($ENV{JOOSE_LIB});
     my $bundle_dir = dir($ENV{JOOSE_BUNDLE});
@@ -81,13 +85,19 @@ sub create_bundle {
     my $bundle_file = file($new_hash . ".js")->absolute($bundle_dir);
     
     my $fh = $bundle_file->openw();
+    
     foreach my $dep (@{$deps_array}) {
         next if $dep->{url};
             
 	    my @file_name = split(m!\.!, $dep->{Module});
 	    $file_name[-1] = $file_name[-1] . '.js';
 	    
-	    my $lib_file = file(@file_name)->absolute($lib_dir);        
+	    my $lib_file = file(@file_name)->absolute($lib_dir);
+	    if (!-e $lib_file) {
+	    	my $book = Joose::Librarian->get_book($dep->{Module});
+	    	$book->update_direct_dependencies();
+	    	Joose::Librarian->install_book($book);
+	    }        
         
         print $fh js_beautify("" . file($lib_file)->slurp) . "\n";
     }

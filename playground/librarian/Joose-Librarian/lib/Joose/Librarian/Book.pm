@@ -196,7 +196,9 @@ sub update_direct_dependencies {
     
     $self->extract_all_dependencies();
     
-    my $source = $self->source();
+    my $source = $self->source || "";
+    
+    return if !$self->direct_dep_source;
     
     my $direct_source = $self->direct_dep_source;
     $direct_source =~ s/"/'/g;
