@@ -3,14 +3,18 @@
 use Test::More tests => 1;
 use lib "lib";
 
-#$ENV{JOOSE_INC} = "localLib/root1;localLib/root2;localLib/root3";
-#$ENV{JOOSE_LIB} = "localLib/library";
-#
-#use Joose::Librarian;
-#use JavaScript::Beautifier qw/js_beautify/;
-#use Path::Class;
-#
-#
+$ENV{JOOSE_INC} = "localLib/root1;localLib/root2;localLib/root3";
+$ENV{JOOSE_LIB} = "localLib/library";
+
+use Joose::Librarian;
+use JavaScript::Beautifier qw/js_beautify/;
+use Path::Class;
+
+my $lib_dir = dir($ENV{JOOSE_LIB});
+
+$lib_dir->rmtree();
+$lib_dir->mkpath();
+
 #file("web/library/StressTest/Test001.js")->remove();
 #
 #my $book = Joose::Librarian->get_book('StressTest.Test001');

@@ -65,17 +65,3 @@ $h->extract_direct_dependencies();
 is($h->version, 0.2, "H: Extracted correct version");
 
 is(keys(%{$h->direct_dependencies}), 0, "H: Extracted correct dependencies number");
-
-
-
-
-
-#
-#
-#$a->extract_all_dependencies();
-#
-#ok($a->has_all_dependencies, "All depedencies were setup'ed");
-#
-##$a->update_direct_dependencies();
-#
-##diag("source = " . js_beautify($a->source));
