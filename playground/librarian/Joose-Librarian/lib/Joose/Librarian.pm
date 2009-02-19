@@ -93,6 +93,8 @@ sub create_bundle {
     }
     
     $fh->close();
+    
+    return $bundle_file->slurp();
 }
 
 

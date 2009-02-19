@@ -21,20 +21,42 @@ Catalyst Controller.
 
 =cut
 
-
+use Path::Class;
 
 #================================================================================================================================================================================================================================================
 #================================================================================================================================================================================================================================================
 sub index :Path :Args(1) {
     my ( $self, $c, $filename ) = @_;
 
-    my $bundle_filename = $c->path_to(__PACKAGE__->config->{'bundles'}, $filename);
+    my $bundle_filename = file($filename)->absolute($ENV{JOOSE_BUNDLE});
+    
+    $c->log->debug("BundleFILENAME=$bundle_filename");
+    
     if (-e $bundle_filename) {
     	$c->serve_static_file($bundle_filename);
     	return;
     }
     
+    my $dep_text = $c->req->params->{text};
+    my @deps = split(/,/, $dep_text);
+    for (my $i = 0; $i < @deps; $i++) {
+    	my $version = '';
+    	
+    	if ($deps[$i] =~ /(.*)-(.*)$/) {
+    		$deps[$i] = $1;
+    		$version = $2;
+    	}
+    	
+    	
+    	$deps[$i] = { Module => $deps[$i] };
+    	$deps[$i]->{version} = $version if $version;
+    }
     
+    $filename =~ /(.*)\.js$/;
+    
+    my $response = $c->model('Librarian')->create_bundle(\@deps, $1);
+    
+    $c->response->body($response);
 }
 
 
