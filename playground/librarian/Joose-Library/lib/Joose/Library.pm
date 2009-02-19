@@ -28,7 +28,14 @@ our $VERSION = '0.01';
 # with a external configuration file acting as an override for
 # local deployment.
 
-__PACKAGE__->config( name => 'Joose::Library' );
+__PACKAGE__->config( 
+    name => 'Joose::Library',
+    
+    'Model::Librarian' => {
+        library => '/static/library',
+        bundles => '/static/bundles'
+    }
+);
 
 # Start the application
 __PACKAGE__->setup();

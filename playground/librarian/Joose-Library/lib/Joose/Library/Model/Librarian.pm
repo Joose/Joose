@@ -4,7 +4,9 @@ use strict;
 use warnings;
 use parent 'Catalyst::Model';
 
-__
+use Joose::Librarian;
+
+
 
 =head1 NAME
 
