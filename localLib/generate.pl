@@ -28,7 +28,7 @@ try {
 }
 
 if (declared && [% class_name %].meta.meta.isa(Joose.Class)) {
-    StressTest.doubleDeclarations = true;
+    __global__.doubleDeclarations = true;
     throw "Double declaration of [% class_name %]";
 }
 
@@ -48,7 +48,7 @@ Class('[% class_name %]', {
 	body : function(){
        [%- FOREACH dep IN class_dependencies %]
 			if (![% dep %].meta.meta.isa(Joose.Class)) { 
-				StressTest.unSatisfiedDeps = true;
+				__global__.unSatisfiedDeps = true;
 				throw "Dependency [% dep %] is not satisfied for class [% class_name %]"; 
 			}
        [%- END %]
@@ -87,7 +87,10 @@ for (my $i = 1; $i <= $class_number; $i++) {
 	    \$res
 	) || die $tt->error(), "\n";
 	
-	my $filename = join('/',split(m!\.!, $class_name)) . '.js';
+	my $filename = join(
+	   '/',
+	   ( 'root' . (1 + int(rand(2))), split(m!\.!, $class_name) )
+	) . '.js';
 	
 	file($filename)->dir->mkpath();
 	
