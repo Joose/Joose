@@ -20,7 +20,7 @@ sub prepare_arguments {
     $ENV{JOOSE_BUNDLE} = $app->path_to($app_conf->{bundles});
     
     my @inc = ();
-    foreach my $root ($app_conf->{roots}) {
+    foreach my $root (@{$app_conf->{roots}}) {
     	push @inc, $app->path_to($root);
     }
     $ENV{JOOSE_INC} = join(";", @inc);

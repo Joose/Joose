@@ -75,15 +75,18 @@ t.testModuleClass = function() {
     });
     
     
-    //==================================================================================================================================================================================
-    self.diag("Transport switching & synchronous loading");
+    self.skip(__JOOSE_LIBRARIAN_ENABLED__,"Librarian handles all files asynchronously", 2, function(){
     
-    Module("Testy2", {
-        use : { Module : 'BasicTest5', transport : 'ajaxSync' }
+        //==================================================================================================================================================================================
+        self.diag("Transport switching & synchronous loading");
+        
+        Module("Testy2", {
+            use : { Module : 'BasicTest5', transport : 'ajaxSync' }
+        });
+        
+        self.ok(BasicTest5 && BasicTest5.meta.meta.isa(Joose.Class), "Class successfully loaded via switched transport");
+        self.ok(new BasicTest5().result() == 5, "And it work as expected");
     });
-    
-    self.ok(BasicTest5 && BasicTest5.meta.meta.isa(Joose.Class), "Class successfully loaded via switched transport");
-    self.ok(new BasicTest5().result() == 5, "And it work as expected");
 
     
     //==================================================================================================================================================================================

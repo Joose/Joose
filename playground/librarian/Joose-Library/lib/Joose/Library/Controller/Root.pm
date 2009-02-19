@@ -46,7 +46,7 @@ Attempt to render a view, if needed.
 
 =cut 
 
-sub end : ActionClass('RenderView') {}
+#sub end : ActionClass('RenderView') {}
 
 =head1 AUTHOR
 

@@ -34,7 +34,7 @@ __PACKAGE__->config(
     'Model::Librarian' => {
         library => '../../../localLib/library',
         bundles => '../../../localLib/bundles',
-        roots => [ '../../../localLib/root1', '../../../localLib/root2']
+        roots => [ '../../../localLib/root1', '../../../localLib/root2' ]
     }
 );
 
