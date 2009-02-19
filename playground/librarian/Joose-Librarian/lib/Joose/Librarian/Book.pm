@@ -43,6 +43,8 @@ coerce 'Joose.Librarian.Book.Dependencies'
 	    my $deps_hash = {};
 	    
 	    foreach my $dep (@{$deps_array}) {
+	    	next if !defined $dep;
+	    	
 	        $dep = { Module => $dep } unless ref $dep eq 'HASH';
 	        
 	        next if $dep->{url};
@@ -134,7 +136,7 @@ sub extract_direct_dependencies {
 	
 	$self->version($version);
 	$self->direct_dependencies($deps);
-	$self->direct_dep_source(JavaScript::Minifier::XS::minify($deps_source));
+	$self->direct_dep_source(JavaScript::Minifier::XS::minify($deps_source || ""));
 }
 
 
