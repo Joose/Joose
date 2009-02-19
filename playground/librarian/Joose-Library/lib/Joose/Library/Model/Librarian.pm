@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use parent 'Catalyst::Model::Adaptor';
 
-use lib "/home/catalyst/Workspace/EclipseWorkspace/Joose-Dependencies/playground/librarian/Joose-Librarian/lib";
+use lib "../Joose-Librarian/lib";
 
 __PACKAGE__->config(
     class => 'Joose::Librarian' 
@@ -16,14 +16,12 @@ __PACKAGE__->config(
 sub prepare_arguments {
 	my ($self, $app) = @_; # $app sometimes written as $c
 	
-	my $app_conf =  { 
-        'Model::Librarian' => $app->config->{'Model::Librarian'}
-	};
+	my $app_conf =  $app->config->{'Model::Librarian'};
 	
-    $ENV{JOOSE_LIB} = $app->path_to($app_conf->{'Model::Librarian'}->{library});
-    $ENV{JOOSE_BUNDLE} = $app->path_to($app_conf->{'Model::Librarian'}->{bundles});
+    $ENV{JOOSE_LIB} = $app->path_to($app_conf->{library});
+    $ENV{JOOSE_BUNDLE} = $app->path_to($app_conf->{bundles});
     
-	return $app_conf;
+	return {};
 }
 
 

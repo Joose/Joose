@@ -31,13 +31,9 @@ our $VERSION = '0.01';
 __PACKAGE__->config( 
     name => 'Joose::Library',
     
-    'static' => {
-    	dirs => [ 'tests', 'ext', 'lib' ]
-    },
-    
     'Model::Librarian' => {
-        library => 'root/library',
-        bundles => 'root/bundles'
+        library => '../localLib/library',
+        bundles => '../localLib/bundles'
     }
 );
 
