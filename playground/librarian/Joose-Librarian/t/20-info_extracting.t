@@ -3,7 +3,7 @@
 use Test::More tests => 7;
 use lib "lib";
 
-$ENV{JOOSE_INC} = "web/root1;web/root2";
+$ENV{JOOSE_INC} = "localLib/root1;localLib/root2;localLib/root3";
 
 use Joose::Librarian;
 use JavaScript::Beautifier qw/js_beautify/;
@@ -27,6 +27,6 @@ $book->extract_all_dependencies();
 
 ok($book->has_all_dependencies, "All depedencies were setup'ed");
 
-$book->update_direct_dependencies();
+#$book->update_direct_dependencies();
 
 #diag("source = " . js_beautify($book->source));

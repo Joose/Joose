@@ -10,8 +10,6 @@ __PACKAGE__->config(
     class => 'Joose::Librarian' 
 );
 
-#use Data::Dump qw(ddx);
-
 
 sub prepare_arguments {
 	my ($self, $app) = @_; # $app sometimes written as $c
@@ -20,6 +18,12 @@ sub prepare_arguments {
 	
     $ENV{JOOSE_LIB} = $app->path_to($app_conf->{library});
     $ENV{JOOSE_BUNDLE} = $app->path_to($app_conf->{bundles});
+    
+    my @inc = ();
+    foreach my $root ($app_conf->{roots}) {
+    	push @inc, $app->path_to($root);
+    }
+    $ENV{JOOSE_INC} = join(";", @inc);
     
 	return {};
 }

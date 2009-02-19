@@ -3,9 +3,9 @@
 use Test::More tests => 1;
 use lib "lib";
 
-$ENV{JOOSE_INC} = "web/root1;web/root2";
-$ENV{JOOSE_LIB} = "web/library";
-$ENV{JOOSE_BUNDLE} = "web/bundles";
+$ENV{JOOSE_INC} = "localLib/root1;localLib/root2;localLib/root3";
+$ENV{JOOSE_LIB} = "localLib/library";
+$ENV{JOOSE_BUNDLE} = "localLib/bundles";
 
 use Joose::Librarian;
 

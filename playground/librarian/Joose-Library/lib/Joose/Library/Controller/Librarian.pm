@@ -30,8 +30,6 @@ sub index :Path :Args(1) {
 
     my $bundle_filename = file($filename)->absolute($ENV{JOOSE_BUNDLE});
     
-    $c->log->debug("BundleFILENAME=$bundle_filename");
-    
     if (-e $bundle_filename) {
     	$c->serve_static_file($bundle_filename);
     	return;

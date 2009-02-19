@@ -32,8 +32,9 @@ __PACKAGE__->config(
     name => 'Joose::Library',
     
     'Model::Librarian' => {
-        library => '../localLib/library',
-        bundles => '../localLib/bundles'
+        library => '../../../localLib/library',
+        bundles => '../../../localLib/bundles',
+        roots => [ '../../../localLib/root1', '../../../localLib/root2']
     }
 );
 

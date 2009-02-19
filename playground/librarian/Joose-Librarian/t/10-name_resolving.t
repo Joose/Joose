@@ -1,19 +1,16 @@
 #!perl
 
-use Test::More tests => 4;
+use Test::More tests => 200;
 use lib "lib";
 
-$ENV{JOOSE_INC} = "web/root1;web/root2";
+$ENV{JOOSE_INC} = "localLib/root1;localLib/root2;localLib/root3";
 
 use Joose::Librarian;
 
-my $book = Joose::Librarian->get_book('StressTest.Test001');
 
-ok($book, "Book from web1 created");
-like($book->source, qr/Dependency StressTest\.Test002 is not satisfied/, "Book have a correct sources");
-
-$book = Joose::Librarian->get_book('StressTest.Test072');
-
-ok($book, "Book from web2 created");
-like($book->source, qr/StressTest\.Test072/, "Book have a correct sources");
-
+for (my $i = 1; $i <= 100; $i++) {
+	my $book = Joose::Librarian->get_book(sprintf('StressTest.Test%3d', $i));
+	
+	ok($book, "Book from created");
+	like($book->source, qr/Dependency StressTest\.Test\d\d\d is not satisfied/, "Book have a correct sources");
+}
