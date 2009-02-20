@@ -35,7 +35,8 @@ sub index :Path :Args(1) {
 #    	return;
 #    }
     
-    my $dep_text = $c->req->params->{text};
+    my $dep_text = $c->req->header('X-Joose-Bundle');
+    
     my @deps = split(/,/, $dep_text);
     for (my $i = 0; $i < @deps; $i++) {
     	my $version = '';
