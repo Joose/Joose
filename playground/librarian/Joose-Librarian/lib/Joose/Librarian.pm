@@ -57,7 +57,7 @@ sub install_book {
 #================================================================================================================================================================================================================================================
 #================================================================================================================================================================================================================================================
 sub create_bundle {
-    my ($self, $deps_array, $md5hash) = @_;
+    my ($self, $deps_array, $md5hash, $persistent) = @_;
     
     return if !defined $deps_array;
     
@@ -93,11 +93,11 @@ sub create_bundle {
 	    $file_name[-1] = $file_name[-1] . '.js';
 	    
 	    my $lib_file = file(@file_name)->absolute($lib_dir);
-#	    if (!-e $lib_file) {
+	    if ($persistent && !-e $lib_file) {
 	    	my $book = Joose::Librarian->get_book( ($dep->{external} ? 'ext://' : '') . $dep->{Module} );
 	    	$book->update_direct_dependencies();
 	    	Joose::Librarian->install_book($book);
-#	    }        
+	    }        
         
         print $fh js_beautify("" . file($lib_file)->slurp) . "\n";
     }

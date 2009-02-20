@@ -30,10 +30,10 @@ sub index :Path :Args(1) {
 
     my $bundle_filename = file($filename)->absolute($ENV{JOOSE_BUNDLE});
     
-#    if (-e $bundle_filename) {
-#    	$c->serve_static_file($bundle_filename);
-#    	return;
-#    }
+    if ($c->config->{persistent} && -e $bundle_filename) {
+    	$c->serve_static_file($bundle_filename);
+    	return;
+    }
     
     my $dep_text = $c->req->header('X-Joose-Bundle');
     
@@ -59,9 +59,7 @@ sub index :Path :Args(1) {
     
     $filename =~ /(.*)\.js$/;
     
-    my $response = $c->model('Librarian')->create_bundle(\@deps, $1);
-    
-#    $c->log->debug($response);
+    my $response = $c->model('Librarian')->create_bundle(\@deps, $1, $c->config->{persistent});
     
     $c->response->body($response);
 }
