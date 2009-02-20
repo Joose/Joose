@@ -30,29 +30,37 @@ sub index :Path :Args(1) {
 
     my $bundle_filename = file($filename)->absolute($ENV{JOOSE_BUNDLE});
     
-    if (-e $bundle_filename) {
-    	$c->serve_static_file($bundle_filename);
-    	return;
-    }
+#    if (-e $bundle_filename) {
+#    	$c->serve_static_file($bundle_filename);
+#    	return;
+#    }
     
     my $dep_text = $c->req->params->{text};
     my @deps = split(/,/, $dep_text);
     for (my $i = 0; $i < @deps; $i++) {
     	my $version = '';
+    	my $external = 0;
     	
     	if ($deps[$i] =~ /(.*)-(.*)$/) {
     		$deps[$i] = $1;
     		$version = $2;
     	}
     	
+        if ($deps[$i] =~ m!ext://(.*)!) {
+            $deps[$i] = $1;
+            $external = 1;
+        }
     	
     	$deps[$i] = { Module => $deps[$i] };
     	$deps[$i]->{version} = $version if $version;
+    	$deps[$i]->{external} = 1 if $external;
     }
     
     $filename =~ /(.*)\.js$/;
     
     my $response = $c->model('Librarian')->create_bundle(\@deps, $1);
+    
+#    $c->log->debug($response);
     
     $c->response->body($response);
 }

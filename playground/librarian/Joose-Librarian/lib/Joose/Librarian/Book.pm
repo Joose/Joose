@@ -15,7 +15,7 @@ use JSON::XS;
 
 #================================================================================================================================================================================================================================================
 has 'name' => ( 
-    is => 'ro',
+    is => 'rw',
     required => 1 
 );
 
@@ -28,6 +28,10 @@ has 'file_name' => (
 
 has 'source' => ( is => 'rw' );
 
+has 'external' => (
+    is => 'rw',
+    isa => 'Bool'
+);
 
 
 #================================================================================================================================================================================================================================================
@@ -50,6 +54,13 @@ coerce 'Joose.Librarian.Book.Dependencies'
 	        next if $dep->{url};
 	        
 	        my $module_name = $dep->{Module};
+	        
+	        if ($module_name =~ m!^ext://(.*)!) {
+	        	$module_name = $1;
+	        	$dep->{Module} = $module_name;
+	        	$dep->{external} = 1;
+	        }
+	        
 	        $deps_hash->{$module_name} = $dep;
 	    }
 	    
@@ -94,10 +105,17 @@ has 'all_dep_source' => (
 sub BUILD {
     my $self = shift;
     
+    if ($self->name =~ m!^ext://(.*)!) {
+    	$self->external(1);
+    	$self->name($1);
+    }
+    
     my $file_name = Joose::Librarian->resolve_name($self->name);
     die "Cant find file for " . $self->name unless $file_name;
     
-    $self->file_name($file_name); 
+    $self->file_name($file_name);
+    
+     
 }
 
 
@@ -121,6 +139,12 @@ EOF
 #================================================================================================================================================================================================================================================
 sub extract_direct_dependencies {
 	my $self = shift;
+	
+    $self->version(undef);
+    $self->direct_dependencies(undef);
+    $self->direct_dep_source(undef);
+    
+	return if $self->external;
 	
 	my $rt = JavaScript::Runtime->new();
 	my $cx = $rt->create_context();
@@ -154,7 +178,9 @@ sub extract_all_dependencies {
     my $all = { %{$self->direct_dependencies} };
     
     foreach my $module_name (keys(%$all)) {
-    	my $book = Joose::Librarian->get_book($module_name);
+    	my $full_module_name = ($all->{$module_name}->{external} ? 'ext://' : '') . $module_name;
+    	
+    	my $book = Joose::Librarian->get_book($full_module_name);
     	
     	$book->extract_all_dependencies();
     	

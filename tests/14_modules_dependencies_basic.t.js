@@ -17,6 +17,8 @@ t.testModuleClass = function() {
         }
     });
     
+//    debugger;
+    
     //==================================================================================================================================================================================
     self.diag("Dynamic (in-code) dependency loading");
     use('BasicTest3', function(){
@@ -93,6 +95,7 @@ t.testModuleClass = function() {
     self.diag("Non-Joose dependency");
     
     __global__.nonJooseDoubleDeclared = false;
+    
     
     Module("Testy3", {
         use : 'ext://BasicTest6',

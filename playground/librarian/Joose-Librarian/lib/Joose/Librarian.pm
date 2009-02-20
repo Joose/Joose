@@ -70,13 +70,13 @@ sub create_bundle {
         
         $dep = { Module => $dep } unless ref $dep eq 'HASH';
             
-        my $module_name = $dep->{Module} . ($dep->{version} ? '-' . $dep->{version} : '');
+        my $module_name = ($dep->{external} ? 'ext://' : '') . $dep->{Module} . ($dep->{version} ? '-' . $dep->{version} : '');
         push @bundle, $module_name;
     }
     
     @bundle = sort(@bundle);
     
-    my $new_hash = md5_hex(join(",",@bundle));
+    my $new_hash = md5_hex(join(",", @bundle));
     die "Passed md5 hash [$md5hash] doesnt match with computed [$new_hash]" if $md5hash && ($new_hash ne $md5hash);
     
     my $lib_dir = dir($ENV{JOOSE_LIB});
@@ -93,11 +93,11 @@ sub create_bundle {
 	    $file_name[-1] = $file_name[-1] . '.js';
 	    
 	    my $lib_file = file(@file_name)->absolute($lib_dir);
-	    if (!-e $lib_file) {
-	    	my $book = Joose::Librarian->get_book($dep->{Module});
+#	    if (!-e $lib_file) {
+	    	my $book = Joose::Librarian->get_book( ($dep->{external} ? 'ext://' : '') . $dep->{Module} );
 	    	$book->update_direct_dependencies();
 	    	Joose::Librarian->install_book($book);
-	    }        
+#	    }        
         
         print $fh js_beautify("" . file($lib_file)->slurp) . "\n";
     }
