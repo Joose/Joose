@@ -14,14 +14,14 @@ t.testModuleClass = function() {
     self.ok(__global__.meta.meta.isa(Joose.Kernel.ProtoModule), "And it is a Joose.Kernel.ProtoModule")
     
     Module("Com.test.module", {
-	    body : function () {
-	        Class("Test1", {
-	            methods: { world: function () { return "hello" } }
-	        });
-	        Class("Test2", {
-	            methods: { world: function () { return "hello" } }
-	        })
-	    }
+        body : function () {
+            Class("Test1", {
+                methods: { world: function () { return "hello" } }
+            });
+            Class("Test2", {
+                methods: { world: function () { return "hello" } }
+            })
+        }
     });
     
     self.ok(Com, "There is something in the Com spot")
@@ -31,20 +31,20 @@ t.testModuleClass = function() {
     self.ok(Com.meta.getName() == "Com", "The name is correct")
     
     self.throws_ok(
-    	function () { new Com() }, 
+        function () { new Com() }, 
         "Modules may not be instantiated.",
         "Not filled Modules can't be instantiated"
-	)
+    )
 
     self.ok(Com.test.module, "There is something in the module spot")
     self.ok(Com.test.module.meta.meta.isa(Joose.Kernel.ProtoModule), "And it is a Joose.Kernel.ProtoModule")
     self.ok(Com.test.module.meta.getName() == "Com.test.module", "The name is correct")
 
     self.throws_ok(
-    	function () { new Com.test.module() }, 
+        function () { new Com.test.module() }, 
         "Modules may not be instantiated.",
         "Not filled Modules can't be instantiated #2"
-	)
+    )
     
     
     self.ok(Com.test.module.Test1, "There is also something in the class spot")
@@ -124,20 +124,20 @@ t.testModuleClass = function() {
     self.diag("Collisions between class methods and namespace elements")
     
     self.throws_ok(
-    	function () { Com.test.meta.addClassMethod('Test1', testFunc) }, 
+        function () { Com.test.meta.addClassMethod('Test1', testFunc) }, 
         "Collision between existing namespace element [Com.test.Test1] and a new classMethod [Test1]",
         "Collision between namespace element and classmethod is detecting"
-	)
-	
-	
-	Com.test.meta.addClassMethod('classMethod', testFunc);
+    )
+    
+    
+    Com.test.meta.addClassMethod('classMethod', testFunc);
     self.throws_ok(
-    	function () { 
-    		Class('Com.test.classMethod', {}); 
-    	}, 
+        function () { 
+            Class('Com.test.classMethod', {}); 
+        }, 
         "Trying to setup module Com.test.classMethod failed. There is already something: testFunc",
         "Collision between classmethod and namespace element is detecting"
-	)
+    )
     
     //==================================================================================================================================================================================
     self.diag("Class usage in Module context")
@@ -167,18 +167,18 @@ t.testModuleClass = function() {
     Module("Com.test", function () {
         Module("Nested", function () {
             Class("NestTesting", {
-            	methods : {
-            		three : function () { return 3 }
-            	}
+                methods : {
+                    three : function () { return 3 }
+                }
             })
         });
         
         
         Module("Nested.Copy", function () {
             Class("NestTesting", {
-            	methods : {
-            		four : function () { return 4 }
-            	}
+                methods : {
+                    four : function () { return 4 }
+                }
             })
         });
     })

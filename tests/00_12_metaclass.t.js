@@ -17,8 +17,8 @@ testobj.testSanity = function() {
     this.ok(Joose.Class.prototype.attributeMetaClass == Joose.Attribute, "Attributes of Joose.Class itself were upgraded to Joose.Attribute");
     
     var testClassMeta = new Joose.Class('TestClass');
-	testClassMeta.addSuperClass(Joose.Class);
-	var TestClass = testClassMeta.getClassObject();
+    testClassMeta.addSuperClass(Joose.Class);
+    var TestClass = testClassMeta.getClassObject();
 
     this.ok(TestClass.meta.attributeMetaClass == Joose.Attribute, "Attributes of Joose.Class subclass were upgraded to Joose.Attribute");
     this.ok(TestClass.prototype.attributeMetaClass == Joose.Attribute, "Attributes of further classes were also upgraded");

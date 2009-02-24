@@ -106,7 +106,7 @@ testobj.testTypeConstraint = function() {
         /The passed value \[foo\] is not a BooleanTest/, 
         'setting boolean constrained to foo fails');
     constrained.setAttr1('foo', function (e, type) {
-    	self.ok(type == Joose.Type.BooleanTest, "Error handler invoked with correct type")
+        self.ok(type == Joose.Type.BooleanTest, "Error handler invoked with correct type")
     })
     
     self.throws_ok(function () { new BooleanTypeConstrained({attr1: 'foo'})}, 

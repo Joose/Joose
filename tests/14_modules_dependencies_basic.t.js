@@ -1,7 +1,7 @@
 (function (Class, Module, Role, Type, Prototype) {
 return (function () {
 var t = new Test.TAP.Class();
-t.plan(13)
+t.plan(15)
 
 var thistop = Test.prototype.top()
 
@@ -10,19 +10,24 @@ t.testModuleClass = function() {
 
     //==================================================================================================================================================================================
     self.diag("Basic testing of dependencies loading");
-    Module("Basic", {
-        use : 'BasicTest1',
-        body : function(){
-            self.ok(BasicTest1.meta.meta.isa(Joose.Class), 'Basic dependencies loading passed');
-        }
-    });
     
 //    debugger;
+    Module("Basic", {
+        use : [ 'BasicTest1', 'BasicTest2'],
+        body : function(){
+            self.ok(BasicTest1.meta.meta.isa(Joose.Class), 'Basic dependencies loading passed #1-1');
+            self.ok(new BasicTest1().result() == 1, "And it work as expected #1-2");
+            
+            self.ok(BasicTest2.meta.meta.isa(Joose.Class), 'Basic dependencies loading passed #2-1');
+            self.ok(new BasicTest2().result() == 2, "And it work as expected #2-2");
+        }
+    });
     
     //==================================================================================================================================================================================
     self.diag("Dynamic (in-code) dependency loading");
     use('BasicTest3', function(){
         self.ok(BasicTest3.meta.meta.isa(Joose.Class), 'Dynamic (in code context) basic dependencies loading passed');
+        self.ok(new BasicTest3().result() == 3, 'Dynamic (in code context) basic dependencies loading passed #2');
     });
     
     
@@ -72,23 +77,24 @@ t.testModuleClass = function() {
         
         body : function(){
             self.ok(BasicTest4 && BasicTest4.meta.meta.isa(Joose.Class), "Class successfully loaded from secondary libroot");
+//            debugger;
             self.ok(new BasicTest4().result() == 4, "And it work as expected");
         }
     });
     
     
-    self.skip(__JOOSE_LIBRARIAN_ENABLED__,"Librarian handles all files asynchronously", 2, function(){
-    
-    //==================================================================================================================================================================================
-    self.diag("Transport switching & synchronous loading");
-    
-    Module("Testy2", {
-        use : { Module : 'BasicTest5', transport : 'ajaxSync' }
-    });
-    
-    self.ok(BasicTest5 && BasicTest5.meta.meta.isa(Joose.Class), "Class successfully loaded via switched transport");
-    self.ok(new BasicTest5().result() == 5, "And it work as expected");
-    });
+//    self.skip(__JOOSE_LIBRARIAN_ENABLED__,"Librarian handles all files asynchronously", 2, function(){
+//    
+//        //==================================================================================================================================================================================
+//        self.diag("Transport switching & synchronous loading");
+//        
+//        Module("Testy2", {
+//            use : { Module : 'BasicTest5', transport : 'ajaxSync' }
+//        });
+//        
+//        self.ok(BasicTest5 && BasicTest5.meta.meta.isa(Joose.Class), "Class successfully loaded via switched transport");
+//        self.ok(new BasicTest5().result() == 5, "And it work as expected");
+//    });
 
     
     //==================================================================================================================================================================================

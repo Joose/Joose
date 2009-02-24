@@ -44,9 +44,9 @@ t.testDetach = function() {
 //    SubClass.meta.addMethod('three', function () { return 3 });
 //    
 //    if (typeof o2.three != 'function') {
-//    	t.ok(true, "Detached instance is not affected by changes in original class");
+//        t.ok(true, "Detached instance is not affected by changes in original class");
 //    } else {
-//    	t.ok(false, "Detached instance is not affected by changes in original class");
+//        t.ok(false, "Detached instance is not affected by changes in original class");
 //    }
     
 }

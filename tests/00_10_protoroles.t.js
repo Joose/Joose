@@ -19,8 +19,8 @@ t.testRoles = function() {
     
     var Eq = (new Joose.Kernel.ProtoRole('Eq')).getClassObject();
     Eq.meta.extend({
-    	locale : null,
-    	
+        locale : null,
+        
         notEqual: function (para) {
             return !this.isEqual(para)
         }
@@ -32,8 +32,8 @@ t.testRoles = function() {
     var Currency = (new Joose.Kernel.Roles("Currency")).getClassObject();
     Currency.meta.addRole(Eq);
     Currency.meta.extend({
-    	value : null,
-    	initialize : Joose.emptyFunction,
+        value : null,
+        initialize : Joose.emptyFunction,
         isEqual: function (cur) {
             return this.value == cur.value
         }    
@@ -47,7 +47,7 @@ t.testRoles = function() {
     
     var TestClass = (new Joose.Kernel.Roles("TestClass")).getClassObject();
     TestClass.meta.extend({
-    	initialize : Joose.emptyFunction,
+        initialize : Joose.emptyFunction,
         orig: function () {
             return true
         }

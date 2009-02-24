@@ -16,7 +16,7 @@ t.testModuleClass = function() {
     self.diag("Stress testing of dependencies loading");
 
     Module("StressTest", {
-	    use : 'StressTest.Test001',
+        use : 'StressTest.Test001',
         
         //body is executing after the all dependencies are satisfied
         body : function(){

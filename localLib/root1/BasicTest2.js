@@ -1,4 +1,6 @@
-if (typeof BasicTest2 == 'function' && BasicTest2.meta.meta.isa(Joose.Class)) throw "Double declaration of BasicTest2";
+//if (typeof BasicTest2 == 'function' && BasicTest2.meta.meta.isa(Joose.Class)) throw "Double declaration of BasicTest2";
+
+debugger;
 
 Class('BasicTest2', {
     version : 0.1,
