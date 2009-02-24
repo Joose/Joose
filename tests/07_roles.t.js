@@ -186,15 +186,7 @@ t.testRoles = function() {
         }
     })
     
-//    Class("Person", {
-//        methods: {
-//            sayHello: function () {
-//                printToSayString("Hello!")
-//            }
-//        }
-//    })
-    
-    
+
     Class("Eve", {
         isa: Person,
         does: [
