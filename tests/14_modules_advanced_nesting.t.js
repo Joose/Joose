@@ -16,7 +16,7 @@ t.testModuleClass = function() {
         body : function () {
             
             self.ok(StressTest.Nested, "Something in the nested module spot");
-            self.ok(StressTest.Nested.meta.meta.isa(Joose.Kernel.Namespace), "And its a Joose.Kernel.Namespace");
+            self.ok(StressTest.Nested.meta.meta.isa(Joose.Kernel.ProtoModule), "And its a Joose.Kernel.ProtoModule");
             
             Module("Level1_1", {
                 use : 'StressTest.Test050',

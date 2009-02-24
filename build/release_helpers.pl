@@ -21,7 +21,7 @@ my @classes = (
             "Joose.Kernel.ClassMethods",
             "Joose.Kernel.Handlers",
             "Joose.Kernel.AdvancedProtoAttribute",            
-            "Joose.Kernel.Namespace",
+            "Joose.Kernel.ProtoModule",
             "Joose.Kernel.DependenciesGroup",
             "Joose.Kernel.NamespaceKeeper",
             "Joose.Kernel.ProtoModule",

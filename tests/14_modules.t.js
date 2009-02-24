@@ -8,10 +8,10 @@ var thistop = Test.prototype.top()
 t.testModuleClass = function() {
     var self = this;
     self.ok(Joose.Kernel.ProtoModule, "The Joose.Kernel.ProtoModule class is here")
-    self.ok(Joose.Kernel.Namespace, "The Joose.Kernel.Namespace class is here")
+    self.ok(Joose.Kernel.ProtoModule, "The Joose.Kernel.ProtoModule class is here")
     
     self.ok(__global__, "There is a global module")
-    self.ok(__global__.meta.meta.isa(Joose.Kernel.Namespace), "And it is a Joose.Kernel.Namespace")
+    self.ok(__global__.meta.meta.isa(Joose.Kernel.ProtoModule), "And it is a Joose.Kernel.ProtoModule")
     
     Module("Com.test.module", {
 	    body : function () {
@@ -27,7 +27,7 @@ t.testModuleClass = function() {
     self.ok(Com, "There is something in the Com spot")
     self.ok(Com.meta, "And is has a meta object")
     self.ok(Com.meta.meta, "And a meta meta object")
-    self.ok(Com.meta.meta.isa(Joose.Kernel.Namespace), "And it is a Joose.Kernel.Namespace")
+    self.ok(Com.meta.meta.isa(Joose.Kernel.ProtoModule), "And it is a Joose.Kernel.ProtoModule")
     self.ok(Com.meta.getName() == "Com", "The name is correct")
     
     self.throws_ok(
@@ -37,7 +37,7 @@ t.testModuleClass = function() {
 	)
 
     self.ok(Com.test.module, "There is something in the module spot")
-    self.ok(Com.test.module.meta.meta.isa(Joose.Kernel.Namespace), "And it is a Joose.Kernel.Namespace")
+    self.ok(Com.test.module.meta.meta.isa(Joose.Kernel.ProtoModule), "And it is a Joose.Kernel.ProtoModule")
     self.ok(Com.test.module.meta.getName() == "Com.test.module", "The name is correct")
 
     self.throws_ok(
@@ -184,12 +184,12 @@ t.testModuleClass = function() {
     })
     
     self.ok(Com.test.Nested, "Something in the nested module spot");
-    self.ok(Com.test.Nested.meta.meta.isa(Joose.Kernel.Namespace), "And its a Joose.Kernel.Namespace");
+    self.ok(Com.test.Nested.meta.meta.isa(Joose.Kernel.ProtoModule), "And its a Joose.Kernel.ProtoModule");
     self.ok(Com.test.Nested.NestTesting, "Something in the nested class spot");
     self.ok(new Com.test.Nested.NestTesting().three() == 3, "And its a correct class");
 
     self.ok(Com.test.Nested.Copy, "Something in the nested module spot #2");
-    self.ok(Com.test.Nested.Copy.meta.meta.isa(Joose.Kernel.Namespace), "And its a Joose.Kernel.Namespace");
+    self.ok(Com.test.Nested.Copy.meta.meta.isa(Joose.Kernel.ProtoModule), "And its a Joose.Kernel.ProtoModule");
     self.ok(Com.test.Nested.Copy.NestTesting, "Something in the nested class spot #2");
     self.ok(new Com.test.Nested.Copy.NestTesting().four() == 4, "And its a correct class #2");
 }
