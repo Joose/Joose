@@ -1,7 +1,7 @@
 (function (Class, Module, Role, Type, Prototype) {
 return (function () {
 var t = new Test.TAP.Class();
-t.plan(1)
+t.plan(18)
 
 t.testRoles = function() {
     var self = this;

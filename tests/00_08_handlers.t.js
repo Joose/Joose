@@ -1,7 +1,7 @@
 (function (Class, Module, Role, Type, Prototype) {
 return (function () {
 var testobj = new Test.TAP.Class();
-testobj.plan(1)
+testobj.plan(21)
 
 testobj.testSanity = function() {
     this.diag("Joose.Kernel.Handlers")

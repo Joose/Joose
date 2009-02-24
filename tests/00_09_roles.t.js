@@ -1,7 +1,7 @@
 (function (Class, Module, Role, Type, Prototype) {
 return (function () {
 var testobj = new Test.TAP.Class();
-testobj.plan(1)
+testobj.plan(14)
 
 testobj.testSanity = function() {
     this.diag("Joose.Kernel.Roles")
@@ -23,8 +23,6 @@ testobj.testSanity = function() {
     
     this.ok(Joose.Kernel.Roles.meta.methodConstructor == Joose.Kernel.ProtoMethod, "Joose.Kernel.Roles's methods are Joose.Kernel.ProtoMethod");
     this.ok(Joose.Kernel.Roles.prototype.methodConstructor == Joose.Kernel.ProtoMethod, "Joose.Kernel.Roles's methods are Joose.Kernel.ProtoMethod #2");
-    
-    this.ok(Joose.Kernel.Roles.meta.attributeConstructor == Joose.Kernel.AdvancedProtoAttribute, "Joose.Kernel.Roles's attributes are Joose.Kernel.AdvancedProtoAttribute");
     
     this.ok(Joose.Kernel.Roles.meta.isAbstract === false, "Attributes are initilized correctly");
 };
