@@ -12,15 +12,12 @@ t.testModuleClass = function() {
     self.diag("Advanced nesting modules");
     
     Module("StressTest.Nested", {
-        use : 'StressTest.Test035',
         body : function () {
             
             self.ok(StressTest.Nested, "Something in the nested module spot");
             self.ok(StressTest.Nested.meta.meta.isa(Joose.Kernel.ProtoModule), "And its a Joose.Kernel.ProtoModule");
             
             Module("Level1_1", {
-                use : 'StressTest.Test050',
-                
                 body : function () {
                     Class("Level2_1", {
                         methods : {
@@ -36,8 +33,6 @@ t.testModuleClass = function() {
             self.ok(StressTest.Nested.Level1_1, "Something in the nested module spot, at level 1, #1");
             
             Module("Level1_2", {
-                use : 'StressTest.Test075',
-                
                 body : function () {
                     Class("Level2_2", {
                         methods : {
