@@ -4,24 +4,33 @@ Tests
 - Add tests that include and use frameworks such as prototype.js, dojo or jquery.
 - refactor tests into sub directories
 
+- execute each test into its own iframe (change test lib to http://search.cpan.org/~ingy/JS-Test-Simple-0.28/ ?)
+- test each source file individually (not in the presence of whole lib)
+
+
 Documentation
 - All
 
 Bugs
 
 Features
-- implement class versioning
+- implement class versioning (progressed)
 - Improve Implementation of Attribute meta classes
 - implement subtypes, then implement cookbook entries 4 and 5
 - Demonstrate stringify in Role recipe
 - Add Method.Generated Classes
+
+
+Dependencies
+- refactoring of namespace elements handling (rev 566)
+
 
 Done:
 - Test roles with method modifiers
 - Implement attribute meta classes
 - Add an interface to Joose.Class to ask for instance vs. class methods
   - joose.isInstance
-- execute every test file in its own iframe
+- ?execute every test file in its own iframe?
 - make this work in IE :)
 - Test object initialization with private attr and other edge cases
 - Dont step on other peoples toes with builders

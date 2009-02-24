@@ -26,7 +26,8 @@ Profiler.prototype = {
 	
 	report: function () {
 		var duration = this.duration() / 1000;
-		document.write("" +this.iterations + " iterations of " + this.description + " took " + duration + " seconds.<br>\n")
+        var avg = Math.round(duration / this.iterations * 10000) / 10000;
+		document.write("" +this.iterations + " iterations of " + this.description + " took " + duration + " seconds. " + avg + "avg. <br>\n")
 		return this;
 	}
 }

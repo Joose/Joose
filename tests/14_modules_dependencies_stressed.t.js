@@ -1,7 +1,7 @@
 (function (Class, Module, Role, Type, Prototype) {
 return (function () {
 var t = new Test.TAP.Class();
-t.plan(339)
+t.plan(319)
 
 var thistop = Test.prototype.top()
 
@@ -10,8 +10,8 @@ t.testModuleClass = function() {
 
     Module("StressTest");
     self.ok(StressTest, "Root module created");
-    StressTest.doubleDeclarations = false;
-    StressTest.unSatisfiedDeps = false;
+    __global__.doubleDeclarations = false;
+    __global__.unSatisfiedDeps = false;
     //==================================================================================================================================================================================
     self.diag("Stress testing of dependencies loading");
 
@@ -20,8 +20,8 @@ t.testModuleClass = function() {
         
         //body is executing after the all dependencies are satisfied
         body : function(){
-            self.ok(!StressTest.doubleDeclarations, "Stress testing passed without redeclarations");
-            self.ok(!StressTest.unSatisfiedDeps, "Stress testing passed with all dependencies satisfied");
+            self.ok(!__global__.doubleDeclarations, "Stress testing passed without redeclarations");
+            self.ok(!__global__.unSatisfiedDeps, "Stress testing passed with all dependencies satisfied");
             
             self.ok(StressTest.Test001, "StressTest.Test001 module created");
             self.ok(StressTest.Test001.meta.meta.isa(Joose.Class), "StressTest.Test001 class created");

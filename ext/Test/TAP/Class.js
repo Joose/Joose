@@ -95,6 +95,9 @@ Test.TAP.Class.prototype.run_it = function(method) {
     finally {
         // Delete globals which were created during test execution
         // THis avoid conflicts between tests when running multiple tests in a row
+        
+        __global__.meta.namespaceElements = {};
+        
         for(var name in top) {
             //XXX need to keep it
             var keep = {

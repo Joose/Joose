@@ -1,7 +1,7 @@
 (function (Class, Module, Role, Type, Prototype) {
 return (function () {
 var t = new Test.TAP.Class();
-t.plan(50)
+t.plan(54)
 
 var thistop = Test.prototype.top()
 
@@ -58,8 +58,15 @@ t.testModuleClass = function() {
     self.ok(Com.test.module.Test1.meta.className()  == "Com.test.module.Test1", "The class name is correct")
     self.ok(Com.test.module.Test2.meta.className() == "Com.test.module.Test2", "The class name is correct")
     
+
+    var testFunc = function(){};
+    testFunc.toString = function () { return 'testFunc'};
+    
+    //==================================================================================================================================================================================
+    self.diag("Aliasing")
+    
     self.ok(Com.test.module.meta.alias, "There is an alias method");
-    Com.test.module.meta.alias(__global__)
+    Com.test.module.meta.alias(thistop)
     self.ok(thistop.Test1, "There is something in the expected spot")
     self.ok(thistop.Test1 === Com.test.module.Test1, "Class is now global")
     
@@ -70,12 +77,14 @@ t.testModuleClass = function() {
     self.ok(new Com.test.module.Test1(), "We can also instantiate the fully qualified name");
     self.ok(new Com.test.module.Test1().world() == "hello", "and call methods on them");
     
-    self.lives_ok(function () {Com.test.module.meta.alias(__global__)}, "We can import again")
+    self.lives_ok(function () {Com.test.module.meta.alias(thistop)}, "We can import again")
     self.ok(new thistop.Test1().world() == "hello", "and call methods")
    
-    thistop.Test1 = function() {};
-    self.throws_ok(function () {Com.test.module.meta.alias(__global__)}, 
-        "Adding namespace element failed: namespace element [Test1] already exists",
+    thistop.Test1 = testFunc;
+    self.throws_ok(function () {Com.test.module.meta.alias(thistop)},
+        "Aliasing of Com.test.module to ",//[object Window] failed, there is already something: testFunc",
+    
+//        "Adding namespace element failed: namespace element [Test1] already exists",
         "Importing fails if there is already something different")
 
         
@@ -113,9 +122,6 @@ t.testModuleClass = function() {
     
     //==================================================================================================================================================================================
     self.diag("Collisions between class methods and namespace elements")
-    
-    var testFunc = function(){};
-    testFunc.toString = function () { return 'testFunc'};
     
     self.throws_ok(
     	function () { Com.test.meta.addClassMethod('Test1', testFunc) }, 

@@ -1,7 +1,7 @@
 (function (Class, Module, Role, Type, Prototype) {
 return (function () {
 var t = new Test.TAP.Class();
-t.plan(9)
+t.plan(13)
 
 var thistop = Test.prototype.top()
 
@@ -16,6 +16,8 @@ t.testModuleClass = function() {
             self.ok(BasicTest1.meta.meta.isa(Joose.Class), 'Basic dependencies loading passed');
         }
     });
+    
+//    debugger;
     
     //==================================================================================================================================================================================
     self.diag("Dynamic (in-code) dependency loading");
@@ -75,6 +77,8 @@ t.testModuleClass = function() {
     });
     
     
+    self.skip(__JOOSE_LIBRARIAN_ENABLED__,"Librarian handles all files asynchronously", 2, function(){
+    
     //==================================================================================================================================================================================
     self.diag("Transport switching & synchronous loading");
     
@@ -84,32 +88,32 @@ t.testModuleClass = function() {
     
     self.ok(BasicTest5 && BasicTest5.meta.meta.isa(Joose.Class), "Class successfully loaded via switched transport");
     self.ok(new BasicTest5().result() == 5, "And it work as expected");
+    });
 
     
     //==================================================================================================================================================================================
-//    self.diag("Non-Joose dependency");
-//    
-//    __global__.nonJooseDoubleDeclared = false;
-//    
-//    Module("Testy3", {
-//        use : 'BasicTest6',
-//        
-//        body : function(){
-//            self.ok(!__global__.nonJooseDoubleDeclared, "Non-Joose dependencies are not loading twicely");
-//            self.ok(BasicTest6, "Non-Joose dependency was succesfully loaded");
-//            self.ok(new BasicTest6().result() == 6, "And it work as expected");
-//            
-//            Module("Testy4", {
-//                use : 'BasicTest6',
-//                
-//                body : function(){
-//                    self.ok(!__global__.nonJooseDoubleDeclared, "Non-Joose dependencies are not loading twicely #2");
-//                    self.ok(BasicTest6, "Non-Joose dependency was succesfully loaded");
-//                    self.ok(new BasicTest6().result() == 6, "And it work as expected");
-//                }
-//            });
-//        }
-//    });
+    self.diag("Non-Joose dependency");
+    
+    __global__.nonJooseDoubleDeclared = false;
+    
+    
+    Module("Testy3", {
+        use : 'ext://BasicTest6',
+        
+        body : function(){
+            self.ok(!__global__.nonJooseDoubleDeclared, "Non-Joose dependencies are not loading twicely");
+            self.ok(BasicTest6, "Non-Joose dependency was succesfully loaded");
+            self.ok(new BasicTest6().result() == 6, "And it work as expected");
+            
+            Module("Testy4", {
+                use : 'ext://BasicTest6',
+                
+                body : function(){
+                    self.ok(!__global__.nonJooseDoubleDeclared, "Non-Joose dependencies are not loading twicely #2");
+                }
+            });
+        }
+    });
     
 }
 

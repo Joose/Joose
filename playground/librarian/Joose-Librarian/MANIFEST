@@ -1,0 +1,8 @@
+Changes
+MANIFEST
+Makefile.PL
+README
+lib/Joose/Librarian.pm
+lib/Joose/Librarian/Book.pm
+lib/Joose/Librarian/Scheme.pm
+t/00-load.t

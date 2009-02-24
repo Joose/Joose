@@ -9,28 +9,41 @@ sub exe ($);
 my $path = "$FindBin::Bin/..";
 
 my @classes = (
-	"Joose",
-	# copy this from Joose.js
-            "Joose.Builder",
-            "Joose.Class",
+	        "Joose",
+	# copy this from Joose
+            "Joose.Kernel.ProtoMeta",
+            "Joose.Kernel.ProtoMeta",
+            "Joose.Kernel.ClassSeparation",
+            "Joose.Kernel.ProtoMethod",
+            "Joose.Kernel.ProtoAttribute",
+            "Joose.Kernel.Inheritance",
+            "Joose.Kernel.ProtoClassMethod",
+            "Joose.Kernel.ClassMethods",
+            "Joose.Kernel.Handlers",
+            "Joose.Kernel.AdvancedProtoAttribute",            
+            "Joose.Kernel.Namespace",
+            "Joose.Kernel.DependenciesGroup",
+            "Joose.Kernel.NamespaceKeeper",
+            "Joose.Kernel.ProtoModule",
+            "Joose.Kernel.Roles",
+            "Joose.Kernel.ProtoRole",
+            "Joose.Kernel.MetaClass",
+            "Joose.TypeConstraint",
+            "Joose.Attribute",
             "Joose.Method",
             "Joose.ClassMethod",
-            "Joose.Attribute",
+            "Joose.Class",
+            "Joose.Builder",
+            "Joose.TypeCoercion",
+            "Joose.Types",
             "Joose.Role",
-            "Joose.Singleton",
             "Joose.SimpleRequest",
             "Joose.Gears",
             "Joose.Storage",
             "Joose.Storage.Unpacker",
             "Joose.Decorator",
-            "Joose.Module",
-            "Joose.TypeChecker",
-            "Joose.TypeConstraint",
-            "Joose.TypeCoercion",
-            "Joose.Types",
             "Joose.Prototype",
-            "Joose.TypedMethod",
-            "Joose.MultiMethod"
+            "Digest.MD5"
  );
 
   my $files = [map { s{\.}{/}g; "$_.js" } @classes];
