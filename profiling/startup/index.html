@@ -58,19 +58,25 @@ SimpleRequest.prototype.getText = function (urlOrOptions, async, callback, scope
 
 var joose2 = new SimpleRequest().getText('joose-2.0.js');
 var joose21 = new SimpleRequest().getText('joose-2.1.js');
+var ext = new SimpleRequest().getText('ext.js');
 
 new Profiler(function () {
 	Class = Role = Module = Joose = TYPE = undefined;
 	Digest = {};
 	eval(joose2);
-}, "startup for 2.0").run(30).report();
+}, "startup for Joose 2.0").run(30).report();
 
 
 new Profiler(function () {
     Digest = Class = Role = Module = Joose = TYPE = undefined;
     eval(joose21);
-}, "startup for 2.1").run(30).report();
+}, "startup for Joose 2.1").run(30).report();
 
+
+new Profiler(function () {
+    Ext = undefined;
+    eval(ext);
+}, "startup Ext").run(30).report();
 
 </script>
 
