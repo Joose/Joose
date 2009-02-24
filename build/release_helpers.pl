@@ -13,7 +13,7 @@ my @classes = (
 	# copy this from Joose
             "Joose.Kernel.ProtoMeta",
             "Joose.Kernel.ProtoMeta",
-            "Joose.Kernel.ClassSeparation",
+            "Joose.Kernel.Inheritable",
             "Joose.Kernel.ProtoMethod",
             "Joose.Kernel.ProtoAttribute",
             "Joose.Kernel.Inheritance",

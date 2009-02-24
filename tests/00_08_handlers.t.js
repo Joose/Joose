@@ -13,7 +13,7 @@ testobj.testSanity = function() {
     this.ok(Joose.Kernel.Handlers.meta.classIsa(Joose.Kernel.Handlers), "Joose.Kernel.Handlers ISA Joose.Kernel.Handlers");
     this.ok(Joose.Kernel.Handlers.meta.classIsa(Joose.Kernel.ClassMethods), "Joose.Kernel.Handlers ISA Joose.Kernel.ClassMethods");
     this.ok(Joose.Kernel.Handlers.meta.classIsa(Joose.Kernel.Inheritance), "Joose.Kernel.Handlers ISA Joose.Kernel.Inheritance");
-    this.ok(Joose.Kernel.Handlers.meta.classIsa(Joose.Kernel.ClassSeparation), "Joose.Kernel.Handlers ISA Joose.Kernel.ClassSeparation");
+    this.ok(Joose.Kernel.Handlers.meta.classIsa(Joose.Kernel.Inheritable), "Joose.Kernel.Handlers ISA Joose.Kernel.Inheritable");
     
     this.ok(Joose.Kernel.Handlers.meta.meta.isa(Joose.Kernel.ClassMethods), "Joose.Kernel.Handlers's meta ISA Joose.Kernel.ClassMethods");
     
@@ -32,7 +32,7 @@ testobj.testSanity = function() {
     this.ok(Joose.Kernel.Handlers.isa(Joose.Kernel.Handlers), "Joose.Kernel.Handlers ISA Joose.Kernel.Handlers");
     this.ok(Joose.Kernel.Handlers.isa(Joose.Kernel.ClassMethods), "Joose.Kernel.Handlers ISA Joose.Kernel.ClassMethods");
     this.ok(Joose.Kernel.Handlers.isa(Joose.Kernel.Inheritance), "Joose.Kernel.Handlers ISA Joose.Kernel.Inheritance");
-    this.ok(Joose.Kernel.Handlers.isa(Joose.Kernel.ClassSeparation), "Joose.Kernel.Handlers ISA Joose.Kernel.ClassSeparation");
+    this.ok(Joose.Kernel.Handlers.isa(Joose.Kernel.Inheritable), "Joose.Kernel.Handlers ISA Joose.Kernel.Inheritable");
     
     this.ok(Joose.Kernel.Handlers.meta.methodMetaClass == Joose.Kernel.ProtoMethod, "Joose.Kernel.Handlers's methods are Joose.Kernel.ProtoMethod");
 };

@@ -8,7 +8,7 @@ testobj.testSanity = function() {
     this.ok(Joose.Kernel.ProtoMethod, "Joose.Kernel.ProtoMethod is here");
     
     this.is("" + Joose.Kernel.ProtoMethod,'Joose.Kernel.ProtoMethod', "Joose.Kernel.ProtoMethod stringified correctly");
-    this.is("" + Joose.Kernel.ProtoMethod.meta,'a Joose.Kernel.ClassSeparation', "Joose.Kernel.ProtoMethod's meta stringified to Joose.Kernel.ClassSeparation");
+    this.is("" + Joose.Kernel.ProtoMethod.meta,'a Joose.Kernel.Inheritable', "Joose.Kernel.ProtoMethod's meta stringified to Joose.Kernel.Inheritable");
     
     this.ok(Joose.Kernel.ProtoMethod.meta.hasMethod('hasMethod'), 'Joose.Kernel.ProtoMethod has hasMethod');
     this.ok(Joose.Kernel.ProtoMethod.meta.hasMethod('toString'), "Joose.Kernel.ProtoMethod has toString");

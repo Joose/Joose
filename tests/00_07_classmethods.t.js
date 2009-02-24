@@ -12,10 +12,10 @@ testobj.testSanity = function() {
     
     this.ok(Joose.Kernel.ClassMethods.meta.classIsa(Joose.Kernel.ClassMethods), "Joose.Kernel.ClassMethods ISA Joose.Kernel.ClassMethods");
     this.ok(Joose.Kernel.ClassMethods.meta.classIsa(Joose.Kernel.Inheritance), "Joose.Kernel.ClassMethods ISA Joose.Kernel.Inheritance");
-    this.ok(Joose.Kernel.ClassMethods.meta.classIsa(Joose.Kernel.ClassSeparation), "Joose.Kernel.ClassMethods ISA Joose.Kernel.ClassSeparation");
+    this.ok(Joose.Kernel.ClassMethods.meta.classIsa(Joose.Kernel.Inheritable), "Joose.Kernel.ClassMethods ISA Joose.Kernel.Inheritable");
     
     this.ok(Joose.Kernel.ClassMethods.meta.meta.isa(Joose.Kernel.Inheritance), "Joose.Kernel.ClassMethods's meta ISA Joose.Kernel.Inheritance");
-    this.ok(Joose.Kernel.ClassMethods.meta.meta.isa(Joose.Kernel.ClassSeparation), "Joose.Kernel.ClassMethods's meta ISA Joose.Kernel.ClassSeparation");
+    this.ok(Joose.Kernel.ClassMethods.meta.meta.isa(Joose.Kernel.Inheritable), "Joose.Kernel.ClassMethods's meta ISA Joose.Kernel.Inheritable");
     
     this.ok(Joose.Kernel.ClassMethods.meta.hasMethod('hasMethod'), 'Joose.Kernel.ClassMethods has hasMethod');
     this.ok(Joose.Kernel.ClassMethods.meta.hasMethod('toString'), "Joose.Kernel.ClassMethods has toString");
