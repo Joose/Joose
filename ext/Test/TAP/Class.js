@@ -76,7 +76,7 @@ Test.TAP.Class.prototype.run_it = function(method) {
         originalGlobal[name] = true;
     }
     
-//    try {
+    try {
         if (typeof this.setup == 'function') {
             self.setup();
         }
@@ -84,42 +84,43 @@ Test.TAP.Class.prototype.run_it = function(method) {
         if (typeof this.teardown == 'function') {
             self.teardown();
         }
-//    }
-//    catch(err) {
-//        var str = err
-//        if(err.description) {
-//            str = err.description
-//        }
-//        this.diag("Test Suite Crashed!!! (" + str + ")");
-//    }
-//    finally {
-//        // Delete globals which were created during test execution
-//        // THis avoid conflicts between tests when running multiple tests in a row
-//        
-//        __global__.meta.namespaceElements = {};
-//        
-//        for(var name in top) {
-//            //XXX need to keep it
-//            var keep = {
-//                StressTest : '',
-//                BasicTest1 : '',
-//                BasicTest3 : '',
-//                google     : '',
-//                BasicTest4 : '',
-//                BasicTest6 : ''
-//            };
-//            
-//            if(!originalGlobal[name] && !(name in keep) ) {
-//                try {
-//                    delete top[name]
-//                } catch (e) {
-//                    // Delete threw an error, so just assign undefined
-//                    // IE does not allow window properties to be deleted
-//                    top[name] = undefined
-//                }
-//            }
-//        }
-//    }
+    }
+    catch(err) {
+        var str = err
+        if(err.description) {
+            str = err.description
+        }
+        this.diag("Test Suite Crashed!!! (" + str + ")");
+    }
+    finally {
+        // Delete globals which were created during test execution
+        // THis avoid conflicts between tests when running multiple tests in a row
+        
+        __global__.meta.namespaceElements = {};
+        
+        for(var name in top) {
+            //XXX need to keep it
+            var keep = {
+                StressTest : '',
+                BasicTest1 : '',
+                BasicTest2 : '',
+                BasicTest3 : '',
+                BasicTest4 : '',
+                BasicTest6 : '',
+                google     : ''
+            };
+            
+            if(!originalGlobal[name] && !(name in keep) ) {
+                try {
+                    delete top[name]
+                } catch (e) {
+                    // Delete threw an error, so just assign undefined
+                    // IE does not allow window properties to be deleted
+                    top[name] = undefined
+                }
+            }
+        }
+    }
 };
 
 /*

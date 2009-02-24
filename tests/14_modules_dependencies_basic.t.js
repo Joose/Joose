@@ -11,9 +11,8 @@ t.testModuleClass = function() {
     //==================================================================================================================================================================================
     self.diag("Basic testing of dependencies loading");
     
-//    debugger;
     Module("Basic", {
-        use : [ 'BasicTest1', 'BasicTest2'],
+        use : [ 'BasicTest1', 'BasicTest2' ],
         body : function(){
             self.ok(BasicTest1.meta.meta.isa(Joose.Class), 'Basic dependencies loading passed #1-1');
             self.ok(new BasicTest1().result() == 1, "And it work as expected #1-2");
@@ -77,7 +76,6 @@ t.testModuleClass = function() {
         
         body : function(){
             self.ok(BasicTest4 && BasicTest4.meta.meta.isa(Joose.Class), "Class successfully loaded from secondary libroot");
-//            debugger;
             self.ok(new BasicTest4().result() == 4, "And it work as expected");
         }
     });
