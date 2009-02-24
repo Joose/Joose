@@ -1,17 +1,16 @@
 (function (Class, Module, Role, Type, Prototype) {
 return (function () {
 var testobj = new Test.TAP.Class();
-testobj.plan(14)
+testobj.plan(13)
 
 testobj.testSanity = function() {
     this.diag("Joose.Kernel.Roles")
     this.ok(Joose.Kernel.Roles, "Joose.Kernel.Roles is here");
     
     this.is("" + Joose.Kernel.Roles,'Joose.Kernel.Roles', "Joose.Kernel.Roles stringified correctly");
-    this.is("" + Joose.Kernel.Roles.meta,'a Joose.Kernel.ProtoModule', "Joose.Kernel.Roles's meta stringified to Joose.Kernel.ProtoModule");
+    this.is("" + Joose.Kernel.Roles.meta,'a Joose.Kernel.Handlers', "Joose.Kernel.Roles's meta stringified to Joose.Kernel.Handlers");
     
     this.ok(Joose.Kernel.Roles.meta.classIsa(Joose.Kernel.Roles), "Joose.Kernel.Roles ISA Joose.Kernel.Roles");
-    this.ok(Joose.Kernel.Roles.meta.classIsa(Joose.Kernel.ProtoModule), "Joose.Kernel.Roles ISA Joose.Kernel.ProtoModule");
     this.ok(Joose.Kernel.Roles.meta.classIsa(Joose.Kernel.Handlers), "Joose.Kernel.Roles ISA Joose.Kernel.Handlers");
     this.ok(Joose.Kernel.Roles.meta.isa(Joose.Kernel.ClassMethods), "Joose.Kernel.Roles ISA Joose.Kernel.ClassMethods");
     

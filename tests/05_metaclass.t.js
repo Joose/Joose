@@ -101,7 +101,7 @@ t.testMetaClass = function() {
     self.diag("3rd level: " + o.meta.meta.meta);
     self.ok(o.meta.meta.meta instanceof Joose.Kernel.MetaClass, "third meta level is instanceof Joose.Kernel.MetaClass")
     self.diag("4th level: " + o.meta.meta.meta.meta);
-    self.ok(o.meta.meta.meta.meta instanceof Joose.Kernel.Roles, "fourth meta level is instanceof Joose.Kernel.Roles")
+    self.ok(o.meta.meta.meta.meta instanceof Joose.Kernel.ProtoModule, "fourth meta level is instanceof Joose.Kernel.ProtoModule")
     
     
     self.can_ok(o.meta, "addMethod")

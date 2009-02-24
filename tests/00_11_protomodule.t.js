@@ -8,7 +8,7 @@ testobj.testSanity = function() {
     this.ok(Joose.Kernel.ProtoModule, "Joose.Kernel.ProtoModule is here");
     
     this.is("" + Joose.Kernel.ProtoModule,'Joose.Kernel.ProtoModule', "Joose.Kernel.ProtoModule stringified correctly");
-    this.is("" + Joose.Kernel.ProtoModule.meta,'a Joose.Kernel.Handlers', "Joose.Kernel.ProtoModule's meta stringified to Joose.Kernel.Handlers");
+    this.is("" + Joose.Kernel.ProtoModule.meta,'a Joose.Kernel.Namespace', "Joose.Kernel.ProtoModule's meta stringified to Joose.Kernel.Namespace");
     
     this.ok(Joose.Kernel.ProtoModule.meta.methodConstructor == Joose.Kernel.ProtoMethod, "Joose.Kernel.ProtoModule's methods are Joose.Kernel.ProtoMethod");
     
