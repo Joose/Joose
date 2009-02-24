@@ -17,7 +17,7 @@ testobj.testSanity = function() {
     this.ok(Joose.Kernel.Inheritance.meta.hasMethod('hasMethod'), 'Joose.Kernel.Inheritance has hasMethod');
     this.ok(Joose.Kernel.Inheritance.meta.hasMethod('toString'), "Joose.Kernel.Inheritance has toString");
     this.ok(Joose.Kernel.Inheritance.meta.hasMethod('addSuperClass'), 'Joose.Kernel.Inheritance has addSuperClass');
-    this.ok(Joose.Kernel.Inheritance.meta.hasAttribute('attributeConstructor'), 'Joose.Kernel.Inheritance has attributeConstructor');
+    this.ok(Joose.Kernel.Inheritance.meta.hasAttribute('attributeMetaClass'), 'Joose.Kernel.Inheritance has attributeMetaClass');
     this.ok(Joose.Kernel.Inheritance.meta.hasMethod('defaultClassFunctionBody'), 'Joose.Kernel.Inheritance has defaultClassFunctionBody');
 };
 

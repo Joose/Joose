@@ -20,8 +20,8 @@ testobj.testSanity = function() {
     this.ok(Joose.Kernel.Roles.isa(Joose.Kernel.Roles), "Joose.Kernel.Roles ISA Joose.Kernel.Roles");
     this.ok(Joose.Kernel.Roles.isa(Joose.Kernel.ClassMethods), "Joose.Kernel.Roles ISA Joose.Kernel.ClassMethods");
     
-    this.ok(Joose.Kernel.Roles.meta.methodConstructor == Joose.Kernel.ProtoMethod, "Joose.Kernel.Roles's methods are Joose.Kernel.ProtoMethod");
-    this.ok(Joose.Kernel.Roles.prototype.methodConstructor == Joose.Kernel.ProtoMethod, "Joose.Kernel.Roles's methods are Joose.Kernel.ProtoMethod #2");
+    this.ok(Joose.Kernel.Roles.meta.methodMetaClass == Joose.Kernel.ProtoMethod, "Joose.Kernel.Roles's methods are Joose.Kernel.ProtoMethod");
+    this.ok(Joose.Kernel.Roles.prototype.methodMetaClass == Joose.Kernel.ProtoMethod, "Joose.Kernel.Roles's methods are Joose.Kernel.ProtoMethod #2");
     
     this.ok(Joose.Kernel.Roles.meta.isAbstract === false, "Attributes are initilized correctly");
 };

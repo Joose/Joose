@@ -34,7 +34,7 @@ testobj.testSanity = function() {
     this.ok(Joose.Kernel.Handlers.isa(Joose.Kernel.Inheritance), "Joose.Kernel.Handlers ISA Joose.Kernel.Inheritance");
     this.ok(Joose.Kernel.Handlers.isa(Joose.Kernel.ClassSeparation), "Joose.Kernel.Handlers ISA Joose.Kernel.ClassSeparation");
     
-    this.ok(Joose.Kernel.Handlers.meta.methodConstructor == Joose.Kernel.ProtoMethod, "Joose.Kernel.Handlers's methods are Joose.Kernel.ProtoMethod");
+    this.ok(Joose.Kernel.Handlers.meta.methodMetaClass == Joose.Kernel.ProtoMethod, "Joose.Kernel.Handlers's methods are Joose.Kernel.ProtoMethod");
 };
 
 return testobj;

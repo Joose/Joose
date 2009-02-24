@@ -18,7 +18,7 @@ t.testRoles = function() {
     
     
     var Eq = (new Joose.Kernel.ProtoRole('Eq')).getClassObject();
-    Eq.meta.addGenes({
+    Eq.meta.extend({
     	locale : null,
     	
         notEqual: function (para) {
@@ -31,7 +31,7 @@ t.testRoles = function() {
     
     var Currency = (new Joose.Kernel.Roles("Currency")).getClassObject();
     Currency.meta.addRole(Eq);
-    Currency.meta.addGenes({
+    Currency.meta.extend({
     	value : null,
     	initialize : Joose.emptyFunction,
         isEqual: function (cur) {
@@ -46,7 +46,7 @@ t.testRoles = function() {
     SubCurrency.meta.addSuperClass(Currency);
     
     var TestClass = (new Joose.Kernel.Roles("TestClass")).getClassObject();
-    TestClass.meta.addGenes({
+    TestClass.meta.extend({
     	initialize : Joose.emptyFunction,
         orig: function () {
             return true

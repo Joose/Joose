@@ -1,7 +1,7 @@
 (function (Class, Module, Role, Type, Prototype) {
 return (function () {
 var t = new Test.TAP.Class();
-t.plan(47)
+t.plan(49)
 
 t.testRoles = function() {
     var self = this;
@@ -127,7 +127,7 @@ t.testRoles = function() {
     })
     self.diag("Role inheritance");
     
-    self.ok(Joose.Role.meta.nextGeneration === Joose.Role, "The Joose.Role meta class knows about the Joose.Role class")
+    self.ok(Joose.Role.meta.c === Joose.Role, "The Joose.Role meta class knows about the Joose.Role class")
     
     self.throws_ok(function () {
         Class("EqLevel2", {

@@ -10,7 +10,7 @@ testobj.testSanity = function() {
     this.is("" + Joose.Kernel.ProtoModule,'Joose.Kernel.ProtoModule', "Joose.Kernel.ProtoModule stringified correctly");
     this.is("" + Joose.Kernel.ProtoModule.meta,'a Joose.Kernel.Namespace', "Joose.Kernel.ProtoModule's meta stringified to Joose.Kernel.Namespace");
     
-    this.ok(Joose.Kernel.ProtoModule.meta.methodConstructor == Joose.Kernel.ProtoMethod, "Joose.Kernel.ProtoModule's methods are Joose.Kernel.ProtoMethod");
+    this.ok(Joose.Kernel.ProtoModule.meta.methodMetaClass == Joose.Kernel.ProtoMethod, "Joose.Kernel.ProtoModule's methods are Joose.Kernel.ProtoMethod");
     
     this.ok(__global__.meta.meta.isa(Joose.Kernel.Namespace), "__global__'s meta isa Joose.Kernel.Namespace");
     this.is("" + __global__, '', "__global__ stringified to empty string");
