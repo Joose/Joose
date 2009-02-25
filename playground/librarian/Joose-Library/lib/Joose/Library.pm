@@ -31,7 +31,7 @@ our $VERSION = '0.01';
 __PACKAGE__->config( 
     name => 'Joose::Library',
     
-    persistent => 0,
+    persistent => 1,
     
     'Model::Librarian' => {
         library => '../../../localLib/library',

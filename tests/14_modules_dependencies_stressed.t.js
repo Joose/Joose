@@ -15,11 +15,16 @@ t.testModuleClass = function() {
     //==================================================================================================================================================================================
     self.diag("Stress testing of dependencies loading");
 
+    var start      = new Date();
     Module("StressTest", {
         use : 'StressTest.Test001',
         
         //body is executing after the all dependencies are satisfied
         body : function(){
+            var end   = new Date();
+            
+            self.diag("Duration = " + (end.getTime() - start.getTime()) / 1000);
+            
             self.ok(!__global__.doubleDeclarations, "Stress testing passed without redeclarations");
             self.ok(!__global__.unSatisfiedDeps, "Stress testing passed with all dependencies satisfied");
             
