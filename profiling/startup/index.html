@@ -56,27 +56,35 @@ SimpleRequest.prototype.getText = function (urlOrOptions, async, callback, scope
     return null;
 };
 
-var joose2 = new SimpleRequest().getText('joose-2.0.js');
-var joose21 = new SimpleRequest().getText('joose-2.1.js');
+var joose2   = new SimpleRequest().getText('joose-2.0.js');
+var joose21  = new SimpleRequest().getText('joose-2.1.js');
+var joose211 = new SimpleRequest().getText('joose-2.1.1.js');
 var ext = new SimpleRequest().getText('ext.js');
 
+
 new Profiler(function () {
-	Class = Role = Module = Joose = TYPE = undefined;
+	JooseType = JooseClass = JooseModule = JooseRole = __global__ = Class = Role = Module = Joose = TYPE = Type = undefined;
 	Digest = {};
 	eval(joose2);
-}, "startup for Joose 2.0").run(30).report();
+}, "startup for Joose 2.0").run(10).report();
 
 
 new Profiler(function () {
-    Digest = Class = Role = Module = Joose = TYPE = undefined;
+    JooseType = JooseClass = JooseModule = JooseRole = __global__ = Digest = Class = Role = Module = Joose = TYPE = Type = undefined;    
     eval(joose21);
-}, "startup for Joose 2.1").run(30).report();
+}, "startup for Joose 2.1").run(10).report();
+
+
+new Profiler(function () {
+    JooseType = JooseClass = JooseModule = JooseRole = __global__ = Digest = Class = Role = Module = Joose = TYPE = Type = undefined;    
+    eval(joose211);
+}, "startup for Joose 2.1.1").run(10).report();
 
 
 new Profiler(function () {
     Ext = undefined;
     eval(ext);
-}, "startup Ext").run(30).report();
+}, "startup Ext").run(3).report();
 
 </script>
 
