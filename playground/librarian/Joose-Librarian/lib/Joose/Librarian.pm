@@ -101,7 +101,6 @@ sub create_bundle {
     
     
     my $schedule = $self->get_schedule($deps_array);
-    warn(dump($schedule));
     
     my $fh = $bundle_file->openw();
     
@@ -158,7 +157,6 @@ sub get_schedule {
 	    push @bundle, $book->name;
     }
     
-    warn(dump($DEPS));
     my $source = Algorithm::Dependency::Source::HoA->new( $DEPS );
     
     my $alg = Algorithm::Dependency::Ordered->new(
