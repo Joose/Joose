@@ -105,17 +105,10 @@ has 'all_dep_source' => (
 sub BUILD {
     my $self = shift;
     
-    if ($self->name =~ m!^ext://(.*)!) {
-    	$self->external(1);
-    	$self->name($1);
-    }
-    
     my $file_name = Joose::Librarian->resolve_name($self->name);
     die "Cant find file for " . $self->name unless $file_name;
     
     $self->file_name($file_name);
-    
-     
 }
 
 

@@ -10,6 +10,7 @@ $ENV{JOOSE_BUNDLE} = "localLib/bundles";
 use Joose::Librarian;
 use Path::Class;
 use Digest::MD5 qw/md5_hex/;
+use Data::Dump qw(dd ddx);
 
 
 my $lib_dir = dir($ENV{JOOSE_LIB});
@@ -22,13 +23,17 @@ $bundle_dir->rmtree();
 $bundle_dir->mkpath();
 
 
-my $bundle_desc = "A-0.1,H-0.2";
+my $bundle_desc = "A-0.1,D,E,G,H-0.2,ext://I";
 my $bundle_md5 = md5_hex($bundle_desc);
 
 Joose::Librarian->create_bundle(
 	[
         { Module => 'H', version => 0.2},
-	    { Module => 'A', version => 0.1}
+	    'ext://I',
+	    { Module => 'A', version => 0.1},
+	    'D',
+	    'G',
+	    'E'
 	],
 	$bundle_md5
 );

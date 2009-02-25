@@ -54,7 +54,7 @@ sub index :Path :Args(1) {
     	
     	$deps[$i] = { Module => $deps[$i] };
     	$deps[$i]->{version} = $version if $version;
-    	$deps[$i]->{external} = 1 if $external;
+    	$deps[$i]->{external} = $external;
     }
     
     $filename =~ /(.*)\.js$/;
