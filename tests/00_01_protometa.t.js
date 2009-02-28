@@ -4,40 +4,40 @@ testobj.plan(23)
 
 testobj.testSanity = function() {
     //==================================================================================================================================================================================
-    this.diag("Joose.Kernel.ProtoMeta");
+    this.diag("Joose.Proto.Meta");
     
-    this.ok(Joose.Kernel.ProtoMeta, "Joose.Kernel.ProtoMeta is here");
+    this.ok(Joose.Proto.Meta, "Joose.Proto.Meta is here");
     
 
     //==================================================================================================================================================================================
     this.diag("Circularity");
     
-    this.ok(Joose.Kernel.ProtoMeta.meta == Joose.Kernel.ProtoMeta.meta.meta, "Joose.Kernel.ProtoMeta's meta is perfectly circular");
+    this.ok(Joose.Proto.Meta.meta == Joose.Proto.Meta.meta.meta, "Joose.Proto.Meta's meta is perfectly circular");
     
     
     //==================================================================================================================================================================================
     this.diag("Stringification");
     
-    this.is(Joose.Kernel.ProtoMeta,'Joose.Kernel.ProtoMeta', "Joose.Kernel.ProtoMeta stringified correctly");
-    this.is("" + Joose.Kernel.ProtoMeta.meta,'a Joose.Kernel.ProtoMeta', "Joose.Kernel.ProtoMeta's meta stringified correctly");
+    this.is(Joose.Proto.Meta,'Joose.Proto.Meta', "Joose.Proto.Meta stringified correctly");
+    this.is("" + Joose.Proto.Meta.meta,'a Joose.Proto.Meta', "Joose.Proto.Meta's meta stringified correctly");
     
     
     //==================================================================================================================================================================================
-    this.diag("Inheritance from Joose.Kernel.ProtoClass");
+    this.diag("Inheritance from Joose.Proto.Class");
     
-    var TestClass = new Joose.Kernel.ProtoMeta('TestClass', null, null, {
+    var TestClass = new Joose.Proto.Meta('TestClass', null, null, {
         inc : function (a) { return a + 1 }
     }).c;
     var testClass = new TestClass();
     
-    this.ok(true, "Initialized was inherited from Joose.Kernel.ProtoClass");
+    this.ok(true, "Initialized was inherited from Joose.Proto.Class");
     
     
     //==================================================================================================================================================================================
     this.diag("Constructor property");
     
-    this.ok(Joose.Kernel.ProtoMeta.meta.constructor == Joose.Kernel.ProtoMeta, "'constructor' property works as expected #0");
-    this.ok(TestClass.meta.constructor == Joose.Kernel.ProtoMeta, "'constructor' property works as expected #1");
+    this.ok(Joose.Proto.Meta.meta.constructor == Joose.Proto.Meta, "'constructor' property works as expected #0");
+    this.ok(TestClass.meta.constructor == Joose.Proto.Meta, "'constructor' property works as expected #1");
     this.ok(testClass.constructor == TestClass, "'constructor' property works as expected #2");
 
     
@@ -45,14 +45,14 @@ testobj.testSanity = function() {
     this.diag("Meta property");
     
     this.ok(testClass.meta == TestClass.meta, "'meta' property is the same for class and its instances");
-    this.ok(testClass.meta instanceof Joose.Kernel.ProtoMeta, "Test's class 'meta' is a Joose.Kernel.ProtoMeta");
+    this.ok(testClass.meta instanceof Joose.Proto.Meta, "Test's class 'meta' is a Joose.Proto.Meta");
     
     
     //==================================================================================================================================================================================
     this.diag("Methods");
 
-    this.ok(Joose.Kernel.ProtoMeta.meta.hasMethod('hasMethod'), "Joose.Kernel.ProtoMeta has method 'hasMethod'");
-    this.ok(Joose.Kernel.ProtoMeta.meta.hasMethod('toString'), "Joose.Kernel.ProtoMeta has method 'toString'");
+    this.ok(Joose.Proto.Meta.meta.hasMethod('hasMethod'), "Joose.Proto.Meta has method 'hasMethod'");
+    this.ok(Joose.Proto.Meta.meta.hasMethod('toString'), "Joose.Proto.Meta has method 'toString'");
     
     this.ok(TestClass.meta.hasMethod('inc'), "TestClass has method 'inc'");
     this.is(testClass.inc(1), 2, "... and it works");
@@ -64,7 +64,7 @@ testobj.testSanity = function() {
     //==================================================================================================================================================================================
     this.diag("Inheritance and mutability (mutableness?)");
     
-    var TestClass1 = new Joose.Kernel.ProtoMeta('TestClass1', null, TestClass, {
+    var TestClass1 = new Joose.Proto.Meta('TestClass1', null, TestClass, {
         inc : function (a) { return this.SUPER(a) + 1 }
     }).c;
     var testClass1 = new TestClass1();
@@ -81,15 +81,15 @@ testobj.testSanity = function() {
     
     this.ok(testClass1 instanceof TestClass1, "testClass1 isa TestClass1");
     this.ok(testClass1 instanceof TestClass, "testClass1 isa TestClass");
-    this.ok(testClass1 instanceof Joose.Kernel.ProtoClass, "testClass1 isa Joose.Kernel.ProtoClass");
+    this.ok(testClass1 instanceof Joose.Proto.Class, "testClass1 isa Joose.Proto.Class");
     
-    this.ok(Joose.Kernel.ProtoMeta.meta instanceof Joose.Kernel.ProtoClass, "Joose.Kernel.ProtoMeta.meta isa Joose.Kernel.ProtoClass");
+    this.ok(Joose.Proto.Meta.meta instanceof Joose.Proto.Class, "Joose.Proto.Meta.meta isa Joose.Proto.Class");
     
     //==================================================================================================================================================================================
     this.diag("Stringification #2");
     
     this.is("" + testClass1, 'a TestClass1', "testClass1 stringified correctly");
-    this.is("" + testClass1.meta,'a Joose.Kernel.ProtoMeta', "testClass1's meta stringified correctly");
+    this.is("" + testClass1.meta,'a Joose.Proto.Meta', "testClass1's meta stringified correctly");
     
 };
 
