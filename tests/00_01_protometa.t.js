@@ -1,5 +1,4 @@
-(function (Class, Module, Role, Type, Prototype) {
-return (function () {
+(function () {
 var testobj = new Test.TAP.Class();
 testobj.plan(7)
 
@@ -21,4 +20,3 @@ testobj.testSanity = function() {
 
 return testobj;
 })()
-}).call(window, JooseClass, JooseModule, JooseRole, JooseType, JoosePrototype)
