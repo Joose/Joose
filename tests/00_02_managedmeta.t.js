@@ -122,14 +122,18 @@ testobj.testSanity = function() {
     
     this.ok(TestClass1.meta.hasOwnMethod('result'), "TestClass1 has own 'result' method");
     
-    TestClass1.meta.removeMethod('result');
+    TestClass1.meta.extend({
+        removeMethods : ['result']
+    });
     
     this.ok(!TestClass1.meta.hasOwnMethod('result'), "TestClass1 dont have own 'result' method");
     this.ok(TestClass1.meta.hasMethod('result'), "TestClass1 still have inherited 'result' method");
     this.is(testClass1.result(), 'TestClass', "... and it works correctly");
     
-    TestClass.meta.removeMethod('result');
-    this.ok(!TestClass1.meta.hasMethod('result'), "TestClass1 now dont have any 'result''s methods");
+    TestClass.meta.extend({
+        removeMethods : ['result']
+    });
+    this.ok(!TestClass1.meta.hasMethod('result'), "TestClass1 now dont have any 'result's methods");
     
 
     //==================================================================================================================================================================================
