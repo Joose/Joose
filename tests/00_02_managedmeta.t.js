@@ -110,6 +110,28 @@ testobj.testSanity = function() {
     TestClass.meta.removeMethod('result');
     this.ok(!TestClass1.meta.hasMethod('result'), "TestClass1 now dont have any 'result''s methods");
     
+
+    //==================================================================================================================================================================================
+    this.diag("SUPER call");
+
+    var TestClass3 = new Joose.Managed.Meta('TestClass3', null, null, {
+        methods : {
+            inc : function (a) { return a + 1 }
+        }
+    }).c;
+    
+    var TestClass4 = new Joose.Managed.Meta('TestClass4', null, TestClass3, {
+        methods : {
+            inc : function (a) { return this.SUPER(a) + 1 }
+        }
+    }).c;
+    
+    var testClass4 = new TestClass4();
+    
+    this.is(testClass4.inc(1), 3, "'inc' was overriden and works correctly");
+
+    
+    
 };
 
 return testobj;
