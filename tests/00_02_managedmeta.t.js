@@ -18,7 +18,7 @@ testobj.testSanity = function() {
         },
         
         methods : {
-            result : function() { return '1' }
+            result : function() { return 'TestClass' }
         }
     }).c;
     
@@ -40,13 +40,14 @@ testobj.testSanity = function() {
     
     this.ok(testClass, "TestClass was instantiated");
     this.ok(testClass.res, "Attribute was correctly installed");
-    this.is(testClass.result(), '1', "Method was correctly installed");
+    this.is(testClass.result(), 'TestClass', "Method was correctly installed");
     
     
     //==================================================================================================================================================================================
     this.diag("Extending of builder");
     
-    var TestClass1 = new Joose.Managed.Meta('TestClass1', null, null, {
+//    debugger;
+    var TestClass1 = new Joose.Managed.Meta('TestClass1', null, TestClass, {
         builder : {
             testHandler : function(meta, props){
                 var name = props.name;
@@ -60,7 +61,7 @@ testobj.testSanity = function() {
         
         testHandler : {
             name : 'result',
-            value : '1'
+            value : 'TestClass1'
         }
         
     }).c;
@@ -69,7 +70,7 @@ testobj.testSanity = function() {
     
     var testClass1 = new TestClass1();
     
-    this.is(testClass1.result(), '1', "... and it works correctly");
+    this.is(testClass1.result(), 'TestClass1', "... and it works correctly");
     
 };
 
