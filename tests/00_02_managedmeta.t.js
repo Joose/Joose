@@ -1,6 +1,6 @@
 (function () {
 var testobj = new Test.TAP.Class();
-testobj.plan(32)
+testobj.plan(33)
 
 testobj.testSanity = function() {
     //==================================================================================================================================================================================
@@ -118,7 +118,7 @@ testobj.testSanity = function() {
     
     
     //==================================================================================================================================================================================
-    this.diag("Mutability");
+    this.diag("Mutability & Composed state");
     
     this.ok(TestClass1.meta.hasOwnMethod('result'), "TestClass1 has own 'result' method");
     
@@ -129,6 +129,8 @@ testobj.testSanity = function() {
     this.ok(!TestClass1.meta.hasOwnMethod('result'), "TestClass1 dont have own 'result' method");
     this.ok(TestClass1.meta.hasMethod('result'), "TestClass1 still have inherited 'result' method");
     this.is(testClass1.result(), 'TestClass', "... and it works correctly");
+    
+    this.ok(TestClass1.meta.hasAttribute('res'), "TestClass1 still has 'res' attribute after extension");
     
     TestClass.meta.extend({
         removeMethods : ['result']
