@@ -102,7 +102,7 @@ testobj.testSanity = function() {
     
     this.ok(result.value == testClass1.result, "Body of 'result' method is a 'value' property of its meta");
     
-    this.ok(result.target == TestClass1, "Method's Class is defined via 'target' property");
+    this.ok(result.targetClass == TestClass1, "Method's Class is defined via 'targetClass' property");
     this.ok(result.container == TestClass1.prototype, "Method's container is defined via 'container' property and its a prototype of Class");
     
     
@@ -113,7 +113,7 @@ testobj.testSanity = function() {
     this.ok(res.value == testClass1.res, "Default value of 'res' attribute is a 'value' property of its meta");
     
     this.ok(!TestClass1.meta.hasOwnAttribute('res'), "TestClass1 dont have own 'res' attribute - so it point to the actual class it was defined in");
-    this.ok(res.target == TestClass, "Method's Class is defined via 'target' property");
+    this.ok(res.targetClass == TestClass, "Method's Class is defined via 'targetClass' property");
     this.ok(res.container == TestClass.prototype, "Method's container is defined via 'container' property and its a prototype of Class");
     
     
