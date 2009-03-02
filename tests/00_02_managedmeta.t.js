@@ -1,6 +1,6 @@
 (function () {
 var testobj = new Test.TAP.Class();
-testobj.plan(20)
+testobj.plan(32)
 
 testobj.testSanity = function() {
     //==================================================================================================================================================================================
@@ -46,7 +46,9 @@ testobj.testSanity = function() {
     //==================================================================================================================================================================================
     this.diag("Extending of builder");
     
-    var TestClass1 = new Joose.Managed.Meta('TestClass1', null, TestClass, {
+    var TestClass1 = new Joose.Managed.Meta('TestClass1', null, null, {
+        isa : TestClass,
+        
         builder : {
             testHandler : function(meta, props){
                 var name = props.name;
@@ -70,6 +72,25 @@ testobj.testSanity = function() {
     var testClass1 = new TestClass1();
     
     this.is(testClass1.result(), 'TestClass1', "... and it works correctly");
+
+    
+    //==================================================================================================================================================================================
+    this.diag("Inheritance of extended builder");
+    
+    var TestClass11 = new Joose.Managed.Meta('TestClass11', null, null, {
+        isa : TestClass1,
+        
+        testHandler : {
+            name : 'result',
+            value : 'TestClass11'
+        }
+    }).c;
+    
+    this.ok(TestClass11.meta.hasMethod('result'), "Extended builder was inherited from superclass");
+    
+    var testClass11 = new TestClass11();
+    
+    this.is(testClass11.result(), 'TestClass11', "... and it works correctly");
     
 
     //==================================================================================================================================================================================
@@ -120,7 +141,9 @@ testobj.testSanity = function() {
         }
     }).c;
     
-    var TestClass4 = new Joose.Managed.Meta('TestClass4', null, TestClass3, {
+    var TestClass4 = new Joose.Managed.Meta('TestClass4', null, null, {
+        isa : TestClass3,
+        
         methods : {
             inc : function (a) { return this.SUPER(a) + 1 }
         }
