@@ -77,7 +77,7 @@ testobj.testSanity = function() {
     
     var result = TestClass1.meta.getMethod('result');
     
-    this.ok(result instanceof Joose.Proto.Method, "'result' method have a meta object - instance of Joose.Proto.Method");
+    this.ok(result instanceof Joose.Managed.Method, "'result' method have a meta object - instance of Joose.Managed.Method");
     
     this.ok(result.value == testClass1.result, "Body of 'result' method is a 'value' property of its meta");
     
@@ -87,7 +87,7 @@ testobj.testSanity = function() {
     
     var res = TestClass1.meta.getAttribute('res');
     
-    this.ok(res instanceof Joose.Proto.Attribute, "'res' attribute have a meta object - instance of Joose.Proto.Attribute");
+    this.ok(res instanceof Joose.Managed.Attribute, "'res' attribute have a meta object - instance of Joose.Managed.Attribute");
     
     this.ok(res.value == testClass1.res, "Default value of 'res' attribute is a 'value' property of its meta");
     
