@@ -1,6 +1,6 @@
 (function () {
 var testobj = new Test.TAP.Class();
-testobj.plan(1)
+testobj.plan(20)
 
 testobj.testSanity = function() {
     //==================================================================================================================================================================================
@@ -46,7 +46,6 @@ testobj.testSanity = function() {
     //==================================================================================================================================================================================
     this.diag("Extending of builder");
     
-//    debugger;
     var TestClass1 = new Joose.Managed.Meta('TestClass1', null, TestClass, {
         builder : {
             testHandler : function(meta, props){
@@ -71,6 +70,45 @@ testobj.testSanity = function() {
     var testClass1 = new TestClass1();
     
     this.is(testClass1.result(), 'TestClass1', "... and it works correctly");
+    
+
+    //==================================================================================================================================================================================
+    this.diag("Method & Attribute objects");
+    
+    var result = TestClass1.meta.getMethod('result');
+    
+    this.ok(result instanceof Joose.Proto.Method, "'result' method have a meta object - instance of Joose.Proto.Method");
+    
+    this.ok(result.value == testClass1.result, "Body of 'result' method is a 'value' property of its meta");
+    
+    this.ok(result.target == TestClass1, "Method's Class is defined via 'target' property");
+    this.ok(result.container == TestClass1.prototype, "Method's container is defined via 'container' property and its a prototype of Class");
+    
+    
+    var res = TestClass1.meta.getAttribute('res');
+    
+    this.ok(res instanceof Joose.Proto.Attribute, "'res' attribute have a meta object - instance of Joose.Proto.Attribute");
+    
+    this.ok(res.value == testClass1.res, "Default value of 'res' attribute is a 'value' property of its meta");
+    
+    this.ok(!TestClass1.meta.hasOwnAttribute('res'), "TestClass1 dont have own 'res' attribute - so it point to the actual class it was defined in");
+    this.ok(res.target == TestClass, "Method's Class is defined via 'target' property");
+    this.ok(res.container == TestClass.prototype, "Method's container is defined via 'container' property and its a prototype of Class");
+    
+    
+    //==================================================================================================================================================================================
+    this.diag("Mutability");
+    
+    this.ok(TestClass1.meta.hasOwnMethod('result'), "TestClass1 has own 'result' method");
+    
+    TestClass1.meta.removeMethod('result');
+    
+    this.ok(!TestClass1.meta.hasOwnMethod('result'), "TestClass1 dont have own 'result' method");
+    this.ok(TestClass1.meta.hasMethod('result'), "TestClass1 still have inherited 'result' method");
+    this.is(testClass1.result(), 'TestClass', "... and it works correctly");
+    
+    TestClass.meta.removeMethod('result');
+    this.ok(!TestClass1.meta.hasMethod('result'), "TestClass1 now dont have any 'result''s methods");
     
 };
 
