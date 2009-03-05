@@ -98,6 +98,45 @@ testobj.testSanity = function() {
     this.ok(F.haveProperty('A1'), 'F got A1');
     this.ok(!(F.getProperty('A1') instanceof Joose.Managed.Property.ConflictMarker), 'A1 is not a conflict marker');
     this.is(F.getProperty('A1').value, 'F-A1', 'Conflict was resolved');
+
+    
+    //==================================================================================================================================================================================
+    this.diag("Aliasing & exclusion");
+    
+    var E1 = new Joose.Managed.PropertySet();
+    E1.addProperty('E11', { init : 'E11'} );
+    
+    E1.composeFrom({
+        properties : A,
+        alias : {
+            A1 : 'A1_from_A'
+        },
+        exclude : [ 'A2' ]
+    },{
+        properties : B,
+        alias : {
+            A1 : 'A1_from_B'
+        },
+        exclude : [ 'A1', 'B1' ]
+    });
+    
+    this.ok(!E1.haveProperty('B1'), "F don't received B1");
+    
+    this.ok(E1.haveProperty('B2'), 'F received B2 #1');
+    this.ok(E1.getProperty('B2') == B.getProperty('B2'), 'F received B2 #2');
+    
+    this.ok(E1.haveProperty('A1'), "F now received A1 from A without conflict");
+    this.ok(E1.getProperty('A1') == A.getProperty('A1'), "F now received A1 from A");
+    
+    this.ok(E1.haveProperty('A1_from_A'), 'F received A1_from_A #1');
+    this.ok(E1.getProperty('A1_from_A').value == 'A1', 'F received A1_from_A #2');
+    
+    this.ok(E1.haveProperty('A1_from_B'), 'F received A1_from_B #1');
+    this.ok(E1.getProperty('A1_from_B').value == 'B-A1', 'F received A1_from_B #2');
+    
+    this.ok(E1.haveProperty('A2'), "F still received A2 from B");
+    this.ok(E1.getProperty('A2') == B.getProperty('A2'), "F still received A2 from B");
+    
 };
 
 return testobj;
