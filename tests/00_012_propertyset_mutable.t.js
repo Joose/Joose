@@ -31,9 +31,9 @@ testobj.testSanity = function() {
     B.addProperty('B2', { init : 'B2'} );
     B.addProperty('A1', { init : 'B-A1'} );
     
-    B.close();
-    
     B.composeFrom(A);
+    
+    B.close();
     
     this.ok(B.haveProperty('A2'), 'A2 property was composed from A #1');
     this.ok(B.getProperty('A2') == A.getProperty('A2'), 'A2 property was composed from A #2');
@@ -43,9 +43,9 @@ testobj.testSanity = function() {
     var C = new Joose.Managed.PropertySet.Mutable();
     C.addProperty('C1', { init : 'C1'} );
     
-    C.close();
-    
     C.composeFrom(B);
+    
+    C.close();
     
     //==================================================================================================================================================================================
     this.diag("Composition with conflicting flattening");
@@ -54,9 +54,9 @@ testobj.testSanity = function() {
     E.addProperty('E1', { init : 'E1'} );
     E.addProperty('E2', { init : 'E2'} );
     
-    E.close();
-    
     E.composeFrom(A, B);
+    
+    E.close();
     
     this.ok(E.haveProperty('A1'), 'E received A1');
     this.ok(E.haveProperty('A2'), 'E received A2');
@@ -74,9 +74,9 @@ testobj.testSanity = function() {
     var D = new Joose.Managed.PropertySet.Mutable();
     D.addProperty('D1', { init : 'D1'} );
 
-    D.close();
-    
     D.composeFrom(B, E);
+    
+    D.close();
     
     this.ok(D.haveProperty('A2'), 'D received A2 #1');
     this.ok(D.getProperty('A2') == A.getProperty('A2'), 'D received A2 #2');
@@ -92,9 +92,9 @@ testobj.testSanity = function() {
     F.addProperty('F1', { init : 'F1'} );
     F.addProperty('A1', { init : 'F-A1'} );
     
-    F.close();
-    
     F.composeFrom(C, D, E);
+    
+    F.close();
     
     this.ok(F.haveProperty('A2'), 'F received A2 #1');
     this.ok(F.getProperty('A2') == A.getProperty('A2'), 'F received A2 #2');
@@ -116,8 +116,6 @@ testobj.testSanity = function() {
     var E1 = new Joose.Managed.PropertySet.Mutable();
     E1.addProperty('E11', { init : 'E11'} );
     
-    E1.close();
-    
     E1.composeFrom({
         properties : A,
         alias : {
@@ -131,6 +129,8 @@ testobj.testSanity = function() {
         },
         exclude : [ 'A1', 'B1' ]
     });
+    
+    E1.close();
     
     this.ok(!E1.haveProperty('B1'), "F don't received B1");
     
@@ -153,8 +153,44 @@ testobj.testSanity = function() {
     //==================================================================================================================================================================================
     this.diag("Mutability");
     
+    A.open();
     A.addProperty('A3', { init : 'A3'} );
+    A.close();
     
+    this.ok(B.haveProperty('A3') && B.getProperty('A3') == A.getProperty('A3'), 'B received A3 property via mutation');    
+    this.ok(C.haveProperty('A3') && C.getProperty('A3') == A.getProperty('A3'), 'C received A3 property via mutation');
+    this.ok(D.haveProperty('A3') && D.getProperty('A3') == A.getProperty('A3'), 'D received A3 property via mutation');
+    this.ok(E.haveProperty('A3') && E.getProperty('A3') == A.getProperty('A3'), 'E received A3 property via mutation');
+    this.ok(F.haveProperty('A3') && F.getProperty('A3') == A.getProperty('A3'), 'F received A3 property via mutation');
+    this.ok(E1.haveProperty('A3') && E1.getProperty('A3') == A.getProperty('A3'), 'E1 received A3 property via mutation');
+    
+    A.open();
+    A.removeProperty('A3', { init : 'A3'} );
+    A.close();
+    
+    this.ok(!B.haveProperty('A3') && B.getProperty('A3') == A.getProperty('A3'), 'B lost A3 property via mutation');    
+    this.ok(!C.haveProperty('A3') && C.getProperty('A3') == A.getProperty('A3'), 'C lost A3 property via mutation');
+    this.ok(!D.haveProperty('A3') && D.getProperty('A3') == A.getProperty('A3'), 'D lost A3 property via mutation');
+    this.ok(!E.haveProperty('A3') && E.getProperty('A3') == A.getProperty('A3'), 'E lost A3 property via mutation');
+    this.ok(!F.haveProperty('A3') && F.getProperty('A3') == A.getProperty('A3'), 'F lost A3 property via mutation');
+    this.ok(!E1.haveProperty('A3') && E1.getProperty('A3') == A.getProperty('A3'), 'E1 lost A3 property via mutation');
+    
+    F.open();
+    F.addProperty('C1', { init : 'F-C1' });
+    F.addProperty('D1', { init : 'F-D1' });
+    F.removeProperty('A1');
+    F.close();
+    
+    this.ok(F.haveProperty('C1') && F.getProperty('C1').value == 'F-C1', 'F have override C1 property during mutation');
+    this.ok(F.haveProperty('D1') && F.getProperty('D1').value == 'F-D1', 'F have override D1 property during mutation');
+    this.ok(F.getProperty('A1') instanceof Joose.Managed.Property.ConflictMarker, 'A1 of F is now a conflict marker');
+    
+    B.open();
+    B.removeProperty('A1');
+    B.close();
+    
+    this.ok(!(F.getProperty('A1') instanceof Joose.Managed.Property.ConflictMarker), 'A1 of F is now not a conflict marker');
+    this.ok(F.getProperty('A1') == A.getProperty('A1'), 'A1 of F is now from A');
     
 };
 
