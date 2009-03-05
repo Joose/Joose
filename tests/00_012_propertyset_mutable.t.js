@@ -6,7 +6,6 @@ testobj.testSanity = function() {
     //==================================================================================================================================================================================
     this.diag("Joose.Managed.PropertySet.Mutable");
     
-    this.ok(Joose.Managed.Property.Mutable, "Joose.Managed.Property.Mutable is here");
     this.ok(Joose.Managed.PropertySet.Mutable, "Joose.Managed.PropertySet.Mutable is here");
     
 
@@ -190,7 +189,7 @@ testobj.testSanity = function() {
     B.close();
     
     this.ok(!(F.getProperty('A1') instanceof Joose.Managed.Property.ConflictMarker), 'A1 of F is now not a conflict marker');
-    this.ok(F.getProperty('A1') == A.getProperty('A1'), 'A1 of F is now from A');
+    this.ok(F.getProperty('A1') == A.getProperty('A1'), 'A1 of F is now obtained from A');
     
 };
 

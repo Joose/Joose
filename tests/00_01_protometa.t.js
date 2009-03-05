@@ -23,14 +23,14 @@ testobj.testSanity = function() {
     
     
     //==================================================================================================================================================================================
-    this.diag("Inheritance from Joose.Proto.Class");
+    this.diag("Inheritance from Joose.Proto.Object");
     
     var TestClass = new Joose.Proto.Meta('TestClass', null, null, {
         inc : function (a) { return a + 1 }
     }).c;
     var testClass = new TestClass();
     
-    this.ok(true, "Initialized was inherited from Joose.Proto.Class");
+    this.ok(true, "Initialized was inherited from Joose.Proto.Object");
     
     
     //==================================================================================================================================================================================
@@ -81,9 +81,9 @@ testobj.testSanity = function() {
     
     this.ok(testClass1 instanceof TestClass1, "testClass1 isa TestClass1");
     this.ok(testClass1 instanceof TestClass, "testClass1 isa TestClass");
-    this.ok(testClass1 instanceof Joose.Proto.Class, "testClass1 isa Joose.Proto.Class");
+    this.ok(testClass1 instanceof Joose.Proto.Object, "testClass1 isa Joose.Proto.Object");
     
-    this.ok(Joose.Proto.Meta.meta instanceof Joose.Proto.Class, "Joose.Proto.Meta.meta isa Joose.Proto.Class");
+    this.ok(Joose.Proto.Meta.meta instanceof Joose.Proto.Object, "Joose.Proto.Meta.meta isa Joose.Proto.Object");
     
     //==================================================================================================================================================================================
     this.diag("Stringification #2");
