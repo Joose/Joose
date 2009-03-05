@@ -164,15 +164,15 @@ testobj.testSanity = function() {
     this.ok(E1.haveProperty('A3') && E1.getProperty('A3') == A.getProperty('A3'), 'E1 received A3 property via mutation');
     
     A.open();
-    A.removeProperty('A3', { init : 'A3'} );
+    A.removeProperty('A3');
     A.close();
     
-    this.ok(!B.haveProperty('A3') && B.getProperty('A3') == A.getProperty('A3'), 'B lost A3 property via mutation');    
-    this.ok(!C.haveProperty('A3') && C.getProperty('A3') == A.getProperty('A3'), 'C lost A3 property via mutation');
-    this.ok(!D.haveProperty('A3') && D.getProperty('A3') == A.getProperty('A3'), 'D lost A3 property via mutation');
-    this.ok(!E.haveProperty('A3') && E.getProperty('A3') == A.getProperty('A3'), 'E lost A3 property via mutation');
-    this.ok(!F.haveProperty('A3') && F.getProperty('A3') == A.getProperty('A3'), 'F lost A3 property via mutation');
-    this.ok(!E1.haveProperty('A3') && E1.getProperty('A3') == A.getProperty('A3'), 'E1 lost A3 property via mutation');
+    this.ok(!B.haveProperty('A3'), 'B lost A3 property via mutation');    
+    this.ok(!C.haveProperty('A3'), 'C lost A3 property via mutation');
+    this.ok(!D.haveProperty('A3'), 'D lost A3 property via mutation');
+    this.ok(!E.haveProperty('A3'), 'E lost A3 property via mutation');
+    this.ok(!F.haveProperty('A3'), 'F lost A3 property via mutation');
+    this.ok(!E1.haveProperty('A3'), 'E1 lost A3 property via mutation');
     
     F.open();
     F.addProperty('C1', { init : 'F-C1' });
