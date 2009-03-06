@@ -4,15 +4,15 @@ testobj.plan(33)
 
 testobj.testSanity = function() {
     //==================================================================================================================================================================================
-    this.diag("Joose.Managed.Meta");
+    this.diag("Joose.Managed.Class");
     
-    this.ok(Joose.Managed.Meta, "Joose.Managed.Meta is here");
+    this.ok(Joose.Managed.Class, "Joose.Managed.Class is here");
     
     
     //==================================================================================================================================================================================
     this.diag("Creation & managed extending (building)");
     
-    var TestClass = new Joose.Managed.Meta('TestClass', null, null, {
+    var TestClass = new Joose.Managed.Class('TestClass', null, null, {
         have : {
             res : true
         },
@@ -46,7 +46,7 @@ testobj.testSanity = function() {
     //==================================================================================================================================================================================
     this.diag("Extending of builder");
     
-    var TestClass1 = new Joose.Managed.Meta('TestClass1', null, null, {
+    var TestClass1 = new Joose.Managed.Class('TestClass1', null, null, {
         isa : TestClass,
         
         builder : {
@@ -77,7 +77,7 @@ testobj.testSanity = function() {
     //==================================================================================================================================================================================
     this.diag("Inheritance of extended builder");
     
-    var TestClass11 = new Joose.Managed.Meta('TestClass11', null, null, {
+    var TestClass11 = new Joose.Managed.Class('TestClass11', null, null, {
         isa : TestClass1,
         
         testHandler : {
@@ -141,13 +141,13 @@ testobj.testSanity = function() {
     //==================================================================================================================================================================================
     this.diag("SUPER call");
 
-    var TestClass3 = new Joose.Managed.Meta('TestClass3', null, null, {
+    var TestClass3 = new Joose.Managed.Class('TestClass3', null, null, {
         methods : {
             inc : function (a) { return a + 1 }
         }
     }).c;
     
-    var TestClass4 = new Joose.Managed.Meta('TestClass4', null, null, {
+    var TestClass4 = new Joose.Managed.Class('TestClass4', null, null, {
         isa : TestClass3,
         
         methods : {

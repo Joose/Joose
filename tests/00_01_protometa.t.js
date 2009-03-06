@@ -4,28 +4,28 @@ testobj.plan(25)
 
 testobj.testSanity = function() {
     //==================================================================================================================================================================================
-    this.diag("Joose.Proto.Meta");
+    this.diag("Joose.Proto.Class");
     
-    this.ok(Joose.Proto.Meta, "Joose.Proto.Meta is here");
+    this.ok(Joose.Proto.Class, "Joose.Proto.Class is here");
     
 
     //==================================================================================================================================================================================
     this.diag("Circularity");
     
-    this.ok(Joose.Proto.Meta.meta == Joose.Proto.Meta.meta.meta, "Joose.Proto.Meta's meta is perfectly circular");
+    this.ok(Joose.Proto.Class.meta == Joose.Proto.Class.meta.meta, "Joose.Proto.Class's meta is perfectly circular");
     
     
     //==================================================================================================================================================================================
     this.diag("Stringification");
     
-    this.is(Joose.Proto.Meta,'Joose.Proto.Meta', "Joose.Proto.Meta stringified correctly");
-    this.is("" + Joose.Proto.Meta.meta,'a Joose.Proto.Meta', "Joose.Proto.Meta's meta stringified correctly");
+    this.is(Joose.Proto.Class,'Joose.Proto.Class', "Joose.Proto.Class stringified correctly");
+    this.is("" + Joose.Proto.Class.meta,'a Joose.Proto.Class', "Joose.Proto.Class's meta stringified correctly");
     
     
     //==================================================================================================================================================================================
     this.diag("Inheritance from Joose.Proto.Object");
     
-    var TestClass = new Joose.Proto.Meta('TestClass', null, null, {
+    var TestClass = new Joose.Proto.Class('TestClass', null, null, {
         inc : function (a) { return a + 1 }
     }).c;
     var testClass = new TestClass();
@@ -36,8 +36,8 @@ testobj.testSanity = function() {
     //==================================================================================================================================================================================
     this.diag("Constructor property");
     
-    this.ok(Joose.Proto.Meta.meta.constructor == Joose.Proto.Meta, "'constructor' property works as expected #0");
-    this.ok(TestClass.meta.constructor == Joose.Proto.Meta, "'constructor' property works as expected #1");
+    this.ok(Joose.Proto.Class.meta.constructor == Joose.Proto.Class, "'constructor' property works as expected #0");
+    this.ok(TestClass.meta.constructor == Joose.Proto.Class, "'constructor' property works as expected #1");
     this.ok(testClass.constructor == TestClass, "'constructor' property works as expected #2");
 
     
@@ -45,14 +45,14 @@ testobj.testSanity = function() {
     this.diag("Meta property");
     
     this.ok(testClass.meta == TestClass.meta, "'meta' property is the same for class and its instances");
-    this.ok(testClass.meta instanceof Joose.Proto.Meta, "Test's class 'meta' is a Joose.Proto.Meta");
+    this.ok(testClass.meta instanceof Joose.Proto.Class, "Test's class 'meta' is a Joose.Proto.Class");
     
     
     //==================================================================================================================================================================================
     this.diag("Methods");
 
-    this.ok(Joose.Proto.Meta.meta.hasMethod('hasMethod'), "Joose.Proto.Meta has method 'hasMethod'");
-    this.ok(Joose.Proto.Meta.meta.hasMethod('toString'), "Joose.Proto.Meta has method 'toString'");
+    this.ok(Joose.Proto.Class.meta.hasMethod('hasMethod'), "Joose.Proto.Class has method 'hasMethod'");
+    this.ok(Joose.Proto.Class.meta.hasMethod('toString'), "Joose.Proto.Class has method 'toString'");
     
     this.ok(TestClass.meta.hasMethod('inc'), "TestClass has method 'inc'");
     this.is(testClass.inc(1), 2, "... and it works");
@@ -64,7 +64,7 @@ testobj.testSanity = function() {
     //==================================================================================================================================================================================
     this.diag("Inheritance and mutability (mutableness?)");
     
-    var TestClass1 = new Joose.Proto.Meta('TestClass1', null, TestClass, {
+    var TestClass1 = new Joose.Proto.Class('TestClass1', null, TestClass, {
         inc : function (a) { return this.SUPER(a) + 1 }
     }).c;
     var testClass1 = new TestClass1();
@@ -89,13 +89,13 @@ testobj.testSanity = function() {
     this.ok(testClass1 instanceof TestClass, "testClass1 isa TestClass");
     this.ok(testClass1 instanceof Joose.Proto.Object, "testClass1 isa Joose.Proto.Object");
     
-    this.ok(Joose.Proto.Meta.meta instanceof Joose.Proto.Object, "Joose.Proto.Meta.meta isa Joose.Proto.Object");
+    this.ok(Joose.Proto.Class.meta instanceof Joose.Proto.Object, "Joose.Proto.Class.meta isa Joose.Proto.Object");
     
     //==================================================================================================================================================================================
     this.diag("Stringification #2");
     
     this.is("" + testClass1, 'a TestClass1', "testClass1 stringified correctly");
-    this.is("" + testClass1.meta,'a Joose.Proto.Meta', "testClass1's meta stringified correctly");
+    this.is("" + testClass1.meta,'a Joose.Proto.Class', "testClass1's meta stringified correctly");
     
 };
 
