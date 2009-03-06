@@ -1,6 +1,6 @@
 (function () {
 var testobj = new Test.TAP.Class();
-testobj.plan(1)
+testobj.plan(53)
 
 testobj.testSanity = function() {
     //==================================================================================================================================================================================
@@ -30,7 +30,7 @@ testobj.testSanity = function() {
     B.addProperty('B2', { init : 'B2'} );
     B.addProperty('A1', { init : 'B-A1'} );
     
-    B.composeFrom(A);
+    B.setComposeInfo(A);
     
     B.close();
     
@@ -42,7 +42,7 @@ testobj.testSanity = function() {
     var C = new Joose.Managed.PropertySet.Mutable();
     C.addProperty('C1', { init : 'C1'} );
     
-    C.composeFrom(B);
+    C.setComposeInfo(B);
     
     C.close();
     
@@ -53,7 +53,7 @@ testobj.testSanity = function() {
     E.addProperty('E1', { init : 'E1'} );
     E.addProperty('E2', { init : 'E2'} );
     
-    E.composeFrom(A, B);
+    E.setComposeInfo(A, B);
     
     E.close();
     
@@ -73,7 +73,7 @@ testobj.testSanity = function() {
     var D = new Joose.Managed.PropertySet.Mutable();
     D.addProperty('D1', { init : 'D1'} );
 
-    D.composeFrom(B, E);
+    D.setComposeInfo(B, E);
     
     D.close();
     
@@ -91,7 +91,7 @@ testobj.testSanity = function() {
     F.addProperty('F1', { init : 'F1'} );
     F.addProperty('A1', { init : 'F-A1'} );
     
-    F.composeFrom(C, D, E);
+    F.setComposeInfo(C, D, E);
     
     F.close();
     
@@ -115,14 +115,14 @@ testobj.testSanity = function() {
     var E1 = new Joose.Managed.PropertySet.Mutable();
     E1.addProperty('E11', { init : 'E11'} );
     
-    E1.composeFrom({
-        properties : A,
+    E1.setComposeInfo({
+        propertySet : A,
         alias : {
             A1 : 'A1_from_A'
         },
         exclude : [ 'A2' ]
     },{
-        properties : B,
+        propertySet : B,
         alias : {
             A1 : 'A1_from_B'
         },

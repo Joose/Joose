@@ -1,6 +1,6 @@
 (function () {
 var testobj = new Test.TAP.Class();
-testobj.plan(24)
+testobj.plan(25)
 
 testobj.testSanity = function() {
     //==================================================================================================================================================================================
@@ -74,6 +74,12 @@ testobj.testSanity = function() {
     testClass1.meta.removeMethod('inc');
     
     this.is(testClass1.inc(1), 2, "'inc' is now not overriden");
+    
+    testClass1.meta.addMethod('inc', function(){
+        return this.SUPERARG(arguments) + 1
+    });
+    
+    this.is(testClass1.inc(1), 3, "'inc' was overriden again and works correctly with SUPERARG call");
     
     
     //==================================================================================================================================================================================

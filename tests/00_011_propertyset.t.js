@@ -1,13 +1,12 @@
 (function () {
 var testobj = new Test.TAP.Class();
-testobj.plan(1)
+testobj.plan(38)
 
 testobj.testSanity = function() {
     //==================================================================================================================================================================================
     this.diag("Joose.Managed.PropertySet");
     
     this.ok(Joose.Managed.Property, "Joose.Managed.Property is here");
-    this.ok(Joose.Managed.Property.Alias, "Joose.Managed.Property.Alias is here");
     this.ok(Joose.Managed.Property.ConflictMarker, "Joose.Managed.Property.ConflictMarker is here");
     this.ok(Joose.Managed.PropertySet, "Joose.Managed.PropertySet is here");
     
@@ -107,13 +106,13 @@ testobj.testSanity = function() {
     E1.addProperty('E11', { init : 'E11'} );
     
     E1.composeFrom({
-        properties : A,
+        propertySet : A,
         alias : {
             A1 : 'A1_from_A'
         },
         exclude : [ 'A2' ]
     },{
-        properties : B,
+        propertySet : B,
         alias : {
             A1 : 'A1_from_B'
         },
