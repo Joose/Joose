@@ -8,11 +8,21 @@ testobj.testSanity = function() {
     
     this.ok(Joose.Managed.Stem, "Joose.Managed.Stem is here");
     
+    var testTargetClass = function(){};
+    testTargetClass.meta = {
+        stem : {
+            properties : {
+                attributes : {},
+                methods : {},
+                methodModifiers : {}
+            }
+        }
+    }
 
     //==================================================================================================================================================================================
     this.diag("Sanity");
     
-    var A = new Joose.Managed.Stem();
+    var A = new Joose.Managed.Stem(null, { targetClass : testTargetClass });
     
     A.addAttribute('A1', 'A1');
     A.addMethod('A2', 'A2');
@@ -26,7 +36,7 @@ testobj.testSanity = function() {
     //==================================================================================================================================================================================
     this.diag("Basic composition");
     
-    var B = new Joose.Managed.Stem();
+    var B = new Joose.Managed.Stem(null, { targetClass : testTargetClass });
     
     B.addAttribute('B1', 'B1' );
     B.addAttribute('A1', 'B-A1' );
@@ -42,7 +52,7 @@ testobj.testSanity = function() {
     
     this.is(B.getAttribute('A1').value, 'B-A1', "A1 property of B don't changed");
     
-    var C = new Joose.Managed.Stem();
+    var C = new Joose.Managed.Stem(null, { targetClass : testTargetClass });
     
     C.addAttribute('C1', 'C1');
     
@@ -53,7 +63,7 @@ testobj.testSanity = function() {
     //==================================================================================================================================================================================
     this.diag("Composition with conflicting flattening");
     
-    var E = new Joose.Managed.Stem();
+    var E = new Joose.Managed.Stem(null, { targetClass : testTargetClass });
     
     E.addAttribute('E1','E1');
     E.addMethod('E2', 'E2');
@@ -75,7 +85,7 @@ testobj.testSanity = function() {
     //==================================================================================================================================================================================
     this.diag("Composition with conflicting flattening #2");
     
-    var D = new Joose.Managed.Stem();
+    var D = new Joose.Managed.Stem(null, { targetClass : testTargetClass });
     
     D.addAttribute('D1', 'D1');
 
@@ -93,7 +103,7 @@ testobj.testSanity = function() {
     //==================================================================================================================================================================================
     this.diag("Composition with conflict resolution");
     
-    var F = new Joose.Managed.Stem();
+    var F = new Joose.Managed.Stem(null, { targetClass : testTargetClass });
     
     F.addAttribute('F1', 'F1');
     F.addAttribute('A1', 'F-A1');
@@ -116,7 +126,7 @@ testobj.testSanity = function() {
     //==================================================================================================================================================================================
     this.diag("Aliasing & exclusion");
     
-    var E1 = new Joose.Managed.Stem();
+    var E1 = new Joose.Managed.Stem(null, { targetClass : testTargetClass });
     
     E1.addAttribute('E11', 'E11');
     
