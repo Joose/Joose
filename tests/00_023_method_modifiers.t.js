@@ -73,10 +73,42 @@ testobj.testSanity = function() {
     testClass.res = '';
     
     this.is(testClass.process(), 'TestClass', "Method return value from original function");
-    this.diag(testClass.res);
     this.is(testClass.res, '|before', "Only the 1st 'before' modifier remains");
     
 
+    //==================================================================================================================================================================================
+    this.diag("Mutability #2");
+    
+    var TestClass1 = new Joose.Managed.Class('TestClass1', {
+        isa : TestClass,
+        
+        before : {
+            process : function() { this.res += "|beforeTC1" }
+        },
+        
+        after : {
+            process : function() { this.res += "|afterTC1" }
+        }
+    }).c;
+    
+    var testClass1 = new TestClass1();
+
+    this.is(testClass1.process(), 'TestClass', "Inherited method return correct value");
+    this.is(testClass1.res, '|beforeTC1|before|afterTC1', "Only the 1st 'before' modifier remains");
+    
+    
+    TestClass.meta.extend({
+        after : {
+            process : function() { this.res += "|after" }
+        }
+    });
+    
+    testClass1.res = '';
+    
+    this.is(testClass1.process(), 'TestClass', "Method return value from original function");
+    this.is(testClass1.res, '|beforeTC1|before|after|afterTC1', "Modifier from subclass was correctly installed into 'modifying chain' ");
+    
+    
     //==================================================================================================================================================================================
     this.diag("Override & inheritance (SUPER call differentiation)");
 
