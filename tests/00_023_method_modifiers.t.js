@@ -64,7 +64,17 @@ testobj.testSanity = function() {
     
     this.is(testClass.process(), 'TestClass', "Method return value from original function");
     this.is(testClass.res, '|before2|before|after|after2', "New 'before' and 'after' modifiers were applied");
+
     
+    TestClass.meta.extend({
+        removeModifier : [ 'process', 'process', 'process' ]
+    });
+    
+    testClass.res = '';
+    
+    this.is(testClass.process(), 'TestClass', "Method return value from original function");
+    this.diag(testClass.res);
+    this.is(testClass.res, '|before', "Only the 1st 'before' modifier remains");
     
 //    //==================================================================================================================================================================================
 //    this.diag("Extending of builder");
