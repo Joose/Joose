@@ -76,122 +76,81 @@ testobj.testSanity = function() {
     this.diag(testClass.res);
     this.is(testClass.res, '|before', "Only the 1st 'before' modifier remains");
     
-//    //==================================================================================================================================================================================
-//    this.diag("Extending of builder");
-//    
-//    var TestClass1 = new Joose.Managed.Class('TestClass1', {
-//        isa : TestClass,
-//        
-//        builder : {
-//            testHandler : function(meta, props){
-//                var name = props.name;
-//                var value = props.value;
-//                
-//                meta.addMethod(name, function(){
-//                    return value;
-//                });
-//            }
-//        },
-//        
-//        testHandler : {
-//            name : 'result',
-//            value : 'TestClass1'
-//        }
-//        
-//    }).c;
-//    
-//    var testClass1 = new TestClass1();
-//    
-//    this.ok(TestClass1.meta.hasOwnMethod('result') && testClass1.result() == 'TestClass1', "... and it works correctly");
-//
-//    
-//    //==================================================================================================================================================================================
-//    this.diag("Inheritance of extended builder");
-//    
-//    var TestClass11 = new Joose.Managed.Class('TestClass11', {
-//        isa : TestClass1,
-//        
-//        testHandler : {
-//            name : 'result',
-//            value : 'TestClass11'
-//        }
-//    }).c;
-//    
-//    var testClass11 = new TestClass11();
-//    
-//    this.ok(TestClass11.meta.hasOwnMethod('result') && testClass11.result() == 'TestClass11', "... and it works correctly");
-//    
-//
-//    //==================================================================================================================================================================================
-//    this.diag("Method & Attribute objects");
-//    
-//    var result = TestClass1.meta.getMethod('result');
-//    
-//    this.ok(result instanceof Joose.Managed.Property.Method, "'result' method have a meta object - instance of Joose.Managed.Property.Method");
-//    
-//    this.ok(result.value == TestClass1.prototype.result._contain, "'result' method is a wrapper");
-//    
-//    
-//    var res = TestClass1.meta.getAttribute('res');
-//    
-//    this.ok(res instanceof Joose.Managed.Property.Attribute, "'res' attribute have a meta object - instance of Joose.Managed.Property.Attribute");
-//    
-//    this.ok(res.value == TestClass1.prototype.res, "Default value of 'res' attribute is a 'value' property of its meta");
-//    
-//    this.ok(!TestClass1.meta.hasOwnAttribute('res'), "TestClass1 dont have own 'res' attribute - its inherited from TestClass");
-//    
-//    
-//    //==================================================================================================================================================================================
-//    this.diag("Mutability");
-//    
-//    this.ok(TestClass1.meta.hasOwnMethod('result'), "TestClass1 has own 'result' method");
-//    
-//    TestClass1.meta.extend({
-//        removeMethods : ['result']
-//    });
-//    
-//    this.ok(!TestClass1.meta.hasOwnMethod('result'), "TestClass1 dont have own 'result' method");
-//    this.ok(TestClass1.meta.hasMethod('result'), "TestClass1 still have inherited 'result' method");
-//    this.is(testClass1.result(), 'TestClass', "... and it works correctly");
-//    
-//    this.ok(TestClass1.meta.hasAttribute('res'), "TestClass1 still has 'res' attribute after extension");
-//    
-//    TestClass.meta.extend({
-//        removeMethods : ['result']
-//    });
-//    this.ok(!TestClass1.meta.hasMethod('result'), "TestClass1 now dont have any 'result's methods");
-//    
-//
-//    //==================================================================================================================================================================================
-//    this.diag("SUPER call");
-//
-//    var TestClass3 = new Joose.Managed.Class('TestClass3', {
-//        methods : {
-//            inc : function (a) { return a + 1 }
-//        }
-//    }).c;
-//    
-//    var TestClass4 = new Joose.Managed.Class('TestClass4', {
-//        isa : TestClass3,
-//        
-//        methods : {
-//            inc : function (a) { return this.SUPER(a) + 1 }
-//        }
-//    }).c;
-//    
-//    var TestClass5 = new Joose.Managed.Class('TestClass4', {
-//        isa : TestClass4,
-//        
-//        methods : {
-//            inc : function (a) { return this.SUPERARG(arguments) + 1 }
-//        }
-//    }).c;
-//    
-//    var testClass5 = new TestClass5();
-//    
-//    this.is(testClass5.inc(1), 4, "'inc' was overriden and works correctly");
+
+    //==================================================================================================================================================================================
+    this.diag("Override & inheritance (SUPER call differentiation)");
+
+    var TestClass3 = new Joose.Managed.Class('TestClass3', {
+        methods : {
+            inc : function (a) { return a + '|T3' }
+        },
+        
+        override : {
+            inc : function (a) {
+                return this.SUPER(a) + '|T3O';
+            }
+        }
+    }).c;
+    
+    var testClass3 = new TestClass3();    
+    
+    this.is(testClass3.inc('T'), 'T|T3|T3O', "'override' modifier works correctly");
+    
+    
+    
+    var TestClass4 = new Joose.Managed.Class('TestClass4', {
+        isa : TestClass3,
+        
+        override : {
+            inc : function (a) { return this.SUPER(a) + '|T4O1' }
+        }
+    }).c;
+    
+    var testClass4 = new TestClass4();    
+    
+    this.is(testClass4.inc('T'), 'T|T3|T3O|T4O1', "'override' modifier was applied to inherited method");
+    
+    
+    
+    TestClass3.meta.extend({
+        removeModifier : [ 'inc' ]
+    });
+    
+    this.is(testClass4.inc('T'), 'T|T3|T4O1', "'override' chain lost 'T3O' element");
+    
+
+    TestClass4.meta.extend({
+        methods : {
+            inc : function (a) { return a + '|T4' }
+        }
+    });
+    
+    this.is(testClass4.inc('T'), 'T|T4|T4O1', "'override' modifier was applied to own method");
+    
+
+    TestClass4.meta.extend({
+        removeMethods : [ 'inc' ]
+    });
+    
+    this.is(testClass4.inc('T'), 'T|T3|T4O1', "'override' modifier was applied to inherited method again");
+    
+    
+    TestClass4.meta.extend({
+        override : {
+            inc : function (a) { return this.SUPERARG(arguments) + '|T4O2' }
+        }
+    });
+    
+    this.is(testClass4.inc('T'), 'T|T3|T4O1|T4O2', "2nd 'override' modifier was applied to inherited method + it works via SUPERARG");
 
     
+    TestClass4.meta.extend({
+        methods : {
+            inc : function (a) { return a + '|T4' }
+        }
+    });
+    
+    this.is(testClass4.inc('T'), 'T|T4|T4O1|T4O2', "Two 'override's modifiers were applied to own method");
     
 };
 
