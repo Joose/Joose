@@ -235,6 +235,58 @@ testobj.testSanity = function() {
     
     this.is(testClass6.inc('T'), 'T6:T|aroundT6', "Around modifier was applied to own method");
     
+    
+    //==================================================================================================================================================================================
+    this.diag("Augment");
+    
+    var HTMLDoc = new Joose.Managed.Class('HTMLDoc', {
+        augment: {
+            html: function () { return "<html>"+this.INNER()+"</html>" }
+        }
+    }).c;
+    
+    
+    
+    var HTMLDocBody = new Joose.Managed.Class('HTMLDocBody', {
+        isa: HTMLDoc,
+        
+        augment: {
+            html: function () { return "<head>"+this.head()+"</head><body>"+this.INNER()+"</body>" },
+            head: function () { return "<title>"+this.INNER()+"</title>" }
+        }
+    }).c;
+    
+    
+    var TPSReport = new Joose.Managed.Class('TPSReport', {
+        isa: HTMLDocBody,
+        
+        augment: {
+            html: function () { return "<h1>TPS-Report</h1>" },
+            head: function () { return "TPS-Report" }
+        }
+    }).c;
+    
+    var tps = new TPSReport();
+    
+    this.ok(tps.html() == "<html><head><title>TPS-Report</title></head><body><h1>TPS-Report</h1></body></html>", "Augment method modifier works");
+
+    
+    
+    HTMLDocBody.meta.extend({
+        removeModifier : [ 'head' ]
+    });
+    
+    this.ok(tps.html() == "<html><head>TPS-Report</head><body><h1>TPS-Report</h1></body></html>", "Dynamic Augment modifier removing works");
+    
+    
+    HTMLDocBody.meta.extend({
+        methods : {
+            html: function () { return "<xhtml>"+this.INNER()+"</xhtml>" }
+        }
+    });
+    
+    this.ok(tps.html() == "<xhtml><head>TPS-Report</head><body><h1>TPS-Report</h1></body></xhtml>", "Dynamically inserted in 'augments' chain method works");
+    
 };
 
 return testobj;
