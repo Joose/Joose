@@ -106,7 +106,7 @@ testobj.testSanity = function() {
     testClass1.res = '';
     
     this.is(testClass1.process(), 'TestClass', "Method return value from original function");
-    this.is(testClass1.res, '|beforeTC1|before|after|afterTC1', "Modifier from subclass was correctly installed into 'modifying chain' ");
+    this.is(testClass1.res, '|beforeTC1|before|after|afterTC1', "New modifier from subclass was correctly installed into 'modifying chain' ");
     
     
     //==================================================================================================================================================================================
@@ -183,6 +183,57 @@ testobj.testSanity = function() {
     });
     
     this.is(testClass4.inc('T'), 'T|T4|T4O1|T4O2', "Two 'override's modifiers were applied to own method");
+    
+    
+    //==================================================================================================================================================================================
+    this.diag("Around");
+    
+    var TestClass5 = new Joose.Managed.Class('TestClass5', {
+        
+        methods : {
+            inc : function(a) { return a }
+        },
+        
+        around : {
+            inc : function(prev, a) { return prev(a) + "|aroundT5" }
+        }
+        
+    }).c;
+    
+
+    var testClass5 = new TestClass5();
+
+    this.diag(testClass5.inc('T'));
+    this.is(testClass5.inc('T'), 'T|aroundT5', "Around modifier works");
+    
+    
+    var TestClass6 = new Joose.Managed.Class('TestClass6', {
+        isa : TestClass5,
+        
+        around : {
+            inc : function(prev, a) { return prev(a) + "|aroundT6" }
+        }
+        
+    }).c;
+    
+    var testClass6 = new TestClass6();
+
+    this.is(testClass6.inc('T'), 'T|aroundT5|aroundT6', "Around modifier works on inherited method");
+    
+    
+    TestClass5.meta.extend({
+        removeModifier : [ 'inc' ]
+    });
+    
+    this.is(testClass6.inc('T'), 'T|aroundT6', "Around modifier from TestClass5 was removed");
+    
+    TestClass6.meta.extend({
+        methods : {
+            inc : function(a) { return 'T6:' + a }
+        }
+    });
+    
+    this.is(testClass6.inc('T'), 'T6:T|aroundT6', "Around modifier was applied to own method");
     
 };
 

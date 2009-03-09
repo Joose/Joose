@@ -31,7 +31,7 @@ testobj.testSanity = function() {
     this.ok(TestClass.meta.getAttribute('res') instanceof Joose.Managed.Property.Attribute, "'res' attribute is instance of Joose.Managed.Property.Attribute");
     
     this.ok(TestClass.meta.hasOwnMethod('result'), "TestClass has own 'result' method");
-    this.ok(TestClass.meta.getMethod('result') instanceof Joose.Managed.Property.Method, "'result' method is instance of Joose.Managed.Property.Method");
+    this.ok(TestClass.meta.getMethod('result') instanceof Joose.Managed.Property.MethodModifier.Put, "'result' method is instance of Joose.Managed.Property.MethodModifier.Put");
     this.ok(typeof TestClass.prototype.result == 'function', "Some function was installed into prototype");
     
     this.ok(TestClass.meta.hasMethod('initialize'), "TestClass has 'initialize' method");
@@ -98,7 +98,7 @@ testobj.testSanity = function() {
     
     var result = TestClass1.meta.getMethod('result');
     
-    this.ok(result instanceof Joose.Managed.Property.Method, "'result' method have a meta object - instance of Joose.Managed.Property.Method");
+    this.ok(result instanceof Joose.Managed.Property.MethodModifier.Put, "'result' method have a meta object - instance of Joose.Managed.Property.MethodModifier.Put");
     
     this.ok(result.value == TestClass1.prototype.result._contain, "'result' method is a wrapper");
     
