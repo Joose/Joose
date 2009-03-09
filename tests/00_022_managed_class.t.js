@@ -100,7 +100,7 @@ testobj.testSanity = function() {
     
     this.ok(result instanceof Joose.Managed.Property.Method, "'result' method have a meta object - instance of Joose.Managed.Property.Method");
     
-    this.ok(result.value == TestClass1.prototype.result.contain, "'result' method is a wrapper");
+    this.ok(result.value == TestClass1.prototype.result._contain, "'result' method is a wrapper");
     
     
     var res = TestClass1.meta.getAttribute('res');
