@@ -150,7 +150,7 @@ testobj.testSanity = function() {
         }
     }).c;
     
-    var TestClass5 = new Joose.Managed.Class('TestClass4', {
+    var TestClass5 = new Joose.Managed.Class('TestClass5', {
         isa : TestClass4,
         
         methods : {
