@@ -287,6 +287,93 @@ testobj.testSanity = function() {
     
     this.ok(tps.html() == "<xhtml><head>TPS-Report</head><body><h1>TPS-Report</h1></body></xhtml>", "Dynamically inserted in 'augments' chain method works");
     
+    
+    //==================================================================================================================================================================================
+    this.diag("Combined");
+    
+    var TestClass7 = new Joose.Managed.Class('TestClass7', {
+        
+        have : {
+            res : ''
+        },
+        
+        methods : {
+            inc : function () { return this.res += '|T7' }
+        },
+        
+        before : {
+            inc : function () { return this.res += '|T7-before' }
+        },
+        
+        override : {
+            inc : function () {
+                this.SUPER();
+                this.res += '|T7-override';
+            }
+        },
+        
+        after : {
+            inc : function () { this.res += '|T7-after' }
+        }
+
+    }).c;
+    
+
+    var TestClass8 = new Joose.Managed.Class('TestClass8', {
+        isa : TestClass7,
+        
+        override : {
+            inc : function () {
+                this.SUPER();
+                this.res += '|T8-override';
+            }
+        },
+        
+        before : {
+            inc : function () { this.res += '|T8-before' }
+        },
+
+        
+        after : {
+            inc : function () { this.res += '|T8-after' }
+        },
+        
+        
+        around : {
+            inc : function (prev) { 
+                prev();
+                this.res += '|T8-around'
+                this.INNER();
+            }
+        },
+        
+        augment : {
+            inc : function () { 
+                this.res += '|T8-augment'
+                this.INNER();
+            }
+        }
+        
+    }).c;
+    
+    var TestClass9 = new Joose.Managed.Class('TestClass9', {
+        isa : TestClass8,
+        
+        augment : {
+            inc : function () { 
+                this.res += '|T9-augment'
+                this.INNER();
+            }
+        }
+        
+    }).c;
+    
+    var testClass9 = new TestClass9();
+    
+    testClass9.inc();
+    
+    this.is(testClass9.res, "|T8-before|T7-before|T7|T7-override|T7-after|T8-override|T8-after|T8-around|T8-augment|T9-augment", "Combined test passed"); 
+    
 };
 
 return testobj;
