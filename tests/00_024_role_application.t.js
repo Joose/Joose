@@ -40,6 +40,13 @@ testobj.testSanity = function() {
     }).c;
     
     
+    this.throws_ok(function(){
+        var Creature = new Joose.Managed.Class('Creature', {
+            does : [ Walk, Eat ]
+        }).c;
+    }, "Attempt to apply ConflictMarker [stop] to [Creature]", "Conflicts are detecting");
+    
+    
     var Creature = new Joose.Managed.Class('Creature', {
         does : [{
             role : Walk,
@@ -52,7 +59,7 @@ testobj.testSanity = function() {
             alias : {
                 stop : 'stopEat'
             },
-            exclude : [ 'stop']
+            exclude : [ 'stop' ]
         }]
     }).c;
     
@@ -76,7 +83,9 @@ testobj.testSanity = function() {
     //==================================================================================================================================================================================
     this.diag("Cannibal creature");
     
-    var Cannibalism = new Joose.Managed.Role('Cannibalism', { 
+    var Cannibalism = new Joose.Managed.Role('Cannibalism', {
+        require : [ 'eat' ],
+        
         override : {
             eat : function (food) { 
                 if (food.constructor == this.constructor) this.SUPER(food); 
@@ -106,7 +115,7 @@ testobj.testSanity = function() {
     
     
     //==================================================================================================================================================================================
-    this.diag("Human");
+    this.diag("Plant & required methods");
     
     var Plant = new Joose.Managed.Class('Plant', {
         methods : {
@@ -114,10 +123,22 @@ testobj.testSanity = function() {
         }
     }).c;
     
+    
+    this.throws_ok(function(){
+        Plant.meta.extend({
+            does : [ Cannibalism ]
+        });
+    }, "Requirement [eat], defined in [Cannibalism] is not satisfied for class [Plant]", "Missing of required method detected");
+    
+    
     var plant = new Plant();
+
+    //==================================================================================================================================================================================
+    this.diag("Human");
     
-    
-    var Drive = new Joose.Managed.Role('Drive', { 
+    var Drive = new Joose.Managed.Role('Drive', {
+        require : [ 'walk' ],
+        
         have : {
             driving : false
         },
@@ -135,7 +156,9 @@ testobj.testSanity = function() {
     }).c;    
     
     
-    var Vegetarian = new Joose.Managed.Role('Vegetarian', { 
+    var Vegetarian = new Joose.Managed.Role('Vegetarian', {
+        require : [ 'eat' ],
+        
         override : {
             eat : function (food) { 
                 if (!food.meta.hasMethod('walk')) this.SUPER(food); 
@@ -245,6 +268,15 @@ testobj.testSanity = function() {
     cannibal1.eat(cannibal2);
     this.ok(cannibal1.eating, "Cannibal now can eat again");
     cannibal1.stopEat();
+    
+    
+    
+    Human.meta.extend({ 
+        doesnt : [ Drive ]
+    });
+    
+    human.walk('supermarket');
+    this.ok(human.walking, "Humans now walks instead driving again");
     
 };
 
