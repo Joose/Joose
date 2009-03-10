@@ -287,6 +287,22 @@ testobj.testSanity = function() {
     
     this.ok(tps.html() == "<xhtml><head>TPS-Report</head><body><h1>TPS-Report</h1></body></xhtml>", "Dynamically inserted in 'augments' chain method works");
     
+
+    //==================================================================================================================================================================================
+    this.diag("Augment - alternate inheritance path");
+
+    var TPSReport1 = new Joose.Managed.Class('TPSReport1', {
+        isa: HTMLDocBody,
+        
+        augment: {
+            html: function () { return "<h1>TPS-Report1</h1>" },
+            head: function () { return "TPS-Report1" }
+        }
+    }).c;
+    
+    var tps1 = new TPSReport1();
+    this.ok(tps1.html() == "<xhtml><head>TPS-Report1</head><body><h1>TPS-Report1</h1></body></xhtml>", "Augment in class on alternate inheritance path works");
+    
     
     //==================================================================================================================================================================================
     this.diag("Combined");

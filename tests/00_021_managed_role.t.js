@@ -21,6 +21,10 @@ testobj.testSanity = function() {
         }
     }).c;
     
+    this.throws_ok(function(){
+        new A()
+    }, "Roles cant be instantiated", "Roles cant be instantiated");
+    
     this.ok(A.meta.hasAttribute('A1') && A.meta.getAttribute('A1').value == 'A1', 'A has correct attribute A1');
     this.ok(A.meta.hasMethod('A2') && A.meta.getMethod('A2').value() == 'A2', 'A has correct method A2');
 
