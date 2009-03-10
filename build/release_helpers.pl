@@ -39,7 +39,7 @@ my @classes = (
             "Joose.Managed.ClassStem.Methods",
             "Joose.Managed.ClassStem.Requirements",
             "Joose.Managed.ClassStem.MethodModifiers",
-            "Joose.Managed.Stem.ClassStem",
+            "Joose.Managed.Stem",
             "Joose.Managed.Object",          
             "Joose.Managed.Class"
 	

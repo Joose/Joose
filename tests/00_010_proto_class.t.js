@@ -25,7 +25,7 @@ testobj.testSanity = function() {
     //==================================================================================================================================================================================
     this.diag("Inheritance from Joose.Proto.Object");
     
-    var TestClass = new Joose.Proto.Class('TestClass', null, null, {
+    var TestClass = new Joose.Proto.Class('TestClass', {
         inc : function (a) { return a + 1 }
     }).c;
     var testClass = new TestClass();
@@ -59,12 +59,16 @@ testobj.testSanity = function() {
     
     this.ok(TestClass.meta.hasMethod('toString'), "TestClass has method 'toString'");
     this.ok(TestClass.meta.hasMethod('SUPER'), "TestClass has method 'SUPER'");
+    
+    this.ok(TestClass.meta.meta.hasAttribute('superClass'), "TestClass has method 'SUPER'");
 
     
     //==================================================================================================================================================================================
     this.diag("Inheritance and mutability (mutableness?)");
     
-    var TestClass1 = new Joose.Proto.Class('TestClass1', null, TestClass, {
+    var TestClass1 = new Joose.Proto.Class('TestClass1', {
+        isa : TestClass,
+        
         inc : function (a) { return this.SUPER(a) + 1 }
     }).c;
     var testClass1 = new TestClass1();

@@ -13,7 +13,8 @@ testobj.testSanity = function() {
     //==================================================================================================================================================================================
     this.diag("Inherited from class with Joose.Proto.Class meta");
     
-    var TestClass3 = new Joose.Proto.Class('TestClass3', null, null, {
+    var TestClass3 = new Joose.Proto.Class('TestClass3', {
+	
         res1 : false,
         
         met1 : function(){},
@@ -23,7 +24,8 @@ testobj.testSanity = function() {
     }).c;
     
     
-    var TestClass4 = new Joose.Proto.Class('TestClass4', null, TestClass3, {
+    var TestClass4 = new Joose.Proto.Class('TestClass4', {
+	isa : TestClass3,
         res2 : 'res2',
         testMeta : TestClass3,
         
