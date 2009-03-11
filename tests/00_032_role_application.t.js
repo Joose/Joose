@@ -212,7 +212,7 @@ testobj.testSanity = function() {
     
     human.eat(cannibal1);
     this.ok(!human.eating, "Human doesn't eat thing which can 'walk' #1");
-    this.ok(!human.cleanHands, "Human have not washed hands");
+    this.ok(!human.cleanHands, "Human have not washed hands yet");
     
     human.eat(creature);
     this.ok(!human.eating, "Human doesn't eat thing which can 'walk' #2");
