@@ -1,6 +1,6 @@
 (function () {
 var testobj = new Test.TAP.Class();
-testobj.plan(1)
+testobj.plan(38)
 
 testobj.testSanity = function() {
     //==================================================================================================================================================================================
@@ -10,7 +10,7 @@ testobj.testSanity = function() {
     this.ok(Joose.Managed.Class, "Joose.Managed.Class is here");
     
     //==================================================================================================================================================================================
-    this.diag("Sanity");
+    this.diag("Role creation");
     
     var Walk = new Joose.Managed.Role('Walk', { 
         have : {
@@ -40,11 +40,25 @@ testobj.testSanity = function() {
     }).c;
     
     
+    //==================================================================================================================================================================================
+    this.diag("Exceptions");
+    
     this.throws_ok(function(){
         var Creature = new Joose.Managed.Class('Creature', {
             does : [ Walk, Eat ]
         }).c;
     }, "Attempt to apply ConflictMarker [stop] to [Creature]", "Conflicts are detecting");
+    
+    
+    this.throws_ok(function(){
+        var Creature = new Joose.Managed.Class('Creature', {
+            require : [ 'walk' ]
+        }).c;
+    }, "Unknow builder [require] was used during extending of [Creature]", "'require' builder can only be used with Roles");
+    
+    
+    //==================================================================================================================================================================================
+    this.diag("Composing a class from roles with aliasing");
     
     
     var Creature = new Joose.Managed.Class('Creature', {

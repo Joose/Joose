@@ -1,6 +1,6 @@
 (function () {
 var testobj = new Test.TAP.Class();
-testobj.plan(25)
+testobj.plan(26)
 
 testobj.testSanity = function() {
     //==================================================================================================================================================================================
@@ -60,7 +60,7 @@ testobj.testSanity = function() {
     this.ok(TestClass.meta.hasMethod('toString'), "TestClass has method 'toString'");
     this.ok(TestClass.meta.hasMethod('SUPER'), "TestClass has method 'SUPER'");
     
-    this.ok(TestClass.meta.meta.hasAttribute('superClass'), "TestClass has method 'SUPER'");
+    this.ok(TestClass.meta.meta.hasAttribute('superClass'), "meta of TestClass's meta has attribute superClass");
 
     
     //==================================================================================================================================================================================
