@@ -77,11 +77,9 @@ testobj.testSanity = function() {
 
     
     //==================================================================================================================================================================================
-    this.diag("Inheritance of extended builder");
+    this.diag("Extended Builder sharing");
     
     var TestClass11 = new Joose.Managed.Class('TestClass11', {
-        isa : TestClass1,
-        
         testHandler : {
             name : 'result',
             value : 'TestClass11'
