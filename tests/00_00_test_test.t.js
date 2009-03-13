@@ -12,7 +12,7 @@ testobj.testSanity = function() {
     
     window.GLOBAL = true;
     
-    if(joose.top.setTimeout) {
+    if(Joose.top.setTimeout) {
         setTimeout(function () {
             me.ok(true, "Asynchronous test succeeded");
             me.ok(!false, "Asynchronous test failed");

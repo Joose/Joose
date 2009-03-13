@@ -4,89 +4,23 @@ use FindBin;
 use File::Find;
 use File::Copy;
 
+use Path::Class;
+use JSON;
+
 sub exe ($);
 
 my $path = "$FindBin::Bin/..";
 
-my @classes = (
-	        "Joose",
-	# copy this from Joose
-            "Joose.Proto.Object",
-            "Joose.Proto.Class",
-            "Joose.Managed.Property",
-            "Joose.Managed.Property.ConflictMarker",
-            "Joose.Managed.Property.Requirement",
-            "Joose.Managed.Property.Attribute",
-            "Joose.Managed.Property.MethodModifier",
-            "Joose.Managed.Property.MethodModifier.Override",
-            "Joose.Managed.Property.MethodModifier.Put",
-            "Joose.Managed.Property.MethodModifier.After",
-            "Joose.Managed.Property.MethodModifier.Before",
-            "Joose.Managed.Property.MethodModifier.Around",
-            "Joose.Managed.Property.MethodModifier.Augment",
-            "Joose.Managed.PropertySet",
-            "Joose.Managed.PropertySet.Mutable",
-            "Joose.Managed.PropertySet.Composition",
-            "Joose.Managed.RoleStem.Attributes",
-            "Joose.Managed.RoleStem.Methods",
-            "Joose.Managed.RoleStem.Requirements",
-            "Joose.Managed.RoleStem.MethodModifiers",
-            "Joose.Managed.Stem.RoleStem",
-            "Joose.Managed.Builder",
-            "Joose.Managed.Role",
-            "Joose.Managed.PropertySet.Containable",
-            "Joose.Managed.ClassStem.Attributes",
-            "Joose.Managed.ClassStem.Methods",
-            "Joose.Managed.ClassStem.Requirements",
-            "Joose.Managed.ClassStem.MethodModifiers",
-            "Joose.Managed.Stem",
-            "Joose.Managed.Object",          
-            "Joose.Managed.Class"
-	
-	
-#            "Joose.Kernel.ProtoMeta",
-#            "Joose.Kernel.Inheritable",
-#            "Joose.Kernel.ProtoMethod",
-#            "Joose.Kernel.ProtoAttribute",
-#            "Joose.Kernel.Inheritance",
-#            "Joose.Kernel.ProtoClassMethod",
-#            "Joose.Kernel.ClassMethods",
-#            "Joose.Kernel.Handlers",
-#            "Joose.Kernel.Roles",
-#            "Joose.Kernel.ProtoModule",
-#            "Joose.Kernel.NamespaceKeeper",
-#            
-#            "Joose.Kernel.MetaClass",
-#            "Joose.Kernel.ProtoRole",
-#            "Joose.Kernel.MetaClass.Depended",
-#            "Joose.Kernel.MetaClass.Depended.Grouped",
-##//            "Joose.Kernel.MetaClass.Depended.NonCycled",
-#            "Joose.Kernel.MetaClass.Depended.Transport.ScriptTag",
-#            "Joose.Kernel.MetaClass.Depended.Transport.AjaxAsync",
-#            
-#            "Joose.Attribute",
-#            "Joose.Method",
-#            "Joose.ClassMethod",
-#            "Joose.Class",
-#            "Joose.TypeConstraint",
-#            "Joose.Builder",
-#            "Joose.TypeCoercion",
-#            "Joose.Types",
-#            "Joose.Role",
-#            "Joose.Singleton",
-#            "Joose.SimpleRequest",
-#            "Joose.Gears",
-#            "Joose.Storage",
-#            "Joose.Storage.Unpacker",
-#            "Joose.Decorator",
-#            "Joose.TypeChecker",
-#            "Joose.Prototype",
-#            "Joose.TypedMethod",
-#            "Joose.MultiMethod",
-#            "Digest.MD5"
- );
+my $components = file($path, 'build/components.js')->slurp;
+$components =~ s!//.*$!!gm;
 
-  my $files = [map { s{\.}{/}g; "$_.js" } @classes];
+$components =~ m/.*(\[.*\])/;
+$components = $1;
+
+
+my @classes = @{decode_json $components };
+
+my $files = [map { s{\.}{/}g; "$_.js" } @classes];
 
 sub compile {
 	my ( $path, $compile_dir, $release_dir, $joose_dir ) = @_;

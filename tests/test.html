@@ -7,6 +7,8 @@
 <script type="text/javascript" src="../ext/Test/TAP/Class.js"></script>
 <script type="text/javascript" src="../ext/json2.js"></script>
 
+<script type="text/javascript" src="../build/components.js"></script>
+
 <!--[if IE]>
 <script type="text/javascript" src="../lib/Joose.js"></script>
 <![endif]-->
@@ -52,8 +54,8 @@
         '00_022_inheriting_from_proto_class.t.js',
         '00_031_managed_role.t.js',        
         '00_032_role_application.t.js',
-        '00_033_my_symbiont.t.js'
-        
+        '00_033_my_symbiont.t.js',
+        '00_040_namespace_manager.t.js'
         
 
 //       '00_03_protomethod.t.js',
@@ -103,7 +105,7 @@
     /** Setup
     *
     */
-
+    
     function loadScriptFile(src) {
         document.write("<script type='text/javascript' src='"+src+"'><"+"/script>\n")
     }
@@ -116,9 +118,11 @@
         loadScriptFile("../joose.mini.js")
     }
     else {
-        var html  = '<script type="text/javascript" src="../lib/Joose.js"><'+'/script>';
-            html += '<script type="text/javascript">joose.loadComponents("../lib")<'+'/script>';
-        document.write(html)
+        
+        for (var i = 0; i < JooseComponents.length; i++) {
+            var url = '../lib/' + JooseComponents[i].replace(/\./g,'/') + '.js';
+            loadScriptFile(url);
+        }
     }
    
     
