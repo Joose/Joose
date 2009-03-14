@@ -12,48 +12,48 @@ testobj.testSanity = function() {
     this.ok(Joose.Kernel.Class.meta.hasAttribute('ns'), "Joose.Kernel.Class's meta has 'ns' attribute");
     this.ok(Joose.Managed.Role.meta.hasAttribute('ns'), "Joose.Kernel.Role's meta has 'ns' attribute");
     
-//    var TestClass = new Joose.Kernel.Class('TestClass', {
-//        have : {
-//            res : 'instance'
-//        },
-//        
-//        methods : {
-//            result : function() { return 'TestClass:instance' }
-//        },
-//        
-//        
-//        my : {
-//            have : {
-//                res : 'class'
-//            },
-//            
-//            methods : {
-//                result : function() { return 'TestClass:class' }
-//            }
-//        }
-//        
-//    }).c;
-//    
-//    this.ok(typeof TestClass == 'function', "TestClass was created");
-//    this.ok(TestClass.my && TestClass.my.meta, "Class-level symbiont was created");
-//    
-//    this.ok(TestClass.meta.hasAttribute('res'), "TestClass has 'res' attribute"); 
-//    this.ok(TestClass.meta.hasMethod('result'), "TestClass has 'result' method");
-//
-//    this.ok(TestClass.my.meta.hasAttribute('res'), "TestClass.my has 'res' attribute"); 
-//    this.ok(TestClass.my.meta.hasMethod('result'), "TestClass.my has 'result' method");
-//    
-//    
-//    var testClass = new TestClass();
-//    
-//    this.ok(testClass, "TestClass was instantiated");
-//    this.ok(testClass.res == 'instance', "Usual attribute was correctly installed");
-//    this.is(testClass.result(), 'TestClass:instance', "Method was correctly installed");
-//    
-//    this.ok(TestClass.my.res == 'class', "Symbiont's attribute was correctly installed");
-//    this.is(TestClass.my.result(), 'TestClass:class', "Symbiont's method was correctly installed");
-//    
-//    
+    Class('TestClass', {
+        have : {
+            res : 'instance'
+        },
+        
+        methods : {
+            result : function() { return 'TestClass:instance' }
+        },
+        
+        
+        my : {
+            have : {
+                res : 'class'
+            },
+            
+            methods : {
+                result : function() { return 'TestClass:class' }
+            }
+        }
+        
+    });
+    
+    this.ok(typeof TestClass == 'function', "TestClass was created");
+    this.ok(TestClass.my && TestClass.my.meta, "Class-level symbiont was created");
+    
+    this.ok(TestClass.meta.hasAttribute('res'), "TestClass has 'res' attribute"); 
+    this.ok(TestClass.meta.hasMethod('result'), "TestClass has 'result' method");
+
+    this.ok(TestClass.my.meta.hasAttribute('res'), "TestClass.my has 'res' attribute"); 
+    this.ok(TestClass.my.meta.hasMethod('result'), "TestClass.my has 'result' method");
+    
+    
+    var testClass = new TestClass();
+    
+    this.ok(testClass, "TestClass was instantiated");
+    this.ok(testClass.res == 'instance', "Usual attribute was correctly installed");
+    this.is(testClass.result(), 'TestClass:instance', "Method was correctly installed");
+    
+    this.ok(TestClass.my.res == 'class', "Symbiont's attribute was correctly installed");
+    this.is(TestClass.my.result(), 'TestClass:class', "Symbiont's method was correctly installed");
+    
+    
 //    //==================================================================================================================================================================================
 //    this.diag("Role with symbiont creation");
 //    

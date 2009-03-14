@@ -59,7 +59,14 @@ SimpleRequest.prototype.getText = function (urlOrOptions, async, callback, scope
 var joose2   = new SimpleRequest().getText('joose-2.0.js');
 var joose21  = new SimpleRequest().getText('joose-2.1.js');
 var joose211 = new SimpleRequest().getText('joose-2.1.1.js');
+var joose22  = new SimpleRequest().getText('joose-2.2.js');
 var ext = new SimpleRequest().getText('ext.js');
+
+
+new Profiler(function () {
+    JooseType = JooseClass = JooseModule = JooseRole = __global__ = Digest = Class = Role = Module = Joose = TYPE = Type = undefined;    
+    eval(joose22);
+}, "startup for Joose 2.2").run(10).report();
 
 
 new Profiler(function () {

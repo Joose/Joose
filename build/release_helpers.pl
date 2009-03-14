@@ -12,11 +12,11 @@ sub exe ($);
 my $path = "$FindBin::Bin/..";
 
 my $components = file($path, 'build/components.js')->slurp;
+
 $components =~ s!//.*$!!gm;
 
-$components =~ m/.*(\[.*\])/;
+$components =~ m/(\[.*\])/s;
 $components = $1;
-
 
 my @classes = @{decode_json $components };
 
