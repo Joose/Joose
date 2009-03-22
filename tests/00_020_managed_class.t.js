@@ -50,8 +50,8 @@ testobj.testSanity = function() {
     //==================================================================================================================================================================================
     this.diag("Extending of builder");
     
-    var TestClass1 = new Joose.Managed.Class('TestClass1', {
-        isa : TestClass,
+    var TestMetaClass = new Joose.Managed.Class('TestClass1', {
+        isa : Joose.Managed.Class,
         
         builder : {
             testHandler : function(meta, props){
@@ -62,7 +62,13 @@ testobj.testSanity = function() {
                     return value;
                 });
             }
-        },
+        }
+        
+    }).c;
+    
+    
+    var TestClass1 = new TestMetaClass('TestClass1', {
+        isa : TestClass,
         
         testHandler : {
             name : 'result',
@@ -73,13 +79,10 @@ testobj.testSanity = function() {
     
     var testClass1 = new TestClass1();
     
-    this.ok(TestClass1.meta.hasOwnMethod('result') && testClass1.result() == 'TestClass1', "... and it works correctly");
+    this.ok(TestClass1.meta.hasOwnMethod('result') && testClass1.result() == 'TestClass1', "Builder was extened and works correctly");
 
     
-    //==================================================================================================================================================================================
-    this.diag("Extended Builder sharing");
-    
-    var TestClass11 = new Joose.Managed.Class('TestClass11', {
+    var TestClass11 = new TestMetaClass('TestClass11', {
         testHandler : {
             name : 'result',
             value : 'TestClass11'
@@ -88,7 +91,7 @@ testobj.testSanity = function() {
     
     var testClass11 = new TestClass11();
     
-    this.ok(TestClass11.meta.hasOwnMethod('result') && testClass11.result() == 'TestClass11', "... and it works correctly");
+    this.ok(TestClass11.meta.hasOwnMethod('result') && testClass11.result() == 'TestClass11', "Builder was extened and works correctly #2");
     
 
     //==================================================================================================================================================================================

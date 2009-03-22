@@ -1,6 +1,6 @@
 (function () {
 var testobj = new Test.TAP.Class();
-testobj.plan(48)
+testobj.plan(50)
 
 testobj.testSanity = function() {
     //==================================================================================================================================================================================
@@ -11,6 +11,8 @@ testobj.testSanity = function() {
     //==================================================================================================================================================================================
     this.diag("Sanity");
     
+    this.ok(Joose.Managed.Role.meta.stem.attributesMC == Joose.Managed.ClassStem.Attributes, 'Joose.Managed.Role itslef has a class stem');
+    
     var A = new Joose.Managed.Role('A', { 
         have : {
             A1 : 'A1'
@@ -20,6 +22,8 @@ testobj.testSanity = function() {
             A2 : function () { return 'A2' }
         }
     }).c;
+    
+    this.ok(A.meta.stem.attributesMC == Joose.Managed.RoleStem.Attributes, 'Role A has a role stem');
     
     this.throws_ok(function(){
         new A()
