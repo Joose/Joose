@@ -10,7 +10,7 @@ testobj.testSanity = function() {
     this.ok(Joose.Kernel.Namespace.Keeper, "Joose.Kernel.Namespace.Keeper is here");
     
     this.ok(Joose.Kernel.Class.meta.hasAttribute('ns'), "Joose.Kernel.Class's meta has 'ns' attribute");
-    this.ok(Joose.Managed.Role.meta.hasAttribute('ns'), "Joose.Kernel.Role's meta has 'ns' attribute");
+    this.ok(Joose.Kernel.Role.meta.hasAttribute('ns'), "Joose.Kernel.Role's meta has 'ns' attribute");
     
     Class('TestClass', {
         have : {
