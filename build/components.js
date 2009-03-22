@@ -38,15 +38,15 @@ JooseComponents = [
             "Joose.Kernel.Class",
             "Joose.Kernel.Role",
             
-            "Joose.Kernel.My"
+            "Joose.Kernel.My",
             
-//            "Joose.Managed.PropertySet.Namespace",
-//            "Joose.Kernel.Namespace.Able",
-//            
-//            "Joose.Kernel.Namespace.Keeper",
-//            "Joose.Kernel.Namespace.Manager",
-//            
-//            "Joose.Kernel.Helper"
+            "Joose.Managed.PropertySet.Namespace",
+            "Joose.Kernel.Namespace.Able",
+            
+            "Joose.Kernel.Namespace.Keeper",
+            "Joose.Kernel.Namespace.Manager",
+            
+            "Joose.Kernel.Helper"
             
             
 //            "Joose.Kernel.Inheritable",
