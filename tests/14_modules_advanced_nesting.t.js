@@ -1,5 +1,4 @@
-(function (Class, Module, Role, Type, Prototype) {
-return (function () {
+(function () {
 var t = new Test.TAP.Class();
 t.plan(8)
 
@@ -53,4 +52,3 @@ t.testModuleClass = function() {
 
 return t;
 })()
-}).call(window, JooseClass, JooseModule, JooseRole, JooseType, JoosePrototype)
