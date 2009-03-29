@@ -30,7 +30,23 @@ t.testModuleClass = function() {
     self.ok(TestModule.meta.ns.container == TestModule, 'Container of namespace is a module function');
 	self.is(TestModule.foo, 'bar', 'Body of module was executed in the scope of its container');
 	self.is(TestModule.bar, 'baz', 'Module namespacekeeper was also passed as 1st argument to body');
+
+	
+    //==================================================================================================================================================================================
+    self.diag("Modules with several name parts");
+	
+    Module('Test1.Test2.Test3', {
+    	body : function(module) {
+    		this.foo = 'bar';
+    		module.bar = 'baz';
+    	}
+    });
     
+    self.ok(Test1 && Test1.meta.constructor == Joose.Namespace.Keeper, "Module 'Test1' was created");
+    self.ok(Test1.Test2 && Test1.Test2.meta.constructor == Joose.Namespace.Keeper, "Module 'Test1.Test2' was created");
+    self.ok(Test1.Test2.Test3 && Test1.Test2.Test3.meta.constructor == Joose.Namespace.Keeper, "Module 'Test1.Test2.Test3' was created");
+    
+    self.ok(Test1.Test2.Test3.foo == 'bar' && Test1.Test2.Test3.bar == 'baz', 'Test1.Test2.Test3 was correctly setuped');
 
     //==================================================================================================================================================================================
     self.diag("Exceptions");
@@ -187,6 +203,44 @@ t.testModuleClass = function() {
     
     self.ok(new Testy.Nested.Testing().three() == 3, "Class 'Testy.Nested.Testing' was constructed correctly");
     self.ok(new Testy.Nested.Copy.Testing().four() == 4, "Class 'Testy.Nested.Copy.Testing' was constructed correctly");
+    
+    
+    //==================================================================================================================================================================================
+    self.diag("Advanced nesting modules");
+    
+    Module("Level1.Level2", {
+        body : function () {
+            
+            self.ok(Level1.Level2 && Level1.Level2.meta.constructor == Joose.Namespace.Keeper, "Level1.Level2 spot filled correctly");
+            
+            Module("Level3_1", {
+                body : function () {
+                    Class("Level4", {
+                        methods : {
+                            three : function () { return 3 }
+                        }
+                    });
+                    self.ok(Level1.Level2.Level3_1.Level4 && Level1.Level2.Level3_1.Level4.meta.constructor == Joose.MetaClass, "Level1.Level2.Level3_1.Level4 spot filled correctly");
+                    self.ok(new Level1.Level2.Level3_1.Level4().three() == 3, "Level1.Level2.Level3_1.Level4 class constructed correctly");
+                }
+            });
+            self.ok(Level1.Level2.Level3_1 && Level1.Level2.Level3_1.meta.constructor == Joose.Namespace.Keeper, "Level1.Level2.Level3_1 spot filled correctly");
+            
+            Module("Level3_2", {
+                body : function () {
+                    Class("Level4", {
+                        methods : {
+                            four : function () { return 4 }
+                        }
+                    });
+                    self.ok(Level1.Level2.Level3_2.Level4 && Level1.Level2.Level3_2.Level4.meta.constructor == Joose.MetaClass, "Level1.Level2.Level3_2.Level4 spot filled correctly");
+                    self.ok(new Level1.Level2.Level3_2.Level4().four() == 4, "Level1.Level2.Level3_2.Level4 class constructed correctly");
+                }
+            });
+            self.ok(Level1.Level2.Level3_2 && Level1.Level2.Level3_2.meta.constructor == Joose.Namespace.Keeper, "Level1.Level2.Level3_2 spot filled correctly");
+        }
+    })
+    
 }
 
 return t;
