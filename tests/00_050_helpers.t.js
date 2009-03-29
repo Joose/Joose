@@ -4,13 +4,22 @@ testobj.plan(1)
 
 testobj.testSanity = function() {
     //==================================================================================================================================================================================
-    this.diag("Namespace");
+    this.diag("Modules");
     
     this.ok(Joose.Namespace.Manager, "Joose.Namespace.Manager is here");
     this.ok(Joose.Namespace.Keeper, "Joose.Namespace.Keeper is here");
     
     this.ok(Joose.MetaClass.meta.hasAttribute('ns'), "Joose.Kernel.Class's meta has 'ns' attribute");
     this.ok(Joose.MetaRole.meta.hasAttribute('ns'), "Joose.Kernel.Role's meta has 'ns' attribute");
+    
+    
+    Module('TestModule', {});
+    
+    this.ok(TestModule, 'Something in the module spot appears');
+    this.ok(TestModule.meta instanceof Joose.Namespace.Keeper, '.. and its a Joose.Namespace.Keeper');
+    
+    //==================================================================================================================================================================================
+    this.diag("Class");
     
     Class('TestClass', {
         have : {
@@ -52,6 +61,45 @@ testobj.testSanity = function() {
     
     this.ok(TestClass.my.res == 'class', "Symbiont's attribute was correctly installed");
     this.is(TestClass.my.result(), 'TestClass:class', "Symbiont's method was correctly installed");
+    
+
+    //==================================================================================================================================================================================
+    this.diag("Class extension via helper");
+    
+    Class('TestClass', {
+        have : {
+            res1 : 'instance1'
+        },
+        
+        methods : {
+            result1 : function() { return 'TestClass:instance1' }
+        },
+        
+        
+        my : {
+            have : {
+                res1 : 'class1'
+            },
+            
+            methods : {
+                result1 : function() { return 'TestClass:class1' }
+            }
+        }
+        
+    });
+    
+    
+    this.ok(TestClass.meta.hasAttribute('res1'), "TestClass has 'res1' attribute via extension with helper"); 
+    this.ok(TestClass.meta.hasMethod('result1'), "TestClass has 'result1' method via extension with helper");
+
+    this.ok(TestClass.my.meta.hasAttribute('res1'), "TestClass.my has 'res1' attribute via extension with helper"); 
+    this.ok(TestClass.my.meta.hasMethod('result1'), "TestClass.my has 'result1' method via extension with helper");
+    
+    this.ok(testClass.res1 == 'instance1', "re1 attribute was correctly installed");
+    this.is(testClass.result1(), 'TestClass:instance1', "result1 method was correctly installed");
+    
+    this.ok(TestClass.my.res1 == 'class1', "Symbiont's attribute was correctly installed also");
+    this.is(TestClass.my.result1(), 'TestClass:class1', "Symbiont's method was correctly installed also");
     
     
     //==================================================================================================================================================================================
