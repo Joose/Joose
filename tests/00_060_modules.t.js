@@ -1,6 +1,6 @@
 (function () {
 var t = new Test.TAP.Class();
-t.plan(1)
+t.plan(53)
 
 var thistop = Test.prototype.top()
 
@@ -61,21 +61,21 @@ t.testModuleClass = function() {
         Module("Testy.meta.bla", function () {
             
         })
-    }, "Module name [Testy.meta.bla] may not include a part called 'meta' or 'my' or empty part.", "meta is not allowed in a module name")
+    }, Joose.is_IE ? "" : "Module name [Testy.meta.bla] may not include a part called 'meta' or 'my' or empty part.", "meta is not allowed in a module name")
     
 
     self.throws_ok(function () {
         Module("Testy..bla", function () {
             
         })
-    }, "Module name [Testy..bla] may not include a part called 'meta' or 'my' or empty part.", "meta is not allowed in a module name")
+    }, Joose.is_IE ? "" : "Module name [Testy..bla] may not include a part called 'meta' or 'my' or empty part.", "meta is not allowed in a module name")
     
 
     self.throws_ok(function () {
         Module("Testy.my.bla", function () {
             
         })
-    }, "Module name [Testy.my.bla] may not include a part called 'meta' or 'my' or empty part.", "meta is not allowed in a module name")
+    }, Joose.is_IE ? "" : "Module name [Testy.my.bla] may not include a part called 'meta' or 'my' or empty part.", "meta is not allowed in a module name")
     
     
     //==================================================================================================================================================================================

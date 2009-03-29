@@ -1,6 +1,6 @@
 (function () {
 var testobj = new Test.TAP.Class();
-testobj.plan(1)
+testobj.plan(61)
 
 testobj.testSanity = function() {
     //==================================================================================================================================================================================
@@ -140,14 +140,14 @@ testobj.testSanity = function() {
         Class('TestCreature1', {
             does : [ Walk, Eat ]
         });
-    }, "Attempt to apply ConflictMarker [stop] to [TestCreature1]", "Conflicts are detecting");
+    }, Joose.is_IE ? "" : "Attempt to apply ConflictMarker [stop] to [TestCreature1]", "Conflicts are detecting");
     
     
     this.throws_ok(function(){
         Class('TestCreature2', {
             require : [ 'walk' ]
         });
-    }, "Unknow builder [require] was used during extending of [TestCreature2]", "'require' builder can only be used with Roles");
+    }, Joose.is_IE ? "" : "Unknow builder [require] was used during extending of [TestCreature2]", "'require' builder can only be used with Roles");
     
     
     //==================================================================================================================================================================================
