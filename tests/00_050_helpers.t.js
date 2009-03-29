@@ -6,8 +6,8 @@ testobj.testSanity = function() {
     //==================================================================================================================================================================================
     this.diag("Namespace");
     
-    this.ok(Joose.Kernel.Namespace.Manager, "Joose.Kernel.Namespace.Manager is here");
-    this.ok(Joose.Kernel.Namespace.Keeper, "Joose.Kernel.Namespace.Keeper is here");
+    this.ok(Joose.Namespace.Manager, "Joose.Namespace.Manager is here");
+    this.ok(Joose.Namespace.Keeper, "Joose.Namespace.Keeper is here");
     
     this.ok(Joose.Kernel.Class.meta.hasAttribute('ns'), "Joose.Kernel.Class's meta has 'ns' attribute");
     this.ok(Joose.Kernel.Role.meta.hasAttribute('ns'), "Joose.Kernel.Role's meta has 'ns' attribute");

@@ -41,10 +41,13 @@ JooseComponents = [
             "Joose.Kernel.My",
             
             "Joose.Managed.PropertySet.Namespace",
-            "Joose.Kernel.Namespace.Able",
+            "Joose.Namespace.Able",
             
-            "Joose.Kernel.Namespace.Keeper",
-            "Joose.Kernel.Namespace.Manager",
+            "Joose.MetaClass",
+            "Joose.MetaRole",
+            
+            "Joose.Namespace.Keeper",
+            "Joose.Namespace.Manager",
             
             "Joose.Kernel.Helper"
             
@@ -58,7 +61,7 @@ JooseComponents = [
 //            "Joose.Kernel.Handlers",
 //            "Joose.Kernel.Roles",
 //            "Joose.Kernel.ProtoModule",
-//            "Joose.Kernel.NamespaceKeeper",
+//            "Joose.NamespaceKeeper",
 //            
 //            "Joose.Kernel.MetaClass",
 //            "Joose.Kernel.ProtoRole",
