@@ -137,17 +137,17 @@ testobj.testSanity = function() {
     this.diag("Exceptions");
     
     this.throws_ok(function(){
-        Class('Creature', {
+        Class('TestCreature1', {
             does : [ Walk, Eat ]
         });
-    }, "Attempt to apply ConflictMarker [stop] to [Creature]", "Conflicts are detecting");
+    }, "Attempt to apply ConflictMarker [stop] to [TestCreature1]", "Conflicts are detecting");
     
     
     this.throws_ok(function(){
-        Class('Creature', {
+        Class('TestCreature2', {
             require : [ 'walk' ]
         });
-    }, "Unknow builder [require] was used during extending of [Creature]", "'require' builder can only be used with Roles");
+    }, "Unknow builder [require] was used during extending of [TestCreature2]", "'require' builder can only be used with Roles");
     
     
     //==================================================================================================================================================================================
