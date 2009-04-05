@@ -1,6 +1,6 @@
 (function () {
 var testobj = new Test.TAP.Class();
-testobj.plan(16)
+testobj.plan(26)
 
 testobj.testSanity = function() {
     //==================================================================================================================================================================================
@@ -47,6 +47,7 @@ testobj.testSanity = function() {
     creature.detach();
     
     this.ok(creature.meta.constructor == Joose.DetachedClass, "Instance was detached");
+    this.ok(creature.constructor != Creature, "Instance was detached, indeed");
     this.ok(creature.own_attr == true, "Original attributes havn't changed");
     this.ok(typeof creature.walking == 'undefined', "Attributes were not applied");
     
@@ -103,6 +104,24 @@ testobj.testSanity = function() {
     
     creature.eat({});
     this.ok(creature.eating, "Creature now eats usual food again");
+
+    
+    //==================================================================================================================================================================================
+    this.diag("Attaching instance back");
+    
+    creature.attach();
+    
+    this.ok(creature.meta.constructor == Joose.MetaClass, "Instance was attached back");
+    this.ok(creature.constructor == Creature, "Instance was attached back, indeed");
+    
+    this.ok(creature.own_attr == true, "Original attributes still havn't changed");
+    this.ok(!creature.meta.hasAttribute('walking'), "creature hasnt 'walking' attribute");
+    this.ok(!creature.meta.hasAttribute('eating') , "creature hasnt 'eating' attribute");
+    
+    this.ok(!creature.meta.hasMethod('walk') && !creature.walk, "creature hasnt 'walk' method");
+    this.ok(!creature.meta.hasMethod('eat') && !creature.eat, "creature hasnt 'eat' method");
+    this.ok(!creature.meta.hasMethod('stopWalk') && !creature.stopWalk, "creature hasnt 'stopWalk' method");
+    this.ok(!creature.meta.hasMethod('stopEat') && !creature.stopEat, "creature hasnt 'stopEat' method");
     
 };
 
