@@ -1,5 +1,4 @@
-(function (Class, Module, Role, Type, Prototype) {
-return (function () {
+(function () {
 var t = new Test.TAP.Class();
 t.plan(2)
 
@@ -11,7 +10,7 @@ t.testModuleClass = function() {
     //==================================================================================================================================================================================
     self.diag("Versioning");
     
-    self.skip(typeof Joose.Kernel.MetaClass.Depended != 'function', "Depended Role not included", 2, function(){
+    self.skip(typeof Joose.Namespace.Depended != 'function', "Depended Role not included", 2, function(){
     
         Module("StressTest.Versioning", {
             use : { Module : 'StressTest.Test035', version : 0.05 },
@@ -48,4 +47,3 @@ t.testModuleClass = function() {
 
 return t;
 })()
-}).call(window, JooseClass, JooseModule, JooseRole, JooseType, JoosePrototype)
