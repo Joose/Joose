@@ -145,9 +145,9 @@ testobj.testSanity = function() {
     
     this.throws_ok(function(){
         Class('TestCreature2', {
-            require : [ 'walk' ]
+            requires : [ 'walk' ]
         });
-    }, Joose.is_IE ? "" : "Unknow builder [require] was used during extending of [TestCreature2]", "'require' builder can only be used with Roles");
+    }, Joose.is_IE ? "" : "Unknow builder [requires] was used during extending of [TestCreature2]", "'requires' builder can only be used with Roles");
     
     
     //==================================================================================================================================================================================
@@ -191,7 +191,7 @@ testobj.testSanity = function() {
     this.diag("Cannibal creature");
     
     Role('Cannibalism', {
-        require : [ 'eat' ],
+        requires : [ 'eat' ],
         
         override : {
             eat : function (food) { 
@@ -244,7 +244,7 @@ testobj.testSanity = function() {
     this.diag("Human");
     
     Role('Drive', {
-        require : [ 'walk' ],
+        requires : [ 'walk' ],
         
         have : {
             driving : false
@@ -264,7 +264,7 @@ testobj.testSanity = function() {
     
     
     Role('Vegetarian', {
-        require : [ 'eat' ],
+        requires : [ 'eat' ],
         
         override : {
             eat : function (food) { 

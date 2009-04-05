@@ -53,7 +53,7 @@ t.testModuleClass = function() {
 
     self.throws_ok(
         function () { new TestModule() }, 
-        "Modules may not be instantiated.",
+        "Module [TestModule] may not be instantiated.",
         "Not filled Modules can't be instantiated"
     );
     

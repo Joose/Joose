@@ -52,9 +52,9 @@ testobj.testSanity = function() {
     
     this.throws_ok(function(){
         var Creature = new Joose.Kernel.Class('Creature', {
-            require : [ 'walk' ]
+            requires : [ 'walk' ]
         }).c;
-    }, "Unknow builder [require] was used during extending of [Creature]", "'require' builder can only be used with Roles");
+    }, "Unknow builder [requires] was used during extending of [Creature]", "'requires' builder can only be used with Roles");
     
     
     //==================================================================================================================================================================================
@@ -98,7 +98,7 @@ testobj.testSanity = function() {
     this.diag("Cannibal creature");
     
     var Cannibalism = new Joose.Kernel.Role('Cannibalism', {
-        require : [ 'eat' ],
+        requires : [ 'eat' ],
         
         override : {
             eat : function (food) { 
@@ -151,7 +151,7 @@ testobj.testSanity = function() {
     this.diag("Human");
     
     var Drive = new Joose.Kernel.Role('Drive', {
-        require : [ 'walk' ],
+        requires : [ 'walk' ],
         
         have : {
             driving : false
@@ -171,7 +171,7 @@ testobj.testSanity = function() {
     
     
     var Vegetarian = new Joose.Kernel.Role('Vegetarian', {
-        require : [ 'eat' ],
+        requires : [ 'eat' ],
         
         override : {
             eat : function (food) { 

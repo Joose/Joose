@@ -27,7 +27,7 @@ try {
 	
 }
 
-if (declared && [% class_name %].meta.meta.isa(Joose.Class)) {
+if (declared && [% class_name %].meta.constructor == Joose.MetaClass) {
     __global__.doubleDeclarations = true;
     throw "Double declaration of [% class_name %]";
 }
@@ -47,7 +47,7 @@ Class('[% class_name %]', {
 	
 	body : function(){
        [%- FOREACH dep IN class_dependencies %]
-			if (![% dep %].meta.meta.isa(Joose.Class)) { 
+			if ([% dep %].meta.constructor != Joose.MetaClass) { 
 				__global__.unSatisfiedDeps = true;
 				throw "Dependency [% dep %] is not satisfied for class [% class_name %]"; 
 			}

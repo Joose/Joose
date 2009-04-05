@@ -1,5 +1,4 @@
-(function (Class, Module, Role, Type, Prototype) {
-return (function () {
+(function () {
 var t = new Test.TAP.Class();
 t.plan(319)
 
@@ -8,7 +7,7 @@ var thistop = Test.prototype.top()
 t.testModuleClass = function() {
     var self = this;
     
-    self.skip(typeof Joose.Kernel.MetaClass.Depended != 'function', "Depended Role not included", 319, function(){
+    self.skip(typeof Joose.Namespace.Depended != 'function', "Depended Role not included", 319, function(){
 
         Module("StressTest");
         self.ok(StressTest, "Root module created");
@@ -30,20 +29,15 @@ t.testModuleClass = function() {
                 self.ok(!__global__.doubleDeclarations, "Stress testing passed without redeclarations");
                 self.ok(!__global__.unSatisfiedDeps, "Stress testing passed with all dependencies satisfied");
                 
-                self.ok(StressTest.Test001, "StressTest.Test001 module created");
-                self.ok(StressTest.Test001.meta.meta.isa(Joose.Class), "StressTest.Test001 class created");
-                self.ok(StressTest.Test001.meta.can('result'), "StressTest.Test001 has method 'result'");
-                self.ok(new StressTest.Test001().result() == 1, 'StressTest.Test001 can be instantiated');
-                
-                for (var i = 2; i <= 100; i++) {
+                for (var i = 1; i <= 100; i++) {
                     var class_name = new String(i).split('');
                     while (class_name.length < 3) class_name.unshift('0');
                     class_name = 'Test' + class_name.join('');
                     
                     if (typeof StressTest[class_name] == 'function') {
                         self.ok(StressTest[class_name], "StressTest." + class_name + " module created");
-                        self.ok(StressTest[class_name].meta.meta.isa(Joose.Class), "StressTest." + class_name + " class created");
-                        self.ok(StressTest[class_name].meta.can('result'), "StressTest." + class_name + " has method 'result'");
+                        self.ok(StressTest[class_name].meta.constructor == Joose.MetaClass, "StressTest." + class_name + " class created");
+                        self.ok(StressTest[class_name].meta.hasMethod('result'), "StressTest." + class_name + " has method 'result'");
                         self.ok(new (StressTest[class_name])().result() == i, "StressTest." + class_name + " can be instantiated");
                     }
                 }
@@ -55,4 +49,3 @@ t.testModuleClass = function() {
 
 return t;
 })()
-}).call(window, JooseClass, JooseModule, JooseRole, JooseType, JoosePrototype)

@@ -45,27 +45,18 @@ JooseComponents = [
             
             "Joose.Managed.PropertySet.Namespace",
             "Joose.Namespace.Able",
-            "Joose.Namespace.Keeper",
             
+            "Joose.Namespace.Keeper",
             "Joose.Namespace.Manager",
             
+            "Joose.Helper",
             
-            "Joose.Helper"
+            "Joose.SimpleRequest",
+            
+            "Joose.Namespace.Depended",
+            "Joose.Namespace.Depended.Transport.AjaxAsync"
             
             
-//            "Joose.Kernel.Inheritable",
-//            "Joose.Kernel.ProtoMethod",
-//            "Joose.Kernel.ProtoAttribute",
-//            "Joose.Kernel.Inheritance",
-//            "Joose.Kernel.ProtoClassMethod",
-//            "Joose.Kernel.ClassMethods",
-//            "Joose.Kernel.Handlers",
-//            "Joose.Kernel.Roles",
-//            "Joose.Kernel.ProtoModule",
-//            "Joose.NamespaceKeeper",
-//            
-//            "Joose.Kernel.MetaClass",
-//            "Joose.Kernel.ProtoRole",
 //            "Joose.Kernel.MetaClass.Depended",
 ////            "Joose.Kernel.MetaClass.Depended.Grouped",
 ////            "Joose.Kernel.MetaClass.Depended.NonCycled",
