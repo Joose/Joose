@@ -40,7 +40,7 @@ JooseComponents = [
             
             "Joose.Kernel.My",
             
-            "Joose.Object",
+//            "Joose.Object",
             "Joose.MetaClass",
             "Joose.DetachedClass",
             "Joose.MetaRole",

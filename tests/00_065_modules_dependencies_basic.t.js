@@ -1,6 +1,6 @@
 (function () {
 var t = new Test.TAP.Class();
-t.plan(12)
+t.plan(15)
 
 var thistop = Test.prototype.top()
 
@@ -35,43 +35,43 @@ t.testModuleClass = function() {
 //        });
         
         
-//        //==================================================================================================================================================================================
-//        self.diag("Loading from external url");
-//        Module("GMapLoader", {
-//            use : {
-//                //google loader
-//                url : 'http://www.google.com/jsapi?key=ABQIAAAAa2oCDn-vJ2FYnkpuhajy_BQ8NCDMUx9yLS_m39ZE2Zv5G19HFRS1GJOvVuFnjwGNLUSMM6CiGDlA7g'
-//            },
-//            
-//            body : function(){
-//                self.ok(google && google.load, "Google loader was loaded correctly")
-//            }
-//        });
+        //==================================================================================================================================================================================
+        self.diag("Loading from external url");
+        Module("GMapLoader", {
+            use : {
+                //google loader
+                url : 'http://www.google.com/jsapi?key=ABQIAAAAa2oCDn-vJ2FYnkpuhajy_BQ8NCDMUx9yLS_m39ZE2Zv5G19HFRS1GJOvVuFnjwGNLUSMM6CiGDlA7g'
+            },
+            
+            body : function(){
+                self.ok(google && google.load, "Google loader was loaded correctly")
+            }
+        });
             
         
         //==================================================================================================================================================================================
-//        self.diag("Controllbale ready-ness of Module");
-//        
-//        var bodyCalled = false;
-//        
-//        Module("GMapEngine", {
-//            
-//            use : 'GMapLoader',
-//            
-//            BEGIN : function(ready){
-//                self.ok(!bodyCalled, 'BEGIN called before body');
-//                
-//                google.load('maps','2',{
-//                    language : 'ru',
-//                    callback : ready
-//                });
-//            },
-//            
-//            body : function() {
-//                bodyCalled = true;
-//                self.ok(google.maps && google.maps.Map2, "Google Maps engine was loaded correctly")
-//            }
-//        });
+        self.diag("Controllbale ready-ness of Module");
+        
+        var bodyCalled = false;
+        
+        Module("GMapEngine", {
+            
+            use : 'GMapLoader',
+            
+            BEGIN : function(ready){
+                self.ok(!bodyCalled, 'BEGIN called before body');
+                
+                google.load('maps','2',{
+                    language : 'ru',
+                    callback : ready
+                });
+            },
+            
+            body : function() {
+                bodyCalled = true;
+                self.ok(google.maps && google.maps.Map2, "Google Maps engine was loaded correctly")
+            }
+        });
         
         //==================================================================================================================================================================================
         self.diag("List of searchable paths (@INC)");
