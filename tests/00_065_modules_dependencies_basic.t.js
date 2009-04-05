@@ -1,6 +1,6 @@
 (function () {
 var t = new Test.TAP.Class();
-t.plan(15)
+t.plan(17)
 
 var thistop = Test.prototype.top()
 
@@ -28,11 +28,11 @@ t.testModuleClass = function() {
         });
         
         //==================================================================================================================================================================================
-//        self.diag("Dynamic (in-code) dependency loading");
-//        use('BasicTest3', function(){
-//            self.ok(BasicTest3.meta instanceof Joose.MetaClass, 'Dynamic (in code context) basic dependencies loading passed');
-//            self.ok(new BasicTest3().result() == 3, 'Dynamic (in code context) basic dependencies loading passed #2');
-//        });
+        self.diag("Dynamic (in-code) dependency loading");
+        use('BasicTest3', function(){
+            self.ok(BasicTest3.meta instanceof Joose.MetaClass, 'Dynamic (in code context) basic dependencies loading passed');
+            self.ok(new BasicTest3().result() == 3, 'Dynamic (in code context) basic dependencies loading passed #2');
+        });
         
         
         //==================================================================================================================================================================================
