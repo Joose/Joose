@@ -40,7 +40,9 @@ JooseComponents = [
             
             "Joose.Kernel.My",
             
+            "Joose.Object",
             "Joose.MetaClass",
+            "Joose.DetachedClass",
             "Joose.MetaRole",
             
             "Joose.Managed.PropertySet.Namespace",
@@ -52,16 +54,14 @@ JooseComponents = [
             "Joose.Helper",
             
             "Joose.SimpleRequest",
-            
             "Joose.Namespace.Depended",
-            "Joose.Namespace.Depended.Transport.AjaxAsync",
+            "Joose.Namespace.Depended.Transport.ScriptTag",
+            "Joose.Namespace.Depended.Transport.AjaxAsync"
             
-            "Digest.MD5",
-            "Joose.Namespace.Depended.Grouped"
-            
+//            "Digest.MD5",
+//            "Joose.Namespace.Depended.Grouped",
 //            "Joose.Namespace.Depended.NonCycled",
-//            "Joose.Namespace.Depended.Transport.ScriptTag",
-//            "Joose.Namespace.Depended.Transport.AjaxAsync"
+            
             
             
 //            "Joose.Attribute",
