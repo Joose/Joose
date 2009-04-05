@@ -1,6 +1,6 @@
 (function () {
 var t = new Test.TAP.Class();
-t.plan(8)
+t.plan(12)
 
 var thistop = Test.prototype.top()
 
@@ -87,28 +87,28 @@ t.testModuleClass = function() {
         
         
         //==================================================================================================================================================================================
-//        self.diag("Non-Joose dependency");
-//        
-//        __global__.nonJooseDoubleDeclared = false;
-//        
-//        
-//        Module("Testy3", {
-//            use : 'ext://BasicTest6',
-//            
-//            body : function(){
-//                self.ok(!__global__.nonJooseDoubleDeclared, "Non-Joose dependencies are not loading twicely");
-//                self.ok(BasicTest6, "Non-Joose dependency was succesfully loaded");
-//                self.ok(new BasicTest6().result() == 6, "And it work as expected");
-//                
-//                Module("Testy4", {
-//                    use : 'ext://BasicTest6',
-//                    
-//                    body : function(){
-//                        self.ok(!__global__.nonJooseDoubleDeclared, "Non-Joose dependencies are not loading twicely #2");
-//                    }
-//                });
-//            }
-//        });
+        self.diag("Non-Joose dependency");
+        
+        __global__.nonJooseDoubleDeclared = false;
+        
+        
+        Module("Testy3", {
+            use : 'ext://BasicTest6',
+            
+            body : function(){
+                self.ok(!__global__.nonJooseDoubleDeclared, "Non-Joose dependencies are not loading twicely");
+                self.ok(BasicTest6, "Non-Joose dependency was succesfully loaded");
+                self.ok(new BasicTest6().result() == 6, "And it work as expected");
+                
+                Module("Testy4", {
+                    use : 'ext://BasicTest6',
+                    
+                    body : function(){
+                        self.ok(!__global__.nonJooseDoubleDeclared, "Non-Joose dependencies are not loading twicely #2");
+                    }
+                });
+            }
+        });
         
     });
 }

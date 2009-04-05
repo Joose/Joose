@@ -54,15 +54,16 @@ JooseComponents = [
             "Joose.SimpleRequest",
             
             "Joose.Namespace.Depended",
-            "Joose.Namespace.Depended.Transport.AjaxAsync"
+            "Joose.Namespace.Depended.Transport.AjaxAsync",
+            
+            "Digest.MD5",
+            "Joose.Namespace.Depended.Grouped"
+            
+//            "Joose.Namespace.Depended.NonCycled",
+//            "Joose.Namespace.Depended.Transport.ScriptTag",
+//            "Joose.Namespace.Depended.Transport.AjaxAsync"
             
             
-//            "Joose.Kernel.MetaClass.Depended",
-////            "Joose.Kernel.MetaClass.Depended.Grouped",
-////            "Joose.Kernel.MetaClass.Depended.NonCycled",
-//            "Joose.Kernel.MetaClass.Depended.Transport.ScriptTag",
-//            "Joose.Kernel.MetaClass.Depended.Transport.AjaxAsync",
-//            
 //            "Joose.Attribute",
 //            "Joose.Method",
 //            "Joose.ClassMethod",
@@ -82,6 +83,6 @@ JooseComponents = [
 //            "Joose.Prototype",
 //            "Joose.TypedMethod",
 //            "Joose.MultiMethod",
-//            "Digest.MD5"
+
 
 ]
