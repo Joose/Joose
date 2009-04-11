@@ -18,11 +18,6 @@ JooseComponents = [
             "Joose.Managed.PropertySet",
             "Joose.Managed.PropertySet.Mutable",
             
-            "Joose.Managed.RoleStem.Attributes",
-            "Joose.Managed.RoleStem.Methods",
-            "Joose.Managed.RoleStem.Requirements",
-            "Joose.Managed.RoleStem.MethodModifiers",
-            
             "Joose.Managed.PropertySet.Containable",
             "Joose.Managed.ClassStem.Attributes",
             "Joose.Managed.ClassStem.Methods",
