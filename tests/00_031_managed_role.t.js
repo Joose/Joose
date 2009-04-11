@@ -11,7 +11,7 @@ testobj.testSanity = function() {
     //==================================================================================================================================================================================
     this.diag("Sanity");
     
-    this.ok(Joose.Managed.Role.meta.stem.attributesMC == Joose.Managed.ClassStem.Attributes, 'Joose.Managed.Role itslef has a class stem');
+    this.ok(Joose.Managed.Role.meta.stem.attributesMC == Joose.Managed.StemElement.Attributes, 'Joose.Managed.Role itslef has a class stem');
     
     var A = new Joose.Managed.Role('A', { 
         have : {

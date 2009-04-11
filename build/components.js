@@ -17,12 +17,12 @@ JooseComponents = [
             
             "Joose.Managed.PropertySet",
             "Joose.Managed.PropertySet.Mutable",
-            
             "Joose.Managed.PropertySet.Containable",
-            "Joose.Managed.ClassStem.Attributes",
-            "Joose.Managed.ClassStem.Methods",
-            "Joose.Managed.ClassStem.Requirements",
-            "Joose.Managed.ClassStem.MethodModifiers",
+            
+            "Joose.Managed.StemElement.Attributes",
+            "Joose.Managed.StemElement.Methods",
+            "Joose.Managed.StemElement.Requirements",
+            "Joose.Managed.StemElement.MethodModifiers",
             
             "Joose.Managed.PropertySet.Composition",
             "Joose.Managed.Stem",
