@@ -1,6 +1,6 @@
 (function () {
 var testobj = new Test.TAP.Class();
-testobj.plan(50)
+testobj.plan(49)
 
 testobj.testSanity = function() {
     //==================================================================================================================================================================================
@@ -23,8 +23,7 @@ testobj.testSanity = function() {
         }
     }).c;
     
-    this.ok(A.meta.stem.attributesMC == Joose.Managed.RoleStem.Attributes, 'Role A has a role stem');
-    
+
     this.throws_ok(function(){
         new A()
     }, "Roles cant be instantiated", "Roles cant be instantiated");
