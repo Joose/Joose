@@ -7,7 +7,7 @@ var thistop = Test.prototype.top()
 t.testModuleClass = function() {
     var self = this;
     
-    self.skip(typeof Joose.Namespace.Depended != 'function', "Depended Role not included", 319, function(){
+    self.skip(typeof JooseX.Namespace.Depended != 'function', "Depended Role not included", 319, function(){
 
         Module("StressTest");
         self.ok(StressTest, "Root module created");

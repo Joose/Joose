@@ -117,7 +117,7 @@ testobj.testSanity = function() {
     //==================================================================================================================================================================================
     this.diag("Trigger testing");
 	
-    this.ok(Joose.Attribute.Trigger, "Joose.Attribute.Trigger is here");
+    this.ok(JooseX.Attribute.Trigger, "JooseX.Attribute.Trigger is here");
     
     TestClass.meta.extend({ 
         has : {
@@ -142,6 +142,8 @@ testobj.testSanity = function() {
 
     //==================================================================================================================================================================================
     this.diag("Lazy testing");
+    
+    this.ok(JooseX.Attribute.Lazy, "JooseX.Attribute.Lazy is here");
     
     TestClass.meta.extend({ 
         has : {

@@ -7,13 +7,13 @@ var thistop = Test.prototype.top()
 t.testModuleClass = function() {
     var self = this;
     
-    self.skip(typeof Joose.Namespace.Depended != 'function', "Depended Role not included", 15, function(){
+    self.skip(typeof JooseX.Namespace.Depended != 'function', "Depended Role not included", 15, function(){
 
         //==================================================================================================================================================================================
         self.diag("Basic testing of dependencies loading");
         
-        self.ok(Joose.Namespace.Depended, 'Joose.Namespace.Depended is here');
-        self.ok(Joose.Namespace.Depended.Transport.AjaxAsync, 'Joose.Namespace.Depended.Transport.AjaxAsync is here');
+        self.ok(JooseX.Namespace.Depended, 'JooseX.Namespace.Depended is here');
+        self.ok(JooseX.Namespace.Depended.Transport.AjaxAsync, 'JooseX.Namespace.Depended.Transport.AjaxAsync is here');
         
         
         Module("Basic", {

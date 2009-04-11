@@ -10,7 +10,7 @@ t.testModuleClass = function() {
     //==================================================================================================================================================================================
     self.diag("Versioning");
     
-    self.skip(typeof Joose.Namespace.Depended != 'function', "Depended Role not included", 2, function(){
+    self.skip(typeof JooseX.Namespace.Depended != 'function', "Depended Role not included", 2, function(){
     
         Module("StressTest.Versioning", {
             use : { Module : 'StressTest.Test035', version : 0.05 },
