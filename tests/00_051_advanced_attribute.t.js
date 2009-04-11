@@ -1,12 +1,12 @@
 (function () {
 var testobj = new Test.TAP.Class();
-testobj.plan(1)
+testobj.plan(26)
 
 testobj.testSanity = function() {
     //==================================================================================================================================================================================
     this.diag("Advanced attributes");
     
-    this.ok(Joose.Attribute, "Joose.Attribute is here");
+    this.ok(Joose.Kernel.Attribute, "Joose.Kernel.Attribute is here");
     
     
     //==================================================================================================================================================================================
@@ -26,7 +26,7 @@ testobj.testSanity = function() {
     
     var advAttr = TestClass.meta.getAttribute('res');
     
-    this.ok(advAttr instanceof Joose.Attribute, "'res' attribute is a Joose.Attribute instance");
+    this.ok(advAttr instanceof Joose.Kernel.Attribute, "'res' attribute is a Joose.Kernel.Attribute instance");
     
     this.ok(advAttr.value == 'advanced' && TestClass.prototype.res == 'advanced', "Attribute has a correct initial value");
     this.ok(advAttr.role.meta.hasMethod('getRes'), "Attribute's role has getter");
@@ -75,7 +75,6 @@ testobj.testSanity = function() {
     //==================================================================================================================================================================================
     this.diag("Attributes initialization");
     
-    
     TestClass.meta.extend({ 
         has : {
         	simple : { init : 'simple' },
@@ -96,7 +95,12 @@ testobj.testSanity = function() {
 	this.ok(testClass1.simple == 'foo', "'simple' attribute initialized");
     this.ok(testClass1.required == 'bar', "'required' attribute initialized");
     this.ok(typeof testClass1.func == 'object', "'func' attribute initialized");
-     
+    
+    
+    //==================================================================================================================================================================================
+    this.diag("Exception on 'required'");
+    
+    
     this.throws_ok(function(){
 		var testClass2 = new TestClass();
     }, "Required attribute [required] is missed during initialization of a TestClass", "required attribute should be specified");
@@ -108,7 +112,59 @@ testobj.testSanity = function() {
 	
 	this.ok(typeof testClass2.func == 'object', "'func' attribute initialized #2");
 	this.ok(testClass2.func != testClass1.func, "'init' creates different instances for each call");
-        
+	
+	
+    //==================================================================================================================================================================================
+    this.diag("Trigger testing");
+	
+    this.ok(Joose.Attribute.Trigger, "Joose.Attribute.Trigger is here");
+    
+    TestClass.meta.extend({ 
+        has : {
+        	trigger : {
+        		init : 'foo',
+        		
+        		trigger : function (value) {
+        			this.setRes('triggered'); 
+        		} 
+    		}
+        }
+    });
+    
+    var testClass3 = new TestClass({
+    	required : null,
+		trigger : 'bar'
+	});
+	
+    this.ok(testClass3.trigger == 'bar', "Value of 'trigger' attribute is correct");
+    this.ok(testClass3.res == 'triggered', ".. and the trigger function was executed");
+    
+
+    //==================================================================================================================================================================================
+    this.diag("Lazy testing");
+    
+    TestClass.meta.extend({ 
+        has : {
+        	lazy1 : {
+        		lazy : function () { return 'lazy1-value' } 
+    		},
+    		
+    		lazy2 : {
+    			init : function () { return 'lazy2-value' },
+    			lazy : true
+    		}
+        }
+    });
+    
+    var testClass4 = new TestClass({
+    	required : null
+	});
+	
+    this.ok(testClass4.lazy1 == undefined, "Value of 'lazy1' attribute is not initialized yet");
+    this.ok(testClass4.lazy2 == undefined, "Value of 'lazy2' attribute is not initialized yet");
+    
+    this.ok(testClass4.getLazy1() == 'lazy1-value' && testClass4.lazy1 == 'lazy1-value', "Value of 'lazy1' was setuped during 1st getter call");
+    this.ok(testClass4.getLazy2() == 'lazy2-value' && testClass4.lazy2 == 'lazy2-value', "Value of 'lazy2' was setuped during 1st getter call");
 };
 
 return testobj;
