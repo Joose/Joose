@@ -59,6 +59,6 @@ JooseComponents = [
     "JooseX.Namespace.Depended.Transport.AjaxAsync"
             
     ,"Digest.MD5",
-    "JooseX.Namespace.Depended.Grouped",
-    "JooseX.Namespace.Depended.NonCycled"
+    "JooseX.Namespace.Depended.Grouped"
+//    "JooseX.Namespace.Depended.NonCycled"
 ]
