@@ -36,7 +36,7 @@ JooseComponents = [
     "Joose.Kernel.My",
     
     "Joose.Object",
-    "Joose.Kernel.Attribute",
+    "Joose.Managed.Attribute",
     
     "Joose.MetaClass",
     "Joose.DetachedClass",

@@ -6,7 +6,7 @@ testobj.testSanity = function() {
     //==================================================================================================================================================================================
     this.diag("Advanced attributes");
     
-    this.ok(Joose.Kernel.Attribute, "Joose.Kernel.Attribute is here");
+    this.ok(Joose.Managed.Attribute, "Joose.Managed.Attribute is here");
     
     
     //==================================================================================================================================================================================
@@ -26,7 +26,7 @@ testobj.testSanity = function() {
     
     var advAttr = TestClass.meta.getAttribute('res');
     
-    this.ok(advAttr instanceof Joose.Kernel.Attribute, "'res' attribute is a Joose.Kernel.Attribute instance");
+    this.ok(advAttr instanceof Joose.Managed.Attribute, "'res' attribute is a Joose.Managed.Attribute instance");
     
     this.ok(advAttr.value == 'advanced' && TestClass.prototype.res == 'advanced', "Attribute has a correct initial value");
     this.ok(advAttr.role.meta.hasMethod('getRes'), "Attribute's role has getter");
