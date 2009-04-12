@@ -61,28 +61,4 @@ JooseComponents = [
     ,"Digest.MD5",
     "JooseX.Namespace.Depended.Grouped",
     "JooseX.Namespace.Depended.NonCycled"
-            
-            
-            
-//            "Joose.Attribute",
-//            "Joose.Method",
-//            "Joose.ClassMethod",
-//            "Joose.Class",
-//            "Joose.TypeConstraint",
-//            "Joose.Builder",
-//            "Joose.TypeCoercion",
-//            "Joose.Types",
-//            "Joose.Role",
-//            "Joose.Singleton",
-//            "Joose.SimpleRequest",
-//            "Joose.Gears",
-//            "Joose.Storage",
-//            "Joose.Storage.Unpacker",
-//            "Joose.Decorator",
-//            "Joose.TypeChecker",
-//            "Joose.Prototype",
-//            "Joose.TypedMethod",
-//            "Joose.MultiMethod",
-
-
 ]
