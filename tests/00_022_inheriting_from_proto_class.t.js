@@ -14,19 +14,19 @@ testobj.testSanity = function() {
     this.diag("Inherited from class with Joose.Proto.Class meta");
     
     var TestClass3 = new Joose.Proto.Class('TestClass3', {
-	
         res1 : false,
         
         met1 : function(){},
-        
         
         inc : function (a) { return a + 'T3' }
     }).c;
     
     
     var TestClass4 = new Joose.Proto.Class('TestClass4', {
-	isa : TestClass3,
+		isa : TestClass3,
+        
         res2 : 'res2',
+        
         testMeta : TestClass3,
         
         met2 : function(){},
@@ -34,6 +34,7 @@ testobj.testSanity = function() {
         aug : function (a) { return '|T4augment' + this.INNER(a) },
         
         inc : function (a) { return this.SUPER(a) + '|T4' }
+        
     }).c;
     
     
@@ -63,8 +64,9 @@ testobj.testSanity = function() {
     
     var testClass5 = new TestClass5();
     
+    this.diag(testClass5.inc(''))
     this.is(testClass5.inc(''), 'T3|T4|T5', "'inc' was inherited, overriden and works correctly");
-
+	
     
     //==================================================================================================================================================================================
     this.diag("Inherited from class with Joose.Proto.Class meta & method modifiers");
@@ -98,6 +100,7 @@ testobj.testSanity = function() {
     }).c;
     
     var testClass6 = new TestClass6();
+    
     
     this.is(testClass6.inc(''), 'T3|T4|T6override', "inherited 'inc' works correctly");
     this.is(testClass6.res2, 'res2|T6before|T6override|T6after', "after&before for inherited 'inc' works correctly");
