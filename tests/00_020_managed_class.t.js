@@ -54,14 +54,16 @@ testobj.testSanity = function() {
         isa : Joose.Managed.Class,
         
         builder : {
-            testHandler : function(meta, props){
-                var name = props.name;
-                var value = props.value;
-                
-                meta.addMethod(name, function(){
-                    return value;
-                });
-            }
+        	methods : {
+	            testHandler : function(meta, props){
+	                var name = props.name;
+	                var value = props.value;
+	                
+	                meta.addMethod(name, function(){
+	                    return value;
+	                });
+	            }
+        	}
         }
         
     }).c;

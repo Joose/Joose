@@ -30,21 +30,19 @@ JooseComponents = [
     "Joose.Managed.Class",
     "Joose.Managed.Role",
                 
-    "Joose.Kernel.Class",
-    "Joose.Kernel.Role",
-    
-    "Joose.Kernel.My",
-    
     "Joose.Object",
     "Joose.Managed.Attribute",
     
     "Joose.MetaClass",
-    "Joose.DetachedClass",
     "Joose.MetaRole",
     
-    "Joose.Managed.PropertySet.Namespace",
-    "Joose.Namespace.Able",
+    "Joose.DetachedClass",
     
+    "Joose.Managed.My",
+    
+    "Joose.Managed.PropertySet.Namespace",
+    
+    "Joose.Namespace.Able",
     "Joose.Namespace.Keeper",
     "Joose.Namespace.Manager",
     

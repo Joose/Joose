@@ -6,17 +6,17 @@ testobj.testSanity = function() {
     //==================================================================================================================================================================================
     this.diag("Builder in the Role");
     
-    this.ok(Joose.Kernel.Role, "Joose.Kernel.Role is here");
-    this.ok(Joose.Kernel.Class, "Joose.Kernel.Class is here");
+    this.ok(Joose.MetaRole, "Joose.MetaRole is here");
+    this.ok(Joose.MetaClass, "Joose.MetaClass is here");
     
-    this.ok(Joose.Kernel.Role.meta.hasAttribute('builderRole'), "Joose.Kernel.Role has 'builderRole' attribute");
-    this.ok(Joose.Kernel.Role.meta.hasAttribute('stemRole'), "Joose.Kernel.Role has 'builderRole' attribute");
+    this.ok(Joose.MetaRole.meta.hasAttribute('builderRole'), "Joose.MetaRole has 'builderRole' attribute");
+    this.ok(Joose.MetaRole.meta.hasAttribute('stemRole'), "Joose.MetaRole has 'builderRole' attribute");
     
     
     //==================================================================================================================================================================================
     this.diag("Creation Role with builder");
     
-    var RoleWithBuilder = new Joose.Kernel.Role('RoleWithBuilder', {
+    var RoleWithBuilder = new Joose.MetaRole('RoleWithBuilder', {
         builder : {
         	methods : {
 	            testHandler : function(meta, props){
@@ -42,8 +42,8 @@ testobj.testSanity = function() {
     //==================================================================================================================================================================================
     this.diag("Extending of builder");
     
-    var TestMetaClass = new Joose.Kernel.Class('TestClass1', {
-        isa : Joose.Kernel.Class
+    var TestMetaClass = new Joose.MetaClass('TestClass1', {
+        isa : Joose.MetaClass
     }).c;
     
     TestMetaClass.meta.extend({

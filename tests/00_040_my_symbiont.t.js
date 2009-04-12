@@ -6,13 +6,13 @@ testobj.testSanity = function() {
     //==================================================================================================================================================================================
     this.diag("Symbiont - separate, built-in class, (analog of class-methods + class-attributes + class-roles + ...)");
     
-    this.ok(Joose.Kernel.Class, "Joose.Kernel.Class is here");
-    this.ok(Joose.Kernel.Role, "Joose.Kernel.Role is here");
+    this.ok(Joose.MetaClass, "Joose.MetaClass is here");
+    this.ok(Joose.MetaRole, "Joose.MetaRole is here");
     
-    this.ok(Joose.Kernel.Class.meta.hasAttribute('myClass'), "Joose.Kernel.Class has 'myClass' attribute");
-    this.ok(Joose.Kernel.Role.meta.hasAttribute('myClass'), "Joose.Kernel.Role has 'myClass' attribute");
+    this.ok(Joose.MetaClass.meta.hasAttribute('myClass'), "Joose.MetaClass has 'myClass' attribute");
+    this.ok(Joose.MetaRole.meta.hasAttribute('myClass'), "Joose.MetaRole has 'myClass' attribute");
     
-    var TestClass = new Joose.Kernel.Class('TestClass', {
+    var TestClass = new Joose.MetaClass('TestClass', {
         have : {
             res : 'instance'
         },
@@ -57,7 +57,7 @@ testobj.testSanity = function() {
     //==================================================================================================================================================================================
     this.diag("Role with symbiont creation");
     
-    var Walk = new Joose.Kernel.Role('Walk', { 
+    var Walk = new Joose.MetaRole('Walk', { 
         my : {
             have : {
                 walking : false
