@@ -4,7 +4,7 @@ testobj.plan(38)
 
 testobj.testSanity = function() {
     //==================================================================================================================================================================================
-    this.diag("Role application");
+    this.diag("Basic Role application");
     
     this.ok(Joose.Managed.Role, "Joose.Managed.Role is here");
     this.ok(Joose.Managed.Class, "Joose.Managed.Class is here");

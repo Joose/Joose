@@ -8,6 +8,8 @@ t.testModuleClass = function() {
     var self = this;
     
     self.skip(typeof JooseX.Namespace.Depended != 'function', "Depended Role not included", 319, function(){
+    	
+//    	if (console) console.profile();
 
         Module("StressTest");
         self.ok(StressTest, "Root module created");
@@ -41,6 +43,8 @@ t.testModuleClass = function() {
                         self.ok(new (StressTest[class_name])().result() == i, "StressTest." + class_name + " can be instantiated");
                     }
                 }
+                
+//                if (console) console.profileEnd();
             }
         });
         
