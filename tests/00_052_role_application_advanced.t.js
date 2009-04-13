@@ -104,7 +104,7 @@ testobj.testSanity = function() {
     
     var sub2 = new SubClass2();
     sub2.process();
-    this.diag(sub2.res);
+    
     this.ok(sub2.res == 'sup1:res|afterSup1|afterFromRole|afterSub1|afterFromRole|afterSub2|afterFromRole', "'PostProcess' role was applied on all inheritance levels");
     
 };

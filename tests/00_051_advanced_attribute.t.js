@@ -43,6 +43,28 @@ testobj.testSanity = function() {
     testClass.setRes('setter');
     this.ok(testClass.res == 'setter' && testClass.getRes() == 'setter', "Setter & Getter works");
     
+
+    //==================================================================================================================================================================================
+    this.diag("Role with advanced attribute");
+    
+    Role('TestRole', {
+        has : {
+            res : {
+            	is : 'rw',
+            	init : 'advanced'
+            }
+        }
+    });
+    
+    this.ok(TestRole.meta instanceof Joose.MetaRole, "TestRole successfully created");
+    this.ok(TestRole.meta.hasAttribute('res'), "'res' attribute was added");
+    
+    var advAttr = TestRole.meta.getAttribute('res');
+    
+    this.ok(advAttr instanceof Joose.Managed.Attribute, "'res' attribute is a Joose.Managed.Attribute instance");
+    
+    this.ok(advAttr.value == 'advanced', "Attribute has a correct initial value");
+    
     
     //==================================================================================================================================================================================
     this.diag("Mutability & Custom accessors");

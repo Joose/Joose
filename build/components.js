@@ -31,10 +31,12 @@ JooseComponents = [
     "Joose.Managed.Role",
                 
     "Joose.Object",
-    "Joose.Managed.Attribute",
     
     "Joose.MetaClass",
     "Joose.MetaRole",
+    
+    "Joose.Managed.Attribute",
+    "Joose.Managed.Attribute.Builder",
     
     "Joose.Managed.My",
     
