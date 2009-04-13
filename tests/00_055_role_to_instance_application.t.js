@@ -1,6 +1,6 @@
 (function () {
 var testobj = new Test.TAP.Class();
-testobj.plan(26)
+testobj.plan(27)
 
 testobj.testSanity = function() {
     //==================================================================================================================================================================================
@@ -8,6 +8,7 @@ testobj.testSanity = function() {
     
     this.ok(Joose.MetaRole, "Joose.MetaRole is here");
     this.ok(Joose.MetaClass, "Joose.MetaClass is here");
+    this.ok(Joose.DetachedClass, "Joose.DetachedClass is here");
     
     //==================================================================================================================================================================================
     this.diag("Role creation");
