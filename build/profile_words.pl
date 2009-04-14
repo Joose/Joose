@@ -19,7 +19,7 @@ foreach (@js) {
 #    my @lines = file($_)->slurp;
     my @lines = (qx!java -jar ../ext/yuicompressor-2.4.1.jar $_!);
     
-    my @words = quotewords('(\s|{|}|;|:|=|\[|\]|\(|\)|,)+', 0, @lines); 
+    my @words = quotewords('(\s|{|}|;|:|=|\[|\]|\(|\)|,|\.)+', 1, @lines); 
     foreach (@words) {
         next if !$_;
         
