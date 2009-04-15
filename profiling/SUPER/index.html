@@ -1,0 +1,70 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Profiling</title>
+
+
+<script type="text/javascript" src="../Profiler.js"></script>
+
+<script type="text/javascript">
+
+
+var superfunc = function () { return 'result' }; 
+var stub1 = function(){};
+var stub2 = function(){};
+
+var objectVar1 = {
+	SUPER : function (){}, 
+	SUPERARG : function (){}
+}
+
+new Profiler(function () {
+	var beforeSUPER = this.SUPER;
+	var beforeSUPERARG = this.SUPERARG;
+	
+	this.SUPER    =  stub1;
+	this.SUPERARG =  stub2;
+	
+	superfunc();
+            
+	this.SUPER    =  beforeSUPER;
+	this.SUPERARG =  beforeSUPERARG;
+            
+}, "SUPER with variables").run(100000, objectVar1).report();
+
+
+var objectVar2 = {
+	SUPER : [ function (){} ], 
+	SUPERARG : [ function (){} ]
+}
+
+
+new Profiler(function () {
+	this.SUPER.unshift(stub1);
+	this.SUPERARG.unshift(stub2);
+	
+	superfunc();
+            
+	this.SUPER.shift();
+	this.SUPERARG.shift();
+            
+}, "SUPER with arrays").run(100000, objectVar2).report();
+
+
+new Profiler(function () {
+	
+	//superfunc();
+            
+}, "SUPER with none").run(100000, objectVar2).report();
+
+
+</script>
+
+</head>
+
+<body>
+
+
+
+</body>
+</html>

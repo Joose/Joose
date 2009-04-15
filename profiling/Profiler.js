@@ -9,12 +9,12 @@ Profiler = function (job, desc) {
 }
 
 Profiler.prototype = {
-	run: function (count) {
+	run: function (count, scope) {
 		this.iterations = count;
 		var job         = this.job;
 		this.start      = new Date();
 		for(var i = 0; i < count; ++i) {
-			job()
+			job.call(scope || window)
 		}
 		this.end   = new Date();
 		return this;
