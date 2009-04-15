@@ -29,8 +29,10 @@ new Profiler(function () {
             
 	this.SUPER    =  beforeSUPER;
 	this.SUPERARG =  beforeSUPERARG;
+	
+	return stub1(10) + stub2(10);
             
-}, "SUPER with variables").run(100000, objectVar1).report();
+}, "SUPER with variables").run(1000000, objectVar1).report();
 
 
 var objectVar2 = {
@@ -47,15 +49,19 @@ new Profiler(function () {
             
 	this.SUPER.shift();
 	this.SUPERARG.shift();
+	
+	return stub1(10) + stub2(10);
             
-}, "SUPER with arrays").run(100000, objectVar2).report();
+}, "SUPER with arrays").run(1000000, objectVar2).report();
 
 
 new Profiler(function () {
 	
 	//superfunc();
+	
+	return stub1(10) + stub2(10);
             
-}, "SUPER with none").run(100000, objectVar2).report();
+}, "SUPER with none").run(1000000, objectVar2).report();
 
 
 </script>
