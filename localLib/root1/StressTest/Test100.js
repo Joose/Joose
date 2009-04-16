@@ -5,7 +5,7 @@ try {
 	
 }
 
-if (declared && StressTest.Test100.meta.constructor == Joose.MetaClass) {
+if (declared && StressTest.Test100.meta.constructor == Joose.Meta.Class) {
     __global__.doubleDeclarations = true;
     throw "Double declaration of StressTest.Test100";
 }

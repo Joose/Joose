@@ -27,7 +27,7 @@ try {
 	
 }
 
-if (declared && [% class_name %].meta.constructor == Joose.MetaClass) {
+if (declared && [% class_name %].meta.constructor == Joose.Meta.Class) {
     __global__.doubleDeclarations = true;
     throw "Double declaration of [% class_name %]";
 }
@@ -47,7 +47,7 @@ Class('[% class_name %]', {
 	
 	body : function(){
        [%- FOREACH dep IN class_dependencies %]
-			if ([% dep %].meta.constructor != Joose.MetaClass) { 
+			if ([% dep %].meta.constructor != Joose.Meta.Class) { 
 				__global__.unSatisfiedDeps = true;
 				throw "Dependency [% dep %] is not satisfied for class [% class_name %]"; 
 			}
@@ -89,7 +89,7 @@ for (my $i = 1; $i <= $class_number; $i++) {
 	
 	my $filename = join(
 	   '/',
-	   ( 'root' . (1 + int(rand(2))), split(m!\.!, $class_name) )
+	   ( 'root' . (1 + int(rand(2)) ), split(m!\.!, $class_name) )
 	) . '.js';
 	
 	file($filename)->dir->mkpath();

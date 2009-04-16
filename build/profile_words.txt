@@ -394,7 +394,7 @@
 001, 0017: presence?"ext://"
 001, 0017: "Joose.Namespace"
 001, 0017: "attribute:"+this
-001, 0017: "Joose.MetaClass"
+001, 0017: "Joose.Meta.Class"
 001, 0017: "text/javascript"
 004, 0016: P+15
 004, 0016: test

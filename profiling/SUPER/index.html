@@ -9,9 +9,10 @@
 <script type="text/javascript">
 
 
-var superfunc = function () { return 'result' }; 
 var stub1 = function(){};
 var stub2 = function(){};
+
+var superfunc = function () { return stub1(10) + stub2(10) }; 
 
 var objectVar1 = {
 	SUPER : function (){}, 
@@ -35,33 +36,11 @@ new Profiler(function () {
 }, "SUPER with variables").run(1000000, objectVar1).report();
 
 
-var objectVar2 = {
-	SUPER : [ function (){} ], 
-	SUPERARG : [ function (){} ]
-}
-
-
 new Profiler(function () {
-	this.SUPER.unshift(stub1);
-	this.SUPERARG.unshift(stub2);
-	
-	superfunc();
-            
-	this.SUPER.shift();
-	this.SUPERARG.shift();
 	
 	return stub1(10) + stub2(10);
             
-}, "SUPER with arrays").run(1000000, objectVar2).report();
-
-
-new Profiler(function () {
-	
-	//superfunc();
-	
-	return stub1(10) + stub2(10);
-            
-}, "SUPER with none").run(1000000, objectVar2).report();
+}, "SUPER with none").run(1000000, objectVar1).report();
 
 
 </script>

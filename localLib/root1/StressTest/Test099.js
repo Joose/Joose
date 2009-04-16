@@ -5,7 +5,7 @@ try {
 	
 }
 
-if (declared && StressTest.Test099.meta.constructor == Joose.MetaClass) {
+if (declared && StressTest.Test099.meta.constructor == Joose.Meta.Class) {
     __global__.doubleDeclarations = true;
     throw "Double declaration of StressTest.Test099";
 }
@@ -22,7 +22,7 @@ Class('StressTest.Test099', {
 	},
 	
 	body : function(){
-			if (StressTest.Test100.meta.constructor != Joose.MetaClass) { 
+			if (StressTest.Test100.meta.constructor != Joose.Meta.Class) { 
 				__global__.unSatisfiedDeps = true;
 				throw "Dependency StressTest.Test100 is not satisfied for class StressTest.Test099"; 
 			}

@@ -20,7 +20,7 @@ t.testModuleClass = function() {
                 self.ok(StressTest.Versioning, "Something in the Versioning module spot");
                 
                 self.ok(StressTest.Test035, "StressTest.Test035 module created");
-                self.ok(StressTest.Test035.meta.constructor == Joose.MetaClass, "StressTest.Test035 class created");
+                self.ok(StressTest.Test035.meta.constructor == Joose.Meta.Class, "StressTest.Test035 class created");
                 self.ok(StressTest.Test035.meta.hasMethod('result'), "StressTest.Test035 has method 'result'");
                 self.ok(new (StressTest.Test035)().result() == 35, "StressTest.Test035 can be instantiated");
                 

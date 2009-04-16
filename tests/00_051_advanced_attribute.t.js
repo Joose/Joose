@@ -21,7 +21,7 @@ testobj.testSanity = function() {
         }
     });
     
-    this.ok(TestClass.meta instanceof Joose.MetaClass, "TestClass successfully created");
+    this.ok(TestClass.meta instanceof Joose.Meta.Class, "TestClass successfully created");
     this.ok(TestClass.meta.hasAttribute('res'), "'res' attribute was added");
     
     var advAttr = TestClass.meta.getAttribute('res');
@@ -56,7 +56,7 @@ testobj.testSanity = function() {
         }
     });
     
-    this.ok(TestRole.meta instanceof Joose.MetaRole, "TestRole successfully created");
+    this.ok(TestRole.meta instanceof Joose.Meta.Role, "TestRole successfully created");
     this.ok(TestRole.meta.hasAttribute('res'), "'res' attribute was added");
     
     var advAttr = TestRole.meta.getAttribute('res');

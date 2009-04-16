@@ -30,10 +30,12 @@ JooseComponents = [
     "Joose.Managed.Class",
     "Joose.Managed.Role",
                 
-    "Joose.Object",
+    "Joose.Meta.Object",
     
-    "Joose.MetaClass",
-    "Joose.MetaRole",
+    "Joose.Meta.Class",
+    "Joose.Meta.Role",
+    
+    "Joose.Meta.Class.Detached",
     
     "Joose.Managed.Attribute",
     
@@ -48,7 +50,7 @@ JooseComponents = [
     
     "Joose.Helper",
     
-    "Joose.DetachedClass",
+    
     
     
     "JooseX.Attribute.Trigger",

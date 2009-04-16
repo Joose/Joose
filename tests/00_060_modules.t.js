@@ -100,12 +100,12 @@ t.testModuleClass = function() {
     
     
     self.ok(TestModule.Test1, "There is something in the class spot")
-    self.ok(TestModule.Test1.meta.constructor == Joose.MetaClass, "it is a class")
+    self.ok(TestModule.Test1.meta.constructor == Joose.Meta.Class, "it is a class")
     self.ok(TestModule.Test1.meta.name  == "TestModule.Test1", "The class name is correct")
     self.ok(new TestModule.Test1().world() == 'hello1', "Class was correctly instantiated");
     
     self.ok(TestModule.Test2, "There is something in the class#2 spot")
-    self.ok(TestModule.Test2.meta.constructor == Joose.MetaClass, "it is a class")
+    self.ok(TestModule.Test2.meta.constructor == Joose.Meta.Class, "it is a class")
     self.ok(TestModule.Test2.meta.name  == "TestModule.Test2", "The class name is correct")
     self.ok(new TestModule.Test2().world() == 'hello2', "Class was correctly instantiated");
     
@@ -143,7 +143,7 @@ t.testModuleClass = function() {
     	}
     });
     
-    self.ok(TestModule.Test3.meta.constructor == Joose.MetaClass, 'Module was promoted to class');
+    self.ok(TestModule.Test3.meta.constructor == Joose.Meta.Class, 'Module was promoted to class');
     
     var test3 = new TestModule.Test3();
     
@@ -165,7 +165,7 @@ t.testModuleClass = function() {
     })
     
     self.ok(TestModule.Test3.FooBar, "We can use a class as Module")
-    self.ok(TestModule.Test3.FooBar.meta.constructor == Joose.MetaClass, "it is a class")
+    self.ok(TestModule.Test3.FooBar.meta.constructor == Joose.Meta.Class, "it is a class")
     
     var foobar = new TestModule.Test3.FooBar();
     
@@ -198,8 +198,8 @@ t.testModuleClass = function() {
     self.ok(Testy.Nested && Testy.Nested.meta.constructor == Joose.Namespace.Keeper, "Module 'Testy.Nested' was created");
     self.ok(Testy.Nested.Copy && Testy.Nested.Copy.meta.constructor == Joose.Namespace.Keeper, "Module 'Testy.Nested.Copy' was created");
     
-    self.ok(Testy.Nested.Testing && Testy.Nested.Testing.meta.constructor == Joose.MetaClass, "Class 'Testy.Nested.Testing' was created");
-    self.ok(Testy.Nested.Copy.Testing && Testy.Nested.Copy.Testing.meta.constructor == Joose.MetaClass, "Class 'Testy.Nested.Copy.Testing' was created");
+    self.ok(Testy.Nested.Testing && Testy.Nested.Testing.meta.constructor == Joose.Meta.Class, "Class 'Testy.Nested.Testing' was created");
+    self.ok(Testy.Nested.Copy.Testing && Testy.Nested.Copy.Testing.meta.constructor == Joose.Meta.Class, "Class 'Testy.Nested.Copy.Testing' was created");
     
     self.ok(new Testy.Nested.Testing().three() == 3, "Class 'Testy.Nested.Testing' was constructed correctly");
     self.ok(new Testy.Nested.Copy.Testing().four() == 4, "Class 'Testy.Nested.Copy.Testing' was constructed correctly");
@@ -220,7 +220,7 @@ t.testModuleClass = function() {
                             three : function () { return 3 }
                         }
                     });
-                    self.ok(Level1.Level2.Level3_1.Level4 && Level1.Level2.Level3_1.Level4.meta.constructor == Joose.MetaClass, "Level1.Level2.Level3_1.Level4 spot filled correctly");
+                    self.ok(Level1.Level2.Level3_1.Level4 && Level1.Level2.Level3_1.Level4.meta.constructor == Joose.Meta.Class, "Level1.Level2.Level3_1.Level4 spot filled correctly");
                     self.ok(new Level1.Level2.Level3_1.Level4().three() == 3, "Level1.Level2.Level3_1.Level4 class constructed correctly");
                 }
             });
@@ -233,7 +233,7 @@ t.testModuleClass = function() {
                             four : function () { return 4 }
                         }
                     });
-                    self.ok(Level1.Level2.Level3_2.Level4 && Level1.Level2.Level3_2.Level4.meta.constructor == Joose.MetaClass, "Level1.Level2.Level3_2.Level4 spot filled correctly");
+                    self.ok(Level1.Level2.Level3_2.Level4 && Level1.Level2.Level3_2.Level4.meta.constructor == Joose.Meta.Class, "Level1.Level2.Level3_2.Level4 spot filled correctly");
                     self.ok(new Level1.Level2.Level3_2.Level4().four() == 4, "Level1.Level2.Level3_2.Level4 class constructed correctly");
                 }
             });

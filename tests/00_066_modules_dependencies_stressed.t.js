@@ -38,7 +38,7 @@ t.testModuleClass = function() {
                     
                     if (typeof StressTest[class_name] == 'function') {
                         self.ok(StressTest[class_name], "StressTest." + class_name + " module created");
-                        self.ok(StressTest[class_name].meta.constructor == Joose.MetaClass, "StressTest." + class_name + " class created");
+                        self.ok(StressTest[class_name].meta.constructor == Joose.Meta.Class, "StressTest." + class_name + " class created");
                         self.ok(StressTest[class_name].meta.hasMethod('result'), "StressTest." + class_name + " has method 'result'");
                         self.ok(new (StressTest[class_name])().result() == i, "StressTest." + class_name + " can be instantiated");
                     }

@@ -5,7 +5,7 @@ try {
 	
 }
 
-if (declared && StressTest.Test028.meta.constructor == Joose.MetaClass) {
+if (declared && StressTest.Test028.meta.constructor == Joose.Meta.Class) {
     __global__.doubleDeclarations = true;
     throw "Double declaration of StressTest.Test028";
 }
@@ -35,59 +35,59 @@ Class('StressTest.Test028', {
 	},
 	
 	body : function(){
-			if (StressTest.Test033.meta.constructor != Joose.MetaClass) { 
+			if (StressTest.Test033.meta.constructor != Joose.Meta.Class) { 
 				__global__.unSatisfiedDeps = true;
 				throw "Dependency StressTest.Test033 is not satisfied for class StressTest.Test028"; 
 			}
-			if (StressTest.Test036.meta.constructor != Joose.MetaClass) { 
+			if (StressTest.Test036.meta.constructor != Joose.Meta.Class) { 
 				__global__.unSatisfiedDeps = true;
 				throw "Dependency StressTest.Test036 is not satisfied for class StressTest.Test028"; 
 			}
-			if (StressTest.Test037.meta.constructor != Joose.MetaClass) { 
+			if (StressTest.Test037.meta.constructor != Joose.Meta.Class) { 
 				__global__.unSatisfiedDeps = true;
 				throw "Dependency StressTest.Test037 is not satisfied for class StressTest.Test028"; 
 			}
-			if (StressTest.Test038.meta.constructor != Joose.MetaClass) { 
+			if (StressTest.Test038.meta.constructor != Joose.Meta.Class) { 
 				__global__.unSatisfiedDeps = true;
 				throw "Dependency StressTest.Test038 is not satisfied for class StressTest.Test028"; 
 			}
-			if (StressTest.Test039.meta.constructor != Joose.MetaClass) { 
+			if (StressTest.Test039.meta.constructor != Joose.Meta.Class) { 
 				__global__.unSatisfiedDeps = true;
 				throw "Dependency StressTest.Test039 is not satisfied for class StressTest.Test028"; 
 			}
-			if (StressTest.Test044.meta.constructor != Joose.MetaClass) { 
+			if (StressTest.Test044.meta.constructor != Joose.Meta.Class) { 
 				__global__.unSatisfiedDeps = true;
 				throw "Dependency StressTest.Test044 is not satisfied for class StressTest.Test028"; 
 			}
-			if (StressTest.Test046.meta.constructor != Joose.MetaClass) { 
+			if (StressTest.Test046.meta.constructor != Joose.Meta.Class) { 
 				__global__.unSatisfiedDeps = true;
 				throw "Dependency StressTest.Test046 is not satisfied for class StressTest.Test028"; 
 			}
-			if (StressTest.Test048.meta.constructor != Joose.MetaClass) { 
+			if (StressTest.Test048.meta.constructor != Joose.Meta.Class) { 
 				__global__.unSatisfiedDeps = true;
 				throw "Dependency StressTest.Test048 is not satisfied for class StressTest.Test028"; 
 			}
-			if (StressTest.Test055.meta.constructor != Joose.MetaClass) { 
+			if (StressTest.Test055.meta.constructor != Joose.Meta.Class) { 
 				__global__.unSatisfiedDeps = true;
 				throw "Dependency StressTest.Test055 is not satisfied for class StressTest.Test028"; 
 			}
-			if (StressTest.Test067.meta.constructor != Joose.MetaClass) { 
+			if (StressTest.Test067.meta.constructor != Joose.Meta.Class) { 
 				__global__.unSatisfiedDeps = true;
 				throw "Dependency StressTest.Test067 is not satisfied for class StressTest.Test028"; 
 			}
-			if (StressTest.Test070.meta.constructor != Joose.MetaClass) { 
+			if (StressTest.Test070.meta.constructor != Joose.Meta.Class) { 
 				__global__.unSatisfiedDeps = true;
 				throw "Dependency StressTest.Test070 is not satisfied for class StressTest.Test028"; 
 			}
-			if (StressTest.Test072.meta.constructor != Joose.MetaClass) { 
+			if (StressTest.Test072.meta.constructor != Joose.Meta.Class) { 
 				__global__.unSatisfiedDeps = true;
 				throw "Dependency StressTest.Test072 is not satisfied for class StressTest.Test028"; 
 			}
-			if (StressTest.Test077.meta.constructor != Joose.MetaClass) { 
+			if (StressTest.Test077.meta.constructor != Joose.Meta.Class) { 
 				__global__.unSatisfiedDeps = true;
 				throw "Dependency StressTest.Test077 is not satisfied for class StressTest.Test028"; 
 			}
-			if (StressTest.Test086.meta.constructor != Joose.MetaClass) { 
+			if (StressTest.Test086.meta.constructor != Joose.Meta.Class) { 
 				__global__.unSatisfiedDeps = true;
 				throw "Dependency StressTest.Test086 is not satisfied for class StressTest.Test028"; 
 			}

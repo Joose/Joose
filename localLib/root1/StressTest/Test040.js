@@ -5,7 +5,7 @@ try {
 	
 }
 
-if (declared && StressTest.Test040.meta.constructor == Joose.MetaClass) {
+if (declared && StressTest.Test040.meta.constructor == Joose.Meta.Class) {
     __global__.doubleDeclarations = true;
     throw "Double declaration of StressTest.Test040";
 }
@@ -32,47 +32,47 @@ Class('StressTest.Test040', {
 	},
 	
 	body : function(){
-			if (StressTest.Test051.meta.constructor != Joose.MetaClass) { 
+			if (StressTest.Test051.meta.constructor != Joose.Meta.Class) { 
 				__global__.unSatisfiedDeps = true;
 				throw "Dependency StressTest.Test051 is not satisfied for class StressTest.Test040"; 
 			}
-			if (StressTest.Test060.meta.constructor != Joose.MetaClass) { 
+			if (StressTest.Test060.meta.constructor != Joose.Meta.Class) { 
 				__global__.unSatisfiedDeps = true;
 				throw "Dependency StressTest.Test060 is not satisfied for class StressTest.Test040"; 
 			}
-			if (StressTest.Test063.meta.constructor != Joose.MetaClass) { 
+			if (StressTest.Test063.meta.constructor != Joose.Meta.Class) { 
 				__global__.unSatisfiedDeps = true;
 				throw "Dependency StressTest.Test063 is not satisfied for class StressTest.Test040"; 
 			}
-			if (StressTest.Test077.meta.constructor != Joose.MetaClass) { 
+			if (StressTest.Test077.meta.constructor != Joose.Meta.Class) { 
 				__global__.unSatisfiedDeps = true;
 				throw "Dependency StressTest.Test077 is not satisfied for class StressTest.Test040"; 
 			}
-			if (StressTest.Test079.meta.constructor != Joose.MetaClass) { 
+			if (StressTest.Test079.meta.constructor != Joose.Meta.Class) { 
 				__global__.unSatisfiedDeps = true;
 				throw "Dependency StressTest.Test079 is not satisfied for class StressTest.Test040"; 
 			}
-			if (StressTest.Test086.meta.constructor != Joose.MetaClass) { 
+			if (StressTest.Test086.meta.constructor != Joose.Meta.Class) { 
 				__global__.unSatisfiedDeps = true;
 				throw "Dependency StressTest.Test086 is not satisfied for class StressTest.Test040"; 
 			}
-			if (StressTest.Test088.meta.constructor != Joose.MetaClass) { 
+			if (StressTest.Test088.meta.constructor != Joose.Meta.Class) { 
 				__global__.unSatisfiedDeps = true;
 				throw "Dependency StressTest.Test088 is not satisfied for class StressTest.Test040"; 
 			}
-			if (StressTest.Test091.meta.constructor != Joose.MetaClass) { 
+			if (StressTest.Test091.meta.constructor != Joose.Meta.Class) { 
 				__global__.unSatisfiedDeps = true;
 				throw "Dependency StressTest.Test091 is not satisfied for class StressTest.Test040"; 
 			}
-			if (StressTest.Test092.meta.constructor != Joose.MetaClass) { 
+			if (StressTest.Test092.meta.constructor != Joose.Meta.Class) { 
 				__global__.unSatisfiedDeps = true;
 				throw "Dependency StressTest.Test092 is not satisfied for class StressTest.Test040"; 
 			}
-			if (StressTest.Test096.meta.constructor != Joose.MetaClass) { 
+			if (StressTest.Test096.meta.constructor != Joose.Meta.Class) { 
 				__global__.unSatisfiedDeps = true;
 				throw "Dependency StressTest.Test096 is not satisfied for class StressTest.Test040"; 
 			}
-			if (StressTest.Test099.meta.constructor != Joose.MetaClass) { 
+			if (StressTest.Test099.meta.constructor != Joose.Meta.Class) { 
 				__global__.unSatisfiedDeps = true;
 				throw "Dependency StressTest.Test099 is not satisfied for class StressTest.Test040"; 
 			}

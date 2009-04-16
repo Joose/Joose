@@ -77,7 +77,7 @@ t.testMetaClass = function() {
     // a aClass
     // meta -> a TestMeta
     // meta -> a Joose.Class
-    // meta -> a Joose.MetaClass
+    // meta -> a Joose.Meta.Class
     
     self.ok(TestMeta.meta.isa(Joose.Class), "Meta class isa Joose.Class")
     self.ok(TestMeta.meta.isa(TestMeta), "Meta class is correct");

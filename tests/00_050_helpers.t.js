@@ -9,8 +9,8 @@ testobj.testSanity = function() {
     this.ok(Joose.Namespace.Manager, "Joose.Namespace.Manager is here");
     this.ok(Joose.Namespace.Keeper, "Joose.Namespace.Keeper is here");
     
-    this.ok(Joose.MetaClass.meta.hasAttribute('ns'), "Joose.MetaClass's meta has 'ns' attribute");
-    this.ok(Joose.MetaRole.meta.hasAttribute('ns'), "Joose.MetaRole's meta has 'ns' attribute");
+    this.ok(Joose.Meta.Class.meta.hasAttribute('ns'), "Joose.Meta.Class's meta has 'ns' attribute");
+    this.ok(Joose.Meta.Role.meta.hasAttribute('ns'), "Joose.Meta.Role's meta has 'ns' attribute");
     
     
     Module('TestModule', {});

@@ -19,10 +19,10 @@ t.testModuleClass = function() {
         Module("Basic", {
             use : [ 'BasicTest1' ],
             body : function(){
-                self.ok(BasicTest1.meta.constructor == Joose.MetaClass, 'Basic dependencies loading passed #1-1');
+                self.ok(BasicTest1.meta.constructor == Joose.Meta.Class, 'Basic dependencies loading passed #1-1');
                 self.ok(new BasicTest1().result() == 1, "And it work as expected #1-2");
                 
-                self.ok(BasicTest2.meta.constructor == Joose.MetaClass, 'Basic dependencies loading passed #2-1');
+                self.ok(BasicTest2.meta.constructor == Joose.Meta.Class, 'Basic dependencies loading passed #2-1');
                 self.ok(new BasicTest2().result() == 2, "And it work as expected #2-2");
             }
         });
@@ -30,7 +30,7 @@ t.testModuleClass = function() {
         //==================================================================================================================================================================================
         self.diag("Dynamic (in-code) dependency loading");
         use('BasicTest3', function(){
-            self.ok(BasicTest3.meta instanceof Joose.MetaClass, 'Dynamic (in code context) basic dependencies loading passed');
+            self.ok(BasicTest3.meta instanceof Joose.Meta.Class, 'Dynamic (in code context) basic dependencies loading passed');
             self.ok(new BasicTest3().result() == 3, 'Dynamic (in code context) basic dependencies loading passed #2');
         });
         
@@ -80,7 +80,7 @@ t.testModuleClass = function() {
             use : 'BasicTest4',
             
             body : function(){
-                self.ok(BasicTest4 && BasicTest4.meta instanceof Joose.MetaClass, "Class successfully loaded from secondary libroot");
+                self.ok(BasicTest4 && BasicTest4.meta instanceof Joose.Meta.Class, "Class successfully loaded from secondary libroot");
                 self.ok(new BasicTest4().result() == 4, "And it work as expected");
             }
         });

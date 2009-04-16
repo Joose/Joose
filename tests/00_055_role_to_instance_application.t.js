@@ -6,9 +6,9 @@ testobj.testSanity = function() {
     //==================================================================================================================================================================================
     this.diag("Role application");
     
-    this.ok(Joose.MetaRole, "Joose.MetaRole is here");
-    this.ok(Joose.MetaClass, "Joose.MetaClass is here");
-    this.ok(Joose.DetachedClass, "Joose.DetachedClass is here");
+    this.ok(Joose.Meta.Role, "Joose.Meta.Role is here");
+    this.ok(Joose.Meta.Class, "Joose.Meta.Class is here");
+    this.ok(Joose.Meta.Class.Detached, "Joose.Meta.Class.Detached is here");
     
     //==================================================================================================================================================================================
     this.diag("Role creation");
@@ -47,7 +47,7 @@ testobj.testSanity = function() {
     
     creature.detach();
     
-    this.ok(creature.meta.constructor == Joose.DetachedClass, "Instance was detached");
+    this.ok(creature.meta.constructor == Joose.Meta.Class.Detached, "Instance was detached");
     this.ok(creature.constructor != Creature, "Instance was detached, indeed");
     this.ok(creature.own_attr == true, "Original attributes havn't changed");
     this.ok(typeof creature.walking == 'undefined', "Attributes were not applied");
@@ -112,7 +112,7 @@ testobj.testSanity = function() {
     
     creature.attach();
     
-    this.ok(creature.meta.constructor == Joose.MetaClass, "Instance was attached back");
+    this.ok(creature.meta.constructor == Joose.Meta.Class, "Instance was attached back");
     this.ok(creature.constructor == Creature, "Instance was attached back, indeed");
     
     this.ok(creature.own_attr == true, "Original attributes still havn't changed");
