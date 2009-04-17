@@ -51,7 +51,7 @@ JooseComponents = [
     "Joose.Helper",
     
     
-    
+    "JooseX.Meta.Lazy",
     
     "JooseX.Attribute.Trigger",
     "JooseX.Attribute.Lazy",

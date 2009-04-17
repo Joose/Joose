@@ -24,7 +24,7 @@ testobj.testSanity = function() {
     Class('SubClass', {
     	isa : SuperClass
     });
-    this.ok(SubClass, 'SuperClass class was created');
+    this.ok(SubClass, 'SubClass class was created');
     
     this.ok(SubClass.meta.hasAttribute('res') && SubClass.meta.getAttribute('res').value == 'sup:res', "SubClass has correct attribute 'res'");
     this.ok(SubClass.meta.hasMethod('process') && new SubClass().process() == 'sup:process', "SubClass has method 'process'");
