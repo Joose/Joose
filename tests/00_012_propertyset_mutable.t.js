@@ -174,11 +174,15 @@ testobj.testSanity = function() {
     this.ok(!F.haveProperty('A3'), 'F lost A3 property via mutation');
     this.ok(!E1.haveProperty('A3'), 'E1 lost A3 property via mutation');
     
+    this.ok(E.getProperty('A1') instanceof Joose.Managed.Property.ConflictMarker, 'A1 of E is a conflict marker');
+    
     F.open();
     F.addProperty('C1', { init : 'F-C1' });
     F.addProperty('D1', { init : 'F-D1' });
     F.removeProperty('A1');
     F.close();
+    
+    this.ok(E.getProperty('A1') instanceof Joose.Managed.Property.ConflictMarker, 'A1 of E is a conflict marker');
     
     this.ok(F.haveProperty('C1') && F.getProperty('C1').value == 'F-C1', 'F have override C1 property during mutation');
     this.ok(F.haveProperty('D1') && F.getProperty('D1').value == 'F-D1', 'F have override D1 property during mutation');

@@ -9,7 +9,7 @@ t.testModuleClass = function() {
     
     self.skip(typeof JooseX.Namespace.Depended != 'function', "Depended Role not included", 319, function(){
     	
-//    	if (console) console.profile();
+    	if (console) console.profile();
 
         Module("StressTest");
         self.ok(StressTest, "Root module created");
@@ -44,7 +44,7 @@ t.testModuleClass = function() {
                     }
                 }
                 
-//                if (console) console.profileEnd();
+                if (console) console.profileEnd();
             }
         });
         
