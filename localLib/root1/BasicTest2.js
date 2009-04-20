@@ -1,4 +1,4 @@
-if (typeof BasicTest2 == 'function' && BasicTest2.meta.constructor == Joose.MetaClass) throw "Double declaration of BasicTest2";
+if (typeof BasicTest2 == 'function' && BasicTest2.meta.constructor == Joose.Meta.Class) throw "Double declaration of BasicTest2";
 
 Class('BasicTest2', {
     version : 0.1,
