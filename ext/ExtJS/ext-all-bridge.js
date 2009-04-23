@@ -1,6 +1,6 @@
 // This is Joose 3
 // For documentation see http://code.google.com/p/joose-js/
-// Generated: Thu Apr 23 15:22:00 2009
+// Generated: Thu Apr 23 18:29:09 2009
 
 
 // ##########################
@@ -2638,6 +2638,8 @@ Joose.Managed.Attribute.Builder = new Joose.Managed.Role('Joose.Managed.Attribut
     	methods : {
 			has : function (targetClassMeta, info) {
 		        Joose.O.eachSafe(info, function(props, name) {
+		        	if (typeof props != 'object' || props == null) props = { init : props }
+		        	
 		        	props.meta = props.meta || targetClassMeta.defaultAttributeClass;
 		        	
 		            targetClassMeta.addAttribute(name, props.init, props);

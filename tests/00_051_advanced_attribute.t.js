@@ -1,6 +1,6 @@
 (function () {
 var testobj = new Test.TAP.Class();
-testobj.plan(26)
+testobj.plan(38)
 
 testobj.testSanity = function() {
     //==================================================================================================================================================================================
@@ -44,6 +44,29 @@ testobj.testSanity = function() {
     this.ok(testClass.res == 'setter' && testClass.getRes() == 'setter', "Setter & Getter works");
     
 
+    //==================================================================================================================================================================================
+    this.diag("Simplified advanced attribute");
+    
+    TestClass.meta.extend({ 
+        has : {
+        	simplified1 : null,
+        	simplified2 : false,
+        	simplified3 : 10,
+        	simplified4 : function () { return 'func' }
+        }
+    });
+    
+    this.ok(TestClass.meta.hasAttribute('simplified1'), "'simplified1' attribute was added");
+    this.ok(TestClass.meta.hasAttribute('simplified4'), "'simplified4' attribute was added");
+    
+    this.ok(TestClass.prototype.simplified1 === null, "'simplified1' attribute has correct initial value");
+    this.ok(TestClass.prototype.simplified2 === false, "'simplified2' attribute has correct initial value");
+    this.ok(TestClass.prototype.simplified3 === 10, "'simplified3' attribute has correct initial value");
+    this.ok(typeof TestClass.prototype.simplified4 == 'function', "'simplified4' attribute has correct initial value");
+    
+    this.ok(new TestClass().simplified4 == 'func', "'simplified4' attribute has correctly initialized");
+    
+    
     //==================================================================================================================================================================================
     this.diag("Role with advanced attribute");
     
