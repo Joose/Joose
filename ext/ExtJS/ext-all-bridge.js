@@ -1,6 +1,6 @@
 // This is Joose 3
 // For documentation see http://code.google.com/p/joose-js/
-// Generated: Thu Apr 23 22:48:47 2009
+// Generated: Thu Apr 23 22:51:25 2009
 
 
 // ##########################
@@ -2679,13 +2679,6 @@ Joose.Managed.My = new Joose.Managed.Role('Joose.Managed.My', {
     have : {
         myClass                         : null
     },
-    
-    
-//    after : {
-//        extend : function(extend){
-//            if (!this.myClass && this.superClass.meta.myClass) this.createMy(extend);
-//        }
-//    },
     
     
     methods : {
