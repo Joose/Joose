@@ -12,7 +12,7 @@ testobj.testSanity = function() {
     this.ok(Joose.Meta.Class.meta.hasAttribute('myClass'), "Joose.Meta.Class has 'myClass' attribute");
     this.ok(Joose.Meta.Role.meta.hasAttribute('myClass'), "Joose.Meta.Role has 'myClass' attribute");
     
-    var TestClass = new Joose.Meta.Class('TestClass', {
+    Class('TestClass', {
         have : {
             res : 'instance'
         },
@@ -32,7 +32,7 @@ testobj.testSanity = function() {
             }
         }
         
-    }).c;
+    });
     
     this.ok(typeof TestClass == 'function', "TestClass was created");
     this.ok(TestClass.my && TestClass.my.meta, "Class-level symbiont was created");
@@ -57,7 +57,7 @@ testobj.testSanity = function() {
     //==================================================================================================================================================================================
     this.diag("Role with symbiont creation");
     
-    var Walk = new Joose.Meta.Role('Walk', { 
+    Role('Walk', { 
         my : {
             have : {
                 walking : false
@@ -68,7 +68,7 @@ testobj.testSanity = function() {
                 stop : function () { this.walking = false }
             }
         }
-    }).c;
+    });
     
     this.ok(Walk.my.hasAttribute('walking') && Walk.my.getAttribute('walking').value == false, 'Walk has correct attribute walking');
     this.ok(Walk.my.hasMethod('walk'), 'Walk has method walk');
@@ -91,6 +91,28 @@ testobj.testSanity = function() {
     TestClass.my.stop();
     this.ok(!TestClass.my.walking, 'TestClass is not walking');
         
+    //==================================================================================================================================================================================
+    this.diag("Symbiont inheritance");
+    
+    Class('SubTestClass', {
+    	isa : TestClass,
+    	
+    	my : {
+    		
+    		after : {
+    			initialize : function () { this.res = 'SubTestClass:res' }
+    		},
+    		
+            methods : {
+                result : function() { return 'SubTestClass:class' }
+            }
+    	}
+    })
+    
+    this.ok(SubTestClass.my.meta.hasAttribute('res'), "SubTestClass.my has 'res' attribute"); 
+    this.ok(SubTestClass.my.meta.hasMethod('result'), "SubTestClass.my has 'result' method");
+    this.is(SubTestClass.my.res, 'SubTestClass:res', "Symbiont's 'after' modifier was executed");
+    this.is(SubTestClass.my.result(), 'SubTestClass:class', "Symbiont's method was correctly overriden");
 };
 
 return testobj;

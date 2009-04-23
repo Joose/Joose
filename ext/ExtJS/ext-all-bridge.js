@@ -1,6 +1,6 @@
 // This is Joose 3
 // For documentation see http://code.google.com/p/joose-js/
-// Generated: Thu Apr 23 19:56:14 2009
+// Generated: Thu Apr 23 22:48:47 2009
 
 
 // ##########################
@@ -2681,11 +2681,11 @@ Joose.Managed.My = new Joose.Managed.Role('Joose.Managed.My', {
     },
     
     
-    after : {
-        processStem : function(extend){
-            if (this.superClass.meta.myClass) this.createMy(extend);
-        }
-    },
+//    after : {
+//        extend : function(extend){
+//            if (!this.myClass && this.superClass.meta.myClass) this.createMy(extend);
+//        }
+//    },
     
     
     methods : {
@@ -2703,20 +2703,24 @@ Joose.Managed.My = new Joose.Managed.Role('Joose.Managed.My', {
     },
     
     
-    before : {
+    override : {
         extend : function(props) {
-            if (props.my) {
-            	if (!this.myClass) {
+            if (!Joose.O.isEmpty(props) && !this.myClass && this.superClass.meta.myClass) this.createMy(props);
+            
+            if (props.my)
+            	if (!this.myClass) 
             		this.createMy(props);
-            		return
+            	else {
+	                this.myClass.meta.extend(props.my);
+	                delete props.my;
             	}
-            	
-                this.myClass.meta.extend(props.my);
-                delete props.my;
-            }
-        },
-        
-        
+            
+            this.SUPER(props)
+        }
+    },
+    
+    
+    before : {
         addRole : function() {
         	if (!this.myClass) return;
         	
