@@ -62,7 +62,7 @@ testobj.testSanity = function() {
     this.ok(TestClass.prototype.simplified1 === null, "'simplified1' attribute has correct initial value");
     this.ok(TestClass.prototype.simplified2 === false, "'simplified2' attribute has correct initial value");
     this.ok(TestClass.prototype.simplified3 === 10, "'simplified3' attribute has correct initial value");
-    this.ok(typeof TestClass.prototype.simplified4 == 'function', "'simplified4' attribute has correct initial value");
+    this.ok(TestClass.prototype.simplified4 == null, "'simplified4' attribute has correct initial value");
     
     this.ok(new TestClass().simplified4 == 'func', "'simplified4' attribute has correctly initialized");
     

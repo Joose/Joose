@@ -1,6 +1,6 @@
 // This is Joose 3
 // For documentation see http://code.google.com/p/joose-js/
-// Generated: Thu Apr 23 18:29:09 2009
+// Generated: Thu Apr 23 19:56:14 2009
 
 
 // ##########################
@@ -2171,7 +2171,7 @@ Joose.Managed.Attribute = new Joose.Managed.Class('Joose.Managed.Attribute', {
 	override : {
 		
 		computeValue : function(props) {
-			this.SUPER(props);
+			if (typeof props.init != 'function') this.SUPER(props);
 			
 			this.publicName = this.name.replace(/^_+/, '');
 			this.setterName = 'set' + Joose.S.uppercaseFirst(this.publicName);
