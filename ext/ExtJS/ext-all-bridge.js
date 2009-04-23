@@ -1,6 +1,6 @@
 // This is Joose 3
 // For documentation see http://code.google.com/p/joose-js/
-// Generated: Wed Apr 22 00:03:56 2009
+// Generated: Thu Apr 23 15:22:00 2009
 
 
 // ##########################
@@ -3001,7 +3001,7 @@ Joose.Namespace.Manager = new Joose.Meta.Class('Joose.Namespace.Manager', {
                     
                     if (part == "meta" || part == "my" || !part) throw "Module name [" + nsName + "] may not include a part called 'meta' or 'my' or empty part.";
                     
-                    var cur = object.meta.ns.getProperty(part);
+                    var cur = (object == this.global ? this.global.meta.ns.container : object)[part]//object.meta.ns.getProperty(part);
                     
                     soFar.push(part)
                     var soFarName = soFar.join(".");
@@ -3015,7 +3015,10 @@ Joose.Namespace.Manager = new Joose.Meta.Class('Joose.Namespace.Manager', {
                     	} else
                     		nsKeeper = new Joose.Namespace.Keeper(soFarName).c;
                     	
-                        object.meta.ns.addProperty(nsKeeper.meta.localName, nsKeeper);
+                        if (object.meta) 
+                        	object.meta.ns.addProperty(nsKeeper.meta.localName, nsKeeper);
+                    	else
+                    		object[nsKeeper.meta.localName] = nsKeeper;
                         
                         cur = nsKeeper;
                     } else if (isLast && cur && cur.meta) {
@@ -3029,7 +3032,8 @@ Joose.Namespace.Manager = new Joose.Meta.Class('Joose.Namespace.Manager', {
                     	else if (metaClass != Joose.Namespace.Keeper)
                     		throw "Re-declaration of class " + soFarName + "with different meta is not allowed";                    		
                     	
-                    } else if (!(cur && cur.meta && cur.meta.meta && cur.meta.meta.hasAttribute('ns'))) throw "Trying to setup module " + soFarName + " failed. There is already something: " + cur
+                    } else 
+                    	if (isLast && !(cur && cur.meta && cur.meta.meta && cur.meta.meta.hasAttribute('ns'))) throw "Trying to setup module " + soFarName + " failed. There is already something: " + cur
                     
                     if (needFinalize) cur.meta.extend(props);
                         
