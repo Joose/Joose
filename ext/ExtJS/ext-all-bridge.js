@@ -1,6 +1,6 @@
 // This is Joose 3
 // For documentation see http://code.google.com/p/joose-js/
-// Generated: Thu Apr 23 22:51:25 2009
+// Generated: Fri Apr 24 22:19:56 2009
 
 
 // ##########################
@@ -3769,7 +3769,7 @@ Role('JooseX.Namespace.Depended.Transport.ScriptTag', {
             loaderNode.onload = loaderNode.onreadystatechange = function() {
                 if (!loaderNode.readyState || loaderNode.readyState == "loaded" || loaderNode.readyState == "complete" || loaderNode.readyState == 4 && loaderNode.status == 200) {
                     //surely for IE6..
-                    setTimeout(function(){ onready() }, 1);
+                    setTimeout(onready, 1);
                 }
             };
             
