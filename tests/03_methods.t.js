@@ -47,6 +47,11 @@ t.testMethodMetaClass = function() {
     
     self.ok(m.meta.isa(Joose.Method), "Methods of Joose.Classes are Joose.Methods")
     
+    var sub = new Subclass();
+    
+    self.ok(sub.one.displayName == "TestClass.one()", "Display name of method from super class is set correctly"); // method from super class
+    self.ok(sub.two.displayName == "Subclass.two()", "Display name of own is set correctly"); // method overwritten
+    
     Class("MoreMethods", {
         methods: {
             one: function () { return 1 },
