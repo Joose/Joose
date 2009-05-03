@@ -1,6 +1,6 @@
 // This is Joose 3
 // For documentation see http://code.google.com/p/joose-js/
-// Generated: Fri Apr 24 22:19:56 2009
+// Generated: Sun May  3 22:59:33 2009
 
 
 // ##########################
@@ -3639,7 +3639,7 @@ Role('JooseX.Namespace.Depended', {
             var className = this.name.split('.');
             
             Joose.A.each(Joose.Namespace.Manager.my.INC, function (libroot) {
-                urls.push(libroot.concat(className).join('/') + '.js' + (Joose.Namespace.Manager.my.disableCaching ? '?disableCaching=true': '') );
+                urls.push(libroot.concat(className).join('/') + '.js' + (Joose.Namespace.Manager.my.disableCaching ? '?disableCaching=' + new Date().getTime() : '') );
             });
             
             
