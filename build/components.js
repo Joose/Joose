@@ -48,19 +48,18 @@ JooseComponents = [
     "Joose.Namespace.Keeper",
     "Joose.Namespace.Manager",
     
-    "Joose.Helper",
+    "Joose.Helper"
     
-    
-    "JooseX.Meta.Lazy",
-    
-    "JooseX.Attribute.Trigger",
-    "JooseX.Attribute.Lazy",
-    
-    "JooseX.SimpleRequest",
-    "JooseX.Namespace.Depended",
-    "JooseX.Namespace.Depended.Manager",
-    "JooseX.Namespace.Depended.Transport.ScriptTag",
-    "JooseX.Namespace.Depended.Transport.AjaxAsync"
+//    "JooseX.Meta.Lazy",
+//    
+//    "JooseX.Attribute.Trigger",
+//    "JooseX.Attribute.Lazy",
+//    
+//    "JooseX.SimpleRequest",
+//    "JooseX.Namespace.Depended",
+//    "JooseX.Namespace.Depended.Manager",
+//    "JooseX.Namespace.Depended.Transport.ScriptTag",
+//    "JooseX.Namespace.Depended.Transport.AjaxAsync"
             
 //    ,"Digest.MD5",
 //    "JooseX.Namespace.Depended.Grouped"
