@@ -5,7 +5,7 @@
 	
 		<!-- Ext bridge  -->
 		
-		<link rel="stylesheet" type="text/css" href="/static/Task/ExtJS/css/ext-all.css"></link>
+		<link rel="stylesheet" type="text/css" href="/static/Task/ExtJS/css/ext-all.css">
 		<script type="text/javascript" src="/inc/Task/ExtJS/Adapter/Ext.js"></script>
 
 		<script type="text/javascript" src="/inc/JooseX/Bridge/Ext.js"></script>
@@ -20,8 +20,9 @@
 		
 		<script type="text/javascript" src="/inc/ExtX/Reference/Slot.js"></script>
 		
-		<link rel="stylesheet" type="text/css" href="/static/Test/Run/css/all.css"></link>
+		<link rel="stylesheet" type="text/css" href="/static/Test/Run/css/all.css">
 		<script type="text/javascript" src="/inc/Task/Test/Run/extjs.js"></script>
+		<script type="text/javascript" src="/inc/Test/Run/Harness/Browser/Joose.js"></script>
 		
 		<script type="text/javascript" src="../Components.JS"></script>
 	</head>
@@ -29,7 +30,9 @@
 	<body>
 		<script type="text/javascript">
 			Test.Run.Harness.Browser.Multi.my.configure({
-				title : 'Joose test suite'
+				title : 'Joose test suite',
+				
+				disableCaching : false
 			});
 			
 			
@@ -39,18 +42,15 @@
 				'012_propertyset_mutable.t.js',
 				'020_managed_class.t.js',
 				'021_method_modifiers.t.js',
-				'022_inheriting_from_proto_class.t.js'
-				
-				
-				
-				//'031_managed_role.t.js',
-				//'032_role_application_basic.t.js',
-				//'040_my_symbiont.t.js',
-				//'045_role_builder.t.js',
-				//'050_helpers.t.js',
-				//'052_role_application_advanced.t.js',
-				//'055_role_to_instance_application.t.js',
-				//'060_modules.t.js'
+				'022_inheriting_from_proto_class.t.js',
+				'031_managed_role.t.js',
+				'032_role_application_basic.t.js',
+				'040_my_symbiont.t.js',
+				'045_role_builder.t.js',
+				'050_helpers.t.js',
+				'052_role_application_advanced.t.js',
+				'055_role_to_instance_application.t.js',
+				'060_modules.t.js'
 			)
 		</script>
 	</body>

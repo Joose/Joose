@@ -1,20 +1,18 @@
-(function () {
-var testobj = new Test.TAP.Class();
-testobj.plan(12)
-
-testobj.testSanity = function() {
+StartTest(function(t) {
+	t.plan(12)
+	
     //==================================================================================================================================================================================
-    this.diag("Builder in the Role");
+    t.diag("Builder in the Role");
     
-    this.ok(Joose.Meta.Role, "Joose.Meta.Role is here");
-    this.ok(Joose.Meta.Class, "Joose.Meta.Class is here");
+    t.ok(Joose.Meta.Role, "Joose.Meta.Role is here");
+    t.ok(Joose.Meta.Class, "Joose.Meta.Class is here");
     
-    this.ok(Joose.Meta.Role.meta.hasAttribute('builderRole'), "Joose.Meta.Role has 'builderRole' attribute");
-    this.ok(Joose.Meta.Role.meta.hasAttribute('stemRole'), "Joose.Meta.Role has 'builderRole' attribute");
+    t.ok(Joose.Meta.Role.meta.hasAttribute('builderRole'), "Joose.Meta.Role has 'builderRole' attribute");
+    t.ok(Joose.Meta.Role.meta.hasAttribute('stemRole'), "Joose.Meta.Role has 'builderRole' attribute");
     
     
     //==================================================================================================================================================================================
-    this.diag("Creation Role with builder");
+    t.diag("Creation Role with builder");
     
     var RoleWithBuilder = new Joose.Meta.Role('RoleWithBuilder', {
         builder : {
@@ -31,16 +29,16 @@ testobj.testSanity = function() {
         }
     }).c;
     
-    this.ok(typeof RoleWithBuilder == 'function', "RoleWithBuilder was created");
+    t.ok(typeof RoleWithBuilder == 'function', "RoleWithBuilder was created");
     
-    this.ok(RoleWithBuilder.meta.builderRole, "RoleWithBuilder has 'builderRole'");
-    this.ok(RoleWithBuilder.meta.builderRole.meta instanceof Joose.Managed.Role, ".. and its a Joose.Managed.Role");
+    t.ok(RoleWithBuilder.meta.builderRole, "RoleWithBuilder has 'builderRole'");
+    t.ok(RoleWithBuilder.meta.builderRole.meta instanceof Joose.Managed.Role, ".. and its a Joose.Managed.Role");
     
-    this.ok(RoleWithBuilder.meta.builderRole.meta.hasMethod('testHandler'), "builderRole has 'testHandler' method"); 
+    t.ok(RoleWithBuilder.meta.builderRole.meta.hasMethod('testHandler'), "builderRole has 'testHandler' method"); 
     
     
     //==================================================================================================================================================================================
-    this.diag("Extending of builder");
+    t.diag("Extending of builder");
     
     var TestMetaClass = new Joose.Meta.Class('TestClass1', {
         isa : Joose.Meta.Class
@@ -61,12 +59,12 @@ testobj.testSanity = function() {
     
     var testClass1 = new TestClass1();
     
-    this.ok(TestClass1.meta.builder.meta.hasMethod('testHandler'), "Builder has new handler");
-    this.ok(TestClass1.meta.hasOwnMethod('result') && testClass1.result() == 'TestClass1', "Builder was extened and works correctly");
+    t.ok(TestClass1.meta.builder.meta.hasMethod('testHandler'), "Builder has new handler");
+    t.ok(TestClass1.meta.hasOwnMethod('result') && testClass1.result() == 'TestClass1', "Builder was extened and works correctly");
 
     
     //==================================================================================================================================================================================
-    this.diag("Mutability");
+    t.diag("Mutability");
     
     RoleWithBuilder.meta.extend({
         builder : {
@@ -83,7 +81,7 @@ testobj.testSanity = function() {
         }
     });
     
-    this.ok(TestClass1.meta.builder.meta.hasMethod('testHandler1'), "Builder received new handler via mutability");
+    t.ok(TestClass1.meta.builder.meta.hasMethod('testHandler1'), "Builder received new handler via mutability");
     
     TestClass1.meta.extend({
         testHandler1 : {
@@ -92,10 +90,7 @@ testobj.testSanity = function() {
         }
     });
     
-    this.ok(TestClass1.meta.hasOwnMethod('result1') && testClass1.result1() == 'TestClass11', "Builder was extened and works correctly");
+    t.ok(TestClass1.meta.hasOwnMethod('result1') && testClass1.result1() == 'TestClass11', "Builder was extened and works correctly");
     
     
-};
-
-return testobj;
-})()
+});

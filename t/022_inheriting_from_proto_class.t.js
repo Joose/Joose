@@ -62,7 +62,6 @@ StartTest(function(t) {
     
     var testClass5 = new TestClass5();
     
-    t.diag(testClass5.inc(''))
     t.is(testClass5.inc(''), 'T3|T4|T5', "'inc' was inherited, overriden and works correctly");
 	
     

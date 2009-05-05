@@ -1,13 +1,11 @@
-(function () {
-var testobj = new Test.TAP.Class();
-testobj.plan(8)
-
-testobj.testSanity = function() {
+StartTest(function(t) {
+	t.plan(8)
+	
     //==================================================================================================================================================================================
-    this.diag("Advanced Role application");
+    t.diag("Advanced Role application");
     
     //==================================================================================================================================================================================
-    this.diag("Overriding methods/attributes from superclass");
+    t.diag("Overriding methods/attributes from superclass");
     
     Class('SuperClass', {
     	have : {
@@ -18,16 +16,16 @@ testobj.testSanity = function() {
     		process : function () { return 'sup:process' }
     	}
     });
-    this.ok(SuperClass, 'SuperClass class was created');
+    t.ok(SuperClass, 'SuperClass class was created');
 
     
     Class('SubClass', {
     	isa : SuperClass
     });
-    this.ok(SubClass, 'SubClass class was created');
+    t.ok(SubClass, 'SubClass class was created');
     
-    this.ok(SubClass.meta.hasAttribute('res') && SubClass.meta.getAttribute('res').value == 'sup:res', "SubClass has correct attribute 'res'");
-    this.ok(SubClass.meta.hasMethod('process') && new SubClass().process() == 'sup:process', "SubClass has method 'process'");
+    t.ok(SubClass.meta.hasAttribute('res') && SubClass.meta.getAttribute('res').value == 'sup:res', "SubClass has correct attribute 'res'");
+    t.ok(SubClass.meta.hasMethod('process') && new SubClass().process() == 'sup:process', "SubClass has method 'process'");
     
     
     Role('Resource', {
@@ -39,18 +37,18 @@ testobj.testSanity = function() {
     		process : function () { return 'role:process' }
     	}
     });
-    this.ok(Resource, 'Resource role was created');
+    t.ok(Resource, 'Resource role was created');
     
     SubClass.meta.extend({
     	does : [ Resource ]
     })
     
-    this.ok(SubClass.meta.hasAttribute('res') && SubClass.meta.getAttribute('res').value == 'role:res', "SubClass has correct attribute 'res'");
-    this.ok(SubClass.meta.hasMethod('process') && new SubClass().process() == 'role:process', "SubClass has method 'process'");
+    t.ok(SubClass.meta.hasAttribute('res') && SubClass.meta.getAttribute('res').value == 'role:res', "SubClass has correct attribute 'res'");
+    t.ok(SubClass.meta.hasMethod('process') && new SubClass().process() == 'role:process', "SubClass has method 'process'");
 
     
     //==================================================================================================================================================================================
-    this.diag("Composition of the same Role on different hierarchy levels");
+    t.diag("Composition of the same Role on different hierarchy levels");
     
     Role('PostProcess', {
     	after : {
@@ -105,9 +103,6 @@ testobj.testSanity = function() {
     var sub2 = new SubClass2();
     sub2.process();
     
-    this.ok(sub2.res == 'sup1:res|afterSup1|afterFromRole|afterSub1|afterFromRole|afterSub2|afterFromRole', "'PostProcess' role was applied on all inheritance levels");
+    t.ok(sub2.res == 'sup1:res|afterSup1|afterFromRole|afterSub1|afterFromRole|afterSub2|afterFromRole', "'PostProcess' role was applied on all inheritance levels");
     
-};
-
-return testobj;
-})()
+});

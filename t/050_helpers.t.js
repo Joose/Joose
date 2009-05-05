@@ -1,25 +1,23 @@
-(function () {
-var testobj = new Test.TAP.Class();
-testobj.plan(61)
-
-testobj.testSanity = function() {
+StartTest(function(t) {
+	t.plan(61)
+	
     //==================================================================================================================================================================================
-    this.diag("Modules");
+    t.diag("Modules");
     
-    this.ok(Joose.Namespace.Manager, "Joose.Namespace.Manager is here");
-    this.ok(Joose.Namespace.Keeper, "Joose.Namespace.Keeper is here");
+    t.ok(Joose.Namespace.Manager, "Joose.Namespace.Manager is here");
+    t.ok(Joose.Namespace.Keeper, "Joose.Namespace.Keeper is here");
     
-    this.ok(Joose.Meta.Class.meta.hasAttribute('ns'), "Joose.Meta.Class's meta has 'ns' attribute");
-    this.ok(Joose.Meta.Role.meta.hasAttribute('ns'), "Joose.Meta.Role's meta has 'ns' attribute");
+    t.ok(Joose.Meta.Class.meta.hasAttribute('ns'), "Joose.Meta.Class's meta has 'ns' attribute");
+    t.ok(Joose.Meta.Role.meta.hasAttribute('ns'), "Joose.Meta.Role's meta has 'ns' attribute");
     
     
     Module('TestModule', {});
     
-    this.ok(TestModule, 'Something in the module spot appears');
-    this.ok(TestModule.meta instanceof Joose.Namespace.Keeper, '.. and its a Joose.Namespace.Keeper');
+    t.ok(TestModule, 'Something in the module spot appears');
+    t.ok(TestModule.meta instanceof Joose.Namespace.Keeper, '.. and its a Joose.Namespace.Keeper');
     
     //==================================================================================================================================================================================
-    this.diag("Class");
+    t.diag("Class");
     
     Class('TestClass', {
         have : {
@@ -43,28 +41,28 @@ testobj.testSanity = function() {
         
     });
     
-    this.ok(typeof TestClass == 'function', "TestClass was created");
-    this.ok(TestClass.my && TestClass.my.meta, "Class-level symbiont was created");
+    t.ok(typeof TestClass == 'function', "TestClass was created");
+    t.ok(TestClass.my && TestClass.my.meta, "Class-level symbiont was created");
     
-    this.ok(TestClass.meta.hasAttribute('res'), "TestClass has 'res' attribute"); 
-    this.ok(TestClass.meta.hasMethod('result'), "TestClass has 'result' method");
+    t.ok(TestClass.meta.hasAttribute('res'), "TestClass has 'res' attribute"); 
+    t.ok(TestClass.meta.hasMethod('result'), "TestClass has 'result' method");
 
-    this.ok(TestClass.my.meta.hasAttribute('res'), "TestClass.my has 'res' attribute"); 
-    this.ok(TestClass.my.meta.hasMethod('result'), "TestClass.my has 'result' method");
+    t.ok(TestClass.my.meta.hasAttribute('res'), "TestClass.my has 'res' attribute"); 
+    t.ok(TestClass.my.meta.hasMethod('result'), "TestClass.my has 'result' method");
     
     
     var testClass = new TestClass();
     
-    this.ok(testClass, "TestClass was instantiated");
-    this.ok(testClass.res == 'instance', "Usual attribute was correctly installed");
-    this.is(testClass.result(), 'TestClass:instance', "Method was correctly installed");
+    t.ok(testClass, "TestClass was instantiated");
+    t.ok(testClass.res == 'instance', "Usual attribute was correctly installed");
+    t.is(testClass.result(), 'TestClass:instance', "Method was correctly installed");
     
-    this.ok(TestClass.my.res == 'class', "Symbiont's attribute was correctly installed");
-    this.is(TestClass.my.result(), 'TestClass:class', "Symbiont's method was correctly installed");
+    t.ok(TestClass.my.res == 'class', "Symbiont's attribute was correctly installed");
+    t.is(TestClass.my.result(), 'TestClass:class', "Symbiont's method was correctly installed");
     
 
     //==================================================================================================================================================================================
-    this.diag("Class extension via helper");
+    t.diag("Class extension via helper");
     
     Class('TestClass', {
         have : {
@@ -89,21 +87,21 @@ testobj.testSanity = function() {
     });
     
     
-    this.ok(TestClass.meta.hasAttribute('res1'), "TestClass has 'res1' attribute via extension with helper"); 
-    this.ok(TestClass.meta.hasMethod('result1'), "TestClass has 'result1' method via extension with helper");
+    t.ok(TestClass.meta.hasAttribute('res1'), "TestClass has 'res1' attribute via extension with helper"); 
+    t.ok(TestClass.meta.hasMethod('result1'), "TestClass has 'result1' method via extension with helper");
 
-    this.ok(TestClass.my.meta.hasAttribute('res1'), "TestClass.my has 'res1' attribute via extension with helper"); 
-    this.ok(TestClass.my.meta.hasMethod('result1'), "TestClass.my has 'result1' method via extension with helper");
+    t.ok(TestClass.my.meta.hasAttribute('res1'), "TestClass.my has 'res1' attribute via extension with helper"); 
+    t.ok(TestClass.my.meta.hasMethod('result1'), "TestClass.my has 'result1' method via extension with helper");
     
-    this.ok(testClass.res1 == 'instance1', "re1 attribute was correctly installed");
-    this.is(testClass.result1(), 'TestClass:instance1', "result1 method was correctly installed");
+    t.ok(testClass.res1 == 'instance1', "re1 attribute was correctly installed");
+    t.is(testClass.result1(), 'TestClass:instance1', "result1 method was correctly installed");
     
-    this.ok(TestClass.my.res1 == 'class1', "Symbiont's attribute was correctly installed also");
-    this.is(TestClass.my.result1(), 'TestClass:class1', "Symbiont's method was correctly installed also");
+    t.ok(TestClass.my.res1 == 'class1', "Symbiont's attribute was correctly installed also");
+    t.is(TestClass.my.result1(), 'TestClass:class1', "Symbiont's method was correctly installed also");
     
     
     //==================================================================================================================================================================================
-    this.diag("Role creation");
+    t.diag("Role creation");
     
     Role('Walk', { 
         have : {
@@ -116,9 +114,9 @@ testobj.testSanity = function() {
         }
     });
     
-    this.ok(Walk.meta.hasAttribute('walking') && Walk.meta.getAttribute('walking').value == false, 'Walk has correct attribute walking');
-    this.ok(Walk.meta.hasMethod('walk'), 'Walk has method walk');
-    this.ok(Walk.meta.hasMethod('stop'), 'Walk has method stop');
+    t.ok(Walk.meta.hasAttribute('walking') && Walk.meta.getAttribute('walking').value == false, 'Walk has correct attribute walking');
+    t.ok(Walk.meta.hasMethod('walk'), 'Walk has method walk');
+    t.ok(Walk.meta.hasMethod('stop'), 'Walk has method stop');
 
 
     Role('Eat', { 
@@ -134,16 +132,16 @@ testobj.testSanity = function() {
     
     
     //==================================================================================================================================================================================
-    this.diag("Exceptions");
+    t.diag("Exceptions");
     
-    this.throws_ok(function(){
+    t.throws_ok(function(){
         Class('TestCreature1', {
             does : [ Walk, Eat ]
         });
     }, Joose.is_IE ? "" : "Attempt to apply ConflictMarker [stop] to [TestCreature1]", "Conflicts are detecting");
     
     
-    this.throws_ok(function(){
+    t.throws_ok(function(){
         Class('TestCreature2', {
             requires : [ 'walk' ]
         });
@@ -151,7 +149,7 @@ testobj.testSanity = function() {
     
     
     //==================================================================================================================================================================================
-    this.diag("Composing a class from roles with aliasing");
+    t.diag("Composing a class from roles with aliasing");
     
     
     Class('Creature', {
@@ -171,24 +169,24 @@ testobj.testSanity = function() {
     });
     
 
-    this.ok(Creature.meta.hasAttribute('walking') && Creature.meta.getAttribute('walking').value == false, "Creature has correct attribute 'walking'");
-    this.ok(Creature.meta.hasAttribute('eating') && Creature.meta.getAttribute('eating').value == false, "Creature has correct attribute 'eating'");
-    this.ok(Creature.meta.hasMethod('walk'), 'Creature has method walk');
-    this.ok(Creature.meta.hasMethod('eat'), 'Creature has method eat');
-    this.ok(Creature.meta.hasMethod('stopWalk'), 'Creature has method stopWalk');
-    this.ok(Creature.meta.hasMethod('stopEat'), 'Creature has method stopEat');
-    this.ok(!Creature.meta.hasMethod('stop'), 'Creature hasnt method stop');
+    t.ok(Creature.meta.hasAttribute('walking') && Creature.meta.getAttribute('walking').value == false, "Creature has correct attribute 'walking'");
+    t.ok(Creature.meta.hasAttribute('eating') && Creature.meta.getAttribute('eating').value == false, "Creature has correct attribute 'eating'");
+    t.ok(Creature.meta.hasMethod('walk'), 'Creature has method walk');
+    t.ok(Creature.meta.hasMethod('eat'), 'Creature has method eat');
+    t.ok(Creature.meta.hasMethod('stopWalk'), 'Creature has method stopWalk');
+    t.ok(Creature.meta.hasMethod('stopEat'), 'Creature has method stopEat');
+    t.ok(!Creature.meta.hasMethod('stop'), 'Creature hasnt method stop');
     
     var creature = new Creature();
     
     creature.walk('there');
-    this.ok(creature.walking, 'Creature is walking');
+    t.ok(creature.walking, 'Creature is walking');
     creature.stopWalk();
-    this.ok(!creature.walking, 'Creature is not walking');
+    t.ok(!creature.walking, 'Creature is not walking');
     
 
     //==================================================================================================================================================================================
-    this.diag("Cannibal creature");
+    t.diag("Cannibal creature");
     
     Role('Cannibalism', {
         requires : [ 'eat' ],
@@ -213,16 +211,16 @@ testobj.testSanity = function() {
     var creature = new Creature();
     
     cannibal1.eat(creature);
-    this.ok(!cannibal1.eating, "Cannibal eats only creatures from his species #1 + method modifier from Role works");
+    t.ok(!cannibal1.eating, "Cannibal eats only creatures from his species #1 + method modifier from Role works");
 
     cannibal1.eat(cannibal2);
-    this.ok(cannibal1.eating, "Cannibal eats only creatures from his species #2");
+    t.ok(cannibal1.eating, "Cannibal eats only creatures from his species #2");
     cannibal1.stopEat();
-    this.ok(!cannibal1.eating, "Cannibal1 ate cannibal2 )");
+    t.ok(!cannibal1.eating, "Cannibal1 ate cannibal2 )");
     
     
     //==================================================================================================================================================================================
-    this.diag("Plant & required methods");
+    t.diag("Plant & required methods");
     
     Class('Plant', {
         methods : {
@@ -231,7 +229,7 @@ testobj.testSanity = function() {
     });
     
     
-    this.throws_ok(function(){
+    t.throws_ok(function(){
         Plant.meta.extend({
             does : [ Cannibalism ]
         });
@@ -241,7 +239,7 @@ testobj.testSanity = function() {
     var plant = new Plant();
 
     //==================================================================================================================================================================================
-    this.diag("Human");
+    t.diag("Human");
     
     Role('Drive', {
         requires : [ 'walk' ],
@@ -304,33 +302,33 @@ testobj.testSanity = function() {
     var human = new Human();
     
     human.eat(cannibal1);
-    this.ok(!human.eating, "Human doesn't eat thing which can 'walk' #1");
-    this.ok(!human.cleanHands, "Human have not washed hands yet");
+    t.ok(!human.eating, "Human doesn't eat thing which can 'walk' #1");
+    t.ok(!human.cleanHands, "Human have not washed hands yet");
     
     human.eat(creature);
-    this.ok(!human.eating, "Human doesn't eat thing which can 'walk' #2");
+    t.ok(!human.eating, "Human doesn't eat thing which can 'walk' #2");
     
     human.eat(plant);
-    this.ok(human.eating, "Human is vegetarian");
-    this.ok(human.cleanHands, "Human washed hands before eating");
+    t.ok(human.eating, "Human is vegetarian");
+    t.ok(human.cleanHands, "Human washed hands before eating");
     
     human.stopEat();
-    this.ok(!human.cleanHands, "Human has dirty hands after he ate");
+    t.ok(!human.cleanHands, "Human has dirty hands after he ate");
     
     human.walk('supermarket');
-    this.ok(!human.walking, "Humans mostly drives #1");
-    this.ok(human.driving, "Humans mostly drives #2");
+    t.ok(!human.walking, "Humans mostly drives #1");
+    t.ok(human.driving, "Humans mostly drives #2");
     
     human.eat(plant);
-    this.ok(human.eating, "Human can eat during driving");
+    t.ok(human.eating, "Human can eat during driving");
     human.stopEat();
     
     human.stop();
-    this.ok(!human.driving, "Humans stopped");
+    t.ok(!human.driving, "Humans stopped");
     
     
     //==================================================================================================================================================================================
-    this.diag("Mutability");
+    t.diag("Mutability");
     
     Drive.meta.extend({ 
         override : {
@@ -341,15 +339,15 @@ testobj.testSanity = function() {
     });      
     
     human.drive('supermarket');
-    this.ok(human.driving, "Humans is driving");
+    t.ok(human.driving, "Humans is driving");
     
     human.eat(plant);
-    this.ok(!human.eating, "Human now cant eat during driving");
+    t.ok(!human.eating, "Human now cant eat during driving");
     
     human.stop();
     
     human.eat(plant);
-    this.ok(human.eating, "Human now can eat again");
+    t.ok(human.eating, "Human now can eat again");
     human.stopEat();
     
 
@@ -359,13 +357,13 @@ testobj.testSanity = function() {
     });
     
     cannibal1.eat(creature);
-    this.ok(!cannibal1.eating, "Cannibal eats only creatures from his species which cant walk now");
+    t.ok(!cannibal1.eating, "Cannibal eats only creatures from his species which cant walk now");
 
     cannibal1.eat(cannibal2);
-    this.ok(!cannibal1.eating, "Cannibal eats only creatures from his species which cant walk now");
+    t.ok(!cannibal1.eating, "Cannibal eats only creatures from his species which cant walk now");
     
     cannibal1.eat(plant);
-    this.ok(!cannibal1.eating, "Cannibal eats only creatures from his species which cant walk now");
+    t.ok(!cannibal1.eating, "Cannibal eats only creatures from his species which cant walk now");
     
 
     Cannibalism.meta.extend({ 
@@ -373,7 +371,7 @@ testobj.testSanity = function() {
     });
     
     cannibal1.eat(cannibal2);
-    this.ok(cannibal1.eating, "Cannibal now can eat again");
+    t.ok(cannibal1.eating, "Cannibal now can eat again");
     cannibal1.stopEat();
     
     
@@ -383,9 +381,6 @@ testobj.testSanity = function() {
     });
     
     human.walk('supermarket');
-    this.ok(human.walking, "Humans now walks instead driving again");
+    t.ok(human.walking, "Humans now walks instead driving again");
         
-};
-
-return testobj;
-})()
+});

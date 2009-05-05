@@ -1,16 +1,14 @@
-(function () {
-var testobj = new Test.TAP.Class();
-testobj.plan(38)
-
-testobj.testSanity = function() {
+StartTest(function(t) {
+	t.plan(38)
+	
     //==================================================================================================================================================================================
-    this.diag("Basic Role application");
+    t.diag("Basic Role application");
     
-    this.ok(Joose.Managed.Role, "Joose.Managed.Role is here");
-    this.ok(Joose.Managed.Class, "Joose.Managed.Class is here");
+    t.ok(Joose.Managed.Role, "Joose.Managed.Role is here");
+    t.ok(Joose.Managed.Class, "Joose.Managed.Class is here");
     
     //==================================================================================================================================================================================
-    this.diag("Role creation");
+    t.diag("Role creation");
     
     var Walk = new Joose.Managed.Role('Walk', { 
         have : {
@@ -23,9 +21,9 @@ testobj.testSanity = function() {
         }
     }).c;
     
-    this.ok(Walk.meta.hasAttribute('walking') && Walk.meta.getAttribute('walking').value == false, 'Walk has correct attribute walking');
-    this.ok(Walk.meta.hasMethod('walk'), 'Walk has method walk');
-    this.ok(Walk.meta.hasMethod('stop'), 'Walk has method stop');
+    t.ok(Walk.meta.hasAttribute('walking') && Walk.meta.getAttribute('walking').value == false, 'Walk has correct attribute walking');
+    t.ok(Walk.meta.hasMethod('walk'), 'Walk has method walk');
+    t.ok(Walk.meta.hasMethod('stop'), 'Walk has method stop');
 
 
     var Eat = new Joose.Managed.Role('Eat', { 
@@ -41,16 +39,16 @@ testobj.testSanity = function() {
     
     
     //==================================================================================================================================================================================
-    this.diag("Exceptions");
+    t.diag("Exceptions");
     
-    this.throws_ok(function(){
+    t.throws_ok(function(){
         var Creature = new Joose.Managed.Class('Creature', {
             does : [ Walk, Eat ]
         }).c;
     }, "Attempt to apply ConflictMarker [stop] to [Creature]", "Conflicts are detecting");
     
     
-    this.throws_ok(function(){
+    t.throws_ok(function(){
         var Creature = new Joose.Managed.Class('Creature', {
             requires : [ 'walk' ]
         }).c;
@@ -58,7 +56,7 @@ testobj.testSanity = function() {
     
     
     //==================================================================================================================================================================================
-    this.diag("Composing a class from roles with aliasing");
+    t.diag("Composing a class from roles with aliasing");
     
     
     var Creature = new Joose.Managed.Class('Creature', {
@@ -78,24 +76,24 @@ testobj.testSanity = function() {
     }).c;
     
 
-    this.ok(Creature.meta.hasAttribute('walking') && Creature.meta.getAttribute('walking').value == false, "Creature has correct attribute 'walking'");
-    this.ok(Creature.meta.hasAttribute('eating') && Creature.meta.getAttribute('eating').value == false, "Creature has correct attribute 'eating'");
-    this.ok(Creature.meta.hasMethod('walk'), 'Creature has method walk');
-    this.ok(Creature.meta.hasMethod('eat'), 'Creature has method eat');
-    this.ok(Creature.meta.hasMethod('stopWalk'), 'Creature has method stopWalk');
-    this.ok(Creature.meta.hasMethod('stopEat'), 'Creature has method stopEat');
-    this.ok(!Creature.meta.hasMethod('stop'), 'Creature hasnt method stop');
+    t.ok(Creature.meta.hasAttribute('walking') && Creature.meta.getAttribute('walking').value == false, "Creature has correct attribute 'walking'");
+    t.ok(Creature.meta.hasAttribute('eating') && Creature.meta.getAttribute('eating').value == false, "Creature has correct attribute 'eating'");
+    t.ok(Creature.meta.hasMethod('walk'), 'Creature has method walk');
+    t.ok(Creature.meta.hasMethod('eat'), 'Creature has method eat');
+    t.ok(Creature.meta.hasMethod('stopWalk'), 'Creature has method stopWalk');
+    t.ok(Creature.meta.hasMethod('stopEat'), 'Creature has method stopEat');
+    t.ok(!Creature.meta.hasMethod('stop'), 'Creature hasnt method stop');
     
     var creature = new Creature();
     
     creature.walk('there');
-    this.ok(creature.walking, 'Creature is walking');
+    t.ok(creature.walking, 'Creature is walking');
     creature.stopWalk();
-    this.ok(!creature.walking, 'Creature is not walking');
+    t.ok(!creature.walking, 'Creature is not walking');
     
 
     //==================================================================================================================================================================================
-    this.diag("Cannibal creature");
+    t.diag("Cannibal creature");
     
     var Cannibalism = new Joose.Managed.Role('Cannibalism', {
         requires : [ 'eat' ],
@@ -120,16 +118,16 @@ testobj.testSanity = function() {
     var creature = new Creature();
     
     cannibal1.eat(creature);
-    this.ok(!cannibal1.eating, "Cannibal eats only creatures from his species #1 + method modifier from Role works");
+    t.ok(!cannibal1.eating, "Cannibal eats only creatures from his species #1 + method modifier from Role works");
 
     cannibal1.eat(cannibal2);
-    this.ok(cannibal1.eating, "Cannibal eats only creatures from his species #2");
+    t.ok(cannibal1.eating, "Cannibal eats only creatures from his species #2");
     cannibal1.stopEat();
-    this.ok(!cannibal1.eating, "Cannibal1 ate cannibal2 )");
+    t.ok(!cannibal1.eating, "Cannibal1 ate cannibal2 )");
     
     
     //==================================================================================================================================================================================
-    this.diag("Plant & required methods");
+    t.diag("Plant & required methods");
     
     var Plant = new Joose.Managed.Class('Plant', {
         methods : {
@@ -138,7 +136,7 @@ testobj.testSanity = function() {
     }).c;
     
     
-    this.throws_ok(function(){
+    t.throws_ok(function(){
         Plant.meta.extend({
             does : [ Cannibalism ]
         });
@@ -148,7 +146,7 @@ testobj.testSanity = function() {
     var plant = new Plant();
 
     //==================================================================================================================================================================================
-    this.diag("Human");
+    t.diag("Human");
     
     var Drive = new Joose.Managed.Role('Drive', {
         requires : [ 'walk' ],
@@ -211,33 +209,33 @@ testobj.testSanity = function() {
     var human = new Human();
     
     human.eat(cannibal1);
-    this.ok(!human.eating, "Human doesn't eat thing which can 'walk' #1");
-    this.ok(!human.cleanHands, "Human have not washed hands yet");
+    t.ok(!human.eating, "Human doesn't eat thing which can 'walk' #1");
+    t.ok(!human.cleanHands, "Human have not washed hands yet");
     
     human.eat(creature);
-    this.ok(!human.eating, "Human doesn't eat thing which can 'walk' #2");
+    t.ok(!human.eating, "Human doesn't eat thing which can 'walk' #2");
     
     human.eat(plant);
-    this.ok(human.eating, "Human is vegetarian");
-    this.ok(human.cleanHands, "Human washed hands before eating");
+    t.ok(human.eating, "Human is vegetarian");
+    t.ok(human.cleanHands, "Human washed hands before eating");
     
     human.stopEat();
-    this.ok(!human.cleanHands, "Human has dirty hands after he ate");
+    t.ok(!human.cleanHands, "Human has dirty hands after he ate");
     
     human.walk('supermarket');
-    this.ok(!human.walking, "Humans mostly drives #1");
-    this.ok(human.driving, "Humans mostly drives #2");
+    t.ok(!human.walking, "Humans mostly drives #1");
+    t.ok(human.driving, "Humans mostly drives #2");
     
     human.eat(plant);
-    this.ok(human.eating, "Human can eat during driving");
+    t.ok(human.eating, "Human can eat during driving");
     human.stopEat();
     
     human.stop();
-    this.ok(!human.driving, "Humans stopped");
+    t.ok(!human.driving, "Humans stopped");
     
     
     //==================================================================================================================================================================================
-    this.diag("Mutability");
+    t.diag("Mutability");
     
     Drive.meta.extend({ 
         override : {
@@ -248,15 +246,15 @@ testobj.testSanity = function() {
     });      
     
     human.drive('supermarket');
-    this.ok(human.driving, "Humans is driving");
+    t.ok(human.driving, "Humans is driving");
     
     human.eat(plant);
-    this.ok(!human.eating, "Human now cant eat during driving");
+    t.ok(!human.eating, "Human now cant eat during driving");
     
     human.stop();
     
     human.eat(plant);
-    this.ok(human.eating, "Human now can eat again");
+    t.ok(human.eating, "Human now can eat again");
     human.stopEat();
     
 
@@ -266,13 +264,13 @@ testobj.testSanity = function() {
     });
     
     cannibal1.eat(creature);
-    this.ok(!cannibal1.eating, "Cannibal eats only creatures from his species which cant walk now");
+    t.ok(!cannibal1.eating, "Cannibal eats only creatures from his species which cant walk now");
 
     cannibal1.eat(cannibal2);
-    this.ok(!cannibal1.eating, "Cannibal eats only creatures from his species which cant walk now");
+    t.ok(!cannibal1.eating, "Cannibal eats only creatures from his species which cant walk now");
     
     cannibal1.eat(plant);
-    this.ok(!cannibal1.eating, "Cannibal eats only creatures from his species which cant walk now");
+    t.ok(!cannibal1.eating, "Cannibal eats only creatures from his species which cant walk now");
     
 
     Cannibalism.meta.extend({ 
@@ -280,7 +278,7 @@ testobj.testSanity = function() {
     });
     
     cannibal1.eat(cannibal2);
-    this.ok(cannibal1.eating, "Cannibal now can eat again");
+    t.ok(cannibal1.eating, "Cannibal now can eat again");
     cannibal1.stopEat();
     
     
@@ -290,9 +288,6 @@ testobj.testSanity = function() {
     });
     
     human.walk('supermarket');
-    this.ok(human.walking, "Humans now walks instead driving again");
+    t.ok(human.walking, "Humans now walks instead driving again");
     
-};
-
-return testobj;
-})()
+});
