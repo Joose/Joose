@@ -1,16 +1,14 @@
-(function () {
-var testobj = new Test.TAP.Class();
-testobj.plan(30)
-
-testobj.testSanity = function() {
+StartTest(function(t) {
+	t.plan(30)
+	
     //==================================================================================================================================================================================
-    this.diag("Joose.Managed.Class");
+    t.diag("Joose.Managed.Class");
     
-    this.ok(Joose.Managed.Class, "Joose.Managed.Class is here");
+    t.ok(Joose.Managed.Class, "Joose.Managed.Class is here");
     
     
     //==================================================================================================================================================================================
-    this.diag("Creation & managed extending (building)");
+    t.diag("Creation & managed extending (building)");
     
     var TestClass = new Joose.Managed.Class('TestClass', {
         have : {
@@ -22,33 +20,33 @@ testobj.testSanity = function() {
         }
     }).c;
     
-    this.ok(typeof TestClass == 'function', "TestClass was created");
+    t.ok(typeof TestClass == 'function', "TestClass was created");
     
-    this.ok(TestClass.meta.hasAttribute('res'), "TestClass has 'res' attribute"); 
-    this.ok(TestClass.meta.hasMethod('result'), "TestClass has 'result' method");
+    t.ok(TestClass.meta.hasAttribute('res'), "TestClass has 'res' attribute"); 
+    t.ok(TestClass.meta.hasMethod('result'), "TestClass has 'result' method");
 
-    this.ok(TestClass.meta.hasOwnAttribute('res'), "TestClass has own 'res' attribute");
-    this.ok(TestClass.meta.getAttribute('res') instanceof Joose.Managed.Property.Attribute, "'res' attribute is instance of Joose.Managed.Property.Attribute");
+    t.ok(TestClass.meta.hasOwnAttribute('res'), "TestClass has own 'res' attribute");
+    t.ok(TestClass.meta.getAttribute('res') instanceof Joose.Managed.Property.Attribute, "'res' attribute is instance of Joose.Managed.Property.Attribute");
     
-    this.ok(TestClass.meta.hasOwnMethod('result'), "TestClass has own 'result' method");
-    this.ok(TestClass.meta.getMethod('result') instanceof Joose.Managed.Property.MethodModifier.Put, "'result' method is instance of Joose.Managed.Property.MethodModifier.Put");
-    this.ok(typeof TestClass.prototype.result == 'function', "Some function was installed into prototype");
+    t.ok(TestClass.meta.hasOwnMethod('result'), "TestClass has own 'result' method");
+    t.ok(TestClass.meta.getMethod('result') instanceof Joose.Managed.Property.MethodModifier.Put, "'result' method is instance of Joose.Managed.Property.MethodModifier.Put");
+    t.ok(typeof TestClass.prototype.result == 'function', "Some function was installed into prototype");
     
-    this.ok(TestClass.meta.hasMethod('initialize'), "TestClass has 'initialize' method");
-    this.ok(TestClass.meta.hasMethod('SUPER'), "TestClass has 'SUPER' method");
+    t.ok(TestClass.meta.hasMethod('initialize'), "TestClass has 'initialize' method");
+    t.ok(TestClass.meta.hasMethod('SUPER'), "TestClass has 'SUPER' method");
     
-    this.ok(!TestClass.meta.hasOwnMethod('initialize'), "TestClass doesnt have own 'initialize' method");
-    this.ok(!TestClass.meta.hasOwnMethod('SUPER'), "TestClass doesnt have own 'SUPER' method");
+    t.ok(!TestClass.meta.hasOwnMethod('initialize'), "TestClass doesnt have own 'initialize' method");
+    t.ok(!TestClass.meta.hasOwnMethod('SUPER'), "TestClass doesnt have own 'SUPER' method");
     
     var testClass = new TestClass();
     
-    this.ok(testClass, "TestClass was instantiated");
-    this.ok(testClass.res == true, "Attribute was correctly installed");
-    this.is(testClass.result(), 'TestClass', "Method was correctly installed");
+    t.ok(testClass, "TestClass was instantiated");
+    t.ok(testClass.res == true, "Attribute was correctly installed");
+    t.is(testClass.result(), 'TestClass', "Method was correctly installed");
     
     
     //==================================================================================================================================================================================
-    this.diag("Extending of builder");
+    t.diag("Extending of builder");
     
     var TestMetaClass = new Joose.Managed.Class('TestClass1', {
         isa : Joose.Managed.Class,
@@ -81,7 +79,7 @@ testobj.testSanity = function() {
     
     var testClass1 = new TestClass1();
     
-    this.ok(TestClass1.meta.hasOwnMethod('result') && testClass1.result() == 'TestClass1', "Builder was extened and works correctly");
+    t.ok(TestClass1.meta.hasOwnMethod('result') && testClass1.result() == 'TestClass1', "Builder was extened and works correctly");
 
     
     var TestClass11 = new TestMetaClass('TestClass11', {
@@ -93,51 +91,51 @@ testobj.testSanity = function() {
     
     var testClass11 = new TestClass11();
     
-    this.ok(TestClass11.meta.hasOwnMethod('result') && testClass11.result() == 'TestClass11', "Builder was extened and works correctly #2");
+    t.ok(TestClass11.meta.hasOwnMethod('result') && testClass11.result() == 'TestClass11', "Builder was extened and works correctly #2");
     
 
     //==================================================================================================================================================================================
-    this.diag("Method & Attribute objects");
+    t.diag("Method & Attribute objects");
     
     var result = TestClass1.meta.getMethod('result');
     
-    this.ok(result instanceof Joose.Managed.Property.MethodModifier.Put, "'result' method have a meta object - instance of Joose.Managed.Property.MethodModifier.Put");
+    t.ok(result instanceof Joose.Managed.Property.MethodModifier.Put, "'result' method have a meta object - instance of Joose.Managed.Property.MethodModifier.Put");
     
-    this.ok(result.value == TestClass1.prototype.result._contain, "'result' method is a wrapper");
+    t.ok(result.value == TestClass1.prototype.result._contain, "'result' method is a wrapper");
     
     
     var res = TestClass1.meta.getAttribute('res');
     
-    this.ok(res instanceof Joose.Managed.Property.Attribute, "'res' attribute have a meta object - instance of Joose.Managed.Property.Attribute");
+    t.ok(res instanceof Joose.Managed.Property.Attribute, "'res' attribute have a meta object - instance of Joose.Managed.Property.Attribute");
     
-    this.ok(res.value == TestClass1.prototype.res, "Default value of 'res' attribute is a 'value' property of its meta");
+    t.ok(res.value == TestClass1.prototype.res, "Default value of 'res' attribute is a 'value' property of its meta");
     
-    this.ok(!TestClass1.meta.hasOwnAttribute('res'), "TestClass1 dont have own 'res' attribute - its inherited from TestClass");
+    t.ok(!TestClass1.meta.hasOwnAttribute('res'), "TestClass1 dont have own 'res' attribute - its inherited from TestClass");
     
     
     //==================================================================================================================================================================================
-    this.diag("Mutability");
+    t.diag("Mutability");
     
-    this.ok(TestClass1.meta.hasOwnMethod('result'), "TestClass1 has own 'result' method");
+    t.ok(TestClass1.meta.hasOwnMethod('result'), "TestClass1 has own 'result' method");
     
     TestClass1.meta.extend({
         removeMethods : ['result']
     });
     
-    this.ok(!TestClass1.meta.hasOwnMethod('result'), "TestClass1 dont have own 'result' method");
-    this.ok(TestClass1.meta.hasMethod('result'), "TestClass1 still have inherited 'result' method");
-    this.is(testClass1.result(), 'TestClass', "... and it works correctly");
+    t.ok(!TestClass1.meta.hasOwnMethod('result'), "TestClass1 dont have own 'result' method");
+    t.ok(TestClass1.meta.hasMethod('result'), "TestClass1 still have inherited 'result' method");
+    t.is(testClass1.result(), 'TestClass', "... and it works correctly");
     
-    this.ok(TestClass1.meta.hasAttribute('res'), "TestClass1 still has 'res' attribute after extension");
+    t.ok(TestClass1.meta.hasAttribute('res'), "TestClass1 still has 'res' attribute after extension");
     
     TestClass.meta.extend({
         removeMethods : ['result']
     });
-    this.ok(!TestClass1.meta.hasMethod('result'), "TestClass1 now dont have any 'result's methods");
+    t.ok(!TestClass1.meta.hasMethod('result'), "TestClass1 now dont have any 'result's methods");
     
 
     //==================================================================================================================================================================================
-    this.diag("SUPER call");
+    t.diag("SUPER call");
 
     var TestClass3 = new Joose.Managed.Class('TestClass3', {
         methods : {
@@ -163,11 +161,6 @@ testobj.testSanity = function() {
     
     var testClass5 = new TestClass5();
     
-    this.is(testClass5.inc(1), 4, "'inc' was overriden and works correctly");
-
+    t.is(testClass5.inc(1), 4, "'inc' was overriden and works correctly");
     
-    
-};
-
-return testobj;
-})()
+});
