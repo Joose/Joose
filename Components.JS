@@ -1,5 +1,5 @@
 COMPONENTS = {
-	core : [
+	"core" : [
 	    "Joose",
 	    "Joose.Proto.Object",
 	    "Joose.Proto.Class",
@@ -51,6 +51,7 @@ COMPONENTS = {
 	    
 	    "Joose.Helper"
 	]
+	
 	
 //	more : [
 //		'+core',
