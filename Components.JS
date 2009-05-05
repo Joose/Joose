@@ -50,12 +50,10 @@ COMPONENTS = {
 	    "Joose.Namespace.Manager",
 	    
 	    "Joose.Helper"
+	],
+	
+	"packed" : [
+		"Task.Joose.core"
 	]
-	
-	
-//	more : [
-//		'+core',
-//		'JooseX.etc.etc'
-//	]
 } 
 
