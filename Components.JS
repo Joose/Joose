@@ -1,4 +1,5 @@
 COMPONENTS = {
+    
 	"core" : [
 	    "Joose",
 	    "Joose.Proto.Object",
@@ -55,5 +56,6 @@ COMPONENTS = {
 	"packed" : [
 		"Task.Joose.core"
 	]
+    
 } 
 
