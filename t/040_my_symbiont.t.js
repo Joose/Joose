@@ -1,5 +1,5 @@
 StartTest(function(t) {
-	t.plan(22)
+	t.plan(28)
 	
     //==================================================================================================================================================================================
     t.diag("Symbiont - separate, built-in class, (analog of class-methods + class-attributes + class-roles + ...)")
@@ -34,6 +34,7 @@ StartTest(function(t) {
     
     t.ok(typeof TestClass == 'function', "TestClass was created")
     t.ok(TestClass.my && TestClass.my.meta, "Class-level symbiont was created")
+    t.ok(TestClass.my.meta instanceof Joose.Meta.Class, "Symbiont has the same metaclass as its hoster")
     
     t.ok(TestClass.meta.hasAttribute('res'), "TestClass has 'res' attribute"); 
     t.ok(TestClass.meta.hasMethod('result'), "TestClass has 'result' method")
@@ -68,6 +69,7 @@ StartTest(function(t) {
         }
     })
     
+    t.ok(Walk.my instanceof Joose.Meta.Role, "Symbiont has the same metaclass as its hoster #2")
     t.ok(Walk.my.hasAttribute('walking') && Walk.my.getAttribute('walking').value == false, 'Walk has correct attribute walking')
     t.ok(Walk.my.hasMethod('walk'), 'Walk has method walk')
     t.ok(Walk.my.hasMethod('stop'), 'Walk has method stop')
