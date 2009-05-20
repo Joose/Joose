@@ -69,10 +69,10 @@ StartTest(function(t) {
         }
     })
     
-    t.ok(Walk.my instanceof Joose.Meta.Role, "Symbiont has the same metaclass as its hoster #2")
-    t.ok(Walk.my.hasAttribute('walking') && Walk.my.getAttribute('walking').value == false, 'Walk has correct attribute walking')
-    t.ok(Walk.my.hasMethod('walk'), 'Walk has method walk')
-    t.ok(Walk.my.hasMethod('stop'), 'Walk has method stop')
+    t.ok(Walk.my.meta instanceof Joose.Meta.Role, "Symbiont has the same metaclass as its hoster #2")
+    t.ok(Walk.my.meta.hasAttribute('walking') && Walk.my.meta.getAttribute('walking').value == false, 'Walk has correct attribute walking')
+    t.ok(Walk.my.meta.hasMethod('walk'), 'Walk has method walk')
+    t.ok(Walk.my.meta.hasMethod('stop'), 'Walk has method stop')
 
 
     //==================================================================================================================================================================================
