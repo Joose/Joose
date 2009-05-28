@@ -32,7 +32,11 @@ COMPONENTS = {
 	    "Joose.Managed.Class",
 	    "Joose.Managed.Role",
 	                
-	    "Joose.Meta.Object",
+        "Joose.Meta.Object",
+        
+        "Joose.Managed.Property.MetaRole",
+        "Joose.Managed.StemElement.MetaRoles",
+        "Joose.Meta.MetaRole",
 	    
 	    "Joose.Meta.Class",
 	    "Joose.Meta.Role",
@@ -40,7 +44,7 @@ COMPONENTS = {
 	    "Joose.Meta.Class.Detached",
 	    
 	    "Joose.Managed.Attribute",
-	    
+        
 	    "Joose.Managed.PropertySet.Namespace",
 	    
 	    "Joose.Managed.Attribute.Builder",
