@@ -47,4 +47,10 @@ StartTest(function(t) {
     t.ok(Resource.meta.hasMethod('process') && resource.process() == 'processFromResource', "Resource has correct method 'process'")
     t.ok(resource.res == 'resFromAfter', 'method modifier was recevied from PseudoRole')
 
+    
+//    //==================================================================================================================================================================================
+//    t.diag("Using Class as Role (inheritance use case")
+//    
+//    Class('TestSuper')
+    
 })
