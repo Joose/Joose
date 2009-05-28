@@ -1,5 +1,5 @@
 StartTest(function(t) {
-	t.plan(27)
+	t.plan(29)
 	
     //==================================================================================================================================================================================
     t.diag("Role application")
@@ -47,6 +47,8 @@ StartTest(function(t) {
     
     t.ok(creature.meta.constructor == Joose.Meta.Class.Detached, "Instance was detached")
     t.ok(creature.constructor != Creature, "Instance was detached, indeed")
+    t.ok(creature.isDetached(), "Instance was detached, indeed #2")
+    
     t.ok(creature.own_attr == true, "Original attributes havn't changed")
     t.ok(typeof creature.walking == 'undefined', "Attributes were not applied")
     
@@ -112,6 +114,7 @@ StartTest(function(t) {
     
     t.ok(creature.meta.constructor == Joose.Meta.Class, "Instance was attached back")
     t.ok(creature.constructor == Creature, "Instance was attached back, indeed")
+    t.ok(!creature.isDetached(), "Instance was attached back, indeed #2")
     
     t.ok(creature.own_attr == true, "Original attributes still havn't changed")
     t.ok(!creature.meta.hasAttribute('walking'), "creature hasnt 'walking' attribute")
