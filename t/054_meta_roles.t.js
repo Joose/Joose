@@ -48,7 +48,7 @@ StartTest(function(t) {
         
         builder : {
             methods : {
-                customAttr : function (targetMeta, info) {
+                sugar : function (targetMeta, info) {
                     targetMeta.stem.properties.attributes.addProperty(info.name, { init : info.value })
                 }
             }
@@ -66,7 +66,7 @@ StartTest(function(t) {
     Role('CustomBuilderWrapper', {
         metaRoles : CustomBuilder,
         
-        customAttr : {
+        sugar : {
             name : 'custom',
             value : 'attribute'
         }
@@ -82,7 +82,7 @@ StartTest(function(t) {
         
         does : CustomBuilderWrapper,
         
-        customAttr : {
+        sugar : {
             name : 'custom',
             value : 'attribute'
         }
@@ -94,7 +94,7 @@ StartTest(function(t) {
     t.ok(TestClass2.meta.builder.isDetached(), "TestClass2's builder is detached")
     t.ok(TestClass2.meta.stem.isDetached(), "TestClass2's stem is detached")
     
-    t.ok(TestClass2.meta.builder.meta.hasMethod('customAttr'), "TestClass2's builder received new method")
+    t.ok(TestClass2.meta.builder.meta.hasMethod('sugar'), "TestClass2's builder received new method")
     
     t.ok(TestClass2.meta.hasAttribute('custom') && TestClass2.meta.getAttribute('custom').value == 'attribute', "TestClass2 has correct attribute 'custom'")
     
@@ -109,5 +109,5 @@ StartTest(function(t) {
     t.ok(!TestClass2.meta.builder.isDetached(), "TestClass2's builder is attached back")
     t.ok(!TestClass2.meta.stem.isDetached(), "TestClass2's stem is attached back")
     
-    t.ok(!TestClass2.meta.builder.meta.hasMethod('customAttr'), "TestClass2's builder have no roles applied")
+    t.ok(!TestClass2.meta.builder.meta.hasMethod('sugar'), "TestClass2's builder have no roles applied")
 })
