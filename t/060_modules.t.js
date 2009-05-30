@@ -1,5 +1,5 @@
 StartTest(function(t) {
-	t.plan(53)
+	t.plan(56)
 	
     //==================================================================================================================================================================================
     t.diag("Modules")
@@ -149,13 +149,13 @@ StartTest(function(t) {
     t.diag("Class usage in Module context")
     
     Class("TestModule.Test3.FooBar", {
-	        have : {
-	        	one : 1
-	        },
-	        
-	        methods: { 
-	        	two: function () { return 2 } 
-	    	}
+        have : {
+        	one : 1
+        },
+        
+        methods: { 
+        	two: function () { return 2 } 
+    	}
     })
     
     t.ok(TestModule.Test3.FooBar, "We can use a class as Module")
@@ -234,5 +234,24 @@ StartTest(function(t) {
             t.ok(Level1.Level2.Level3_2 && Level1.Level2.Level3_2.meta.constructor == Joose.Namespace.Keeper, "Level1.Level2.Level3_2 spot filled correctly")
         }
     })
+
+    
+    //==================================================================================================================================================================================
+    t.diag("Class is already constructed in 'body' execution")
+    
+    Class("TestClass", {
+        methods : {
+            four : function () { return 4 }
+        },
+        
+        body : function () {
+            t.ok(TestClass && TestClass.meta.constructor == Joose.Meta.Class, "TestClass spot filled correctly")
+            
+            t.ok(!TestClass.meta.stem.opened, "TestClass's stem is closed")
+            
+            t.ok(new TestClass().four() == 4, "TestClass class is already constructed")
+        }
+    })
+    
     
 })
