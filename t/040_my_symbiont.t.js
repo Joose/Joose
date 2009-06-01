@@ -1,5 +1,5 @@
 StartTest(function(t) {
-	t.plan(28)
+	t.plan(31)
 	
     //==================================================================================================================================================================================
     t.diag("Symbiont - separate, built-in class, (analog of class-methods + class-attributes + class-roles + ...)")
@@ -91,6 +91,7 @@ StartTest(function(t) {
     TestClass.my.stop()
     t.ok(!TestClass.my.walking, 'TestClass is not walking')
         
+    
     //==================================================================================================================================================================================
     t.diag("Symbiont inheritance")
     
@@ -114,4 +115,19 @@ StartTest(function(t) {
     t.is(SubTestClass.my.res, 'SubTestClass:res', "Symbiont's 'after' modifier was executed")
     t.is(SubTestClass.my.result(), 'SubTestClass:class', "Symbiont's method was correctly overriden")
     
+    
+    //==================================================================================================================================================================================
+    t.diag("Receiving symbiont via Role")
+    
+    Class('TestClass1', {
+        
+        does : [ Walk ]
+        
+    })
+    
+    t.ok(TestClass1.my, "TestClass1 received 'my' symbiont via role");
+    t.ok(TestClass1.my.meta.hasAttribute('walking'), "TestClass1.my has 'walking' attribute"); 
+    t.ok(TestClass1.my.meta.hasMethod('walk'), "TestClass1.my has 'walk' method")
+    
+
 })
