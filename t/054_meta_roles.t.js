@@ -129,8 +129,6 @@ StartTest(function(t) {
 
     
     Class('TestClass4', {
-        meta : Joose.Meta.Class,
-        
         isa : TestClass3,
         
         sugar : {
