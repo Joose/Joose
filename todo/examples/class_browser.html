@@ -3,9 +3,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>Joose Class Browser</title>
 
-<script type="text/javascript" src="../lib/Joose.js"></script>
+<script type="text/javascript" src="../../lib/Task/Joose/core.js"></script>
+<script type="text/javascript" src="http://github.com/SamuraiJack/JooseX-Attribute/raw/67ef745399b4231e07afac04e066e2d6a8afdc7d/lib/JooseX/Attribute/Lazy.js"></script>
+<script type="text/javascript" src="http://github.com/SamuraiJack/JooseX-Attribute/raw/67ef745399b4231e07afac04e066e2d6a8afdc7d/lib/JooseX/Attribute/Trigger.js"></script>
+<script type="text/javascript" src="../lib/JooseX/IDE/ClassBrowser.js"></script>
 <script type="text/javascript">
-joose.loadComponents("../lib")
 
 function $(id) {
 	return document.getElementById(id)
@@ -17,14 +19,32 @@ function $(id) {
 <script type="text/javascript">
 
 Module("com.test.me", function () {
+    Role("Doer", {
+        methods: {
+            doSomething: function() { alert("I'm doing something") }
+        }
+    });
+        
 	Class("TestClass", {
 		isa: Joose.Method,
-		does: Joose.Decorator,
+        does: com.test.me.Doer,
+        has: {
+            bar: {
+                is: "rw",
+                init: "world"
+            }
+        },
+		//does: Joose.Decorator,
 		methods: {
 			hello: function () { return "world" }
 		},
-		classMethods: {
-			foo: function () { alert("bar") }
+		my: {
+                has: {
+                baz: "a class attribute"
+            },
+			methods: {
+				foo: function () { alert("bar") }
+			}
 		}
 	})
 })
@@ -33,17 +53,54 @@ Module("com.test.me", function () {
 
 <script type="text/javascript" src="../tests/json2.js"></script>
 <link href="test.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../lib/JooseX/IDE/ClassBrowser.js"></script>
 
+  <style type="text/css">
+  #JooseCB {
+  	font-family: Arial;
+  }
+  #JooseCB th {
+  	text-align: left;
+  	width: 25%;
+  	background-color: #99ccff;
+  }
+  
+  #JooseCB select {
+  	min-width: 100%
+  }
+  
+  #JooseCB td {
+  	background-color: #99ccff;
+  }
+  #JooseCBContainerTable {
+  	width: 100%;
+  }
+  </style>
 
 </head>
 
 <body>
+<div id="JooseCB">
+  <table id="JooseCBContainerTable" cellpadding=5 cellspacing=1>
+    <tr>
+      <th>Modules</th>
+      <th>Classes and Roles</th>
+      <th>Categories</th>
+      <th>Elements</th>
+    </tr>
+    <tr>
+      <td><select id="JooseCBModulesSelect" size=10     onchange="cb.selectedModule(this)"></select>
+      <td><select id="JooseCBClassesSelect" size=10     onchange="cb.selectedClass(this)"></select>
+      <td><select id="JooseCBCategoriesSelect" size=10  onchange="cb.selectedCategory(this)"></select>
+      <td><select id="JooseCBElementsSelect" size=10    onchange="cb.selectedElement(this)"></select>
+    </tr>
+    <tr>
+      <td id="JooseCBBody" colspan="4"></td>
+    </tr>
+  </table>
+</div>
 
-<script type="text/javascript">
-var request = new Joose.SimpleRequest();
-var html    = request.getText("class_browser_component.html");
-document.write(html)
-</script>
+
 <script type="text/javascript">
 window.cb = new JooseX.IDE.ClassBrowser()
 </script>
