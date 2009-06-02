@@ -55,10 +55,6 @@ COMPONENTS = {
 	    "Joose.Namespace.Manager",
 	    
 	    "Joose.Helper"
-	],
-	
-	"packed" : [
-		"Task.Joose.core"
 	]
     
 } 

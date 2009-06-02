@@ -1,5 +1,5 @@
 StartTest(function(t) {
-	t.plan(21)
+	t.plan(28)
 	
     //==================================================================================================================================================================================
     t.diag("MetaRoles (roles which applies to metaclass of applicant")
@@ -110,4 +110,51 @@ StartTest(function(t) {
     t.ok(!TestClass2.meta.stem.isDetached(), "TestClass2's stem is attached back")
     
     t.ok(!TestClass2.meta.builder.meta.hasMethod('sugar'), "TestClass2's builder have no roles applied")
+    
+    
+    //==================================================================================================================================================================================
+    t.diag("MetaRoles inheritance")
+    
+    Class('TestClass3', {
+        
+        does : CustomBuilderWrapper,
+        
+        sugar : {
+            name : 'custom3',
+            value : 'attribute3'
+        }
+        
+    })
+    t.ok(TestClass3, 'TestClass3 class was created')
+
+    
+    Class('TestClass4', {
+        meta : Joose.Meta.Class,
+        
+        isa : TestClass3,
+        
+        sugar : {
+            name : 'custom4',
+            value : 'attribute4'
+        }
+        
+    })
+    t.ok(TestClass4, 'TestClass4 class was created')
+    
+    t.ok(TestClass4.meta.isDetached(), "TestClass4's meta is detached")
+    t.ok(TestClass4.meta.builder.meta.hasMethod('sugar'), "TestClass4's builder received new method")
+    
+    t.ok(TestClass4.meta.hasAttribute('custom4') && TestClass4.meta.getAttribute('custom4').value == 'attribute4', "TestClass4 has correct attribute 'custom4'")
+
+    
+    //==================================================================================================================================================================================
+    t.diag("Mutability #3")
+    
+    TestClass3.meta.extend({
+        doesnt : CustomBuilderWrapper
+    })
+    
+    t.ok(!TestClass4.meta.isDetached(), "TestClass4's meta is attached back")
+    t.ok(!TestClass4.meta.builder.meta.hasMethod('sugar'), "TestClass4's builder have no roles applied")
+    
 })
