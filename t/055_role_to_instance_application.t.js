@@ -1,5 +1,5 @@
 StartTest(function(t) {
-	t.plan(29)
+	t.plan(33)
 	
     //==================================================================================================================================================================================
     t.diag("Role application")
@@ -125,4 +125,35 @@ StartTest(function(t) {
     t.ok(!creature.meta.hasMethod('stopWalk') && !creature.stopWalk, "creature hasnt 'stopWalk' method")
     t.ok(!creature.meta.hasMethod('stopEat') && !creature.stopEat, "creature hasnt 'stopEat' method")
     
+    
+    //==================================================================================================================================================================================
+    t.diag("Detaching instance of class with 'my'")
+    
+    Class('TestClass', {
+        my : {
+            methods : {
+                process : function () {
+                    return 'res'
+                }
+            }
+        },
+        
+        methods : {
+            process : function () {
+                return this.constructor.my.process()
+            }
+        }
+    })
+    
+    t.ok(TestClass && TestClass.my.process() == 'res', "TestClass was created correctly")
+    
+    var testClass = new TestClass()
+    
+    t.ok(testClass.process() == 'res', "Instance of 'TestClass' has a correct 'process' method")
+    
+    testClass.detach()
+    t.ok(testClass.process() == 'res', "Instance of 'TestClass' has a correct 'process' method after detaching")
+    
+    testClass.attach()
+    t.ok(testClass.process() == 'res', "Instance of 'TestClass' has a correct 'process' method after attaching")
 })
