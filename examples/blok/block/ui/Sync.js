@@ -97,7 +97,7 @@ Module("block.ui", function (m) {
                 state.traverse(function updateDocVisitor (shape, container) {
                     var map = document.manager.shapeByGuidMap
                     var cur = map[shape.getGuid()]
-                    if(cur) {
+                    if(cur && cur.getGuid() != 0) {
                         console.log("Update")
                         if(!cur.isDeleted()) {
                             cur.updateFrom(shape)

@@ -268,6 +268,10 @@ Module("block.ui", function (m) {
                 document.manager.asyncSwitchFocus(this)
             },
             
+            getGuid: function () {
+                return this._guid
+            },
+            
             registerGuid: function () {
                 document.manager.shapeByGuidMap[this.getGuid()] = this
             },

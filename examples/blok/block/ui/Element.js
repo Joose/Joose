@@ -41,6 +41,11 @@ Module("block.ui", function (m) {
                 persistent:   false
             }
         },
+        before: {
+            initialize: function () {
+                var test = true
+            }
+        },
         methods: {
             
             isDeleted: function () {
