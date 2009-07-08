@@ -44,7 +44,7 @@ USAGE:
             options = {};
         }
         var opt = {},
-            defaults = {type: 'keydown', propagate: false, disableInInput: false, target: jQuery('html')[0], checkParent: true},
+            defaults = {type: 'keydown', propagate: false, disableInInput: false, target: document, checkParent: true},
             that = this;
         opt = jQuery.extend( opt , defaults, options || {} );
         combi = combi.toLowerCase();        

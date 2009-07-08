@@ -1,6 +1,6 @@
 // This is Joose 2.0.1
 // For documentation see http://code.google.com/p/joose-js/
-// Generated: Sun Jul  5 15:12:08 2009
+// Generated: Wed Jul  8 11:34:08 2009
 
 
 // ##########################
@@ -1676,8 +1676,12 @@ Class("Joose.Method", {
         },
         
         // creates a new method object with the same name
-        _makeWrapped: function (func) {
-            return this.meta.instantiate(this.getName(), func); // Should there be , this.getProps() ???
+        _makeWrapped: function (func, type) {
+            var name = this.getName();
+            if(!func.displayName) {
+                func.displayName = type+"("+name+")"
+            }
+            return this.meta.instantiate(name, func); // Should there be , this.getProps() ???
         },
         
         around: function (func) {
