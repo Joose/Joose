@@ -1,6 +1,6 @@
 (function() {
 var t = new Test.TAP.Class();
-t.plan(0);
+t.plan(1);
 
 t.testMetaSerialization = function() {
     var self = this;
@@ -32,7 +32,13 @@ t.testMetaSerialization = function() {
     
     Joose.Storage.Unpacker.patchJSON();
     Point.meta.addRole(Joose.Storage);
-    self.diag(JSON.stringify(Point.meta))
+    self.ok(JSON.stringify({}), "Sanity")
+    try {
+        self.diag(JSON.stringify(Point.meta))
+    } catch (e) {
+        // There is a weird bug in FX3.5 here
+        self.diag(e)
+    }
     
 }
 
