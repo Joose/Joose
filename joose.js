@@ -1,8 +1,9 @@
-// This is Joose 2.1
-// For documentation see http://code.google.com/p/joose-js/
-// Generated: Sun Aug  2 15:49:30 2009
-
-
+/*!
+ * This is Joose 2.1
+ * For documentation see http://code.google.com/p/joose-js/
+ * Copyright (c) 2009 Malte Ubl
+ * Generated: Sun Aug  2 16:02:39 2009
+ */
 // ##########################
 // File: Joose.js
 // ##########################
