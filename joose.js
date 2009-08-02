@@ -1,6 +1,6 @@
-// This is Joose 2.0
+// This is Joose 2.1
 // For documentation see http://code.google.com/p/joose-js/
-// Generated: Sun Feb  1 16:34:40 2009
+// Generated: Sun Aug  2 15:49:30 2009
 
 
 // ##########################
@@ -245,7 +245,7 @@ Joose.MetaClassBootstrap = function () {
     this._name            = "Joose.MetaClassBootstrap";
     this.methodNames      = [];
     this.attributeNames   = ["_name", "isAbstract", "isDetached", "methodNames", "attributeNames", "methods", "parentClasses", "roles", "c"];
-    this.attributes       = {},
+    this.attributes       = {};
     this.methods          = {};
     this.classMethods     = {};
     this.parentClasses    = [];
@@ -690,12 +690,19 @@ Joose.MetaClassBootstrap.prototype = {
     
     addMethodObject:         function (method) {
         var m              = method;
-        var name           = m.getName();
+        // optimized because very heavily used
+        var name           = m.getName === Joose.Method.prototype.getNname ? m._name : m.getName();
+        
+        var body = m._body;
+        if(!body.displayName) { // never overwrite this. We want to know where the method is defined
+            var className = this.className === Joose.MetaClassBootstrap.prototype.className ? this._name : this.className()
+            body.displayName =  className + "." + name+"()";
+        }
         
         if(!this.methods[name] && !this.classMethods[name]) {
             this.methodNames.push(name);
         }
-        if(m.isClassMethod()) {
+        if(m._isClassMethod) {
             this.classMethods[name] = m;
         } else {
             this.methods[name] = m;
@@ -1374,6 +1381,7 @@ Joose.Method.prototype = {
     _body: null,
     _props: null,
     _isFromSuperClass: false,
+    _isClassMethod: false,
     
     getName:    function () { return this._name },
     getBody:    function () { return this._body },
@@ -1403,15 +1411,20 @@ Joose.Method.prototype = {
         func.meta   = this
     },
     
-    isClassMethod: function () { return false },
+    isClassMethod: function () { return this._isClassMethod },
     
     apply:    function (thisObject, args) {
         return this._body.apply(thisObject, args)
     },
     
     addToClass: function (c) {
-        c.prototype[this.getName()] = this.asFunction()
+        // optimized due to heavy calls
+        var base = Joose.Method.prototype;
+        var name = this.getName === base.getName ? this._name : this.getName();
+        var func = this.asFunction === base.asFunction ? this._body : this.asFunction()
+        c.prototype[name] = func
     },
+    
     
     // direct call
     asFunction:    function () {
@@ -1743,8 +1756,12 @@ Class("Joose.Method", {
     
 Class("Joose.ClassMethod", {
     isa: Joose.Method,
+    after: {
+        initialize: function () {
+            this._isClassMethod = true
+        }
+    },
     methods: {
-        isClassMethod: function () { return true },
         addToClass: function (c) {
             c[this.getName()] = this.asFunction()
         },
@@ -2151,7 +2168,7 @@ Joose.Role.anonymousClassCounter = 0;
                locked = false;
                instance            = this.meta.instantiate()
                locked = true;
-               instance.singletonInitialize()
+               instance.singletonInitialize.apply(instance, arguments)
                registry[name] = instance
                return instance;
            }
@@ -2249,7 +2266,7 @@ Class("Joose.Gears", {
         },
         
         canGears: function () {
-            return window.google && window.google.gears && window.google.gears.factory
+            return this.meta.c.clientHasGears()
         },
         
         /**
@@ -2347,7 +2364,20 @@ Class("Joose.Gears", {
         },
         
         clientHasGears: function () { //  XXX code dup with instance method
-            return window.google && window.google.gears && window.google.gears.factory
+            if(typeof this._canGears != "undefined") return this._canGears
+            
+            if(window.google && window.google.gears && window.google.gears.factory) {
+                try {
+                    google.gears.factory.create('beta.httprequest');
+                } catch(e) {
+                    this._canGears = false;
+                    return false
+                }
+                this._canGears = true;
+                return true
+            }
+            this._canGears = false;
+            return false
         },
         
         // a simple AJAX request that uses gears if available
@@ -2502,7 +2532,6 @@ Role("Joose.Storage", {
         toJSON: function () {
             // Evil global var TEMP_SEEN. See Joose.Storage.Unpacker.patchJSON
             var packed = this.pack(Joose.Storage.TEMP_SEEN);
-            
             return packed;
         },
         
@@ -2556,8 +2585,7 @@ Class("Joose.Storage.Engine", {
         
         pack: function (object, seen) {
             
-            
-            if(seen) {
+            /*if(seen) {
                 var id  = object.identity()
                 var obj = seen[id];
                 if(obj) {
@@ -2565,7 +2593,7 @@ Class("Joose.Storage.Engine", {
                         __ID__: id
                     }
                 }
-            }
+            }*/
             
             if(object.meta.can("prepareStorage")) {
                 object.prepareStorage()
@@ -2639,7 +2667,7 @@ Class("Joose.Storage.Engine.jsonpickle", {
         pack: function (object, seen) {
             
             
-            if(seen) {
+            /*if(seen) {
                 var id  = object.identity()
                 var obj = seen[id];
                 if(obj) {
@@ -2647,7 +2675,7 @@ Class("Joose.Storage.Engine.jsonpickle", {
                         objectid__: id
                     }
                 }
-            }
+            }*/
             
             if(object.meta.can("prepareStorage")) {
                 object.prepareStorage()
@@ -2763,11 +2791,11 @@ Class("Joose.Storage.Unpacker", {
         
         jsonParseFilter: function (key, value) {
             if(value != null && typeof value == "object") {
+                if(value.__ID__ && Joose.Storage.CACHE && Joose.Storage.CACHE[value.__ID__]) {
+                    return Joose.Storage.CACHE[value.__ID__]
+                }
                 if(value.__CLASS__) {
                     return Joose.Storage.Unpacker.unpack(value)
-                }
-                if(value.__ID__) {
-                    return Joose.Storage.CACHE[value.__ID__]
                 }
             }
             return value
@@ -2832,11 +2860,11 @@ Class("Joose.Storage.Unpacker.jsonpickle", {
         
         jsonParseFilter: function (key, value) {
             if(value != null && typeof value == "object") {
+                if(value.objectid__ && Joose.Storage.CACHE && Joose.Storage.CACHE[value.objectid__]) {
+                    return Joose.Storage.CACHE[value.objectid__]
+                }
                 if(value.classname__) {
                     return Joose.Storage.Unpacker.jsonpickle.unpack(value)
-                }
-                if(value.objectid__) {
-                    return Joose.Storage.CACHE[value.objectid__]
                 }
             }
             return value
