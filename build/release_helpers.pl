@@ -63,9 +63,12 @@ sub single_js {
 
 	my $now = localtime;
 
-	my $output = "// This is Joose $version
-// For documentation see http://code.google.com/p/joose-js/
-// Generated: $now\n\n";
+	my $output = "/*!
+ * This is Joose $version
+ * For documentation see http://code.google.com/p/joose-js/
+ * Copyright (c) 2009 Malte Ubl
+ * Generated: $now
+ */";
 	foreach my $filename (@$files) {
 		open my $in, "$filename" or die "Cant open $filename due to $!";
 		my @content = <$in>;
