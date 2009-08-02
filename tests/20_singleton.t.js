@@ -1,6 +1,6 @@
 (function () {
 var testobj = new Test.TAP.Class();
-testobj.plan(9)
+testobj.plan(11)
 
 testobj.testSingleton = function() {
     var t = this;
@@ -39,7 +39,27 @@ testobj.testSingleton = function() {
     
     t.ok(third === single, "A third instance is identical to the first");
     t.ok(third === second, "A third instance is identical to the second");
-
+    
+    Class("SingletonWithInit", {
+        does: [Joose.Singleton],
+        
+        has: {
+            foo: {
+                init: 1
+            }
+        },
+        
+        methods: {
+            singletonInitialize: function (foo) {
+                this.foo = foo
+            }
+        }
+    })
+    
+    var single = SingletonWithInit.getInstance(2);
+    t.ok(single.foo === 2, "singletonInitialize is called an receives para");
+    var single = SingletonWithInit.getInstance(3);
+    t.ok(single.foo === 2, "singletonInitialize is only called upon first instantiation");
 };
 
 return testobj;
