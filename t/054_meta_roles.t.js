@@ -1,5 +1,5 @@
 StartTest(function(t) {
-	t.plan(28)
+	t.plan(34)
 	
     //==================================================================================================================================================================================
     t.diag("MetaRoles (roles which applies to metaclass of applicant")
@@ -154,5 +154,29 @@ StartTest(function(t) {
     
     t.ok(!TestClass4.meta.isDetached(), "TestClass4's meta is attached back")
     t.ok(!TestClass4.meta.builder.meta.hasMethod('sugar'), "TestClass4's builder have no roles applied")
+    
+    
+    //==================================================================================================================================================================================
+    t.diag("'traits' alias")
+    
+    Class('TestClass5', {
+        
+        traits : CustomBuilder,
+        
+        sugar : {
+            name : 'custom',
+            value : 'attribute'
+        }
+        
+    })
+    t.ok(TestClass5, 'TestClass5 class was created')
+    
+    t.ok(TestClass5.meta.isDetached(), "TestClass5's meta is detached")
+    t.ok(TestClass5.meta.builder.isDetached(), "TestClass5's builder is detached")
+    t.ok(TestClass5.meta.stem.isDetached(), "TestClass5's stem is detached")
+    
+    t.ok(TestClass5.meta.builder.meta.hasMethod('sugar'), "TestClass5's builder received new method")
+    
+    t.ok(TestClass5.meta.hasAttribute('custom') && TestClass5.meta.getAttribute('custom').value == 'attribute', "TestClass5 has correct attribute 'custom'")
     
 })
