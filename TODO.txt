@@ -1,3 +1,7 @@
+- convert all OVERRIDE modifiers in core to AROUND
+- migrate AUGMENT modifier to closures
+
+
 Tests
 - complete 01_util.js
 - Add many more tests
