@@ -79,7 +79,6 @@ This manual consists of a number of documents.
 
  - Joose.Manual.Unsweetened
     Shows two example classes, each written first with Joose and then with "raw JavaScript".
-    
 
 - [Joose.Manual.Classes][3]
 
@@ -101,27 +100,35 @@ This manual consists of a number of documents.
 
     A role is something a class does (like "Debuggable" or "Printable"). Roles provide a way of adding behavior to classes that is orthogonal to inheritance.
 
-- Joose.Manual.MOP
+- [Joose.Manual.Singleton][8]
+
+    Joose provides a singleton pattern "out of the box". 
+    
+- [Joose.Manual.Mutability][9]
+
+    All Joose classes are dynamic or "mutable". Joose lets you add/remove attributes and methods, apply/unaplly roles, and much more - right in the run-time.
+
+- [Joose.Manual.Reflection][10]
 
     Joose's meta API system lets you ask classes about their parents, children, methods, attributes, etc.
 
-- Joose.Manual.MooseX
+- [Joose.Manual.JooseX][11]
 
     This document describes a few of the most useful Joose extensions on CPAN.
 
-- Joose.Manual.BestPractices
+- [Joose.Manual.BestPractices][12]
 
     Joose has a lot of features, and there's definitely more than one way to do it. However, we think that picking a subset of these features and using them consistently makes everyone's life easier.
 
-- Joose.Manual.FAQ
+- [Joose.Manual.FAQ][13]
 
     Frequently asked questions about Joose.
 
-- Joose.Manual.Contributing
+- [Joose.Manual.Contributing][14]
 
     Interested in hacking on Joose? Read this.
 
-- Joose.Manual.Delta
+- [Joose.Manual.Delta][15]
 
     This document details backwards-incompatibilities and other major changes to Joose.
 
@@ -150,13 +157,13 @@ If you're still asking yourself "Why do I need this?", then this section is for 
 AUTHORS
 =======
 
-Nickolay Platonov (root@symbie.org)
+Nickolay Platonov [root@symbie.org](mailto:root@symbie.org)
 
 Based on original Moose::Manual content, written by:
 
-Dave Rolsky <autarch@urth.org>
+Dave Rolsky [autarch@urth.org](mailto:autarch@urth.org)
 
-Stevan Little <stevan@iinteractive.com>
+Stevan Little [stevan@iinteractive.com](mailto:stevan@iinteractive.com)
 
 
 COPYRIGHT AND LICENSE
@@ -184,4 +191,12 @@ Documentation is based on original Moose::Manual documentation, copyright 2006-2
 [5]: Manual/Construction.html
 [6]: Manual/MethodModifiers.html
 [7]: Manual/Roles.html
+[8]: Manual/Singleton.html
+[9]: Manual/Mutability.html
+[10]: Manual/Reflection.html
+[11]: Manual/JooseX.html
+[12]: Manual/BestPractices.html
+[13]: Manual/FAQ.html
+[14]: Manual/Contributing.html
+[15]: Manual/Delta.html
 

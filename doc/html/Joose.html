@@ -13,7 +13,7 @@
 
     methods: {
         clear: function () {
-            this.x = 0
+            var x = this.getX()
             this.setY(0)
         }
     }
@@ -41,8 +41,7 @@ var point = new Point.ThreeD()
 
 <p>Joose is a self-hosting meta object system for JavaScript with support for classes, inheritance, roles (aka traits), method modifiers and much more.</p>
 
-<p>Joose makes object-oriented programming with JavaScript easy, declarative and very productive. The Joose meta-object system is multi-paradigm. 
-It supports class-based and prototype-based programming styles as well as class-based inheritance and role-based extention.</p>
+<p>The main goal of Joose is to make JavaScript Object Oriented programming easier, more consistent and less tedious. With Joose you can to think more about what you want to do and less about the mechanics of OOP.</p>
 
 <p>The Joose framework has been successfully used in multiple production systems for twelve months now and has been proven to be very stable. 
 Joose is being tested using an automated unit-test suite that is being run in all major browsers (Firefox, IE, Safari, Opera and Chrome).</p>
@@ -61,9 +60,9 @@ Joose is being tested using an automated unit-test suite that is being run in al
 
 <p>Joose makes every attempt to provide as much convenience as possible during class construction/definition, but still stay out of your way if you want it to. Here are a few items to note when building classes with Joose.</p>
 
-<p>Unless specified with 'isa', any class which uses Joose will inherit from Joose.Proto.Object.</p>
-
-<p>Joose will also manage all attributes (including inherited ones) that are defined with 'has' or 'have'. And (assuming you call new, which is inherited from Joose.Proto.Object) this includes properly initializing all instance slots, setting defaults where appropriate.</p>
+<ul>
+<li>Unless specified with 'isa', any class which uses Joose will inherit from Joose.Proto.Object.</li>
+</ul>
 
 <h1 id="providedmethods">PROVIDED METHODS</h1>
 
@@ -141,6 +140,12 @@ Joose is being tested using an automated unit-test suite that is being run in al
 
 <ul>
 <li>class.my</li>
+</ul>
+
+<p>A built-in singleton instance. See <a href="Joose/Manual/Singleton.html">Joose.Manual.Singleton</a> for more details.</p>
+
+<ul>
+<li>class.superClass</li>
 </ul>
 
 <p>A built-in singleton instance. See [Joose.Manual.Singleton Pattern][!!] for more details.</p>
@@ -249,7 +254,7 @@ Joose is being tested using an automated unit-test suite that is being run in al
 
 <h2 id="helpersforattributesdeclaration">Helpers for Attributes declaration</h2>
 
-<p>To simplify declaration of attributes Joose provides a number of default attributes initializers (see [Joose.Manual.Attributes][!!] for more details)</p>
+<p>To simplify declaration of attributes Joose provides a number of default attributes initializers (see <a href="Joose/Manual/Attributes.html">Joose.Manual.Attributes</a> for details)</p>
 
 <ul>
 <li>Joose.Array</li>
@@ -292,11 +297,12 @@ Joose is being tested using an automated unit-test suite that is being run in al
 })
 </code></pre>
 
-<p>When you do this, your class's meta object will have the specified traits applied to it. See [Joose.Manual.Roles][!!] for more details.</p>
+<p>When you do this, your class's meta object will have the specified traits applied to it. See <a href="Joose/Manual/Roles.html">Joose.Manual.Roles</a> for more details.</p>
 
 <h1 id="thejoosex.namespace">The JooseX. namespace</h1>
 
-<p>Generally if you're writing an extension for Joose itself you'll want to put your extension in the JooseX. namespace. This namespace is specifically for extensions that make Joose better or different in some fundamental way. It is traditionally not for a package that just happens to use Joose. </p>
+<p>Generally if you're writing an extension for Joose itself you'll want to put your extension in the JooseX. namespace. This namespace is specifically for extensions that make Joose better or different in some fundamental way. 
+It is traditionally not for a package that just happens to use Joose. See <a href="Joose/Manual/JooseX.html">Joose.Manual.JooseX</a> for more details.</p>
 
 <h1 id="caveats">CAVEATS</h1>
 
@@ -310,7 +316,7 @@ Joose is being tested using an automated unit-test suite that is being run in al
 
 <p>We offer both a mailing list and an active IRC channel.</p>
 
-<p>The mailing list is <a href="&#x6D;&#97;&#105;&#x6C;&#116;&#x6F;:&#x6A;&#x6F;&#111;&#x73;&#x65;&#45;&#x6A;&#115;&#64;&#x67;&#x6F;&#111;&#x67;&#108;&#101;&#103;r&#x6F;&#117;&#x70;&#115;&#x2E;&#x63;&#111;&#109;">&#x6A;&#x6F;&#111;&#x73;&#x65;&#45;&#x6A;&#115;&#64;&#x67;&#x6F;&#111;&#x67;&#108;&#101;&#103;r&#x6F;&#117;&#x70;&#115;&#x2E;&#x63;&#111;&#109;</a>. To subscribe, visit: <a href="http://groups.google.com/group/joose-js">http://groups.google.com/group/joose-js</a></p>
+<p>The mailing list is <a href="mailto:joose-js@googlegroups.com">joose-js@googlegroups.com</a>. To subscribe, visit: <a href="http://groups.google.com/group/joose-js">http://groups.google.com/group/joose-js</a></p>
 
 <p>You can also visit us at #joose on irc.freenode.org. Questions at all levels (on Joose-related topics ;) are welcome.</p>
 
@@ -340,7 +346,9 @@ Joose is being tested using an automated unit-test suite that is being run in al
 
 <p>We are very strict about what features we add to the Joose core, especially the user-visible features. Instead we have made sure that the underlying meta-system of Joose is as extensible as possible so that you can add your own features easily.</p>
 
-<p>That said, occasionally there is a feature needed in the meta-system to support your planned extension, in which case you should either email the mailing list (<a href="&#x6D;&#97;&#105;&#x6C;&#x74;&#x6F;:&#106;&#111;&#111;&#x73;&#101;&#x2D;&#x6A;&#115;&#64;&#103;&#x6F;&#x6F;&#x67;&#x6C;&#101;&#x67;&#114;o&#117;&#x70;&#115;&#x2E;&#x63;&#111;&#x6D;">&#106;&#111;&#111;&#x73;&#101;&#x2D;&#x6A;&#115;&#64;&#103;&#x6F;&#x6F;&#x67;&#x6C;&#101;&#x67;&#114;o&#117;&#x70;&#115;&#x2E;&#x63;&#111;&#x6D;</a>) or join us on IRC at <irc://irc.freenode.org/#joose> to discuss. The Joose.Manual.Contributing has more detail about how and when you can contribute.</p>
+<p>That said, occasionally there is a feature needed in the meta-system to support your planned extension, in which case you should 
+either email the mailing list (<a href="mailto:joose-js@googlegroups.com">joose-js@googlegroups.com</a>) or join us on IRC at <irc://irc.freenode.org/#joose> to discuss. 
+The <a href="Joose/Manual/Contributing.html">Joose.Manual.Contributing</a> has more detail about how and when you can contribute.</p>
 
 <h1 id="authors">AUTHORS</h1>
 
