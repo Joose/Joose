@@ -28,7 +28,135 @@
     })
 </code></pre>
 
-<p>You may defined any usual builders inside of <code>my</code>, including method modifires, <code>does</code>, etc.</p>
+<p>You may use any usual builders inside of <code>my</code>, including method modifires, <code>isa</code>, <code>does</code>, etc. Instance of singleton class will be created right after class declaration.
+To access it, use <code>my</code> property of class's constructor, like</p>
+
+<pre><code>    TypeRegistry.my.registerType('textfield', Ext.form.TextField) 
+</code></pre>
+
+<p>In Joose, singletons are "attached" to usual classes. This means you can define a usual class with the same name just fine: </p>
+
+<pre><code>    Class('TypeRegistry', {
+
+        has : {
+            someAttribute : { is : 'rw' }
+        },
+
+        ....
+
+        my : {
+            has : {
+                types : Joose.Object
+            },
+
+            ....
+        }
+    })
+</code></pre>
+
+<p>However, this may easily lead to ambiguity, so you should clearly understand what are you doing. </p>
+
+<h1 id="singletoninheritance">SINGLETON INHERITANCE</h1>
+
+<p>Singletons may inherit from other classes in various ways</p>
+
+<h2 id="directinheritance">Direct inheritance</h2>
+
+<p>You may use <code>isa</code> builder to directly specify from which class your singleton should inherit:</p>
+
+<pre><code>    Class('TypeRegistry', {
+
+        my : {
+            isa : Registry,
+
+            ....
+        }
+    })
+</code></pre>
+
+<p>Direct inheritance has a highest priority.</p>
+
+<h2 id="indirectinheritanceviausualclass">Indirect inheritance via usual class</h2>
+
+<p>Joose's singletons are also inheritable as some kind of special "attributes". This mean, that subclasses of class with attached singleton will also have a subclass of that singleton attached :) For example:</p>
+
+<pre><code>    Class('Registry', {
+
+        my : {
+            ....
+        }
+    })
+
+    Class('TypeRegistry', {
+        isa : Registry
+    })
+</code></pre>
+
+<p><code>TypeRegistry</code> will inherit all the attributes of <code>Registry</code>, including a singleton, which will be accessible as <code>TypeRegistry.my</code>. Note however, that a new instance of singleton class will be instantiated.   </p>
+
+<p>You may also specify any additional builders, which will customize the singleton's subclass: </p>
+
+<pre><code>    Class('TypeRegistry', {
+        isa : Registry,
+
+        my : {
+            override : {
+                registerType : function (type, value) {
+                    ....
+                }
+            }
+        }
+    })
+</code></pre>
+
+<p>Indirect inheritance can be also written in "direct" form, which requires some basic knowledge of Joose internals:</p>
+
+<pre><code>    Class('TypeRegistry', {
+        my : {
+            isa : Registry.my.meta.c
+        }
+    })
+</code></pre>
+
+<h1 id="roleswithsingletons">ROLES WITH SINGLETONS</h1>
+
+<p>In addition to all this singletons wizardry you may create a special, "singleton" roles:</p>
+
+<pre><code>    Role('TypeRegistry.Storable', {
+
+        my : {
+            has : {
+                storageId : { is : 'rw' }
+            },
+
+            override : {
+                registerType : function (type, value) {
+                    ....
+                }
+            }
+        }
+    })
+</code></pre>
+
+<p>Such roles should be applied in "indirect form", to the usual class, which will contains the singleton being modified.</p>
+
+<pre><code>    Class('TypeRegistry', {
+
+        does : TypeRegistry.Storable
+    })
+</code></pre>
+
+<p>The "direct" form of this example:</p>
+
+<pre><code>    Class('TypeRegistry', {
+
+        my : {
+            does : TypeRegistry.Storable.my.meta.c,
+
+            ....
+        }
+    })
+</code></pre>
 
 <h1 id="author">AUTHOR</h1>
 

@@ -335,7 +335,7 @@ The [Joose.Manual.Contributing][8] has more detail about how and when you can co
 
 
 AUTHORS
-======
+=======
 
 Malte Ubl 
 
