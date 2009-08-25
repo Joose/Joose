@@ -1,6 +1,6 @@
 StartTest(function(t) {
-	t.plan(56)
-	
+    t.plan(56)
+    
     //==================================================================================================================================================================================
     t.diag("Modules")
     
@@ -12,28 +12,28 @@ StartTest(function(t) {
     t.ok(__global__.container == Joose.top, "Container of global module is a top scope")
     
     Module('TestModule', {
-    	body : function(module) {
-    		this.foo = 'bar'
-    		module.bar = 'baz'
-    	}
+        body : function(module) {
+            this.foo = 'bar'
+            module.bar = 'baz'
+        }
     })
     
     t.ok(TestModule, 'Something in the module spot appears')
     t.ok(TestModule.meta.constructor == Joose.Namespace.Keeper, '.. and its a Joose.Namespace.Keeper')
     
     t.ok(TestModule.meta.ns.container == TestModule, 'Container of namespace is a module function')
-	t.is(TestModule.foo, 'bar', 'Body of module was executed in the scope of its container')
-	t.is(TestModule.bar, 'baz', 'Module namespacekeeper was also passed as 1st argument to body')
+    t.is(TestModule.foo, 'bar', 'Body of module was executed in the scope of its container')
+    t.is(TestModule.bar, 'baz', 'Module namespacekeeper was also passed as 1st argument to body')
 
-	
+    
     //==================================================================================================================================================================================
     t.diag("Modules with several name parts")
-	
+    
     Module('Test1.Test2.Test3', {
-    	body : function(module) {
-    		this.foo = 'bar'
-    		module.bar = 'baz'
-    	}
+        body : function(module) {
+            this.foo = 'bar'
+            module.bar = 'baz'
+        }
     })
     
     t.ok(Test1 && Test1.meta.constructor == Joose.Namespace.Keeper, "Module 'Test1' was created")
@@ -86,8 +86,8 @@ StartTest(function(t) {
             })
             
             Module("Test3", function(mod){
-            	this.foo = 'bar'
-            	mod.bar = 'baz'
+                this.foo = 'bar'
+                mod.bar = 'baz'
             })
         }
     })
@@ -111,9 +111,9 @@ StartTest(function(t) {
     //==================================================================================================================================================================================
     t.diag("Modules redeclaration")
     
-	t.ok(TestModule.foo == 'bar' && TestModule.bar == 'baz', 'TestModule is still the same after extension')
-	
-	Module("TestModule.Test3", {
+    t.ok(TestModule.foo == 'bar' && TestModule.bar == 'baz', 'TestModule is still the same after extension')
+    
+    Module("TestModule.Test3", {
         body : function () {
             Module("Test4")
         }
@@ -129,12 +129,12 @@ StartTest(function(t) {
     
     Class("TestModule.Test3", {
         have : {
-        	one : 1
+            one : 1
         },
         
         methods: { 
-        	two: function () { return 2 } 
-    	}
+            two: function () { return 2 } 
+        }
     })
     
     t.ok(TestModule.Test3.meta.constructor == Joose.Meta.Class, 'Module was promoted to class')
@@ -150,12 +150,12 @@ StartTest(function(t) {
     
     Class("TestModule.Test3.FooBar", {
         have : {
-        	one : 1
+            one : 1
         },
         
         methods: { 
-        	two: function () { return 2 } 
-    	}
+            two: function () { return 2 } 
+        }
     })
     
     t.ok(TestModule.Test3.FooBar, "We can use a class as Module")

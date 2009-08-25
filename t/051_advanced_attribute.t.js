@@ -1,6 +1,6 @@
 StartTest(function(t) {
-	t.plan(30)
-	
+    t.plan(30)
+    
     //==================================================================================================================================================================================
     t.diag("Advanced attributes")    
     
@@ -13,8 +13,8 @@ StartTest(function(t) {
     Class('TestClass', {
         has : {
             res : {
-            	is : 'rw',
-            	init : 'advanced'
+                is : 'rw',
+                init : 'advanced'
             }
         }
     })    
@@ -47,10 +47,10 @@ StartTest(function(t) {
     
     TestClass.meta.extend({ 
         has : {
-        	simplified1 : null,
-        	simplified2 : false,
-        	simplified3 : 10,
-        	simplified4 : function () { return 'func' }
+            simplified1 : null,
+            simplified2 : false,
+            simplified3 : 10,
+            simplified4 : function () { return 'func' }
         }
     })    
     
@@ -71,8 +71,8 @@ StartTest(function(t) {
     Role('TestRole', {
         has : {
             res : {
-            	is : 'rw',
-            	init : 'advanced'
+                is : 'rw',
+                init : 'advanced'
             }
         }
     })    
@@ -92,13 +92,13 @@ StartTest(function(t) {
     
     TestClass.meta.extend({ 
         methods : {
-        	
+            
             setRes : function(value) {
-            	this.res = 'mutable:' + value    
+                this.res = 'mutable:' + value    
             },
             
             getRes : function(value) {
-            	return 'getRes'    
+                return 'getRes'    
             }
         }
     })    
@@ -120,22 +120,22 @@ StartTest(function(t) {
     
     TestClass.meta.extend({ 
         has : {
-        	simple : { init : 'simple' },
-        	
-        	required : { required : true },
-        	
-        	func : {
-        		init : function () { return {} }
-        	}
+            simple : { init : 'simple' },
+            
+            required : { required : true },
+            
+            func : {
+                init : function () { return {} }
+            }
         }
     })    
     
-	var testClass1 = new TestClass({
-		simple : 'foo',
-		required : 'bar'
-	})    
-	
-	t.ok(testClass1.simple == 'foo', "'simple' attribute initialized")    
+    var testClass1 = new TestClass({
+        simple : 'foo',
+        required : 'bar'
+    })    
+    
+    t.ok(testClass1.simple == 'foo', "'simple' attribute initialized")    
     t.ok(testClass1.required == 'bar', "'required' attribute initialized")    
     t.ok(typeof testClass1.func == 'object', "'func' attribute initialized")    
     
@@ -145,15 +145,15 @@ StartTest(function(t) {
     
     
     t.throws_ok(function(){
-		var testClass2 = new TestClass()    
+        var testClass2 = new TestClass()    
     }, "Required attribute [required] is missed during initialization of a TestClass", "required attribute should be specified")    
 
     var testClass2 = new TestClass({
-		simple : 'foo1',
-		required : 'bar1'
-	})    
-	
-	t.ok(typeof testClass2.func == 'object', "'func' attribute initialized #2")    
-	t.ok(testClass2.func != testClass1.func, "'init' creates different instances for each call")    
-	
+        simple : 'foo1',
+        required : 'bar1'
+    })    
+    
+    t.ok(typeof testClass2.func == 'object', "'func' attribute initialized #2")    
+    t.ok(testClass2.func != testClass1.func, "'init' creates different instances for each call")    
+    
 })    

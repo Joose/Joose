@@ -158,10 +158,6 @@ Calls a **func** in the optional **scope** for each element of **array** as: fun
 
 Returns boolean value, indicating whether this **value** is exists in the **array**.
     
-  - Joose.A.concat(source, array)
-
-Safely concat the **source** array with the **array**, which is sometimes required to correctly handle the 'arguments' object.
-
   - Joose.A.grep(array, func) {
 
 Calls the **func** for each element of **array** and returns an array, consisted from only those elements, for which it returns 'true' value
@@ -282,6 +278,8 @@ CAVEATS
 Attributes in traits.
 
 Refering to meta instance from the constructor
+
+Method modifiers order in Rhino
 
 
 GETTING HELP

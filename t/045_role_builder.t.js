@@ -1,6 +1,6 @@
 StartTest(function(t) {
-	t.plan(12)
-	
+    t.plan(12)
+    
     //==================================================================================================================================================================================
     t.diag("Builder in the Role")
     
@@ -16,16 +16,16 @@ StartTest(function(t) {
     
     var RoleWithBuilder = new Joose.Meta.Role('RoleWithBuilder', {
         builder : {
-        	methods : {
-	            testHandler : function(meta, props){
-	                var name = props.name
-	                var value = props.value
-	                
-	                meta.addMethod(name, function(){
-	                    return value
-	                })
-	            }
-        	}
+            methods : {
+                testHandler : function(meta, props){
+                    var name = props.name
+                    var value = props.value
+                    
+                    meta.addMethod(name, function(){
+                        return value
+                    })
+                }
+            }
         }
     }).c
     
@@ -45,7 +45,7 @@ StartTest(function(t) {
     }).c
     
     TestMetaClass.meta.extend({
-    	does : [ RoleWithBuilder ]
+        does : [ RoleWithBuilder ]
     })
     
     var TestClass1 = new TestMetaClass('TestClass1', {
@@ -68,16 +68,16 @@ StartTest(function(t) {
     
     RoleWithBuilder.meta.extend({
         builder : {
-        	methods : {
-	            testHandler1 : function(meta, props){
-	                var name = props.name1
-	                var value = props.value1
-	                
-	                meta.addMethod(name, function(){
-	                    return value
-	                })
-	            }
-        	}
+            methods : {
+                testHandler1 : function(meta, props){
+                    var name = props.name1
+                    var value = props.value1
+                    
+                    meta.addMethod(name, function(){
+                        return value
+                    })
+                }
+            }
         }
     })
     

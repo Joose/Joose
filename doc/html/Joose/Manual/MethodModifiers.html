@@ -1,0 +1,279 @@
+<h1 id="name">NAME</h1>
+
+<p>Joose.Manual.MethodModifiers - Joose's method modifiers</p>
+
+<h1 id="whatisamethodmodifier">WHAT IS A METHOD MODIFIER?</h1>
+
+<p>Joose provides a feature called "method modifiers". You can also think of these as "hooks" or "advice".</p>
+
+<p>It's probably easiest to understand this feature with a few examples:</p>
+
+<p>Class('Person', {</p>
+
+<pre><code>methods : {
+    eat : function (food) {
+        console.log('yummy')
+
+        return 'yummy'
+    }
+}
+</code></pre>
+
+<p>})</p>
+
+<p>Class('TidyPerson', {
+    isa : Person,</p>
+
+<pre><code>before : {
+    eat : function (food) {
+        this.washHands()
+    }
+},
+
+after : {
+    eat : function (food) {
+        this.brushTeeth()
+    }
+},
+
+methods : {
+    washHands : function (food) {
+        console.log('washing hands')
+    },
+
+    brushTeeth : function (food) {
+        console.log('brushing teeth')
+    }
+}
+</code></pre>
+
+<p>})</p>
+
+<p>Now if I call new TidyPerson().eat('apple') I'll get the following output:</p>
+
+<pre><code>washing hands
+yummy
+brushing teeth
+</code></pre>
+
+<p>You probably could have figured that out from the names "before" and "after"</p>
+
+<p>Method modifiers are applied in the order they appears in the class's declaration. </p>
+
+<p><strong>NOTE FOR RHINO USERS:</strong>
+Since Rhino travers object properties in random order, if you'll provide more than one modifier for some method in a class, you may receive ambigous results.</p>
+
+<h1 id="whyusethem">WHY USE THEM?</h1>
+
+<p>Method modifiers have many uses. One very common use is in roles. This lets roles alter the behavior of methods in the classes that use them. See [Joose.Manual.Roles][1] for more information about roles.</p>
+
+<p>Since modifiers are mostly useful in roles, some of the examples below are a bit artificial. They're intended to give you an idea of how modifiers work, but may not be the most natural usage.</p>
+
+<h1 id="beforeandafter">BEFORE and AFTER</h1>
+
+<p>These method modifiers can be used to adjust the behavior of some method, usually inherited from superclass, or defined in the consuming class (in case of Roles).
+In both cases the returning value still returns from original method, not from modifier. Return values of modifiers are ignored.</p>
+
+<p>Using the declaration above:</p>
+
+<pre><code>var tidyPerson = new TidyPerson()
+var res = tidyPerson.eat('apple')
+
+console.log(res == 'yummy') # returns 'yummy'
+</code></pre>
+
+<p>Another use for the before modifier would be to do some sort of prechecking on a method call or setter. For example:</p>
+
+<pre><code>Class('Bus', {
+    isa : Vehicle,
+
+    before : {
+        openDoors : function () {
+            if (this.isMoving()) throw "Can't open the bus's doors during movement"
+        }
+    }
+})
+</code></pre>
+
+<p>This lets us implement logical checks that don't make sense as type constraints. In particular, they're useful for defining logical rules about an object's state changes.</p>
+
+<p>Similarly, an after modifier could be used for logging an action that was taken, and so on.</p>
+
+<h1 id="overrideandaround">OVERRIDE and AROUND</h1>
+
+<p>An 'override' and 'around' modifiers are a bit more powerful than either a 'before' or 'after' modifier. It can modify the arguments being passed to the original method, 
+and you can even decide to simply not call the original method at all. You can also modify the return value of the original method.</p>
+
+<p>Class('Person', {
+    have : {
+        firstName : null,
+        lastName : null
+    },</p>
+
+<pre><code>methods : {
+    getDisplayName : function (lastNameFirst) {
+        if (lastNameFirst) return this.lastName + ', ' + this.firstName  
+
+        return this.firstName + ' ' + this.lastName
+    },
+
+    chatOnIRC : function (partner, message) {
+        this.type(partner + ': ' + message 
+    }
+}
+</code></pre>
+
+<p>})</p>
+
+<p>Class('Employee', {
+    isa : Person,</p>
+
+<pre><code>has : {
+    jobTitle : { is : 'rw' }
+},
+
+override : {
+    getDisplayName : function (lastNameFirst) {
+        return this.SUPER(false) + ', ' + this.jobTitle 
+    }
+},
+
+around : {
+    chatOnIRC : function (original, partner, message) {
+        this.type(partner + ': ' + message 
+    }
+}
+</code></pre>
+
+<p>})</p>
+
+<p>The call to super() is almost the same as calling $self->SUPER.display_name. The difference is that the arguments passed to the superclass's method will always be the same as the ones passed to the method modifier, and cannot be changed.</p>
+
+<p>All arguments passed to super() are ignored, as are any changes made to @_ before super() is called.</p>
+
+<p>An around modifier receives the original method as its first argument, then the object, and finally any arguments passed to the method.</p>
+
+<p>around 'size' => sub {
+      my $orig = shift;
+      my $self = shift;</p>
+
+<pre><code>  return $self-&gt;$orig()
+      unless @_;
+
+  my $size = shift;
+  $size = $size / 2
+      if $self-&gt;likes_small_things();
+
+  return $self-&gt;$orig($size);
+</code></pre>
+
+<p>};</p>
+
+<p>INNER AND AUGMENT ^</p>
+
+<p>Augment and inner are two halves of the same feature. The augment modifier provides a sort of inverted subclassing. You provide part of the implementation in a superclass, and then document that subclasses are expected to provide the rest.</p>
+
+<p>The superclass calls inner(), which then calls the augment modifier in the subclass:</p>
+
+<p>package Document;</p>
+
+<p>use Joose;</p>
+
+<p>sub as_xml {
+      my $self = shift;</p>
+
+<pre><code>  my $xml = "&lt;document&gt;\n";
+  $xml .= inner();
+  $xml .= "&lt;/document&gt;\n";
+
+  return $xml;
+</code></pre>
+
+<p>}</p>
+
+<p>Using inner() in this method makes it possible for one or more subclasses to then augment this method with their own specific implementation:</p>
+
+<p>package Report;</p>
+
+<p>use Joose;</p>
+
+<p>extends 'Document';</p>
+
+<p>augment 'as_xml' => sub {
+      my $self = shift;</p>
+
+<pre><code>  my $xml = "&lt;report&gt;\n";
+  $xml .= inner();
+  $xml .= "&lt;/report&gt;\n";
+
+  return $xml;
+</code></pre>
+
+<p>};</p>
+
+<p>When we call as_xml on a Report object, we get something like this:</p>
+
+<p><document>
+  <report>
+  </report>
+  </document></p>
+
+<p>But we also called inner() in Report, so we can continue subclassing and adding more content inside the document:</p>
+
+<p>package Report.IncomeAndExpenses;</p>
+
+<p>use Joose;</p>
+
+<p>extends 'Report';</p>
+
+<p>augment 'as_xml' => sub {
+      my $self = shift;</p>
+
+<pre><code>  my $xml = '&lt;income&gt;' . $self-&gt;income . '&lt;/income&gt;';
+  $xml .= "\n";
+  $xml .= '&lt;expenses&gt;' . $self-&gt;expenses . '&lt;/expenses&gt;';
+  $xml .= "\n";
+
+  $xml .= inner() || q{};
+
+  return $xml;
+</code></pre>
+
+<p>};</p>
+
+<p>Now our report has some content:</p>
+
+<p><document>
+  <report>
+  <income>$10</income>
+  <expenses>$8</expenses>
+  </report>
+  </document></p>
+
+<p>What makes this combination of augment and inner() special is that it allows us to have methods which are called from parent (least specific) to child (most specific). This inverts the normal inheritance pattern.</p>
+
+<p>Note that in Report.IncomeAndExpenses we call inner() again. If the object is an instance of Report.IncomeAndExpenses then this call is a no-op, and just returns false.</p>
+
+<h1 id="author">AUTHOR</h1>
+
+<p>Nickolay Platonov <a href="&#109;&#x61;i&#108;&#116;&#x6F;:&#x6E;&#105;&#x63;&#x6B;o&#108;&#x61;&#121;&#56;&#64;&#103;&#109;a&#105;&#x6C;&#46;&#x63;&#111;&#x6D;">&#x6E;&#105;&#x63;&#x6B;o&#108;&#x61;&#121;&#56;&#64;&#103;&#109;a&#105;&#x6C;&#46;&#x63;&#111;&#x6D;</a></p>
+
+<p>Heavily based on the original content of Moose::Manual, by Dave Rolsky <a href="m&#x61;i&#108;&#116;&#x6F;:&#97;&#117;&#x74;&#97;&#114;&#99;&#104;&#64;&#x75;&#x72;&#116;&#104;&#46;&#111;&#x72;&#x67;">&#97;&#117;&#x74;&#97;&#114;&#99;&#104;&#64;&#x75;&#x72;&#116;&#104;&#46;&#111;&#x72;&#x67;</a></p>
+
+<h1 id="copyrightandlicense">COPYRIGHT AND LICENSE</h1>
+
+<p>Copyright (c) 2008, Malte Ubl</p>
+
+<p>All rights reserved.</p>
+
+<p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:</p>
+
+<ul>
+<li>Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.</li>
+<li>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.</li>
+<li>Neither the name of Malte Ubl nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. </li>
+</ul>
+
+<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. </p>
+
+<p>[Joose.Manual.Roles][1]</p>

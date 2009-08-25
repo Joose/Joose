@@ -1,6 +1,6 @@
 StartTest(function(t) {
-	t.plan(30)
-	
+    t.plan(30)
+    
     //==================================================================================================================================================================================
     t.diag("Joose.Managed.Class")
     
@@ -52,16 +52,16 @@ StartTest(function(t) {
         isa : Joose.Managed.Class,
         
         builder : {
-        	methods : {
-	            testHandler : function(meta, props){
-	                var name = props.name
-	                var value = props.value
-	                
-	                meta.addMethod(name, function(){
-	                    return value
-	                })
-	            }
-        	}
+            methods : {
+                testHandler : function(meta, props){
+                    var name = props.name
+                    var value = props.value
+                    
+                    meta.addMethod(name, function(){
+                        return value
+                    })
+                }
+            }
         }
         
     }).c

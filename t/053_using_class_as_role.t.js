@@ -1,12 +1,12 @@
 StartTest(function(t) {
-	t.plan(7)
-	
+    t.plan(7)
+    
     //==================================================================================================================================================================================
     t.diag("Using Class as Role")
     
     
     Class('PseudoRole', {
-    	have : {
+        have : {
             res : 'pseudoRole'
         },
         
@@ -30,7 +30,7 @@ StartTest(function(t) {
 
     
     Class('Resource', {
-    	does : [ PseudoRole ],
+        does : [ PseudoRole ],
         
         methods : {
             process : function () {

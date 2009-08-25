@@ -1,6 +1,6 @@
 StartTest(function(t) {
-	t.plan(31)
-	
+    t.plan(31)
+    
     //==================================================================================================================================================================================
     t.diag("Symbiont - separate, built-in class, (analog of class-methods + class-attributes + class-roles + ...)")
     
@@ -96,18 +96,18 @@ StartTest(function(t) {
     t.diag("Symbiont inheritance")
     
     Class('SubTestClass', {
-    	isa : TestClass,
-    	
-    	my : {
-    		
-    		after : {
-    			initialize : function () { this.res = 'SubTestClass:res' }
-    		},
-    		
+        isa : TestClass,
+        
+        my : {
+            
+            after : {
+                initialize : function () { this.res = 'SubTestClass:res' }
+            },
+            
             methods : {
                 result : function() { return 'SubTestClass:class' }
             }
-    	}
+        }
     })
     
     t.ok(SubTestClass.my.meta.hasAttribute('res'), "SubTestClass.my has 'res' attribute"); 

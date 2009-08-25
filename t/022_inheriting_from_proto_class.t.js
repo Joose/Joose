@@ -1,6 +1,6 @@
 StartTest(function(t) {
-	t.plan(13)
-	
+    t.plan(13)
+    
     //==================================================================================================================================================================================
     t.diag("Sanity")
     
@@ -21,7 +21,7 @@ StartTest(function(t) {
     
     
     var TestClass4 = new Joose.Proto.Class('TestClass4', {
-		isa : TestClass3,
+        isa : TestClass3,
         
         res2 : 'res2',
         
@@ -63,7 +63,7 @@ StartTest(function(t) {
     var testClass5 = new TestClass5()
     
     t.is(testClass5.inc(''), 'T3|T4|T5', "'inc' was inherited, overriden and works correctly")
-	
+    
     
     //==================================================================================================================================================================================
     t.diag("Inherited from class with Joose.Proto.Class meta & method modifiers")
