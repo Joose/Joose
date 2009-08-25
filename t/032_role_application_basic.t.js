@@ -1,5 +1,5 @@
 StartTest(function(t) {
-    t.plan(38)
+    t.plan(47)
     
     //==================================================================================================================================================================================
     t.diag("Basic Role application")
@@ -54,6 +54,41 @@ StartTest(function(t) {
         }).c
     }, "Unknow builder [requires] was used during extending of [Creature]", "'requires' builder can only be used with Roles")
     
+    
+    //==================================================================================================================================================================================
+    t.diag("Composing a class from roles own conflicting method provided")
+    
+    var Creature = new Joose.Managed.Class('Creature', {
+        does : [ Walk, Eat ],
+        
+        methods : {
+            stop : function () {
+                this.walking = false
+                this.eating = false
+            }
+        }
+    }).c
+    
+
+    t.ok(Creature.meta.hasAttribute('walking') && Creature.meta.getAttribute('walking').value == false, "Creature has correct attribute 'walking'")
+    t.ok(Creature.meta.hasAttribute('eating') && Creature.meta.getAttribute('eating').value == false, "Creature has correct attribute 'eating'")
+    t.ok(Creature.meta.hasMethod('walk'), 'Creature has method walk')
+    t.ok(Creature.meta.hasMethod('eat'), 'Creature has method eat')
+    t.ok(Creature.meta.hasMethod('stop'), 'Creature has method stop')
+    
+    var creature = new Creature()
+    
+    creature.walk('there')
+    creature.eat('')
+
+    t.ok(creature.walking, 'Creature is walking')
+    t.ok(creature.eating, 'Creature is eating')
+    
+    creature.stop()
+    
+    t.ok(!creature.walking, 'Creature is not walking')
+    t.ok(!creature.eating, 'Creature is not eating')
+
     
     //==================================================================================================================================================================================
     t.diag("Composing a class from roles with aliasing")

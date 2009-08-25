@@ -1,6 +1,6 @@
 COMPONENTS = {
     
-	"core" : [
+	"Core" : [
 	    "Joose",
 	    "Joose.Proto.Object",
 	    "Joose.Proto.Class",
