@@ -259,14 +259,14 @@ StartTest(function(t) {
         isa: HTMLDocBody,
         
         augment: {
-            html: function () { return "<h1>TPS-Report</h1>" },
+            html: function () { return this.INNER() || '' },
             head: function () { return "TPS-Report" }
         }
     }).c
     
     var tps = new TPSReport()
     
-    t.ok(tps.html() == "<html><head><title>TPS-Report</title></head><body><h1>TPS-Report</h1></body></html>", "Augment method modifier works")
+    t.ok(tps.html() == "<html><head><title>TPS-Report</title></head><body></body></html>", "Augment method modifier works")
 
     
     
@@ -274,7 +274,7 @@ StartTest(function(t) {
         removeModifier : [ 'head' ]
     })
     
-    t.ok(tps.html() == "<html><head>TPS-Report</head><body><h1>TPS-Report</h1></body></html>", "Dynamic Augment modifier removing works")
+    t.ok(tps.html() == "<html><head>TPS-Report</head><body></body></html>", "Dynamic Augment modifier removing works")
     
     
     HTMLDocBody.meta.extend({
@@ -283,7 +283,7 @@ StartTest(function(t) {
         }
     })
     
-    t.ok(tps.html() == "<xhtml><head>TPS-Report</head><body><h1>TPS-Report</h1></body></xhtml>", "Dynamically inserted in 'augments' chain method works")
+    t.ok(tps.html() == "<xhtml><head>TPS-Report</head><body></body></xhtml>", "Dynamically inserted in 'augments' chain method works")
     
 
     //==================================================================================================================================================================================
