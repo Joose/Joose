@@ -4,47 +4,49 @@
 
 <h1 id="synopsis">SYNOPSIS</h1>
 
-<pre><code>Class("Point", {
+<pre><code>    Class("Point", {
 
-    has: {
-        x: {is: "ro"},
-        y: {is: "rw"},
-    },
+        has: {
+            x: {is: "ro"},
+            y: {is: "rw"},
+        },
 
-    methods: {
-        clear: function () {
-            var x = this.getX()
-            this.setY(0)
+        methods: {
+            clear: function () {
+                var x = this.getX()
+                this.setY(0)
+            }
         }
-    }
-})
+    })
 
-Class("Point.ThreeD", {
+    Class("Point.ThreeD", {
 
-    isa: Point,
+        isa: Point,
 
-    has: {
-        z: {}
-    },
+        has: {
+            z: {}
+        },
 
-    after: {
-        clear: function () {
-            this.z = 0
+        after: {
+            clear: function () {
+                this.z = 0
+            }
         }
-    }
-})
+    })
 
-var point = new Point.ThreeD()
+    var point = new Point.ThreeD()
 </code></pre>
 
 <h1 id="description">DESCRIPTION</h1>
 
 <p>Joose is a self-hosting meta object system for JavaScript with support for classes, inheritance, roles (aka traits), method modifiers and much more.</p>
 
-<p>The main goal of Joose is to make JavaScript Object Oriented programming easier, more consistent and less tedious. With Joose you can to think more about what you want to do and less about the mechanics of OOP.</p>
+<p>The main goal of Joose is to make JavaScript Object Oriented Programming easier, more consistent and less tedious. With Joose you can to think more about what you want to do and less about the mechanics of OOP.</p>
 
 <p>The Joose framework has been successfully used in multiple production systems for twelve months now and has been proven to be very stable. 
 Joose is being tested using an automated unit-test suite that is being run in all major browsers (Firefox, IE, Safari, Opera and Chrome).</p>
+
+<p>Joose core package is only 8kb (YUI+gz).</p>
 
 <h2 id="newtojoose">New to Joose?</h2>
 
@@ -69,43 +71,43 @@ Joose is being tested using an automated unit-test suite that is being run in al
 <p>Joose provides a number of methods to all your classes, mostly through the inheritance from Joose.Proto.Object.</p>
 
 <ul>
-<li>this.SUPER(arg1, arg2, ...)</li>
+<li><code>this.SUPER(arg1, arg2, ...)</code></li>
 </ul>
 
 <p>Only valid in the scope of usual methods and OVERRIDE method modifiers. Calls a superclass's method with the arguments provided.</p>
 
 <ul>
-<li>this.SUPERARG(Array arg)</li>
+<li><code>this.SUPERARG(Array arg)</code></li>
 </ul>
 
-<p>Only valid in the scope of usual methods and OVERRIDE method modifiers. Calls a superclass's method with the "packed" arguments, provided as array. Usually used as: this.SUPERARG(arguments)</p>
+<p>Only valid in the scope of usual methods and OVERRIDE method modifiers. Calls a superclass's method with the "packed" arguments, provided as array. Usually used as: <code>this.SUPERARG(arguments)</code></p>
 
 <ul>
-<li>this.initialize()</li>
+<li><code>this.initialize()</code></li>
 </ul>
 
-<p>Default 'initialize' method is empty function.</p>
+<p>Default <code>initialize</code> method is empty function.</p>
 
 <ul>
-<li>this.toString()</li>
+<li><code>this.toString()</code></li>
 </ul>
 
 <p>Defalt string coercion is string "a ClassName", where ClassName is a name of instance's class.</p>
 
 <ul>
-<li>this.detach()</li>
+<li><code>this.detach()</code></li>
 </ul>
 
 <p>Detaches the instance from its class. See more details [here][!!]</p>
 
 <ul>
-<li>this.attach()</li>
+<li><code>this.attach()</code></li>
 </ul>
 
 <p>Attaches the instance back to its class. See more details [here][!!]</p>
 
 <ul>
-<li>this.isDetached()</li>
+<li><code>this.isDetached()</code></li>
 </ul>
 
 <p>Returns boolean value, indicating whether this instance is detached from its class.</p>
@@ -117,38 +119,38 @@ Joose is being tested using an automated unit-test suite that is being run in al
 <p>Joose provides a number of properties to all instances of your classes.</p>
 
 <ul>
-<li>this.constructor</li>
+<li><code>this.constructor</code></li>
 </ul>
 
-<p>A class with which 'this' instance were constructed.</p>
+<p>A class with which <code>this</code> instance were constructed.</p>
 
 <ul>
-<li>this.meta</li>
+<li><code>this.meta</code></li>
 </ul>
 
-<p>An instance of metaclass for 'this' instance's class. </p>
+<p>An instance of metaclass for <code>this</code> instance's class. </p>
 
 <h2 id="classproperties">Class properties</h2>
 
 <p>Joose also provides a number of properties to classes.</p>
 
 <ul>
-<li>class.meta</li>
+<li><code>class.meta</code></li>
 </ul>
 
-<p>An instance of metaclass for 'this' instance's class. The same as 'this.meta' for instances of <strong>class</strong></p>
+<p>An instance of metaclass for 'this' instance's class. The same as 'this.meta' for instances of <code>class</code></p>
 
 <ul>
-<li>class.my</li>
+<li><code>class.my</code></li>
 </ul>
 
 <p>A built-in singleton instance. See <a href="Joose/Manual/Singleton.html">Joose.Manual.Singleton</a> for more details.</p>
 
 <ul>
-<li>class.superClass</li>
+<li><code>class.superClass</code></li>
 </ul>
 
-<p>A built-in singleton instance. See [Joose.Manual.Singleton Pattern][!!] for more details.</p>
+<p>A superclass (constructor function) of given <code>class</code></p>
 
 <h1 id="providedhelpersmethods">PROVIDED HELPERS METHODS</h1>
 
@@ -157,119 +159,119 @@ Joose is being tested using an automated unit-test suite that is being run in al
 <h2 id="helpersforarrays">Helpers for Arrays</h2>
 
 <ul>
-<li>Joose.A.each(array, func, scope)</li>
+<li><code>Joose.A.each(array, func, scope)</code></li>
 </ul>
 
-<p>Calls a <strong>func</strong> in the optional <strong>scope</strong> for each element of <strong>array</strong> as: func(element, index), where 'index' is the index of element in the array</p>
+<p>Calls a <code>func</code> in the optional <code>scope</code> for each element of <code>array</code> as: <code>func(element, index)</code>, where <code>index</code> is the index of element in the <code>array</code></p>
 
 <ul>
-<li>Joose.A.exists(array, value)</li>
+<li><code>Joose.A.exists(array, value)</code></li>
 </ul>
 
-<p>Returns boolean value, indicating whether this <strong>value</strong> is exists in the <strong>array</strong>.</p>
+<p>Returns boolean value, indicating whether this <code>value</code> is exists in the <code>array</code>.</p>
 
 <ul>
-<li>Joose.A.grep(array, func) {</li>
+<li><code>Joose.A.grep(array, func)</code></li>
 </ul>
 
-<p>Calls the <strong>func</strong> for each element of <strong>array</strong> and returns an array, consisted from only those elements, for which it returns 'true' value</p>
+<p>Calls the <code>func</code> for each element of <code>array</code> and returns an array, consisted from only those elements, for which it returns 'true' value</p>
 
 <ul>
-<li>Joose.A.remove(array, removeEle) {</li>
+<li><code>Joose.A.remove(array, removeEle)</code></li>
 </ul>
 
-<p>Returns a "shallow copy" of <strong>array</strong>, without the all the occurrences of <strong>removeEle</strong> (if any). Comparison is performing with '===' operator. Do not modifies original <strong>array</strong>.</p>
+<p>Returns a "shallow copy" of <code>array</code>, without the all the occurrences of <code>removeEle</code> (if any). Comparison is performing with '===' operator. Do not modifies original <code>array</code>.</p>
 
 <h2 id="helpersforstrings">Helpers for Strings</h2>
 
 <ul>
-<li>Joose.S.saneSplit(str, delimeter)</li>
+<li><code>Joose.S.saneSplit(str, delimeter)</code></li>
 </ul>
 
-<p>Implements a perl-like 'split', which returns empty array for splitting empty string (not an array with an empty string). Behave as standard 'String.prototype.split' in other aspects.</p>
+<p>Implements a perl-like 'split', which returns empty array for splitting empty string (not an array with an empty string). Behave as standard <code>String.prototype.split</code> in other aspects.</p>
 
 <ul>
-<li>Joose.S.uppercaseFirst(string)</li>
+<li><code>Joose.S.uppercaseFirst(string)</code></li>
 </ul>
 
-<p>Returns a new string, with uppercased first letter.</p>
+<p>Returns a copy of <code>string</code>, with uppercased first letter.</p>
 
 <h2 id="helpersforobjects">Helpers for Objects</h2>
 
 <ul>
-<li>Joose.O.each(object, func, scope)</li>
+<li><code>Joose.O.each(object, func, scope)</code></li>
 </ul>
 
-<p>Calls a <strong>func</strong> in the optional <strong>scope</strong> for each property of the <strong>object</strong> (<em>including</em> inherited via prototype chain). 
-<strong>func</strong> is called as: func(<em>value</em>, <em>name</em>), where <em>value</em> is the value of the <em>name</em> property of <strong>object</strong>.</p>
+<p>Calls a <code>func</code> in the optional <code>scope</code> for each property of the <code>object</code> (<em>including</em> inherited via prototype chain). 
+<code>func</code> is called as: <code>func(value, name), where</code>value<code>is the value of the</code>name<code>property of</code>object`.</p>
 
 <ul>
-<li>Joose.O.eachSafe(object, func, scope)</li>
+<li><code>Joose.O.eachSafe(object, func, scope)</code></li>
 </ul>
 
-<p>Calls a <strong>func</strong> in the optional <strong>scope</strong> for each property of the <strong>object</strong> (<em>excluding</em> inherited via prototype chain). 
-<strong>func</strong> is called as: func(<em>value</em>, <em>name</em>), where <em>value</em> is the value of the <em>name</em> property of <strong>object</strong>.</p>
+<p>Calls a <code>func</code> in the optional <code>scope</code> for each property of the <code>object</code> (<em>excluding</em> inherited via prototype chain). 
+<code>func</code> is called as: <code>func(value, name), where</code>value<code>is the value of the</code>name<code>property of</code>object`.</p>
 
 <ul>
-<li>Joose.O.copy(source, target)</li>
+<li><code>Joose.O.copy(source, target)</code></li>
 </ul>
 
-<p>Copies all the properties of <strong>source</strong> object to the <strong>target</strong> (<em>including</em> inherited via prototype chain). </p>
+<p>Copies all the properties of <code>source</code> object to the <code>target</code> (<em>including</em> inherited via prototype chain). </p>
 
 <ul>
-<li>Joose.O.copySafe(source, target)</li>
+<li><code>Joose.O.copySafe(source, target)</code></li>
 </ul>
 
-<p>Copies all the properties of <strong>source</strong> object to the <strong>target</strong> (<em>excluding</em> inherited via prototype chain). </p>
+<p>Copies all the properties of <code>source</code> object to the <code>target</code> (<em>excluding</em> inherited via prototype chain). </p>
 
 <ul>
-<li>Joose.O.getMutableCopy(object)</li>
+<li><code>Joose.O.getMutableCopy(object)</code></li>
 </ul>
 
-<p>Returns a "mutable copy" of <strong>object</strong>. "Mutable copy" is actually an empty object, which however inherit all the properties of original source via prototype chain.</p>
+<p>Returns a "mutable copy" of <code>object</code>. "Mutable copy" is actually an empty object, which however inherit all the properties of original source via prototype chain.</p>
 
 <ul>
-<li>Joose.O.extend(target, source)</li>
+<li><code>Joose.O.extend(target, source)</code></li>
 </ul>
 
-<p>Copies all the properties of <strong>source</strong> object to the <strong>target</strong> (<em>including</em> inherited via prototype chain). </p>
+<p>Copies all the properties of <code>source</code> object to the <code>target</code> (<em>including</em> inherited via prototype chain). </p>
 
 <ul>
-<li>Joose.O.isEmpty(object)</li>
+<li><code>Joose.O.isEmpty(object)</code></li>
 </ul>
 
-<p>Returns boolean value, indicating whether the <strong>object</strong> have no <em>own</em> properties.</p>
+<p>Returns boolean value, indicating whether the <code>object</code> have no <em>own</em> properties.</p>
 
 <ul>
-<li>Joose.O.isInstance(obj)</li>
+<li><code>Joose.O.isInstance(obj)</code></li>
 </ul>
 
-<p>Returns boolean value, indicating whether the passed <strong>obj</strong> is an instance of some Joose class.</p>
+<p>Returns boolean value, indicating whether the passed <code>obj</code> is an instance of some Joose class.</p>
 
 <ul>
-<li>Joose.O.wantArray(obj)</li>
+<li><code>Joose.O.wantArray(obj)</code></li>
 </ul>
 
-<p>Returns <strong>obj</strong> itself if <strong>obj</strong> is an array, or [ <strong>obj</strong> ] otherwise.</p>
+<p>Returns <code>obj</code> itself if <code>obj</code> is an array, or <code>[ obj ]</code> otherwise.</p>
 
 <h2 id="helpersforattributesdeclaration">Helpers for Attributes declaration</h2>
 
 <p>To simplify declaration of attributes Joose provides a number of default attributes initializers (see <a href="Joose/Manual/Attributes.html">Joose.Manual.Attributes</a> for details)</p>
 
 <ul>
-<li>Joose.Array</li>
+<li><code>Joose.Array</code></li>
 </ul>
 
 <p>Returns empty Array when called</p>
 
 <ul>
-<li>Joose.Object</li>
+<li><code>Joose.Object</code></li>
 </ul>
 
 <p>Returns empty Object when called</p>
 
 <ul>
-<li>Joose.Function</li>
+<li><code>Joose.Function</code></li>
 </ul>
 
 <p>Returns empty Function when called (which in turn will return empty function)</p>
@@ -278,23 +280,23 @@ Joose is being tested using an automated unit-test suite that is being run in al
 
 <p>When you use Joose, you can specify which metaclass to use:</p>
 
-<pre><code>Class("Point", {
+<pre><code>    Class("Point", {
 
-    meta : NewMetaClass,
-    ....
-})
+        meta : NewMetaClass,
+        ....
+    })
 </code></pre>
 
 <p>You can also specify traits which will be applied to your metaclass:</p>
 
-<pre><code>Class("Point", {
+<pre><code>    Class("Point", {
 
-    trait : TraitWithCustomBuilder,
+        trait : TraitWithCustomBuilder,
 
-    coords : [ 1, 2, 3 ]
+        coords : [ 1, 2, 3 ]
 
-    ....
-})
+        ....
+    })
 </code></pre>
 
 <p>When you do this, your class's meta object will have the specified traits applied to it. See <a href="Joose/Manual/Roles.html">Joose.Manual.Roles</a> for more details.</p>

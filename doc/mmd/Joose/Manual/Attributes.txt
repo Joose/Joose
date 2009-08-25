@@ -188,7 +188,7 @@ Joose attributes are a big topic, and this document glosses over a few aspects. 
 AUTHOR
 ======
 
-Nickolay Platonov [nickolay8@gmail.com](nickolay8@gmail.com)
+Nickolay Platonov [nickolay8@gmail.com](mailto:nickolay8@gmail.com)
 
 Heavily based on the original content of Moose::Manual, by Dave Rolsky [autarch@urth.org](mailto:autarch@urth.org)
 

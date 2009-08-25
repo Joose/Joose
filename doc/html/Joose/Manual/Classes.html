@@ -14,7 +14,8 @@
 
 <p>There's actually a lot going on here under the hood, so let's step through it.</p>
 
-<p>When you constructing a class with Joose, a properties of 2nd argument passed to 'Class' call are called <em>builders</em>. These include things like has, isa, does and more. These builders are what you use to define your class. For example, you might define an attribute ...</p>
+<p>When you constructing a class with Joose, a properties of 2nd argument passed to 'Class' call are called <em>builders</em>. These include things like 'has', 'isa', 'does' and more. 
+These builders are what you use to define your class. For example, you might define an attribute:</p>
 
 <pre><code>    Class('Person', {
         has : {
@@ -25,13 +26,13 @@
 
 <p>Attributes are described in the <a href="Attributes.html">Joose.Manual.Attributes</a> documentation.</p>
 
-<p>When you use Joose, your class will become a subclass of Joose.Proto.Object. The Joose.Proto.Object class provides a default constructor and a number of additional methods. You can read more about this in the <a href="Construction.html">Joose.Manual.Construction</a> document.</p>
+<p>When you use Joose, your class will become a subclass of Joose.Proto.Object. The Joose.Proto.Object class provides a default constructor and a number of additional methods. 
+You can read more about this in the <a href="Construction.html">Joose</a> document.</p>
 
-<p><As a convenience, Joose creates a new class type for your class. See the Joose.Manual.Types document to learn more about types.></p>
+<p>It also creates instance of Joose.Meta.Class for your class. This metaclass instance is now available as a meta property on your class, for example: <code>Person.meta</code></p>
 
-<p>It also creates instance of Joose.Meta.Class for your class. This metaclass instance is now available as a meta property on your class, for example: <strong>Person.meta</strong>.</p>
-
-<p>The metaclass object provides an introspection API for your class. It is also used by Joose itself under the hood to add attributes, compose roles, and so on. In fact, all of Joose's sugar does the real work by calling methods on this metaclass object (and other meta API objects).</p>
+<p>The metaclass object provides an introspection API for your class. It is also used by Joose itself under the hood to add attributes, compose roles, and so on. 
+In fact, all of Joose's sugar does the real work by calling methods on this metaclass object (and other meta API objects).</p>
 
 <h1 id="subclassing">SUBCLASSING</h1>
 
@@ -46,13 +47,13 @@
     })
 </code></pre>
 
-<p>Note that Joose allows a single parent class only.</p>
+<p>Note that Joose allows a single parent class only. As cleaner alternative to multiple inheritance approach, Joose provides Roles mechanism. See <a href="Roles.html">Joose.Manual.Roles</a>.</p>
 
 <h1 id="author">AUTHOR</h1>
 
-<p>Nickolay Platonov <a href="&#109;&#x61;&#x69;&#x6C;&#116;&#x6F;:&#x6E;&#105;&#99;&#x6B;&#x6F;&#x6C;&#97;&#121;8&#64;&#103;&#x6D;&#x61;&#x69;l&#x2E;&#x63;&#111;&#x6D;">&#x6E;&#105;&#99;&#x6B;&#x6F;&#x6C;&#97;&#121;8&#64;&#103;&#x6D;&#x61;&#x69;l&#x2E;&#x63;&#111;&#x6D;</a></p>
+<p>Nickolay Platonov <a href="mailto:nickolay8@gmail.com">nickolay8@gmail.com</a></p>
 
-<p>Heavily based on the original content of Moose::Manual, by Dave Rolsky <a href="&#x6D;&#97;&#105;&#x6C;&#x74;&#111;:&#x61;&#x75;&#x74;&#97;&#114;c&#104;&#64;u&#x72;&#116;&#104;&#46;&#x6F;&#114;&#x67;">&#x61;&#x75;&#x74;&#97;&#114;c&#104;&#64;u&#x72;&#116;&#104;&#46;&#x6F;&#114;&#x67;</a></p>
+<p>Heavily based on the original content of Moose::Manual, by Dave Rolsky <a href="mailto:autarch@urth.org">autarch@urth.org</a></p>
 
 <h1 id="copyrightandlicense">COPYRIGHT AND LICENSE</h1>
 

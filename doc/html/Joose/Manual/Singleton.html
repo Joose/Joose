@@ -1,47 +1,34 @@
 <h1 id="name">NAME</h1>
 
-<p>Joose.Manual.Construction - Object construction with Joose</p>
+<p>Joose.Manual.Singleton - Singleton pattern, "out of the box"</p>
 
-<h1 id="wherestheconstructor">WHERE'S THE CONSTRUCTOR?</h1>
+<h1 id="whatisasingleton">WHAT IS A SINGLETON?</h1>
 
-<p>Do not re-define a constructor method for your classes! You were warned. </p>
+<p>Singleton is a class, which has only a single instance. It often manage some system-wide state or set of helper functions.</p>
 
-<p>When you build a class using Joose it will be managed by the instance of Joose.Meta.Class. This instance (a <em>metaclass instance</em>) provides a constructor for you. This constructor will perform attributes initialization and then will call a 'initialize' method with the same arguments.
-So, instead of constructor, define an <strong>initialize</strong> method for your class.</p>
+<h1 id="syntax">SYNTAX</h1>
 
-<p>However, if you are still sure you need a custom constructor you may provide it using a <em>constructor</em> builder:</p>
+<p>To declare a singleton use <code>my</code> builder:</p>
 
-<pre><code>    Class('User', {
+<pre><code>    Class('TypeRegistry', {
 
-        constructor : function (i, really, know, what, iam, doing) {
+        my : {
+            has : {
+                types : Joose.Object
+            },
+
+            does : [ JooseX.Storable ],
+
+            methods : {
+                registerType : function (type, value) {
+                    ....
+                }
+            }
         }
-
-        ....
     })
 </code></pre>
 
-<h1 id="objectconstructionandattributes">OBJECT CONSTRUCTION AND ATTRIBUTES</h1>
-
-<p>The Joose-provided constructor accepts an object with properties, matching your attributes. This is just another way in which Joose keeps you from worrying how classes are implemented. Simply define a class and you're ready to start creating objects!</p>
-
-<pre><code>    Class('User', {
-        isa : Person,
-
-        has : {
-            password : { init : '12345' },
-            lastLogin : { init : function () { return new Date() } }
-        }
-    })
-
-    var user = new User({
-        password : 'abcdef',
-        lastLogin : 'Yesterday'
-    })
-</code></pre>
-
-<p>If, during construction, you'll provide a function as a property value, it will be used as-is (not will be called).</p>
-
-<h1 id="specialbuilders">SPECIAL BUILDERS</h1>
+<p>You may defined any usual builders inside of <code>my</code>, including method modifires, <code>does</code>, etc.</p>
 
 <h1 id="author">AUTHOR</h1>
 

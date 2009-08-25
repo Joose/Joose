@@ -78,10 +78,6 @@ For example, a Rhinoceros class might do the Horny role, and so could a Unicorn 
 
 <p>A required method is not implemented by the role. Required methods say "to use this Role you must implement this method".</p>
 
-<p><A role has zero or more excluded roles
-An excluded role is a role that the role doing the excluding says it cannot be combined with.
-></p>
-
 <p>Roles are composed into classes (or other roles). When a role is composed into a class, its attributes and methods are <em>flattened</em> into the class. Roles do not show up in the inheritance hierarchy. 
 When a role is composed, its attributes and methods appear as <em>if they were defined in the consuming class</em>.</p>
 
@@ -115,14 +111,6 @@ When a role is composed, its attributes and methods appear as <em>if they were d
     }
 </code></pre>
 
-<p><Type
-Joose also comes with a (miniature) type system. This allows you to define types for attributes. Joose has a set of built-in types based on what Perl provides, such as Str, Num, Bool, HashRef, etc.
-In addition, every class name in your application can also be used as a type name.
-Finally, you can define your own types, either as subtypes or entirely new types, with their own constraints. For example, you could define a type PosInt, a subtype of Int which only allows positive numbers.
-Delegation
-Joose attributes provide declarative syntax for defining delegations. A delegation is a method which calls some method on an attribute to do its real work
-></p>
-
 <h2 id="constructor">Constructor</h2>
 
 <p>A constructor creates an object instance for the class. In raw JavaScript, this is a function, which usually accepts several arguments and initialize the class instance with its values.</p>
@@ -130,11 +118,6 @@ Joose attributes provide declarative syntax for defining delegations. A delegati
 <p>With Joose, this constructor method is created for you, and it simply does the right thing. It accepts an object as 1st argument, which properties will be used as values of class's attributes. More over, you generally should never define your own constructor! </p>
 
 <p>When you want to do something whenever an object is created, you should provide a 'initialize' method in your class. Joose will call this method for you after creating a new object.</p>
-
-<p><Destructor
-This is a special method called when an object instance goes out of scope. You can specialize what your class does in this method if you need to, but you usually don't.
-With old school Perl 5, this is the DESTROY() method, but with Joose it is the DEMOLISH() method.
-></p>
 
 <h2 id="objectinstance">Object instance</h2>
 
@@ -168,25 +151,10 @@ With old school Perl 5, this is the DESTROY() method, but with Joose it is the D
 <p>Could only be done through serious prototype wizardry, and you probably never saw this before (at least in really "raw" JavaScript).</p></li>
 </ul>
 
-<p><Type
-  Hand-written parameter checking in your new() method and accessors.
-  With Joose, you define types declaratively, and then use them by name in your attributes.
-></p>
-
-<p><Delegation
-  Class.Delegation or Class.Delegator, but probably even more hand-written code.
-  With Joose, this is also declarative.
-></p>
-
 <p>Constructor
   A function, which process all the passed attributes to initialize the class.</p>
 
 <p>Comes for free when you define a class with Joose.</p>
-
-<p><Destructor
-  A DESTROY() method.
-  With Joose, this is called DEMOLISH().
-></p>
 
 <h1 id="metawhat">META WHAT? </h1>
 
@@ -210,9 +178,9 @@ With old school Perl 5, this is the DESTROY() method, but with Joose it is the D
 
 <h1 id="author">AUTHOR</h1>
 
-<p>Nickolay Platonov <a href="&#109;&#97;&#x69;&#108;&#116;&#111;:n&#105;&#99;&#107;&#111;&#x6C;&#x61;&#x79;&#x38;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;o&#x6D;">n&#105;&#99;&#107;&#111;&#x6C;&#x61;&#x79;&#x38;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;o&#x6D;</a></p>
+<p>Nickolay Platonov <a href="mailto:nickolay8@gmail.com">nickolay8@gmail.com</a></p>
 
-<p>Heavily based on the original content of Moose::Manual, by Dave Rolsky <a href="&#109;&#97;&#105;&#108;&#116;&#x6F;:&#97;&#x75;&#x74;&#97;&#114;&#99;&#104;&#64;&#117;&#114;&#x74;&#x68;&#x2E;&#111;&#114;&#103;">&#97;&#x75;&#x74;&#97;&#114;&#99;&#104;&#64;&#117;&#114;&#x74;&#x68;&#x2E;&#111;&#114;&#103;</a></p>
+<p>Heavily based on the original content of Moose::Manual, by Dave Rolsky <a href="mailto:autarch@urth.org">autarch@urth.org</a></p>
 
 <h1 id="copyrightandlicense">COPYRIGHT AND LICENSE</h1>
 

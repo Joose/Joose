@@ -85,10 +85,6 @@ A role has zero or more required methods.
 
 A required method is not implemented by the role. Required methods say "to use this Role you must implement this method".
 
-<A role has zero or more excluded roles
-An excluded role is a role that the role doing the excluding says it cannot be combined with.
->
-
 Roles are composed into classes (or other roles). When a role is composed into a class, its attributes and methods are *flattened* into the class. Roles do not show up in the inheritance hierarchy. 
 When a role is composed, its attributes and methods appear as *if they were defined in the consuming class*.
 
@@ -121,14 +117,6 @@ Under the hood, a method modifier is just a plain JavaScript function that gets 
             }
         }
 
-<Type
-Joose also comes with a (miniature) type system. This allows you to define types for attributes. Joose has a set of built-in types based on what Perl provides, such as Str, Num, Bool, HashRef, etc.
-In addition, every class name in your application can also be used as a type name.
-Finally, you can define your own types, either as subtypes or entirely new types, with their own constraints. For example, you could define a type PosInt, a subtype of Int which only allows positive numbers.
-Delegation
-Joose attributes provide declarative syntax for defining delegations. A delegation is a method which calls some method on an attribute to do its real work
->
-
 
 Constructor
 -----------
@@ -139,11 +127,6 @@ With Joose, this constructor method is created for you, and it simply does the r
 
 When you want to do something whenever an object is created, you should provide a 'initialize' method in your class. Joose will call this method for you after creating a new object.
 
-
-<Destructor
-This is a special method called when an object instance goes out of scope. You can specialize what your class does in this method if you need to, but you usually don't.
-With old school Perl 5, this is the DESTROY() method, but with Joose it is the DEMOLISH() method.
->
 
 
 Object instance
@@ -181,25 +164,11 @@ Joose vs raw JavaScript summary
 
   Could only be done through serious prototype wizardry, and you probably never saw this before (at least in really "raw" JavaScript).
 
-<Type
-  Hand-written parameter checking in your new() method and accessors.
-  With Joose, you define types declaratively, and then use them by name in your attributes.
->
-
-<Delegation
-  Class.Delegation or Class.Delegator, but probably even more hand-written code.
-  With Joose, this is also declarative.
->
 
 Constructor
   A function, which process all the passed attributes to initialize the class.
 
   Comes for free when you define a class with Joose.
-
-<Destructor
-  A DESTROY() method.
-  With Joose, this is called DEMOLISH().
->
 
 
 META WHAT? 
@@ -231,9 +200,9 @@ After that, check out the Role recipes. If you're really curious, go on and read
 AUTHOR
 ======
 
-Nickolay Platonov <nickolay8@gmail.com>
+Nickolay Platonov [nickolay8@gmail.com](mailto:nickolay8@gmail.com)
 
-Heavily based on the original content of Moose::Manual, by Dave Rolsky <autarch@urth.org>
+Heavily based on the original content of Moose::Manual, by Dave Rolsky [autarch@urth.org](mailto:autarch@urth.org)
 
 
 COPYRIGHT AND LICENSE
