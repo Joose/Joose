@@ -1,44 +1,30 @@
-/**
+
 
 NAME
 ====
 
 Joose.Manual.Attributes - Object attributes with Joose
+INTRODUCTION ^
 
-
-INTRODUCTION
-============
-
-Joose attributes may have many properties, and attributes are probably the one of the most powerful and flexible part of Joose. 
-You can create a powerful class simply by declaring attributes. In fact, it's possible to have classes that consist solely of attribute declarations.
+Joose attributes have many properties, and attributes are probably the single most powerful and flexible part of Joose. You can create a powerful class simply by declaring attributes. In fact, it's possible to have classes that consist solely of attribute declarations.
 
 An attribute is a property that every member of a class has. For example, we might say that "every Person object has a first name and last name". Attributes can be optional, so that we can say "some Person objects have a social security number (and some don't)".
 
 At its simplest, an attribute can be thought of as a named value (as in a hash) that can be read and set. However, attributes can also have defaults, type constraints, delegation and much more.
 
 In other languages, attributes are also referred to as slots or properties.
+ATTRIBUTE OPTIONS ^
 
-However, all the "attributes magic" is often skipped by beginners, as its generally an advanced topic. Thats why its provided outside of the core, as JooseX.Attribute extension. In this document we'll cover only the base capabilities of attributes, which are included in the core.
+Use the has function to declare an attribute:
 
+  package Person;
 
-BASIC ATTRIBUTE OPTIONS
-=======================
+  use Joose;
 
-The simplest attribute in Joose can be constructed with *have* builder:
+  has 'first_name' => ( is => 'rw' );
 
-    Class('Person', {
-        have : {
-            firstName : 'John Doe'
-        }
-    })
-
-This says that all Person objects have an "first_name" attribute, which has a default value 'John Doe'. Default value will be installed directly to the class's prototype. Thats all, no other features. This type of attribute is used primarily in the Joose internals and low-level extensions.
-
-
-BASIC ATTRIBUTE OPTIONS
-=======================
-
-
+This says that all Person objects have an optional read-write "first_name" attribute.
+Read-write vs. read-only
 
 The options passed to has define the properties of the attribute. There are many options, but in the simplest form you just need to set is, which can be either rw (read-write) or ro (read-only). When an attribute is rw, you can change it by passing a value to its accessor. When an attribute is ro, you may only read the current value of the attribute.
 
@@ -502,4 +488,3 @@ Copyright 2009 by Infinity Interactive, Inc.
 http://www.iinteractive.com
 
 This library is free software; you can redistribute it and/or modify it under the same terms as Perl itself.
-*/

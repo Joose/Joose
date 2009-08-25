@@ -1,0 +1,373 @@
+<h1 id="name">Name</h1>
+
+<p>Joose - A postmodern object system for JavaScript</p>
+
+<h1 id="synopsis">SYNOPSIS</h1>
+
+<pre><code>Class("Point", {
+
+    has: {
+        x: {is: "ro"},
+        y: {is: "rw"},
+    },
+
+    methods: {
+        clear: function () {
+            this.x = 0
+            this.setY(0)
+        }
+    }
+})
+
+Class("Point.ThreeD", {
+
+    isa: Point,
+
+    has: {
+        z: {}
+    },
+
+    after: {
+        clear: function () {
+            this.z = 0
+        }
+    }
+})
+
+var point = new Point.ThreeD()
+</code></pre>
+
+<h1 id="description">DESCRIPTION</h1>
+
+<p>Joose is a self-hosting meta object system for JavaScript with support for classes, inheritance, roles (aka traits), method modifiers and much more.</p>
+
+<p>Joose makes object-oriented programming with JavaScript easy, declarative and very productive. The Joose meta-object system is multi-paradigm. 
+It supports class-based and prototype-based programming styles as well as class-based inheritance and role-based extention.</p>
+
+<p>The Joose framework has been successfully used in multiple production systems for twelve months now and has been proven to be very stable. 
+Joose is being tested using an automated unit-test suite that is being run in all major browsers (Firefox, IE, Safari, Opera and Chrome).</p>
+
+<h2 id="newtojoose">New to Joose?</h2>
+
+<p>If you're new to Joose, the best place to start is the <a href="Joose/Manual.html">Joose.Manual</a> docs, followed by the <a href="Joose/Cookbook.html">Joose.Cookbook</a>. The intro will show you what Joose is, and how it makes JavaScript OO better.</p>
+
+<p>The cookbook recipes on Joose basics will get you up to speed with many of Joose's features quickly. Once you have an idea of what Joose can do, you can use the API documentation to get more detail on features which interest you.</p>
+
+<h2 id="jooseextensions">Joose Extensions</h2>
+
+<p>The JooseX. namespace is the official place to find Joose extensions. These extensions can be found on the <a href="http://openjsan.org/index.html">JSAN</a>.</p>
+
+<h1 id="buildingclasseswithjoose">BUILDING CLASSES WITH JOOSE</h1>
+
+<p>Joose makes every attempt to provide as much convenience as possible during class construction/definition, but still stay out of your way if you want it to. Here are a few items to note when building classes with Joose.</p>
+
+<p>Unless specified with 'isa', any class which uses Joose will inherit from Joose.Proto.Object.</p>
+
+<p>Joose will also manage all attributes (including inherited ones) that are defined with 'has' or 'have'. And (assuming you call new, which is inherited from Joose.Proto.Object) this includes properly initializing all instance slots, setting defaults where appropriate.</p>
+
+<h1 id="providedmethods">PROVIDED METHODS</h1>
+
+<p>Joose provides a number of methods to all your classes, mostly through the inheritance from Joose.Proto.Object.</p>
+
+<ul>
+<li>this.SUPER(arg1, arg2, ...)</li>
+</ul>
+
+<p>Only valid in the scope of usual methods and OVERRIDE method modifiers. Calls a superclass's method with the arguments provided.</p>
+
+<ul>
+<li>this.SUPERARG(Array arg)</li>
+</ul>
+
+<p>Only valid in the scope of usual methods and OVERRIDE method modifiers. Calls a superclass's method with the "packed" arguments, provided as array. Usually used as: this.SUPERARG(arguments)</p>
+
+<ul>
+<li>this.initialize()</li>
+</ul>
+
+<p>Default 'initialize' method is empty function.</p>
+
+<ul>
+<li>this.toString()</li>
+</ul>
+
+<p>Defalt string coercion is string "a ClassName", where ClassName is a name of instance's class.</p>
+
+<ul>
+<li>this.detach()</li>
+</ul>
+
+<p>Detaches the instance from its class. See more details [here][!!]</p>
+
+<ul>
+<li>this.attach()</li>
+</ul>
+
+<p>Attaches the instance back to its class. See more details [here][!!]</p>
+
+<ul>
+<li>this.isDetached()</li>
+</ul>
+
+<p>Returns boolean value, indicating whether this instance is detached from its class.</p>
+
+<h1 id="providedproperties">PROVIDED PROPERTIES</h1>
+
+<h2 id="instanceproperties">Instance properties</h2>
+
+<p>Joose provides a number of properties to all instances of your classes.</p>
+
+<ul>
+<li>this.constructor</li>
+</ul>
+
+<p>A class with which 'this' instance were constructed.</p>
+
+<ul>
+<li>this.meta</li>
+</ul>
+
+<p>An instance of metaclass for 'this' instance's class. </p>
+
+<h2 id="classproperties">Class properties</h2>
+
+<p>Joose also provides a number of properties to classes.</p>
+
+<ul>
+<li>class.meta</li>
+</ul>
+
+<p>An instance of metaclass for 'this' instance's class. The same as 'this.meta' for instances of <strong>class</strong></p>
+
+<ul>
+<li>class.my</li>
+</ul>
+
+<p>A built-in singleton instance. See [Joose.Manual.Singleton Pattern][!!] for more details.</p>
+
+<h1 id="providedhelpersmethods">PROVIDED HELPERS METHODS</h1>
+
+<p>Joose provides a number of small helpers methods, which you might found useful. </p>
+
+<h2 id="helpersforarrays">Helpers for Arrays</h2>
+
+<ul>
+<li>Joose.A.each(array, func, scope)</li>
+</ul>
+
+<p>Calls a <strong>func</strong> in the optional <strong>scope</strong> for each element of <strong>array</strong> as: func(element, index), where 'index' is the index of element in the array</p>
+
+<ul>
+<li>Joose.A.exists(array, value)</li>
+</ul>
+
+<p>Returns boolean value, indicating whether this <strong>value</strong> is exists in the <strong>array</strong>.</p>
+
+<ul>
+<li>Joose.A.concat(source, array)</li>
+</ul>
+
+<p>Safely concat the <strong>source</strong> array with the <strong>array</strong>, which is sometimes required to correctly handle the 'arguments' object.</p>
+
+<ul>
+<li>Joose.A.grep(array, func) {</li>
+</ul>
+
+<p>Calls the <strong>func</strong> for each element of <strong>array</strong> and returns an array, consisted from only those elements, for which it returns 'true' value</p>
+
+<ul>
+<li>Joose.A.remove(array, removeEle) {</li>
+</ul>
+
+<p>Returns a "shallow copy" of <strong>array</strong>, without the all the occurrences of <strong>removeEle</strong> (if any). Comparison is performing with '===' operator. Do not modifies original <strong>array</strong>.</p>
+
+<h2 id="helpersforstrings">Helpers for Strings</h2>
+
+<ul>
+<li>Joose.S.saneSplit(str, delimeter)</li>
+</ul>
+
+<p>Implements a perl-like 'split', which returns empty array for splitting empty string (not an array with an empty string). Behave as standard 'String.prototype.split' in other aspects.</p>
+
+<ul>
+<li>Joose.S.uppercaseFirst(string)</li>
+</ul>
+
+<p>Returns a new string, with uppercased first letter.</p>
+
+<h2 id="helpersforobjects">Helpers for Objects</h2>
+
+<ul>
+<li>Joose.O.each(object, func, scope)</li>
+</ul>
+
+<p>Calls a <strong>func</strong> in the optional <strong>scope</strong> for each property of the <strong>object</strong> (<em>including</em> inherited via prototype chain). 
+<strong>func</strong> is called as: func(<em>value</em>, <em>name</em>), where <em>value</em> is the value of the <em>name</em> property of <strong>object</strong>.</p>
+
+<ul>
+<li>Joose.O.eachSafe(object, func, scope)</li>
+</ul>
+
+<p>Calls a <strong>func</strong> in the optional <strong>scope</strong> for each property of the <strong>object</strong> (<em>excluding</em> inherited via prototype chain). 
+<strong>func</strong> is called as: func(<em>value</em>, <em>name</em>), where <em>value</em> is the value of the <em>name</em> property of <strong>object</strong>.</p>
+
+<ul>
+<li>Joose.O.copy(source, target)</li>
+</ul>
+
+<p>Copies all the properties of <strong>source</strong> object to the <strong>target</strong> (<em>including</em> inherited via prototype chain). </p>
+
+<ul>
+<li>Joose.O.copySafe(source, target)</li>
+</ul>
+
+<p>Copies all the properties of <strong>source</strong> object to the <strong>target</strong> (<em>excluding</em> inherited via prototype chain). </p>
+
+<ul>
+<li>Joose.O.getMutableCopy(object)</li>
+</ul>
+
+<p>Returns a "mutable copy" of <strong>object</strong>. "Mutable copy" is actually an empty object, which however inherit all the properties of original source via prototype chain.</p>
+
+<ul>
+<li>Joose.O.extend(target, source)</li>
+</ul>
+
+<p>Copies all the properties of <strong>source</strong> object to the <strong>target</strong> (<em>including</em> inherited via prototype chain). </p>
+
+<ul>
+<li>Joose.O.isEmpty(object)</li>
+</ul>
+
+<p>Returns boolean value, indicating whether the <strong>object</strong> have no <em>own</em> properties.</p>
+
+<ul>
+<li>Joose.O.isInstance(obj)</li>
+</ul>
+
+<p>Returns boolean value, indicating whether the passed <strong>obj</strong> is an instance of some Joose class.</p>
+
+<ul>
+<li>Joose.O.wantArray(obj)</li>
+</ul>
+
+<p>Returns <strong>obj</strong> itself if <strong>obj</strong> is an array, or [ <strong>obj</strong> ] otherwise.</p>
+
+<h2 id="helpersforattributesdeclaration">Helpers for Attributes declaration</h2>
+
+<p>To simplify declaration of attributes Joose provides a number of default attributes initializers (see [Joose.Manual.Attributes][!!] for more details)</p>
+
+<ul>
+<li>Joose.Array</li>
+</ul>
+
+<p>Returns empty Array when called</p>
+
+<ul>
+<li>Joose.Object</li>
+</ul>
+
+<p>Returns empty Object when called</p>
+
+<ul>
+<li>Joose.Function</li>
+</ul>
+
+<p>Returns empty Function when called (which in turn will return empty function)</p>
+
+<h1 id="metaclass">METACLASS</h1>
+
+<p>When you use Joose, you can specify which metaclass to use:</p>
+
+<pre><code>Class("Point", {
+
+    meta : NewMetaClass,
+    ....
+})
+</code></pre>
+
+<p>You can also specify traits which will be applied to your metaclass:</p>
+
+<pre><code>Class("Point", {
+
+    trait : TraitWithCustomBuilder,
+
+    coords : [ 1, 2, 3 ]
+
+    ....
+})
+</code></pre>
+
+<p>When you do this, your class's meta object will have the specified traits applied to it. See [Joose.Manual.Roles][!!] for more details.</p>
+
+<h1 id="thejoosex.namespace">The JooseX. namespace</h1>
+
+<p>Generally if you're writing an extension for Joose itself you'll want to put your extension in the JooseX. namespace. This namespace is specifically for extensions that make Joose better or different in some fundamental way. It is traditionally not for a package that just happens to use Joose. </p>
+
+<h1 id="caveats">CAVEATS</h1>
+
+<p>Attributes in traits.</p>
+
+<p>Refering to meta instance from the constructor</p>
+
+<h1 id="gettinghelp">GETTING HELP</h1>
+
+<p>We offer both a mailing list and an active IRC channel.</p>
+
+<p>The mailing list is <a href="&#109;&#x61;&#105;&#108;&#116;&#111;:&#106;&#x6F;&#111;&#115;&#x65;&#x2D;&#x6A;&#115;&#64;&#103;&#x6F;&#111;&#103;l&#x65;&#103;ro&#117;&#112;&#115;&#x2E;&#x63;o&#109;">&#106;&#x6F;&#111;&#115;&#x65;&#x2D;&#x6A;&#115;&#64;&#103;&#x6F;&#111;&#103;l&#x65;&#103;ro&#117;&#112;&#115;&#x2E;&#x63;o&#109;</a>. To subscribe, visit: <a href="http://groups.google.com/group/joose-js">http://groups.google.com/group/joose-js</a></p>
+
+<p>You can also visit us at #joose on irc.freenode.org. Questions at all levels (on Joose-related topics ;) are welcome.</p>
+
+<h1 id="acknowledgements">ACKNOWLEDGEMENTS</h1>
+
+<p>Many thanks to the whole Moose community for being icebreaker in the meta world. </p>
+
+<p>Special thanks to Dave Rolsky for the excellent Moose documentation written, on which this document is based.</p>
+
+<h1 id="seealso">SEE ALSO</h1>
+
+<p><a href="http://code.google.com/p/joose-js/">http://code.google.com/p/joose-js/</a></p>
+
+<p>This is the official web home of Joose, it contains links to our public SVN repository as well as links to a number of talks and articles on Joose and Joose related technologies.</p>
+
+<p><a href="http://www.iinteractive.com/moose">http://www.iinteractive.com/moose</a></p>
+
+<p>Home page of Moose - post-modern class system for perl</p>
+
+<h1 id="bugs">BUGS</h1>
+
+<p>All complex software has bugs lurking in it, and this module is no exception.</p>
+
+<p>Please report any bugs through the web interface at <a href="http://code.google.com/p/joose-js/issues/list">http://code.google.com/p/joose-js/issues/list</a></p>
+
+<h1 id="featurerequests">FEATURE REQUESTS</h1>
+
+<p>We are very strict about what features we add to the Joose core, especially the user-visible features. Instead we have made sure that the underlying meta-system of Joose is as extensible as possible so that you can add your own features easily.</p>
+
+<p>That said, occasionally there is a feature needed in the meta-system to support your planned extension, in which case you should either email the mailing list (<a href="&#x6D;&#x61;&#x69;&#x6C;&#116;&#x6F;:&#106;&#x6F;&#x6F;&#x73;&#x65;&#x2D;&#106;&#115;&#64;&#103;&#x6F;&#111;&#103;&#108;&#101;&#x67;r&#x6F;&#117;&#x70;&#x73;&#46;&#99;&#111;&#x6D;">&#106;&#x6F;&#x6F;&#x73;&#x65;&#x2D;&#106;&#115;&#64;&#103;&#x6F;&#111;&#103;&#108;&#101;&#x67;r&#x6F;&#117;&#x70;&#x73;&#46;&#99;&#111;&#x6D;</a>) or join us on IRC at <irc://irc.freenode.org/#joose> to discuss. The Joose.Manual.Contributing has more detail about how and when you can contribute.</p>
+
+<h1 id="authors">AUTHORS</h1>
+
+<p>Malte Ubl </p>
+
+<p>Jeremy Wall</p>
+
+<p>Nickolay Platonov</p>
+
+<h1 id="copyrightandlicense">COPYRIGHT AND LICENSE</h1>
+
+<p>Copyright (c) 2008, Malte Ubl</p>
+
+<p>All rights reserved.</p>
+
+<p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:</p>
+
+<ul>
+<li>Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.</li>
+<li>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.</li>
+<li>Neither the name of Malte Ubl nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. </li>
+</ul>
+
+<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. </p>
+
+<p>Documentation is based on original Moose::Manual documentation, copyright 2006-2009 by Infinity Interactive, Inc.</p>
