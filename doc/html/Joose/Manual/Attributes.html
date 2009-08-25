@@ -19,11 +19,11 @@ You can create a powerful class simply by declaring attributes. In fact, it's po
 
 <p>The simplest attribute in Joose can be constructed with <em>have</em> builder:</p>
 
-<pre><code>Class('Person', {
-    have : {
-        firstName : 'John Doe'
-    }
-})
+<pre><code>    Class('Person', {
+        have : {
+            firstName : 'John Doe'
+        }
+    })
 </code></pre>
 
 <p>This says that all Person objects have an "first_name" attribute, which has a default value 'John Doe'. Default value will be installed directly to the class's prototype without any modifications. Thats all, no other features. This type of attribute is used primarily in the Joose internals and low-level extensions.</p>
@@ -32,13 +32,13 @@ You can create a powerful class simply by declaring attributes. In fact, it's po
 
 <p>The advanced attribute in Joose can be constructed with <em>has</em> builder:</p>
 
-<pre><code>Class('User', {
-    isa : Person,
+<pre><code>    Class('User', {
+        isa : Person,
 
-    has : {
-        username : { is : 'rw', init : 'root' }
-    }
-})
+        has : {
+            username : { is : 'rw', init : 'root' }
+        }
+    })
 </code></pre>
 
 <p>The options passed to <em>has</em> define the properties of the attribute. There can be many options (provided in the extension packages), but in the simplest form you just need to set <em>is</em>, which can be either 'rw' (read-write) or 'ro' (read-only). 
@@ -53,11 +53,11 @@ Write accessor has the name 'setAttributeName'. If you declared your attribute a
 
 <p>Given our User example above, we now have a 'getUsername/setUsername' accessors that can read/write User object's username attribute's value:</p>
 
-<pre><code>var user = new User()
+<pre><code>    var user = new User()
 
-user.setUsername('dba')
+    user.setUsername('dba')
 
-if (user.getUsername() == 'dba') { ... }
+    if (user.getUsername() == 'dba') { ... }
 </code></pre>
 
 <p>Class can provide custom implementation of the accessor methods, they will not be overriden by attributes.</p>
@@ -66,13 +66,13 @@ if (user.getUsername() == 'dba') { ... }
 
 <p>To specify the default value for the attribute use <em>init</em> property. In the example above 'username' attribute will be initialized with default value 'root'. </p>
 
-<pre><code>Class('User', {
-    isa : Person,
+<pre><code>    Class('User', {
+        isa : Person,
 
-    has : {
-        lastLogin : { is : 'rw', init : function () { return new Date() } }
-    }
-})
+        has : {
+            lastLogin : { is : 'rw', init : function () { return new Date() } }
+        }
+    })
 </code></pre>
 
 <p>If you'll provide a function as the value for <em>init</em>, it will be called during initialization with the following signature:
@@ -85,38 +85,36 @@ In this case, this value is treated as value of 'init' property, value of 'is' r
 
 <p>The following examples are equivalent:</p>
 
-<pre><code>Class('User', {
-    isa : Person,
+<pre><code>    Class('User', {
+        isa : Person,
 
-    has : {
-        password : { init : '12345' },
-        lastLogin : { init : function () { return new Date() } }
-    }
-})
-</code></pre>
+        has : {
+            password : { init : '12345' },
+            lastLogin : { init : function () { return new Date() } }
+        }
+    })
 
-<p>...</p>
+    ...
 
-<pre><code>Class('User', {
-    isa : Person,
+    Class('User', {
+        isa : Person,
 
-    has : {
-        password : '12345',
-        lastLogin : function () { return new Date() }
-    }
-})
-</code></pre>
+        has : {
+            password : '12345',
+            lastLogin : function () { return new Date() }
+        }
+    })
 
-<p>...</p>
+    ...
 
-<pre><code>Class('User', {
-    isa : Person,
+    Class('User', {
+        isa : Person,
 
-    has : {
-        password : '12345',
-        lastLogin : Joose.Now
-    }
-})
+        has : {
+            password : '12345',
+            lastLogin : Joose.Now
+        }
+    })
 </code></pre>
 
 <p>The 'Joose.Now' construct in the last example is an <em>attribute helper</em> - a simple function, which return an certain initializing value.</p>
@@ -176,9 +174,9 @@ See the "Meta" and "Extending" recipes in <a href="[Joose.Cookbook]<a href="[Joo
 
 <h1 id="author">AUTHOR</h1>
 
-<p>Nickolay Platonov <a href="&#109;&#x61;&#105;&#x6C;&#x74;o:&#110;&#105;&#x63;&#x6B;&#x6F;&#x6C;&#97;&#121;&#56;&#64;&#103;&#109;a&#105;&#x6C;.&#99;&#x6F;&#x6D;">&#110;&#105;&#x63;&#x6B;&#x6F;&#x6C;&#97;&#121;&#56;&#64;&#103;&#109;a&#105;&#x6C;.&#99;&#x6F;&#x6D;</a></p>
+<p>Nickolay Platonov <a href="&#x6D;a&#x69;&#x6C;&#116;&#x6F;:ni&#99;&#107;&#x6F;&#x6C;&#97;&#x79;8&#64;&#x67;&#x6D;&#x61;&#105;&#x6C;&#46;&#99;&#111;&#109;">ni&#99;&#107;&#x6F;&#x6C;&#97;&#x79;8&#64;&#x67;&#x6D;&#x61;&#105;&#x6C;&#46;&#99;&#111;&#109;</a></p>
 
-<p>Heavily based on the original content of Moose::Manual, by Dave Rolsky <a href="&#109;&#97;&#105;&#x6C;&#x74;&#x6F;:&#97;&#117;&#x74;&#x61;&#114;&#x63;&#x68;&#64;&#117;&#114;&#116;&#104;.&#x6F;&#114;&#x67;">&#97;&#117;&#x74;&#x61;&#114;&#x63;&#x68;&#64;&#117;&#114;&#116;&#104;.&#x6F;&#114;&#x67;</a></p>
+<p>Heavily based on the original content of Moose::Manual, by Dave Rolsky <a href="&#109;&#97;&#x69;&#x6C;&#116;&#111;:&#97;&#x75;&#116;&#x61;&#114;&#x63;&#104;&#64;&#117;&#114;&#x74;h.o&#x72;&#x67;">&#97;&#x75;&#116;&#x61;&#114;&#x63;&#104;&#64;&#117;&#114;&#x74;h.o&#x72;&#x67;</a></p>
 
 <h1 id="copyrightandlicense">COPYRIGHT AND LICENSE</h1>
 

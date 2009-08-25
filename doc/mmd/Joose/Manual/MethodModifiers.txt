@@ -13,48 +13,48 @@ Joose provides a feature called "method modifiers". You can also think of these 
 
 It's probably easiest to understand this feature with a few examples:
 
-Class('Person', {
-    
-    methods : {
-        eat : function (food) {
-            console.log('yummy')
+        Class('Person', {
             
-            return 'yummy'
-        }
-    }
-})
-
-Class('TidyPerson', {
-    isa : Person,
-    
-    before : {
-        eat : function (food) {
-            this.washHands()
-        }
-    },
-    
-    after : {
-        eat : function (food) {
-            this.brushTeeth()
-        }
-    },
-    
-    methods : {
-        washHands : function (food) {
-            console.log('washing hands')
-        },
+            methods : {
+                eat : function (food) {
+                    console.log('yummy')
+                    
+                    return 'yummy'
+                }
+            }
+        })
         
-        brushTeeth : function (food) {
-            console.log('brushing teeth')
-        }
-    }
-})
+        Class('TidyPerson', {
+            isa : Person,
+            
+            before : {
+                eat : function (food) {
+                    this.washHands()
+                }
+            },
+            
+            after : {
+                eat : function (food) {
+                    this.brushTeeth()
+                }
+            },
+            
+            methods : {
+                washHands : function (food) {
+                    console.log('washing hands')
+                },
+                
+                brushTeeth : function (food) {
+                    console.log('brushing teeth')
+                }
+            }
+        })
 
 Now if I call new TidyPerson().eat('apple') I'll get the following output:
 
-    washing hands
-    yummy
-    brushing teeth
+        washing hands
+        yummy
+        brushing teeth
 
 You probably could have figured that out from the names "before" and "after"
 
@@ -79,22 +79,22 @@ In both cases the returning value still returns from original method, not from m
 
 Using the declaration above:
 
-    var tidyPerson = new TidyPerson()
-    var res = tidyPerson.eat('apple')
-    
-    console.log(res == 'yummy') # returns 'yummy'
+        var tidyPerson = new TidyPerson()
+        var res = tidyPerson.eat('apple')
+        
+        console.log(res == 'yummy') # returns 'yummy'
 
 Another use for the before modifier would be to do some sort of prechecking on a method call or setter. For example:
 
-    Class('Bus', {
-        isa : Vehicle,
-        
-        before : {
-            openDoors : function () {
-                if (this.isMoving()) throw "Can't open the bus's doors during movement"
+        Class('Bus', {
+            isa : Vehicle,
+            
+            before : {
+                openDoors : function () {
+                    if (this.isMoving()) throw "Can't open the bus's doors during movement"
+                }
             }
-        }
-    })
+        })
 
 This lets us implement logical checks that don't make sense as type constraints. In particular, they're useful for defining logical rules about an object's state changes.
 
@@ -107,152 +107,128 @@ OVERRIDE and AROUND
 An 'override' and 'around' modifiers are a bit more powerful than either a 'before' or 'after' modifier. It can modify the arguments being passed to the original method, 
 and you can even decide to simply not call the original method at all. You can also modify the return value of the original method.
 
-Class('Person', {
-    have : {
-        firstName : null,
-        lastName : null
-    },
-    
-    methods : {
-        getDisplayName : function (lastNameFirst) {
-            if (lastNameFirst) return this.lastName + ', ' + this.firstName  
+        Class('Person', {
+            have : {
+                firstName : null,
+                lastName : null
+            },
             
-            return this.firstName + ' ' + this.lastName
-        },
+            methods : {
+                getDisplayName : function (lastNameFirst) {
+                    if (lastNameFirst) return this.lastName + ', ' + this.firstName  
+                    
+                    return this.firstName + ' ' + this.lastName
+                },
+                
+                chatOnIRC : function (partner, message) {
+                    return this.type(partner + ': ' + message 
+                }
+            }
+        })
         
-        chatOnIRC : function (partner, message) {
-            this.type(partner + ': ' + message 
-        }
-    }
-})
+        
+        Class('Employee', {
+            isa : Person,
+            
+            has : {
+                jobTitle : { is : 'rw' }
+            },
+        
+            override : {
+                getDisplayName : function (lastNameFirst) {
+                    return this.SUPER(false) + ', ' + this.jobTitle 
+                }
+            },
+            
+            around : {
+                chatOnIRC : function (original, partner, message) {
+                    return this.getDistanceToBoss() >= 5 ? original(partner, message) : false
+                }
+            }
+        })
+
+An 'override' modifier allows you to use the **this.SUPER(arg1, arg2, ...)** call in the modifier. As expected this call will execute the original method with provided arguments.
+Its possible also to specify the arguments in the "packed" form, as array, with **this.SUPERARG(argumentsArray)**. This variant is usually used as **this.SUPERARG(arguments)**
+
+An 'around' modifier receives the original method as its first argument, then any arguments passed to the original method.
+
+  
+AUGMENT
+=======
+
+The augment modifier provides a sort of inverted subclassing. You provide part of the implementation in a superclass, and then document that subclasses are expected to provide the rest.
+
+The superclass calls **this.INNER()**, which then calls the augment modifier in the subclass:
 
 
-Class('Employee', {
-    isa : Person,
-    
-    has : {
-        jobTitle : { is : 'rw' }
-    },
+        Class('Document', {
+        
+            methods : {
+                as_xml : function () {
+                    var xml = "<document>\n"
+                    xml += this.INNER()
+                    xml += "</document>\n"
+                    
+                    return xml
+                }
+            }
+        })
 
-    override : {
-        getDisplayName : function (lastNameFirst) {
-            return this.SUPER(false) + ', ' + this.jobTitle 
-        }
-    },
-    
-    around : {
-        chatOnIRC : function (original, partner, message) {
-            this.type(partner + ': ' + message 
-        }
-    }
-    
-})
+Using **this.INNER()** in this method makes it possible for one or more subclasses to then augment this method with their own specific implementation:
 
+        Class('Report', {
+            isa : Document,
+            
+            augment : {
+                as_xml : function () {
+                    var xml = "<report>\n"
+                    xml += this.INNER()
+                    xml += "</report>\n"
+            
+                    return xml
+                }
+            }
+        })
 
-The call to super() is almost the same as calling $self->SUPER.display_name. The difference is that the arguments passed to the superclass's method will always be the same as the ones passed to the method modifier, and cannot be changed.
+When we call 'as_xml' on a Report object, we get something like this:
 
-All arguments passed to super() are ignored, as are any changes made to @_ before super() is called.
+          <document>
+          <report>
+          </report>
+          </document>
 
+But we also called **this.INNER()** in Report, so we can continue subclassing and adding more content inside the document:
 
+        Class('Report.IncomeAndExpenses', {
+            isa : Report,
+            
+            augment : {
+                as_xml : function () {
+                    var xml = '<income>' + this.income + '</income>\n'
+        
+                    xml += '<expenses>' + this.expenses + '</expenses>\n'
+                    
+                    xml += this.INNER() || ''
+            
+                    return xml
+                }
+            }
+        })
 
-
-
-An around modifier receives the original method as its first argument, then the object, and finally any arguments passed to the method.
-
-  around 'size' => sub {
-      my $orig = shift;
-      my $self = shift;
-
-      return $self->$orig()
-          unless @_;
-
-      my $size = shift;
-      $size = $size / 2
-          if $self->likes_small_things();
-
-      return $self->$orig($size);
-  };
-
-INNER AND AUGMENT ^
-
-Augment and inner are two halves of the same feature. The augment modifier provides a sort of inverted subclassing. You provide part of the implementation in a superclass, and then document that subclasses are expected to provide the rest.
-
-The superclass calls inner(), which then calls the augment modifier in the subclass:
-
-  package Document;
-
-  use Joose;
-
-  sub as_xml {
-      my $self = shift;
-
-      my $xml = "<document>\n";
-      $xml .= inner();
-      $xml .= "</document>\n";
-
-      return $xml;
-  }
-
-Using inner() in this method makes it possible for one or more subclasses to then augment this method with their own specific implementation:
-
-  package Report;
-
-  use Joose;
-
-  extends 'Document';
-
-  augment 'as_xml' => sub {
-      my $self = shift;
-
-      my $xml = "<report>\n";
-      $xml .= inner();
-      $xml .= "</report>\n";
-
-      return $xml;
-  };
-
-When we call as_xml on a Report object, we get something like this:
-
-  <document>
-  <report>
-  </report>
-  </document>
-
-But we also called inner() in Report, so we can continue subclassing and adding more content inside the document:
-
-  package Report.IncomeAndExpenses;
-
-  use Joose;
-
-  extends 'Report';
-
-  augment 'as_xml' => sub {
-      my $self = shift;
-
-      my $xml = '<income>' . $self->income . '</income>';
-      $xml .= "\n";
-      $xml .= '<expenses>' . $self->expenses . '</expenses>';
-      $xml .= "\n";
-
-      $xml .= inner() || q{};
-
-      return $xml;
-  };
 
 Now our report has some content:
 
-  <document>
-  <report>
-  <income>$10</income>
-  <expenses>$8</expenses>
-  </report>
-  </document>
+          <document>
+          <report>
+          <income>$10</income>
+          <expenses>$8</expenses>
+          </report>
+          </document>
 
-What makes this combination of augment and inner() special is that it allows us to have methods which are called from parent (least specific) to child (most specific). This inverts the normal inheritance pattern.
+What makes this combination of 'augment' and **this.INNER()** special is that it allows us to have methods which are called from parent (least specific) to child (most specific). This inverts the normal inheritance pattern.
 
-Note that in Report.IncomeAndExpenses we call inner() again. If the object is an instance of Report.IncomeAndExpenses then this call is a no-op, and just returns false.
-
-
+Note that in Report.IncomeAndExpenses we call **this.INNER()** again. If the object is an instance of Report.IncomeAndExpenses then this call is a no-op, and just returns false.
+However, if later we will decide to further subclass the Report.IncomeAndExpenses, than its 'as_xml' will still include the content, provided by subclass.
 
 
 AUTHOR
@@ -278,5 +254,5 @@ Redistribution and use in source and binary forms, with or without modification,
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 
-[Joose.Manual.Roles][1]
+[1]: Roles.html
 

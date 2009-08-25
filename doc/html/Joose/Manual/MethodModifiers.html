@@ -8,52 +8,49 @@
 
 <p>It's probably easiest to understand this feature with a few examples:</p>
 
-<p>Class('Person', {</p>
+<pre><code>    Class('Person', {
 
-<pre><code>methods : {
-    eat : function (food) {
-        console.log('yummy')
+        methods : {
+            eat : function (food) {
+                console.log('yummy')
 
-        return 'yummy'
-    }
-}
+                return 'yummy'
+            }
+        }
+    })
+
+    Class('TidyPerson', {
+        isa : Person,
+
+        before : {
+            eat : function (food) {
+                this.washHands()
+            }
+        },
+
+        after : {
+            eat : function (food) {
+                this.brushTeeth()
+            }
+        },
+
+        methods : {
+            washHands : function (food) {
+                console.log('washing hands')
+            },
+
+            brushTeeth : function (food) {
+                console.log('brushing teeth')
+            }
+        }
+    })
 </code></pre>
-
-<p>})</p>
-
-<p>Class('TidyPerson', {
-    isa : Person,</p>
-
-<pre><code>before : {
-    eat : function (food) {
-        this.washHands()
-    }
-},
-
-after : {
-    eat : function (food) {
-        this.brushTeeth()
-    }
-},
-
-methods : {
-    washHands : function (food) {
-        console.log('washing hands')
-    },
-
-    brushTeeth : function (food) {
-        console.log('brushing teeth')
-    }
-}
-</code></pre>
-
-<p>})</p>
 
 <p>Now if I call new TidyPerson().eat('apple') I'll get the following output:</p>
 
-<pre><code>washing hands
-yummy
-brushing teeth
+<pre><code>    washing hands
+    yummy
+    brushing teeth
 </code></pre>
 
 <p>You probably could have figured that out from the names "before" and "after"</p>
@@ -65,7 +62,7 @@ Since Rhino travers object properties in random order, if you'll provide more th
 
 <h1 id="whyusethem">WHY USE THEM?</h1>
 
-<p>Method modifiers have many uses. One very common use is in roles. This lets roles alter the behavior of methods in the classes that use them. See [Joose.Manual.Roles][1] for more information about roles.</p>
+<p>Method modifiers have many uses. One very common use is in roles. This lets roles alter the behavior of methods in the classes that use them. See <a href="Roles.html">Joose.Manual.Roles</a> for more information about roles.</p>
 
 <p>Since modifiers are mostly useful in roles, some of the examples below are a bit artificial. They're intended to give you an idea of how modifiers work, but may not be the most natural usage.</p>
 
@@ -76,23 +73,23 @@ In both cases the returning value still returns from original method, not from m
 
 <p>Using the declaration above:</p>
 
-<pre><code>var tidyPerson = new TidyPerson()
-var res = tidyPerson.eat('apple')
+<pre><code>    var tidyPerson = new TidyPerson()
+    var res = tidyPerson.eat('apple')
 
-console.log(res == 'yummy') # returns 'yummy'
+    console.log(res == 'yummy') # returns 'yummy'
 </code></pre>
 
 <p>Another use for the before modifier would be to do some sort of prechecking on a method call or setter. For example:</p>
 
-<pre><code>Class('Bus', {
-    isa : Vehicle,
+<pre><code>    Class('Bus', {
+        isa : Vehicle,
 
-    before : {
-        openDoors : function () {
-            if (this.isMoving()) throw "Can't open the bus's doors during movement"
+        before : {
+            openDoors : function () {
+                if (this.isMoving()) throw "Can't open the bus's doors during movement"
+            }
         }
-    }
-})
+    })
 </code></pre>
 
 <p>This lets us implement logical checks that don't make sense as type constraints. In particular, they're useful for defining logical rules about an object's state changes.</p>
@@ -104,161 +101,136 @@ console.log(res == 'yummy') # returns 'yummy'
 <p>An 'override' and 'around' modifiers are a bit more powerful than either a 'before' or 'after' modifier. It can modify the arguments being passed to the original method, 
 and you can even decide to simply not call the original method at all. You can also modify the return value of the original method.</p>
 
-<p>Class('Person', {
-    have : {
-        firstName : null,
-        lastName : null
-    },</p>
+<pre><code>    Class('Person', {
+        have : {
+            firstName : null,
+            lastName : null
+        },
 
-<pre><code>methods : {
-    getDisplayName : function (lastNameFirst) {
-        if (lastNameFirst) return this.lastName + ', ' + this.firstName  
+        methods : {
+            getDisplayName : function (lastNameFirst) {
+                if (lastNameFirst) return this.lastName + ', ' + this.firstName  
 
-        return this.firstName + ' ' + this.lastName
-    },
+                return this.firstName + ' ' + this.lastName
+            },
 
-    chatOnIRC : function (partner, message) {
-        this.type(partner + ': ' + message 
-    }
-}
+            chatOnIRC : function (partner, message) {
+                return this.type(partner + ': ' + message 
+            }
+        }
+    })
+
+
+    Class('Employee', {
+        isa : Person,
+
+        has : {
+            jobTitle : { is : 'rw' }
+        },
+
+        override : {
+            getDisplayName : function (lastNameFirst) {
+                return this.SUPER(false) + ', ' + this.jobTitle 
+            }
+        },
+
+        around : {
+            chatOnIRC : function (original, partner, message) {
+                return this.getDistanceToBoss() &gt;= 5 ? original(partner, message) : false
+            }
+        }
+    })
 </code></pre>
 
-<p>})</p>
+<p>An 'override' modifier allows you to use the <strong>this.SUPER(arg1, arg2, ...)</strong> call in the modifier. As expected this call will execute the original method with provided arguments.
+Its possible also to specify the arguments in the "packed" form, as array, with <strong>this.SUPERARG(argumentsArray)</strong>. This variant is usually used as <strong>this.SUPERARG(arguments)</strong></p>
 
-<p>Class('Employee', {
-    isa : Person,</p>
+<p>An 'around' modifier receives the original method as its first argument, then any arguments passed to the original method.</p>
 
-<pre><code>has : {
-    jobTitle : { is : 'rw' }
-},
+<h1 id="augment">AUGMENT</h1>
 
-override : {
-    getDisplayName : function (lastNameFirst) {
-        return this.SUPER(false) + ', ' + this.jobTitle 
-    }
-},
+<p>The augment modifier provides a sort of inverted subclassing. You provide part of the implementation in a superclass, and then document that subclasses are expected to provide the rest.</p>
 
-around : {
-    chatOnIRC : function (original, partner, message) {
-        this.type(partner + ': ' + message 
-    }
-}
+<p>The superclass calls <strong>this.INNER()</strong>, which then calls the augment modifier in the subclass:</p>
+
+<pre><code>    Class('Document', {
+
+        methods : {
+            as_xml : function () {
+                var xml = "&lt;document&gt;\n"
+                xml += this.INNER()
+                xml += "&lt;/document&gt;\n"
+
+                return xml
+            }
+        }
+    })
 </code></pre>
 
-<p>})</p>
+<p>Using <strong>this.INNER()</strong> in this method makes it possible for one or more subclasses to then augment this method with their own specific implementation:</p>
 
-<p>The call to super() is almost the same as calling $self->SUPER.display_name. The difference is that the arguments passed to the superclass's method will always be the same as the ones passed to the method modifier, and cannot be changed.</p>
+<pre><code>    Class('Report', {
+        isa : Document,
 
-<p>All arguments passed to super() are ignored, as are any changes made to @_ before super() is called.</p>
+        augment : {
+            as_xml : function () {
+                var xml = "&lt;report&gt;\n"
+                xml += this.INNER()
+                xml += "&lt;/report&gt;\n"
 
-<p>An around modifier receives the original method as its first argument, then the object, and finally any arguments passed to the method.</p>
-
-<p>around 'size' => sub {
-      my $orig = shift;
-      my $self = shift;</p>
-
-<pre><code>  return $self-&gt;$orig()
-      unless @_;
-
-  my $size = shift;
-  $size = $size / 2
-      if $self-&gt;likes_small_things();
-
-  return $self-&gt;$orig($size);
+                return xml
+            }
+        }
+    })
 </code></pre>
 
-<p>};</p>
+<p>When we call 'as_xml' on a Report object, we get something like this:</p>
 
-<p>INNER AND AUGMENT ^</p>
-
-<p>Augment and inner are two halves of the same feature. The augment modifier provides a sort of inverted subclassing. You provide part of the implementation in a superclass, and then document that subclasses are expected to provide the rest.</p>
-
-<p>The superclass calls inner(), which then calls the augment modifier in the subclass:</p>
-
-<p>package Document;</p>
-
-<p>use Joose;</p>
-
-<p>sub as_xml {
-      my $self = shift;</p>
-
-<pre><code>  my $xml = "&lt;document&gt;\n";
-  $xml .= inner();
-  $xml .= "&lt;/document&gt;\n";
-
-  return $xml;
+<pre><code>      &lt;document&gt;
+      &lt;report&gt;
+      &lt;/report&gt;
+      &lt;/document&gt;
 </code></pre>
 
-<p>}</p>
+<p>But we also called <strong>this.INNER()</strong> in Report, so we can continue subclassing and adding more content inside the document:</p>
 
-<p>Using inner() in this method makes it possible for one or more subclasses to then augment this method with their own specific implementation:</p>
+<pre><code>    Class('Report.IncomeAndExpenses', {
+        isa : Report,
 
-<p>package Report;</p>
+        augment : {
+            as_xml : function () {
+                var xml = '&lt;income&gt;' + this.income + '&lt;/income&gt;\n'
 
-<p>use Joose;</p>
+                xml += '&lt;expenses&gt;' + this.expenses + '&lt;/expenses&gt;\n'
 
-<p>extends 'Document';</p>
+                xml += this.INNER() || ''
 
-<p>augment 'as_xml' => sub {
-      my $self = shift;</p>
-
-<pre><code>  my $xml = "&lt;report&gt;\n";
-  $xml .= inner();
-  $xml .= "&lt;/report&gt;\n";
-
-  return $xml;
+                return xml
+            }
+        }
+    })
 </code></pre>
-
-<p>};</p>
-
-<p>When we call as_xml on a Report object, we get something like this:</p>
-
-<p><document>
-  <report>
-  </report>
-  </document></p>
-
-<p>But we also called inner() in Report, so we can continue subclassing and adding more content inside the document:</p>
-
-<p>package Report.IncomeAndExpenses;</p>
-
-<p>use Joose;</p>
-
-<p>extends 'Report';</p>
-
-<p>augment 'as_xml' => sub {
-      my $self = shift;</p>
-
-<pre><code>  my $xml = '&lt;income&gt;' . $self-&gt;income . '&lt;/income&gt;';
-  $xml .= "\n";
-  $xml .= '&lt;expenses&gt;' . $self-&gt;expenses . '&lt;/expenses&gt;';
-  $xml .= "\n";
-
-  $xml .= inner() || q{};
-
-  return $xml;
-</code></pre>
-
-<p>};</p>
 
 <p>Now our report has some content:</p>
 
-<p><document>
-  <report>
-  <income>$10</income>
-  <expenses>$8</expenses>
-  </report>
-  </document></p>
+<pre><code>      &lt;document&gt;
+      &lt;report&gt;
+      &lt;income&gt;$10&lt;/income&gt;
+      &lt;expenses&gt;$8&lt;/expenses&gt;
+      &lt;/report&gt;
+      &lt;/document&gt;
+</code></pre>
 
-<p>What makes this combination of augment and inner() special is that it allows us to have methods which are called from parent (least specific) to child (most specific). This inverts the normal inheritance pattern.</p>
+<p>What makes this combination of 'augment' and <strong>this.INNER()</strong> special is that it allows us to have methods which are called from parent (least specific) to child (most specific). This inverts the normal inheritance pattern.</p>
 
-<p>Note that in Report.IncomeAndExpenses we call inner() again. If the object is an instance of Report.IncomeAndExpenses then this call is a no-op, and just returns false.</p>
+<p>Note that in Report.IncomeAndExpenses we call <strong>this.INNER()</strong> again. If the object is an instance of Report.IncomeAndExpenses then this call is a no-op, and just returns false.
+However, if later we will decide to further subclass the Report.IncomeAndExpenses, than its 'as_xml' will still include the content, provided by subclass.</p>
 
 <h1 id="author">AUTHOR</h1>
 
-<p>Nickolay Platonov <a href="&#109;&#x61;i&#108;&#116;&#x6F;:&#x6E;&#105;&#x63;&#x6B;o&#108;&#x61;&#121;&#56;&#64;&#103;&#109;a&#105;&#x6C;&#46;&#x63;&#111;&#x6D;">&#x6E;&#105;&#x63;&#x6B;o&#108;&#x61;&#121;&#56;&#64;&#103;&#109;a&#105;&#x6C;&#46;&#x63;&#111;&#x6D;</a></p>
+<p>Nickolay Platonov <a href="&#109;&#x61;&#x69;&#x6C;&#116;&#111;:&#x6E;&#x69;&#99;&#x6B;&#111;&#108;&#97;&#x79;&#56;&#64;g&#x6D;a&#105;&#108;&#x2E;&#x63;o&#109;">&#x6E;&#x69;&#99;&#x6B;&#111;&#108;&#97;&#x79;&#56;&#64;g&#x6D;a&#105;&#108;&#x2E;&#x63;o&#109;</a></p>
 
-<p>Heavily based on the original content of Moose::Manual, by Dave Rolsky <a href="m&#x61;i&#108;&#116;&#x6F;:&#97;&#117;&#x74;&#97;&#114;&#99;&#104;&#64;&#x75;&#x72;&#116;&#104;&#46;&#111;&#x72;&#x67;">&#97;&#117;&#x74;&#97;&#114;&#99;&#104;&#64;&#x75;&#x72;&#116;&#104;&#46;&#111;&#x72;&#x67;</a></p>
+<p>Heavily based on the original content of Moose::Manual, by Dave Rolsky <a href="m&#x61;i&#108;t&#111;:&#97;&#117;t&#97;&#114;&#x63;&#x68;&#64;&#117;&#114;&#x74;&#104;&#x2E;&#x6F;&#x72;g">&#97;&#117;t&#97;&#114;&#x63;&#x68;&#64;&#117;&#114;&#x74;&#104;&#x2E;&#x6F;&#x72;g</a></p>
 
 <h1 id="copyrightandlicense">COPYRIGHT AND LICENSE</h1>
 
@@ -275,5 +247,3 @@ around : {
 </ul>
 
 <p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. </p>
-
-<p>[Joose.Manual.Roles][1]</p>

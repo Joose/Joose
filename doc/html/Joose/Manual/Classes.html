@@ -6,8 +6,8 @@
 
 <p>Using Joose is very simple, just include the appropriate files in your page (see the <a href="Installation.html">Joose.Manual.Installation</a> section) a type:</p>
 
-<pre><code>Class('Person', {
-})
+<pre><code>    Class('Person', {
+    })
 </code></pre>
 
 <p>That's it, you've made a class with Joose!</p>
@@ -16,11 +16,11 @@
 
 <p>When you constructing a class with Joose, a properties of 2nd argument passed to 'Class' call are called <em>builders</em>. These include things like has, isa, does and more. These builders are what you use to define your class. For example, you might define an attribute ...</p>
 
-<pre><code>Class('Person', {
-    has : {
-        firstName : { is : 'rw' }
-    }
-})
+<pre><code>    Class('Person', {
+        has : {
+            firstName : { is : 'rw' }
+        }
+    })
 </code></pre>
 
 <p>Attributes are described in the <a href="Attributes.html">Joose.Manual.Attributes</a> documentation.</p>
@@ -37,22 +37,22 @@
 
 <p>Joose provides a simple builder for declaring your parent class: <strong>isa</strong></p>
 
-<pre><code>Class('User', {
-    isa : Person,
+<pre><code>    Class('User', {
+        isa : Person,
 
-    has : {
-        userName : { is : 'rw' }
-    }
-})
+        has : {
+            userName : { is : 'rw' }
+        }
+    })
 </code></pre>
 
 <p>Note that Joose allows a single parent class only.</p>
 
 <h1 id="author">AUTHOR</h1>
 
-<p>Nickolay Platonov <a href="&#109;&#x61;&#x69;&#108;&#x74;&#x6F;:&#x6E;&#105;&#99;&#x6B;&#111;&#108;ay&#x38;&#64;&#103;&#109;&#x61;&#x69;&#x6C;&#x2E;&#x63;&#111;&#109;">&#x6E;&#105;&#99;&#x6B;&#111;&#108;ay&#x38;&#64;&#103;&#109;&#x61;&#x69;&#x6C;&#x2E;&#x63;&#111;&#109;</a></p>
+<p>Nickolay Platonov <a href="&#109;&#97;&#x69;&#108;&#x74;&#x6F;:&#x6E;&#105;&#x63;k&#x6F;&#x6C;&#97;y&#56;&#64;&#x67;&#x6D;&#x61;&#x69;&#x6C;&#46;&#x63;&#111;&#x6D;">&#x6E;&#105;&#x63;k&#x6F;&#x6C;&#97;y&#56;&#64;&#x67;&#x6D;&#x61;&#x69;&#x6C;&#46;&#x63;&#111;&#x6D;</a></p>
 
-<p>Heavily based on the original content of Moose::Manual, by Dave Rolsky <a href="&#x6D;&#x61;&#105;&#x6C;&#116;&#x6F;:&#x61;&#x75;&#x74;&#x61;r&#99;h&#64;&#117;&#x72;&#x74;&#104;&#46;&#111;r&#x67;">&#x61;&#x75;&#x74;&#x61;r&#99;h&#64;&#117;&#x72;&#x74;&#104;&#46;&#111;r&#x67;</a></p>
+<p>Heavily based on the original content of Moose::Manual, by Dave Rolsky <a href="&#109;a&#x69;&#108;&#x74;&#x6F;:&#x61;&#x75;&#x74;&#x61;&#x72;&#99;&#104;&#64;&#x75;&#114;&#x74;&#x68;&#46;&#x6F;&#114;&#x67;">&#x61;&#x75;&#x74;&#x61;&#x72;&#99;&#104;&#64;&#x75;&#114;&#x74;&#x68;&#46;&#x6F;&#114;&#x67;</a></p>
 
 <h1 id="copyrightandlicense">COPYRIGHT AND LICENSE</h1>
 

@@ -32,8 +32,8 @@
 
 <p>A class is usually analogous to a category of nouns, like "People" or "Users".</p>
 
-<pre><code>Class('Person', {})
-# now it's a Joose class!
+<pre><code>    Class('Person', {})
+    # now it's a Joose class!
 </code></pre>
 
 <h2 id="attribute">Attribute</h2>
@@ -46,9 +46,9 @@
 
 <p>An attribute is something that the class's members have. For example, People have first and last names. Users have passwords and last login datetimes.</p>
 
-<pre><code>  has : {
-      firstName : { is : 'rw' }
-  }
+<pre><code>    has : {
+        firstName : { is : 'rw' }
+    }
 </code></pre>
 
 <h1 id="method">Method</h1>
@@ -57,10 +57,10 @@
 
 <p>Methods correspond to verbs, and are what your objects can do. For example, a User can login.</p>
 
-<pre><code>  methods : {
-      login : function () {
-      }
-  }
+<pre><code>    methods : {
+        login : function () {
+        }
+    }
 </code></pre>
 
 <h1 id="roles">Roles</h1>
@@ -208,9 +208,9 @@ With old school Perl 5, this is the DESTROY() method, but with Joose it is the D
 
 <h1 id="author">AUTHOR</h1>
 
-<p>Nickolay Platonov <a href="&#x6D;&#97;i&#108;&#116;&#111;:&#110;&#x69;&#99;&#107;&#111;&#x6C;a&#x79;&#56;&#64;g&#x6D;&#97;&#105;&#x6C;&#46;c&#x6F;&#x6D;">&#110;&#x69;&#99;&#107;&#111;&#x6C;a&#x79;&#56;&#64;g&#x6D;&#97;&#105;&#x6C;&#46;c&#x6F;&#x6D;</a></p>
+<p>Nickolay Platonov <a href="&#109;&#97;&#x69;&#x6C;&#x74;&#x6F;:&#110;&#x69;&#x63;&#107;&#111;&#x6C;&#x61;y&#x38;&#64;&#x67;&#x6D;&#97;&#105;&#x6C;&#46;&#99;&#111;&#109;">&#110;&#x69;&#x63;&#107;&#111;&#x6C;&#x61;y&#x38;&#64;&#x67;&#x6D;&#97;&#105;&#x6C;&#46;&#99;&#111;&#109;</a></p>
 
-<p>Heavily based on the original content of Moose::Manual, by Dave Rolsky <a href="&#x6D;a&#105;&#108;&#x74;&#111;:&#x61;&#x75;&#x74;&#x61;r&#99;&#x68;&#64;&#x75;&#114;&#x74;&#104;&#x2E;&#x6F;&#114;&#x67;">&#x61;&#x75;&#x74;&#x61;r&#99;&#x68;&#64;&#x75;&#114;&#x74;&#104;&#x2E;&#x6F;&#114;&#x67;</a></p>
+<p>Heavily based on the original content of Moose::Manual, by Dave Rolsky <a href="m&#x61;&#x69;&#x6C;&#116;&#111;:&#x61;&#x75;&#116;&#x61;&#114;&#99;&#104;&#64;&#x75;&#x72;&#116;&#x68;&#x2E;o&#114;&#103;">&#x61;&#x75;&#116;&#x61;&#114;&#99;&#104;&#64;&#x75;&#x72;&#116;&#x68;&#x2E;o&#114;&#103;</a></p>
 
 <h1 id="copyrightandlicense">COPYRIGHT AND LICENSE</h1>
 

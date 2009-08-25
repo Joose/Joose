@@ -11,8 +11,8 @@ USING Joose
 Using Joose is very simple, just include the appropriate files in your page (see the [Joose.Manual.Installation][1] section) a type:
 
 
-    Class('Person', {
-    })
+        Class('Person', {
+        })
 
 
 That's it, you've made a class with Joose!
@@ -21,11 +21,11 @@ There's actually a lot going on here under the hood, so let's step through it.
 
 When you constructing a class with Joose, a properties of 2nd argument passed to 'Class' call are called *builders*. These include things like has, isa, does and more. These builders are what you use to define your class. For example, you might define an attribute ...
 
-    Class('Person', {
-        has : {
-            firstName : { is : 'rw' }
-        }
-    })
+        Class('Person', {
+            has : {
+                firstName : { is : 'rw' }
+            }
+        })
 
 Attributes are described in the [Joose.Manual.Attributes][2] documentation.
 
@@ -44,13 +44,13 @@ SUBCLASSING
 
 Joose provides a simple builder for declaring your parent class: **isa**
 
-    Class('User', {
-        isa : Person,
-
-        has : {
-            userName : { is : 'rw' }
-        }
-    })
+        Class('User', {
+            isa : Person,
+    
+            has : {
+                userName : { is : 'rw' }
+            }
+        })
 
 Note that Joose allows a single parent class only.
 

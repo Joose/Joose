@@ -11,41 +11,41 @@ So, instead of constructor, define an <strong>initialize</strong> method for you
 
 <p>However, if you are still sure you need a custom constructor you may provide it using a <em>constructor</em> builder:</p>
 
-<pre><code>Class('User', {
+<pre><code>    Class('User', {
 
-    constructor : function (i, really, know, what, iam, doing) {
-    }
+        constructor : function (i, really, know, what, iam, doing) {
+        }
 
-    ....
-})
+        ....
+    })
 </code></pre>
 
 <h1 id="objectconstructionandattributes">OBJECT CONSTRUCTION AND ATTRIBUTES</h1>
 
 <p>The Joose-provided constructor accepts an object with properties, matching your attributes. This is just another way in which Joose keeps you from worrying how classes are implemented. Simply define a class and you're ready to start creating objects!</p>
 
-<pre><code>Class('User', {
-    isa : Person,
+<pre><code>    Class('User', {
+        isa : Person,
 
-    has : {
-        password : { init : '12345' },
-        lastLogin : { init : function () { return new Date() } }
-    }
-})
+        has : {
+            password : { init : '12345' },
+            lastLogin : { init : function () { return new Date() } }
+        }
+    })
 
-var user = new User({
-    password : 'abcdef',
-    lastLogin : 'Yesterday'
-})
+    var user = new User({
+        password : 'abcdef',
+        lastLogin : 'Yesterday'
+    })
 </code></pre>
 
 <p>If, during construction, you'll provide a function as a property value, it will be used as-is (not will be called).</p>
 
 <h1 id="author">AUTHOR</h1>
 
-<p>Nickolay Platonov <a href="&#x6D;&#97;&#x69;&#x6C;&#x74;&#111;:&#110;&#x69;&#x63;&#107;&#x6F;l&#97;y&#56;&#64;&#x67;&#109;&#97;&#x69;&#108;&#x2E;&#99;&#x6F;&#x6D;">&#110;&#x69;&#x63;&#107;&#x6F;l&#97;y&#56;&#64;&#x67;&#109;&#97;&#x69;&#108;&#x2E;&#99;&#x6F;&#x6D;</a></p>
+<p>Nickolay Platonov <a href="&#x6D;&#97;&#105;&#x6C;&#x74;&#x6F;:&#x6E;&#105;&#x63;&#x6B;&#x6F;&#108;&#97;&#x79;&#56;&#64;&#x67;&#x6D;&#97;&#x69;&#108;&#x2E;c&#111;&#109;">&#x6E;&#105;&#x63;&#x6B;&#x6F;&#108;&#97;&#x79;&#56;&#64;&#x67;&#x6D;&#97;&#x69;&#108;&#x2E;c&#111;&#109;</a></p>
 
-<p>Heavily based on the original content of Moose::Manual, by Dave Rolsky <a href="m&#97;&#x69;&#108;&#116;&#x6F;:&#x61;&#117;&#116;&#97;&#114;&#99;&#x68;&#64;u&#114;&#116;&#x68;&#46;&#111;&#x72;g">&#x61;&#117;&#116;&#97;&#114;&#99;&#x68;&#64;u&#114;&#116;&#x68;&#46;&#111;&#x72;g</a></p>
+<p>Heavily based on the original content of Moose::Manual, by Dave Rolsky <a href="&#x6D;&#x61;&#x69;&#x6C;&#x74;&#x6F;:a&#117;&#116;&#97;&#x72;&#x63;&#104;&#64;&#x75;&#x72;&#116;&#104;&#x2E;&#111;&#x72;&#103;">a&#117;&#116;&#97;&#x72;&#x63;&#104;&#64;&#x75;&#x72;&#116;&#104;&#x2E;&#111;&#x72;&#103;</a></p>
 
 <h1 id="copyrightandlicense">COPYRIGHT AND LICENSE</h1>
 
