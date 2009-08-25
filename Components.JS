@@ -32,8 +32,6 @@ COMPONENTS = {
 	    "Joose.Managed.Class",
 	    "Joose.Managed.Role",
 	                
-        "Joose.Meta.Object",
-        
         "Joose.Managed.Property.MetaRole",
         "Joose.Managed.StemElement.MetaRoles",
         "Joose.Meta.MetaRole",
