@@ -87,9 +87,9 @@ StartTest(function(t) {
     
     
     TestClass.my.walk('there')
-    t.ok(TestClass.my.walking, 'TestClass is walking')
+    t.ok(TestClass.my.walking, 'TestClass.my is walking')
     TestClass.my.stop()
-    t.ok(!TestClass.my.walking, 'TestClass is not walking')
+    t.ok(!TestClass.my.walking, 'TestClass.my is not walking')
         
     
     //==================================================================================================================================================================================
@@ -128,6 +128,39 @@ StartTest(function(t) {
     t.ok(TestClass1.my, "TestClass1 received 'my' symbiont via role");
     t.ok(TestClass1.my.meta.hasAttribute('walking'), "TestClass1.my has 'walking' attribute"); 
     t.ok(TestClass1.my.meta.hasMethod('walk'), "TestClass1.my has 'walk' method")
+
+    
+    //==================================================================================================================================================================================
+    t.diag("Using 'isa' builder in symbiont's declaration")
+    
+    Class('VeryBase', {
+        
+        has : {
+            veryBaseAttr : null
+        },
+        
+        methods : {
+            veryBaseMethod : function () {}
+        }
+    })
+    
+    
+    Class('TestClass2', {
+        
+        does : [ Walk ],
+        
+        my : {
+            isa : VeryBase
+        }
+        
+    })
+    
+    t.ok(TestClass2.my, "TestClass2 received 'my' symbiont via role");
+    t.ok(TestClass2.my.meta.hasAttribute('walking'), "TestClass2.my has 'walking' attribute"); 
+    t.ok(TestClass2.my.meta.hasMethod('walk'), "TestClass2.my has 'walk' method")
+    
+    t.ok(TestClass2.my.meta.hasAttribute('veryBaseAttr'), "TestClass2.my has 'veryBaseAttr' attribute"); 
+    t.ok(TestClass2.my.meta.hasMethod('veryBaseMethod'), "TestClass2.my has 'veryBaseMethod' method")
     
 
 })
