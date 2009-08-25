@@ -128,7 +128,7 @@ The following examples are equivalent:
             }
         })
 
-The 'Joose.Now' construct in the last example is an *attribute helper* - a simple function, which return an certain initializing value.
+The 'Joose.Now' construct in the last example is an *attribute helper* - a simple function, which return a certain initializing value.
 
 Joose provides following attribute helpers:
 

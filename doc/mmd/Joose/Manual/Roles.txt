@@ -1,4 +1,4 @@
-/**
+
 
 NAME
 ====
@@ -141,7 +141,7 @@ If we try to consume this role in a class that does not have a 'turnRight' or 't
 
 You can see that we added a method modifier on 'turnLeft/turnRight'. We want classes that consume this role to implement their own "ground" logic for turning, but we make sure that this logic will be overriden during flight.
 
-Method modifiers and roles are a very powerful combination. Often, a role will combine method modifiers and required methods. We already saw one example with our Winged role.
+Method modifiers and roles are a very powerful combination. Often, a role will combine method modifiers and required methods. We already saw one example with our Winged example.
 
 Method modifiers increase the complexity of roles, because they make the role application order relevant. 
 If a class uses multiple roles, each of which modify the same method, those modifiers will be applied in the same order as the roles are used.
@@ -273,4 +273,3 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 [1]: Roles.html
 
-*/
