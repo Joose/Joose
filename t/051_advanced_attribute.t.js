@@ -1,4 +1,4 @@
-StartTest(function(t) {
+StartTest(function (t) {
     t.plan(30)
     
     //==================================================================================================================================================================================
@@ -93,11 +93,11 @@ StartTest(function(t) {
     TestClass.meta.extend({ 
         methods : {
             
-            setRes : function(value) {
+            setRes : function (value) {
                 this.res = 'mutable:' + value    
             },
             
-            getRes : function(value) {
+            getRes : function (value) {
                 return 'getRes'    
             }
         }
@@ -144,7 +144,7 @@ StartTest(function(t) {
     t.diag("Exception on 'required'")    
     
     
-    t.throws_ok(function(){
+    t.throws_ok(function () {
         var testClass2 = new TestClass()    
     }, "Required attribute [required] is missed during initialization of a TestClass", "required attribute should be specified")    
 

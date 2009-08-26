@@ -1,4 +1,4 @@
-StartTest(function(t) {
+StartTest(function (t) {
     t.plan(36)
     
     //==================================================================================================================================================================================
@@ -21,15 +21,15 @@ StartTest(function(t) {
         },
         
         methods : {
-            process : function() { return 'TestClass' }
+            process : function () { return 'TestClass' }
         },
         
         before : {
-            process : function() { this.res += "|before" }
+            process : function () { this.res += "|before" }
         },
         
         after : {
-            process : function() { this.res += "|after" }
+            process : function () { this.res += "|after" }
         }
     }).c
     
@@ -50,11 +50,11 @@ StartTest(function(t) {
     
     TestClass.meta.extend({
         before : {
-            process : function() { this.res += "|before2" }
+            process : function () { this.res += "|before2" }
         },
         
         after : {
-            process : function() { this.res += "|after2" }
+            process : function () { this.res += "|after2" }
         }
     })
     
@@ -81,11 +81,11 @@ StartTest(function(t) {
         isa : TestClass,
         
         before : {
-            process : function() { this.res += "|beforeTC1" }
+            process : function () { this.res += "|beforeTC1" }
         },
         
         after : {
-            process : function() { this.res += "|afterTC1" }
+            process : function () { this.res += "|afterTC1" }
         }
     }).c
     
@@ -97,7 +97,7 @@ StartTest(function(t) {
     
     TestClass.meta.extend({
         after : {
-            process : function() { this.res += "|after" }
+            process : function () { this.res += "|after" }
         }
     })
     
@@ -189,11 +189,11 @@ StartTest(function(t) {
     var TestClass5 = new Joose.Managed.Class('TestClass5', {
         
         methods : {
-            inc : function(a) { return a }
+            inc : function (a) { return a }
         },
         
         around : {
-            inc : function(prev, a) { return prev(a) + "|aroundT5" }
+            inc : function (prev, a) { return prev(a) + "|aroundT5" }
         }
         
     }).c
@@ -209,7 +209,7 @@ StartTest(function(t) {
         isa : TestClass5,
         
         around : {
-            inc : function(prev, a) { return prev(a) + "|aroundT6" }
+            inc : function (prev, a) { return prev(a) + "|aroundT6" }
         }
         
     }).c
@@ -227,7 +227,7 @@ StartTest(function(t) {
     
     TestClass6.meta.extend({
         methods : {
-            inc : function(a) { return 'T6:' + a }
+            inc : function (a) { return 'T6:' + a }
         }
     })
     

@@ -1,4 +1,4 @@
-StartTest(function(t) {
+StartTest(function (t) {
     t.plan(30)
     
     //==================================================================================================================================================================================
@@ -16,7 +16,7 @@ StartTest(function(t) {
         },
         
         methods : {
-            result : function() { return 'TestClass' }
+            result : function () { return 'TestClass' }
         }
     }).c
     
@@ -53,11 +53,11 @@ StartTest(function(t) {
         
         builder : {
             methods : {
-                testHandler : function(meta, props){
+                testHandler : function (meta, props) {
                     var name = props.name
                     var value = props.value
                     
-                    meta.addMethod(name, function(){
+                    meta.addMethod(name, function () {
                         return value
                     })
                 }

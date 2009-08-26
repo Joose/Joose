@@ -1,4 +1,4 @@
-StartTest(function(t) {
+StartTest(function (t) {
     t.plan(12)
     
     //==================================================================================================================================================================================
@@ -17,11 +17,11 @@ StartTest(function(t) {
     var RoleWithBuilder = new Joose.Meta.Role('RoleWithBuilder', {
         builder : {
             methods : {
-                testHandler : function(meta, props){
+                testHandler : function (meta, props) {
                     var name = props.name
                     var value = props.value
                     
-                    meta.addMethod(name, function(){
+                    meta.addMethod(name, function () {
                         return value
                     })
                 }
@@ -69,11 +69,11 @@ StartTest(function(t) {
     RoleWithBuilder.meta.extend({
         builder : {
             methods : {
-                testHandler1 : function(meta, props){
+                testHandler1 : function (meta, props) {
                     var name = props.name1
                     var value = props.value1
                     
-                    meta.addMethod(name, function(){
+                    meta.addMethod(name, function () {
                         return value
                     })
                 }

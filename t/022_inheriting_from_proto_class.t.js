@@ -1,4 +1,4 @@
-StartTest(function(t) {
+StartTest(function (t) {
     t.plan(13)
     
     //==================================================================================================================================================================================
@@ -14,7 +14,7 @@ StartTest(function(t) {
     var TestClass3 = new Joose.Proto.Class('TestClass3', {
         res1 : false,
         
-        met1 : function(){},
+        met1 : function () {},
         
         inc : function (a) { return a + 'T3' }
     }).c
@@ -27,7 +27,7 @@ StartTest(function(t) {
         
         testMeta : TestClass3,
         
-        met2 : function(){},
+        met2 : function () {},
         
         aug : function (a) { return '|T4augment' + this.INNER(a) },
         
@@ -44,7 +44,7 @@ StartTest(function(t) {
         },
         
         methods : {
-            met3 : function(){},
+            met3 : function () {},
             inc : function (a) { return this.SUPERARG(arguments) + '|T5' }
         }
     }).c
@@ -89,7 +89,7 @@ StartTest(function(t) {
         },
         
         augment : {
-            aug : function(a) {
+            aug : function (a) {
                 return '|T6augment' + this.INNER(a)
             }
         }
@@ -110,7 +110,7 @@ StartTest(function(t) {
         isa : TestClass6,
         
         augment : {
-            aug : function(a) {
+            aug : function (a) {
                 return '|T7augment'
             }
         }

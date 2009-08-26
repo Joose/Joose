@@ -1,4 +1,4 @@
-StartTest(function(t) {
+StartTest(function (t) {
     t.plan(47)
     
     //==================================================================================================================================================================================
@@ -41,14 +41,14 @@ StartTest(function(t) {
     //==================================================================================================================================================================================
     t.diag("Exceptions")
     
-    t.throws_ok(function(){
+    t.throws_ok(function () {
         var Creature = new Joose.Managed.Class('Creature', {
             does : [ Walk, Eat ]
         }).c
     }, "Attempt to apply ConflictMarker [stop] to [Creature]", "Conflicts are detecting")
     
     
-    t.throws_ok(function(){
+    t.throws_ok(function () {
         var Creature = new Joose.Managed.Class('Creature', {
             requires : [ 'walk' ]
         }).c
@@ -171,7 +171,7 @@ StartTest(function(t) {
     }).c
     
     
-    t.throws_ok(function(){
+    t.throws_ok(function () {
         Plant.meta.extend({
             does : [ Cannibalism ]
         })
@@ -225,7 +225,7 @@ StartTest(function(t) {
         },
         
         methods : {
-            washHands : function(){
+            washHands : function () {
                 this.cleanHands = true
             }
         },

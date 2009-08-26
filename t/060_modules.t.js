@@ -1,4 +1,4 @@
-StartTest(function(t) {
+StartTest(function (t) {
     t.plan(56)
     
     //==================================================================================================================================================================================
@@ -12,7 +12,7 @@ StartTest(function(t) {
     t.ok(__global__.container == Joose.top, "Container of global module is a top scope")
     
     Module('TestModule', {
-        body : function(module) {
+        body : function (module) {
             this.foo = 'bar'
             module.bar = 'baz'
         }
@@ -30,7 +30,7 @@ StartTest(function(t) {
     t.diag("Modules with several name parts")
     
     Module('Test1.Test2.Test3', {
-        body : function(module) {
+        body : function (module) {
             this.foo = 'bar'
             module.bar = 'baz'
         }
@@ -85,7 +85,7 @@ StartTest(function(t) {
                 methods: { world: function () { return "hello2" } }
             })
             
-            Module("Test3", function(mod){
+            Module("Test3", function (mod) {
                 this.foo = 'bar'
                 mod.bar = 'baz'
             })

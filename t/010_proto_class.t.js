@@ -1,4 +1,4 @@
-StartTest(function(t) {
+StartTest(function (t) {
     t.plan(26)
     
     //==================================================================================================================================================================================
@@ -77,7 +77,7 @@ StartTest(function(t) {
     
     t.is(testClass1.inc(1), 2, "'inc' is now not overriden")
     
-    testClass1.meta.addMethod('inc', function(){
+    testClass1.meta.addMethod('inc', function () {
         return this.SUPERARG(arguments) + 1
     })
     

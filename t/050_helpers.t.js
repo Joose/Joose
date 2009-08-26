@@ -1,4 +1,4 @@
-StartTest(function(t) {
+StartTest(function (t) {
     t.plan(61)
     
     //==================================================================================================================================================================================
@@ -25,7 +25,7 @@ StartTest(function(t) {
         },
         
         methods : {
-            result : function() { return 'TestClass:instance' }
+            result : function () { return 'TestClass:instance' }
         },
         
         
@@ -35,7 +35,7 @@ StartTest(function(t) {
             },
             
             methods : {
-                result : function() { return 'TestClass:class' }
+                result : function () { return 'TestClass:class' }
             }
         }
         
@@ -70,7 +70,7 @@ StartTest(function(t) {
         },
         
         methods : {
-            result1 : function() { return 'TestClass:instance1' }
+            result1 : function () { return 'TestClass:instance1' }
         },
         
         
@@ -80,7 +80,7 @@ StartTest(function(t) {
             },
             
             methods : {
-                result1 : function() { return 'TestClass:class1' }
+                result1 : function () { return 'TestClass:class1' }
             }
         }
         
@@ -134,14 +134,14 @@ StartTest(function(t) {
     //==================================================================================================================================================================================
     t.diag("Exceptions")
     
-    t.throws_ok(function(){
+    t.throws_ok(function () {
         Class('TestCreature1', {
             does : [ Walk, Eat ]
         })
     }, Joose.is_IE ? "" : "Attempt to apply ConflictMarker [stop] to [TestCreature1]", "Conflicts are detecting")
     
     
-    t.throws_ok(function(){
+    t.throws_ok(function () {
         Class('TestCreature2', {
             requires : [ 'walk' ]
         })
@@ -229,7 +229,7 @@ StartTest(function(t) {
     })
     
     
-    t.throws_ok(function(){
+    t.throws_ok(function () {
         Plant.meta.extend({
             does : [ Cannibalism ]
         })
@@ -283,7 +283,7 @@ StartTest(function(t) {
         },
         
         methods : {
-            washHands : function(){
+            washHands : function () {
                 this.cleanHands = true
             }
         },

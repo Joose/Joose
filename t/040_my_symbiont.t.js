@@ -1,4 +1,4 @@
-StartTest(function(t) {
+StartTest(function (t) {
     t.plan(36)
     
     //==================================================================================================================================================================================
@@ -16,7 +16,7 @@ StartTest(function(t) {
         },
         
         methods : {
-            result : function() { return 'TestClass:instance' }
+            result : function () { return 'TestClass:instance' }
         },
         
         
@@ -26,7 +26,7 @@ StartTest(function(t) {
             },
             
             methods : {
-                result : function() { return 'TestClass:class' }
+                result : function () { return 'TestClass:class' }
             }
         }
         
@@ -105,7 +105,7 @@ StartTest(function(t) {
             },
             
             methods : {
-                result : function() { return 'SubTestClass:class' }
+                result : function () { return 'SubTestClass:class' }
             }
         }
     })

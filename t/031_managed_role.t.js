@@ -1,4 +1,4 @@
-StartTest(function(t) {
+StartTest(function (t) {
     t.plan(49)
     
     //==================================================================================================================================================================================
@@ -22,7 +22,7 @@ StartTest(function(t) {
     }).c
     
 
-    t.throws_ok(function(){
+    t.throws_ok(function () {
         new A()
     }, "Roles cant be instantiated", "Roles cant be instantiated")
     
