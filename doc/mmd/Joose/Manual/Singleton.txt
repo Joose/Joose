@@ -33,7 +33,7 @@ To declare a singleton use `my` builder:
             }
         })
 
-You may use any usual builders inside of `my`, including method modifires, `isa`, `does`, etc. Instance of singleton class will be created right after class declaration.
+You may use any usual builders inside of `my`, including method modifires, `isa`, `does`, etc. Instance of singleton class will be created right before class declaration.
 To access it, use `my` property of class's constructor, like
         
         TypeRegistry.my.registerType('textfield', Ext.form.TextField) 
@@ -167,8 +167,6 @@ AUTHOR
 ======
 
 Nickolay Platonov [nickolay8@gmail.com](mailto:nickolay8@gmail.com)
-
-Heavily based on the original content of Moose::Manual, by Dave Rolsky [autarch@urth.org](mailto:autarch@urth.org)
 
 
 COPYRIGHT AND LICENSE

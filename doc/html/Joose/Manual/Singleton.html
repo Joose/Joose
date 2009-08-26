@@ -28,7 +28,7 @@
     })
 </code></pre>
 
-<p>You may use any usual builders inside of <code>my</code>, including method modifires, <code>isa</code>, <code>does</code>, etc. Instance of singleton class will be created right after class declaration.
+<p>You may use any usual builders inside of <code>my</code>, including method modifires, <code>isa</code>, <code>does</code>, etc. Instance of singleton class will be created right before class declaration.
 To access it, use <code>my</code> property of class's constructor, like</p>
 
 <pre><code>    TypeRegistry.my.registerType('textfield', Ext.form.TextField) 
@@ -161,8 +161,6 @@ To access it, use <code>my</code> property of class's constructor, like</p>
 <h1 id="author">AUTHOR</h1>
 
 <p>Nickolay Platonov <a href="mailto:nickolay8@gmail.com">nickolay8@gmail.com</a></p>
-
-<p>Heavily based on the original content of Moose::Manual, by Dave Rolsky <a href="mailto:autarch@urth.org">autarch@urth.org</a></p>
 
 <h1 id="copyrightandlicense">COPYRIGHT AND LICENSE</h1>
 

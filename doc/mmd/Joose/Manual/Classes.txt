@@ -40,8 +40,8 @@ The metaclass object provides an introspection API for your class. It is also us
 In fact, all of Joose's sugar does the real work by calling methods on this metaclass object (and other meta API objects).
 
 
-SUBCLASSING
-===========
+SUBCLASSING (`isa` builder)
+===========================
 
 Joose provides a simple builder for declaring your parent class: **isa**
 

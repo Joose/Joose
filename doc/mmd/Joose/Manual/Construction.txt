@@ -120,6 +120,44 @@ This function will be called right after class construction, with the class's co
 The class will be already fully constructed at the time of `body` execution, you can create its instances or even *extend* it with some additional
 methods (see [Joose.Manual.Mutability][1] for details)
 
+You may declare new classes (or roles) in the `body`. Such class's constructor will be placed in the namespace of the outer class.  
+
+        Class("MyApp.Point", {
+            
+            body : function () {
+                
+                Class("ThreeD", {
+                    isa: MyApp.Point,
+                    
+                    has: {
+                        z: {}
+                    }
+                }
+            }
+        })
+        
+        var point = new MyApp.Point()
+        var point3d = new MyApp.Point.ThreeD()
+
+
+MODULES
+=======
+
+Modules are classes, which consists from the `body` only. The only difference of module from class is that `Module` helper also can be called with `body` as 2nd argument directly: 
+
+        Module("MyApp.Point", function () {
+        
+            Class("ThreeD", {
+                isa: MyApp.Point,
+                
+                has: {
+                    z: {}
+                }
+            }
+        })
+        
+        var point3d = new MyApp.Point.ThreeD()
+
 
 AUTHOR
 ======

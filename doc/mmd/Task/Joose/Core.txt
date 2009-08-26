@@ -149,7 +149,7 @@ PROVIDED HELPERS
 Declaration helpers
 -------------------
 
-Declaration helpers allow you to declare a class, role or module.
+Declaration helpers allows you to declare a class, role or module.
 
   - `Class(String name, Object builders)`
 

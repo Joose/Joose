@@ -112,6 +112,44 @@ After declaration, Joose translates the class's name to constructor and place it
 <p>The class will be already fully constructed at the time of <code>body</code> execution, you can create its instances or even <em>extend</em> it with some additional
 methods (see <a href="Mutability.html">Joose.Manual.Mutability</a> for details)</p>
 
+<p>You may declare new classes (or roles) in the <code>body</code>. Such class's constructor will be placed in the namespace of the outer class.  </p>
+
+<pre><code>    Class("MyApp.Point", {
+
+        body : function () {
+
+            Class("ThreeD", {
+                isa: MyApp.Point,
+
+                has: {
+                    z: {}
+                }
+            }
+        }
+    })
+
+    var point = new MyApp.Point()
+    var point3d = new MyApp.Point.ThreeD()
+</code></pre>
+
+<h1 id="modules">MODULES</h1>
+
+<p>Modules are classes, which consists from the <code>body</code> only. The only difference of module from class is that <code>Module</code> helper also can be called with <code>body</code> as 2nd argument directly: </p>
+
+<pre><code>    Module("MyApp.Point", function () {
+
+        Class("ThreeD", {
+            isa: MyApp.Point,
+
+            has: {
+                z: {}
+            }
+        }
+    })
+
+    var point3d = new MyApp.Point.ThreeD()
+</code></pre>
+
 <h1 id="author">AUTHOR</h1>
 
 <p>Nickolay Platonov <a href="mailto:nickolay8@gmail.com">nickolay8@gmail.com</a></p>
