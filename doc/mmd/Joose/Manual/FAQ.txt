@@ -3,84 +3,53 @@
 NAME
 ====
 
-Joose.Manual.Reflection - The Joose reflection API
+Joose.Manual.FAQ - Frequently asked questions about Joose
 
 
-INTRODUCTION
-============
-
-Joose provides a powerful reflection API, which allows you fully introspect classes, attributes, methods, and so on.
-
-These introspection methods are also handy if you want to generate docs or inheritance graphs, or do some other runtime reflection.
-
-This document is currently not a complete reference for the introspection API. We're just going to cover some of the highlights, and give you a sense of how it all works. 
-To really understand it, you'll have to read a other docs, or may be examine sources. 
+FREQUENTLY ASKED QUESTIONS
+==========================
 
 
-GETTING STARTED
-===============
+Module Stability
+----------------
 
-The usual entry point to the meta API is through a class's metaclass instance, which is a Joose.Meta.Class. This is available by accessing the `meta` property on a class or instance:
+- Is Joose "production ready"?
 
-        Class('User', {
-            ...
-        })
-        
-        var user = new User()
-        
-        var meta = User.meta
-        -or-
-        var meta = user.meta
+Yes! Many sites with household names are using Joose to build high-traffic services. Countless others are using Joose in production.
 
+- Is Joose's API stable?
 
-USING THE METACLASS INSTANCE
-============================
+Yes. The sugary API, the one 95% of users will interact with, is very stable. Any changes will be 100% backwards compatible.
 
-The metaclass instance can tell you about a class's attributes, methods, roles, parent, and more. For example, to scan through all of the class's attributes:
+The meta API is less set in stone. We reserve the right to tweak parts of it to improve efficiency or consistency. This will not be done lightly. We do perform deprecation cycles. 
+We really do not like making ourselves look bad by breaking your code. Submitting test cases is the best way to ensure that your code is not inadvertently broken by refactoring.
 
-        meta.getAttributes().eachAll(function (attribute, name, isOwn) {
-            console.log('class has attribute ' + name)
-        })
+Constructors
+------------
 
-The `eachAll` method is documented in [Joose.Managed.PropertySet.Containable][1]. It returns an instance of `Joose.Managed.PropertySet.Containable` class, which represents a set of attributes defined in the class (and its parent).
+- How do I write custom constructors with Joose?
 
-The 1st argument for iterator function will be usually an instance of [Joose.Managed.Attribute][2]
-Note that sometimes it may actually be a subclass of `Joose.Managed.Attribute`, as Joose uses different classes to represent usual attribute, delegation attributes, etc.
+Ideally, you should never write your own constructor, and should use Joose's other features to handle your specific object construction needs. 
 
+Accessors
+---------
 
-You can also get a list of methods:
+Method Modifiers
+----------------
 
-        meta.getMethods().eachAll(function (method, name, isOwn) {
-            console.log('class has method ' + name)
-        })
+- Can I use `before` to stop execution of a method?
 
-We receive an instance of `Joose.Managed.PropertySet.Containable` as well in this case.
+No, `before` modifier execute original method unconditionally. Use `override` or `around` modifiers instead. 
 
 
-ALTERING CLASSES
-================
+Roles
+-----
 
-The metaclass object can change the class directly, by adding or removing attributes, methods, etc.
+- What are Traits, and how are they different from Roles?
 
-The recommended way is to call `extend` method of metaclass instance:
+In Joose, a trait is almost exactly the same thing as a role, which is usually composed into an instance of a class at runtime to add or modify the behavior of just that instance.
 
-        meta.extend({
-            has : {
-                newAttribute : { is : 'rw', init : 'value' }
-            }
-        })
-
-
-
-GOING FURTHER
-=============
-
-If you're interested in extending Joose, we recommend reading all of the "Meta" and "Extending" recipes in the [Joose.Cookbook][3]. Those recipes show various practical applications of the metaclass API.
-
-If you'd like to write your own extensions, one of the best ways to learn more about this is to look at other similar extensions to see how they work. 
-You'll probably also need to read various API docs, including the docs for the various Joose.Meta.* classes.
-
-Finally, we welcome questions on the Joose mailing list and IRC. Information on the mailing list, IRC, and more references can be found in the [Joose][4] docs.
+Outside the context of Joose, traits and roles generally mean exactly the same thing. The original [paper](http://scg.unibe.ch/archive/papers/Scha02bTraits.pdf) called them Traits, however Perl 6 will call them Roles.
 
 
 AUTHOR
@@ -105,9 +74,4 @@ Redistribution and use in source and binary forms, with or without modification,
 * Neither the name of Malte Ubl nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. 
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
-
-[1] : [Joose.Managed.PropertySet.Containable]
-[2] : [Joose.Managed.Attribute]
-[3] : [Joose.Cookbook]
-[4] : [Joose]
 

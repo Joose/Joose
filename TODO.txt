@@ -1,4 +1,7 @@
+- migrate to github
+
 - convert all OVERRIDE modifiers in core to AROUND? (need to benchmark them 1st)
+- implement optimization for methods/OVERRIDE modifiers w/o SUPER calls
 
 
 - migrate AUGMENT modifier to closures
