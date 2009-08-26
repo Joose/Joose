@@ -15,73 +15,61 @@ To really understand it, you'll have to read a other docs, or may be examine sou
 
 <p>The usual entry point to the meta API is through a class's metaclass instance, which is a Joose.Meta.Class. This is available by accessing the <code>meta</code> property on a class or instance:</p>
 
-<p>Class('User', {
-    ...
-})</p>
+<pre><code>    Class('User', {
+        ...
+    })
 
-<p>var user = new User()</p>
+    var user = new User()
 
-<p>var meta = User.meta
--or-
-var meta = user.meta</p>
+    var meta = User.meta
+    -or-
+    var meta = user.meta
+</code></pre>
 
 <h1 id="usingthemetaclassinstance">USING THE METACLASS INSTANCE</h1>
 
 <p>The metaclass instance can tell you about a class's attributes, methods, roles, parent, and more. For example, to scan through all of the class's attributes:</p>
 
-<p>meta.getAttributes().each(function (attribute) {
-    //some processing
-})</p>
+<pre><code>    meta.getAttributes().eachAll(function (attribute, name, isOwn) {
+        console.log('class has attribute ' + name)
+    })
+</code></pre>
 
-<p>The get_all_attributes method is documented in Class.MOP.Class. For Joose-using classes, it returns a list of Joose.Meta.Attribute objects for attributes defined in the class and its parents.</p>
+<p>The <code>eachAll</code> method is documented in [Joose.Managed.PropertySet.Containable][1]. It returns an instance of <code>Joose.Managed.PropertySet.Containable</code> class, which represents a set of attributes defined in the class (and its parent).</p>
+
+<p>The 1st argument for iterator function will be usually an instance of [Joose.Managed.Attribute][2]
+Note that sometimes it may actually be a subclass of <code>Joose.Managed.Attribute</code>, as Joose uses different classes to represent usual attribute, delegation attributes, etc.</p>
 
 <p>You can also get a list of methods:</p>
 
-<p>for my $method ( $meta->get_all_methods ) {
-      print $method->fully_qualified_name, "\n"
-  }</p>
+<pre><code>    meta.getMethods().eachAll(function (method, name, isOwn) {
+        console.log('class has method ' + name)
+    })
+</code></pre>
 
-<p>Now we're looping over a list of Joose.Meta.Method objects. Note that some of these objects may actually be a subclass of Joose.Meta.Method, as Joose uses different classes to represent wrapped methods, delegation methods, constructors, etc.</p>
+<p>We receive an instance of <code>Joose.Managed.PropertySet.Containable</code> as well in this case.</p>
 
-<p>We can look at a class's parent classes and subclasses:</p>
+<h1 id="alteringclasses">ALTERING CLASSES</h1>
 
-<p>for my $class ( $meta->linearized_isa ) {
-      print "$class\n"
-  }</p>
+<p>The metaclass object can change the class directly, by adding or removing attributes, methods, etc.</p>
 
-<p>for my $subclass ( $meta->subclasses ) {
-      print "$subclass\n"
-  }</p>
+<p>The recommended way is to call <code>extend</code> method of metaclass instance:</p>
 
-<p>Note that both these methods return class names, not metaclass objects.
-ALTERING CLASSES WITH THE MOP ^</p>
+<pre><code>    meta.extend({
+        has : {
+            newAttribute : { is : 'rw', init : 'value' }
+        }
+    })
+</code></pre>
 
-<p>The metaclass object can change the class directly, by adding attributes, methods, etc.</p>
+<h1 id="goingfurther">GOING FURTHER</h1>
 
-<p>As an example, we can add a method to a class:</p>
+<p>If you're interested in extending Joose, we recommend reading all of the "Meta" and "Extending" recipes in the [Joose.Cookbook][3]. Those recipes show various practical applications of the metaclass API.</p>
 
-<p>$meta->add_method( 'say' => sub { print @_, "\n" } )
-Or an attribute:</p>
+<p>If you'd like to write your own extensions, one of the best ways to learn more about this is to look at other similar extensions to see how they work. 
+You'll probably also need to read various API docs, including the docs for the various Joose.Meta.* classes.</p>
 
-<p>$meta->add_attribute(
-      name => 'size',
-      is   => 'rw',
-      isa  => 'Int',
-  )
-Obviously, this is much more cumbersome than using Perl syntax or Joose sugar for defining methods and attributes, but this API allows for very powerful extensions.</p>
-
-<p>You might remember that we've talked about making classes immutable elsewhere in the manual. This is a good practice. However, once a class is immutable, calling any of these update methods will throw an exception.</p>
-
-<p>You can make a class mutable again simply by calling $meta->make_mutable. Once you're done changing it, you can restore immutability by calling $meta->make_immutable.</p>
-
-<p>However, the most common use for this part of the meta API is as part of Joose extensions. These extensions should assume that they are being run before you make a class immutable.
-GOING FURTHER ^</p>
-
-<p>If you're interested in extending Joose, we recommend reading all of the "Meta" and "Extending" recipes in the Joose.Cookbook. Those recipes show various practical applications of the MOP.</p>
-
-<p>If you'd like to write your own extensions, one of the best ways to learn more about this is to look at other similar extensions to see how they work. You'll probably also need to read various API docs, including the docs for the various Joose.Meta.* classes and the Class.MOP distribution.</p>
-
-<p>Finally, we welcome questions on the Joose mailing list and IRC. Information on the mailing list, IRC, and more references can be found in the Joose.pm docs.</p>
+<p>Finally, we welcome questions on the Joose mailing list and IRC. Information on the mailing list, IRC, and more references can be found in the [Joose][4] docs.</p>
 
 <h1 id="author">AUTHOR</h1>
 
@@ -104,3 +92,8 @@ GOING FURTHER ^</p>
 </ul>
 
 <p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. </p>
+
+<p>[1] : [Joose.Managed.PropertySet.Containable]
+[2] : [Joose.Managed.Attribute]
+[3] : [Joose.Cookbook]
+[4] : [Joose]</p>
