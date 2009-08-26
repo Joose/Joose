@@ -4,12 +4,12 @@
 
 <h1 id="wherestheconstructor">WHERE'S THE CONSTRUCTOR?</h1>
 
-<p>Do not re-define a constructor method for your classes! You were warned. </p>
+<p>You do not need to define a constructor method for your classes. Really. Instead, define an <code>initialize</code> method. </p>
 
-<p>When you build a class using Joose it will be managed by the instance of Joose.Meta.Class. This instance (a <em>metaclass instance</em>) provides a constructor for you. This constructor will perform attributes initialization and then will call a 'initialize' method with the same arguments.
-So, instead of constructor, define an <strong>initialize</strong> method for your class.</p>
+<p>When you build a class using Joose it will be managed by the instance of Joose.Meta.Class. This instance (a <em>metaclass instance</em>) provides a constructor for you. 
+This constructor will perform attributes initialization and then will call a <code>initialize</code> method with the same arguments.</p>
 
-<p>However, if you are still sure you need a custom constructor you may provide it using a <em>constructor</em> builder:</p>
+<p>However, if you are still sure you need a custom constructor you may provide it using a <code>constructor</code> builder:</p>
 
 <pre><code>    Class('User', {
 
@@ -22,7 +22,8 @@ So, instead of constructor, define an <strong>initialize</strong> method for you
 
 <h1 id="objectconstructionandattributes">OBJECT CONSTRUCTION AND ATTRIBUTES</h1>
 
-<p>The Joose-provided constructor accepts an object with properties, matching your attributes. This is just another way in which Joose keeps you from worrying how classes are implemented. Simply define a class and you're ready to start creating objects!</p>
+<p>The Joose-provided constructor accepts an object with properties, matching your attributes. This is just another way in which Joose keeps you from worrying how classes are implemented. 
+Simply define a class and you're ready to start creating objects!</p>
 
 <pre><code>    Class('User', {
         isa : Person,
@@ -39,9 +40,77 @@ So, instead of constructor, define an <strong>initialize</strong> method for you
     })
 </code></pre>
 
-<p>If, during construction, you'll provide a function as a property value, it will be used as-is (not will be called).</p>
+<p>If, during construction, you'll provide a function as an initializing value, it will be assigned as-is (not will be called).</p>
 
-<h1 id="specialbuilders">SPECIAL BUILDERS</h1>
+<h1 id="namespaces">NAMESPACES</h1>
+
+<p>In Joose, each class also act a namespace with the same name. </p>
+
+<p>The name of the class can consist from one or several <em>namespace segments</em>. The separator symbol is a dot: <code>.</code> 
+After declaration, Joose translates the class's name to constructor and place it into appropriate namespace. For example:</p>
+
+<pre><code>    Class("MyApp.Point", {
+        has: {
+            x: {is: "ro"},
+            y: {is: "rw"},
+        }
+    })
+
+    Class("MyApp.Point.ThreeD", {
+        isa: Point,
+
+        has: {
+            z: {}
+        }
+    })
+
+    Class("MyApp", {
+        has: {
+            name: null
+        }
+    })
+
+    var point = new MyApp.Point()
+    var point3d = new MyApp.Point.ThreeD()
+    var myapp = new MyApp()
+</code></pre>
+
+<p>Note, how <code>MyApp</code> class was created already after its namespace segment was declared.</p>
+
+<h1 id="bodybuilder"><code>body</code> BUILDER</h1>
+
+<p>Each class also support special builder <code>body</code>, which should be a function. </p>
+
+<pre><code>    Class("MyApp.Point.ThreeD", {
+        isa: Point,
+
+        has: {
+            z: {}
+        },
+
+        body : function (myAppPoint3D) {
+            console.log(myAppPoint3D == MyApp.Point.ThreeD) //prints 'true'
+
+            console.log(this == MyApp.Point.ThreeD) //prints 'true'
+
+            ....
+
+            var private = new MyApp.Point.ThreeD({ x: 1, y : 2, z: 3})
+
+            ....
+
+            MyApp.Point.ThreeD.meta.extend({
+                methods : {
+                }
+            })
+        }
+    })
+</code></pre>
+
+<p>This function will be called right after class construction, with the class's constructor as 1st argument and in the same scope.</p>
+
+<p>The class will be already fully constructed at the time of <code>body</code> execution, you can create its instances or even <em>extend</em> it with some additional
+methods (see <a href="Mutability.html">Joose.Manual.Mutability</a> for details)</p>
 
 <h1 id="author">AUTHOR</h1>
 

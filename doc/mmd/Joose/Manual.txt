@@ -77,7 +77,8 @@ This manual consists of a number of documents.
 
     Introduces Joose concepts, and contrasts them against "raw" JavaScript.
 
- - Joose.Manual.Unsweetened
+- Joose.Manual.Unsweetened
+
     Shows two example classes, each written first with Joose and then with "raw JavaScript".
 
 - [Joose.Manual.Classes][3]

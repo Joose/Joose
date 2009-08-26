@@ -66,7 +66,7 @@ Joose is being tested using an automated unit-test suite that is being run in al
 <li>Unless specified with 'isa', any class which uses Joose will inherit from Joose.Proto.Object.</li>
 </ul>
 
-<h1 id="providedmethods">PROVIDED METHODS</h1>
+<h1 id="providedinstancemethods">PROVIDED INSTANCE METHODS</h1>
 
 <p>Joose provides a number of methods to all your classes, mostly through the inheritance from Joose.Proto.Object.</p>
 
@@ -112,9 +112,7 @@ Joose is being tested using an automated unit-test suite that is being run in al
 
 <p>Returns boolean value, indicating whether this instance is detached from its class.</p>
 
-<h1 id="providedproperties">PROVIDED PROPERTIES</h1>
-
-<h2 id="instanceproperties">Instance properties</h2>
+<h1 id="providedinstanceproperties">PROVIDED INSTANCE PROPERTIES</h1>
 
 <p>Joose provides a number of properties to all instances of your classes.</p>
 
@@ -130,7 +128,7 @@ Joose is being tested using an automated unit-test suite that is being run in al
 
 <p>An instance of metaclass for <code>this</code> instance's class. </p>
 
-<h2 id="classproperties">Class properties</h2>
+<h1 id="providedclassproperties">PROVIDED CLASS PROPERTIES</h1>
 
 <p>Joose also provides a number of properties to classes.</p>
 
@@ -152,7 +150,20 @@ Joose is being tested using an automated unit-test suite that is being run in al
 
 <p>A superclass (constructor function) of given <code>class</code></p>
 
-<h1 id="providedhelpersmethods">PROVIDED HELPERS METHODS</h1>
+<h1 id="providedhelpers">PROVIDED HELPERS</h1>
+
+<h2 id="declarationhelpers">Declaration helpers</h2>
+
+<p>Declaration helpers allow you to declare a class, role or module.</p>
+
+<ul>
+<li><p><code>Class(String name, Object builders)</code></p></li>
+<li><p><code>Class(Object buildersObj)</code></p></li>
+<li><p><code>Role(String name, Object builders)</code></p></li>
+<li><p><code>Role(Object buildersObj)</code></p></li>
+<li><p><code>Module(String name, Object builders)</code></p></li>
+<li><p><code>Module(String name, Function body)</code></p></li>
+</ul>
 
 <p>Joose provides a number of small helpers methods, which you might found useful. </p>
 

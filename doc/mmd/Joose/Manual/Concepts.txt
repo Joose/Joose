@@ -164,8 +164,8 @@ Joose vs raw JavaScript summary
 
   Could only be done through serious prototype wizardry, and you probably never saw this before (at least in really "raw" JavaScript).
 
+* Constructor
 
-Constructor
   A function, which process all the passed attributes to initialize the class.
 
   Comes for free when you define a class with Joose.
