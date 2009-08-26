@@ -1,5 +1,5 @@
 StartTest(function(t) {
-    t.plan(31)
+    t.plan(36)
     
     //==================================================================================================================================================================================
     t.diag("Symbiont - separate, built-in class, (analog of class-methods + class-attributes + class-roles + ...)")
