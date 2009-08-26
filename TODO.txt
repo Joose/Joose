@@ -1,37 +1,14 @@
-- convert all OVERRIDE modifiers in core to AROUND
+- convert all OVERRIDE modifiers in core to AROUND? (need to benchmark them 1st)
+
+
 - migrate AUGMENT modifier to closures
+- fix weird AUGMENT test failures in Opera
+
+ 
+- fix Test.Run under FF3.5
+- fix OpenJSAN.org html extraction method
+- fix JSAN shell 'install' command
 
 
-Tests
-- complete 01_util.js
-- Add many more tests
-- Add tests that include and use frameworks such as prototype.js, dojo or jquery.
-- refactor tests into sub directories
+- makeImmutable() ? 
 
-
-Documentation
-- All
-
-Bugs
-
-Features
-- implement class versioning (progressed)
-- Improve Implementation of Attribute meta classes
-- implement subtypes, then implement cookbook entries 4 and 5
-- Demonstrate stringify in Role recipe
-- Add Method.Generated Classes
-
-
-
-Done:
-- Test roles with method modifiers
-- Implement attribute meta classes
-- Add an interface to Joose.Class to ask for instance vs. class methods
-  - joose.isInstance
-- make this work in IE :)
-- Test object initialization with private attr and other edge cases
-- Dont step on other peoples toes with builders
-- Moved initialization from Class-Props into meta class so it is overridable
-- Allow instance and class methods with the same name
-- Add meta roles to roles
-- Method modifiers in roles should automatically be "required methods"

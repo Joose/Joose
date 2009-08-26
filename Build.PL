@@ -8,7 +8,7 @@ my $build = Module::Build::JSAN::Installable->new(
     dist_version           => 3.001,
 	
 	dist_author            => 'SamuraiJack',
-	dist_abstract          => "Post modern self-hosting meta object system for JavaScript with support for classes, inheritance, mixins, traits, method modifiers and more.",
+	dist_abstract          => "Post modern self-hosting meta object system for JavaScript with support for classes, inheritance, roles, traits, method modifiers and more.",
 	
 	license                => 'perl',
 	
