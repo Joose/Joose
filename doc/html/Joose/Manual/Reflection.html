@@ -20,13 +20,10 @@
 
 <p>The usual entry point to the meta API is through a class's metaclass object, which is a Joose.Meta.Class. This is available by calling the meta method on a class or object:</p>
 
-<p>package User;</p>
-
-<p>use Joose;</p>
-
-<p>my $meta = <strong>PACKAGE</strong>->meta;</p>
-
-<p>The meta method is added to a class when it uses Joose.</p>
+<p>package User
+  use Joose
+  my $meta = <strong>PACKAGE</strong>->meta
+The meta method is added to a class when it uses Joose.</p>
 
 <p>You can also use Class.MOP.Class->initialize($name) to get a metaclass object for any class. This is safer than calling $class->meta when you're not sure that the class has a meta method.</p>
 
@@ -37,7 +34,7 @@
 <p>The metaclass object can tell you about a class's attributes, methods, roles, parents, and more. For example, to look at all of the class's attributes:</p>
 
 <p>for my $attr ( $meta->get_all_attributes ) {
-      print $attr->name, "\n";
+      print $attr->name, "\n"
   }</p>
 
 <p>The get_all_attributes method is documented in Class.MOP.Class. For Joose-using classes, it returns a list of Joose.Meta.Attribute objects for attributes defined in the class and its parents.</p>
@@ -45,7 +42,7 @@
 <p>You can also get a list of methods:</p>
 
 <p>for my $method ( $meta->get_all_methods ) {
-      print $method->fully_qualified_name, "\n";
+      print $method->fully_qualified_name, "\n"
   }</p>
 
 <p>Now we're looping over a list of Joose.Meta.Method objects. Note that some of these objects may actually be a subclass of Joose.Meta.Method, as Joose uses different classes to represent wrapped methods, delegation methods, constructors, etc.</p>
@@ -53,11 +50,11 @@
 <p>We can look at a class's parent classes and subclasses:</p>
 
 <p>for my $class ( $meta->linearized_isa ) {
-      print "$class\n";
+      print "$class\n"
   }</p>
 
 <p>for my $subclass ( $meta->subclasses ) {
-      print "$subclass\n";
+      print "$subclass\n"
   }</p>
 
 <p>Note that both these methods return class names, not metaclass objects.
@@ -67,17 +64,15 @@ ALTERING CLASSES WITH THE MOP ^</p>
 
 <p>As an example, we can add a method to a class:</p>
 
-<p>$meta->add_method( 'say' => sub { print @_, "\n" } );</p>
-
-<p>Or an attribute:</p>
+<p>$meta->add_method( 'say' => sub { print @_, "\n" } )
+Or an attribute:</p>
 
 <p>$meta->add_attribute(
       name => 'size',
       is   => 'rw',
       isa  => 'Int',
-  );</p>
-
-<p>Obviously, this is much more cumbersome than using Perl syntax or Joose sugar for defining methods and attributes, but this API allows for very powerful extensions.</p>
+  )
+Obviously, this is much more cumbersome than using Perl syntax or Joose sugar for defining methods and attributes, but this API allows for very powerful extensions.</p>
 
 <p>You might remember that we've talked about making classes immutable elsewhere in the manual. This is a good practice. However, once a class is immutable, calling any of these update methods will throw an exception.</p>
 
