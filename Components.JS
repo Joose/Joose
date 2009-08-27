@@ -2,6 +2,7 @@ COMPONENTS = {
     
 	"Core" : [
 	    "Joose",
+        "Joose.Proto.Empty",
 	    "Joose.Proto.Object",
 	    "Joose.Proto.Class",
 	

@@ -4,6 +4,7 @@
 - implement optimization for methods/OVERRIDE modifiers w/o SUPER calls
 
 
+- refactor methods & modifiers to reduce overhead
 - migrate AUGMENT modifier to closures
 - fix weird AUGMENT test failures in Opera
 

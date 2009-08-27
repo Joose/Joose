@@ -65,7 +65,7 @@ StartTest(function (t) {
     var count = 0
     methods.eachAll(function () { count++ })
     
-    t.ok(count == 12, "TestClass2 has 12 methods (included inherited from Joose.Proto.Object)")
+    t.ok(count == Joose.is_IE ? 11 : 12, "TestClass2 has 12 methods (included inherited from Joose.Proto.Object) or 11 for fancy IE")
 
     var count = 0
     methods.eachOwn(function () { count++ })
