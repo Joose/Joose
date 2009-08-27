@@ -5,9 +5,11 @@
 
 - add SKIP and TODO methods to Test.Run
 
+- added override check for PUT modifiers 
 
 - migrate AUGMENT modifier to closures
-- fix weird AUGMENT test failures in Opera
+
+- add warnings about SUPER on proto level in OPERA
 
  
 - fix Test.Run under FF3.5
