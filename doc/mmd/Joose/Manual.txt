@@ -182,7 +182,7 @@ Stevan Little [stevan@iinteractive.com](mailto:stevan@iinteractive.com)
 COPYRIGHT AND LICENSE
 =====================
 
-Copyright (c) 2008-2009, Malte Ubl
+Copyright (c) 2008-2009, Malte Ubl, Nickolay Platonov
 
 All rights reserved.
 
