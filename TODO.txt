@@ -3,8 +3,9 @@
 - convert all OVERRIDE modifiers in core to AROUND? (need to benchmark them 1st)
 - implement optimization for methods/OVERRIDE modifiers w/o SUPER calls
 
+- add SKIP and TODO methods to Test.Run
 
-- refactor methods & modifiers to reduce overhead
+
 - migrate AUGMENT modifier to closures
 - fix weird AUGMENT test failures in Opera
 
@@ -16,3 +17,9 @@
 
 - makeImmutable() ? 
 
+
+
+DONE
+====
+
+- refactor methods & modifiers to reduce overhead
