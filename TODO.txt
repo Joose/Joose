@@ -5,10 +5,7 @@
 
 - add SKIP and TODO methods to Test.Run
 
-- added override check for PUT modifiers 
-
-- migrate AUGMENT modifier to closures
-
+- add override check for PUT modifiers 
 - add warnings about SUPER on proto level in OPERA
 
  
@@ -17,7 +14,7 @@
 - fix JSAN shell 'install' command
 
 
-- makeImmutable() ? 
+- immutable builder? 
 
 
 
@@ -25,3 +22,4 @@ DONE
 ====
 
 - refactor methods & modifiers to reduce overhead
+- migrate AUGMENT modifier to closures
