@@ -1,20 +1,27 @@
+TODO
+====
+
 - migrate to github
 
 - convert all OVERRIDE modifiers in core to AROUND? (need to benchmark them 1st)
+
 - implement optimization for methods/OVERRIDE modifiers w/o SUPER calls
-
-- add SKIP and TODO methods to Test.Run
-
 - add override check for PUT modifiers 
-- add warnings about SUPER on proto level in OPERA
 
  
 - fix Test.Run under FF3.5
+- add SKIP and TODO methods to Test.Run
+- add warnings about SUPER on proto level in OPERA
+
+
 - fix OpenJSAN.org html extraction method
 - fix JSAN shell 'install' command
 
+- refactor addRole (add something like 'beforeAdd' hook, which is very often needs to be overridden)
 
-- immutable builder? 
+- move builderClass and stemClass to private attributes (with leading underscore)
+
+- immutable builder
 
 
 
