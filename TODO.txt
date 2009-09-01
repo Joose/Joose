@@ -23,6 +23,7 @@ TODO
 
 - immutable builder
 
+- JooseX.Builder.Also (to address Rhino issues and allow multiple modifiers in the same class)
 
 
 DONE
