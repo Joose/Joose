@@ -21,10 +21,25 @@ TODO
 
 - move builderClass and stemClass to private attributes (with leading underscore)
 
-- immutable builder
+- 'immutable' builder
 
 - JooseX.Builder.Also (to address Rhino issues and allow multiple modifiers in the same class)
 
+- Joose.Cookbook
+- Joose.Manual (Traits, Installation, Unsweetened, Contributing, ...)
+
+- anonymous classes
+- JooseX.Role.Parameterized
+
+- JooseX.Type
+
+- JooseX.Attribute:
+ - delegation
+ - predicating/clearing
+ - typing, coercion
+- traits for attributes
+
+- Class as Role? spec&implemented or remove
 
 DONE
 ====
