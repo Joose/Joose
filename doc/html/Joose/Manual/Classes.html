@@ -14,12 +14,18 @@
 
 <p>There's actually a lot going on here under the hood, so let's step through it.</p>
 
-<p>When you constructing a class with Joose, a properties of 2nd argument passed to 'Class' call are called <em>builders</em>. These include things like 'has', 'isa', 'does' and more. 
-These builders are what you use to define your class. For example, you might define an attribute:</p>
+<p>When you constructing a class with Joose, a properties of 2nd argument passed to <code>Class</code> call are called <em>builders</em>. These include things like <code>has</code>, <code>isa</code>, <code>does</code> and more. 
+These builders are what you use to define your class. For example, you might define an attribute and a method:</p>
 
 <pre><code>    Class('Person', {
         has : {
             firstName : { is : 'rw' }
+        },
+
+        methods : {
+            trimLeading : function () {
+                ...
+            }
         }
     })
 </code></pre>
@@ -29,23 +35,33 @@ These builders are what you use to define your class. For example, you might def
 <p>When you use Joose, your class will become a subclass of Joose.Proto.Object. The Joose.Proto.Object class provides a default constructor and a number of additional methods. 
 You can read more about this in the <a href="Construction.html">Joose</a> document.</p>
 
-<p>It also creates instance of Joose.Meta.Class for your class. This metaclass instance is now available as a meta property on your class, for example: <code>Person.meta</code></p>
+<p>It also creates instance of <code>Joose.Meta.Class</code> for your class. This metaclass instance is now available as a meta property on your class, for example: <code>Person.meta</code></p>
 
 <p>The metaclass object provides an introspection API for your class. It is also used by Joose itself under the hood to add attributes, compose roles, and so on. 
 In fact, all of Joose's sugar does the real work by calling methods on this metaclass object (and other meta API objects).</p>
 
 <h1 id="subclassingisabuilder">SUBCLASSING (<code>isa</code> builder)</h1>
 
-<p>Joose provides a simple builder for declaring your parent class: <strong>isa</strong></p>
+<p>Joose provides a simple builder for declaring your parent class: <code>isa</code></p>
 
 <pre><code>    Class('User', {
         isa : Person,
 
         has : {
             userName : { is : 'rw' }
+        },
+
+        methods : {
+            trimLeading : function () {
+                this.SUPER()
+                ...
+            }
         }
     })
 </code></pre>
+
+<p>A class inherit all the attributes and methods from its parent class, and can also re-declare (override) them. In the re-declared method you can use <code>this.SUPER(arg1, arg2, ...)</code> call to execute the same method from the parent class.
+There is also another form of this call : <code>this.SUPERARG(arg)</code> In this form, arguments are passed in the array, this is the equivalent of <code>this.SUPER.apply(this, arg)</code></p>
 
 <p>Note that Joose allows a single parent class only. As cleaner alternative to multiple inheritance approach, Joose provides Roles mechanism. See <a href="Roles.html">Joose.Manual.Roles</a>.</p>
 
