@@ -1,5 +1,5 @@
 StartTest(function (t) {
-    t.plan(61)
+    t.plan(65)
     
     //==================================================================================================================================================================================
     t.diag("Modules")
@@ -382,5 +382,60 @@ StartTest(function (t) {
     
     human.walk('supermarket')
     t.ok(human.walking, "Humans now walks instead driving again")
+    
+    
+    //==================================================================================================================================================================================
+    t.diag("Anonymous classes")
+    
+    var anonymousClass = Class({
+        methods : {
+            result : function () {
+                return 10
+            }
+        }
+    })
+  
+    t.ok(typeof anonymousClass == 'function', 'Something that looks like an anonymous class was created')
+    t.ok(new anonymousClass().result() == 10, 'Anonymous class was created')
+
+    
+    //==================================================================================================================================================================================
+    t.diag("Anonymous roles")
+    
+    anonymousClass.meta.extend({
+        does : Role({
+            methods : {
+                result2 : function () {
+                    return 10
+                }
+            }
+        })
+    })
+    
+    t.ok(new anonymousClass().result2() == 10, 'Anonymous role was created')
+    
+    
+    //==================================================================================================================================================================================
+    t.diag("Modifying helper")
+    
+    Joose.Helper.my.meta.extend({
+        override : {
+            Class : function (name, props) {
+                return this.SUPER(name + '_', props)
+            }
+        }
+    })
+    
+    Class('Private', {
+        methods : {
+            result : function () {
+                return 10
+            }
+        }
+    })
+    
+    t.ok(new Private_().result() == 10, "'Class' helper were modified correctly")
+    
+    
         
 })

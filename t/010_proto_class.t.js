@@ -16,8 +16,8 @@ StartTest(function (t) {
     //==================================================================================================================================================================================
     t.diag("Stringification")
     
-    t.is(Joose.Proto.Class,'Joose.Proto.Class', "Joose.Proto.Class stringified correctly")
-    t.is("" + Joose.Proto.Class.meta,'a Joose.Proto.Class', "Joose.Proto.Class's meta stringified correctly")
+    t.is(Joose.Proto.Class, 'Joose.Proto.Class', "Joose.Proto.Class stringified correctly")
+    t.is("" + Joose.Proto.Class.meta, 'a Joose.Proto.Class', "Joose.Proto.Class's meta stringified correctly")
     
     
     //==================================================================================================================================================================================

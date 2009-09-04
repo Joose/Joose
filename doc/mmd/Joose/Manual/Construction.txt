@@ -143,21 +143,34 @@ You may declare new classes (or roles) in the `body`. Such class's constructor w
 MODULES
 =======
 
-Modules are classes, which consists from the `body` only. The only difference of module from class is that `Module` helper also can be called with `body` as 2nd argument directly: 
+Modules are classes, which consists from the `body` only. Modules may not be instantiated, however, its possible to "promote" Module to Class.
+`Module` helper also can be called with `body` as 2nd argument directly: 
 
-        Module("MyApp.Point", function () {
+        Module("MyApp", function () {
         
-            Class("ThreeD", {
-                isa: MyApp.Point,
-                
-                has: {
-                    z: {}
+            Module("Point", function () {
+            
+                Class("ThreeD", {
+                    isa: Point,
+                    
+                    has: {
+                        z: {}
+                    }
                 }
-            }
+            })
         })
         
-        var point3d = new MyApp.Point.ThreeD()
-
+        var myapp = new MyApp() //exception
+        
+        var point3d = new MyApp.Point.ThreeD() //ok
+        
+        ...
+        
+        //promoting Module to class
+        Class("MyApp", {
+            ...
+        })
+        var myapp = new MyApp() //ok
 
 AUTHOR
 ======

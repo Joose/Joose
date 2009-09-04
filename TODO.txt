@@ -28,7 +28,7 @@ TODO
 - Joose.Cookbook
 - Joose.Manual (Traits, Installation, Unsweetened, Contributing, ...)
 
-- anonymous classes
+
 - JooseX.Role.Parameterized
 
 - JooseX.Type
@@ -46,3 +46,5 @@ DONE
 
 - refactor methods & modifiers to reduce overhead
 - migrate AUGMENT modifier to closures
+- anonymous classes
+- refactor helpers

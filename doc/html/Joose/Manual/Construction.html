@@ -134,20 +134,34 @@ methods (see <a href="Mutability.html">Joose.Manual.Mutability</a> for details)<
 
 <h1 id="modules">MODULES</h1>
 
-<p>Modules are classes, which consists from the <code>body</code> only. The only difference of module from class is that <code>Module</code> helper also can be called with <code>body</code> as 2nd argument directly: </p>
+<p>Modules are classes, which consists from the <code>body</code> only. Modules may not be instantiated, however, its possible to "promote" Module to Class.
+<code>Module</code> helper also can be called with <code>body</code> as 2nd argument directly: </p>
 
-<pre><code>    Module("MyApp.Point", function () {
+<pre><code>    Module("MyApp", function () {
 
-        Class("ThreeD", {
-            isa: MyApp.Point,
+        Module("Point", function () {
 
-            has: {
-                z: {}
+            Class("ThreeD", {
+                isa: Point,
+
+                has: {
+                    z: {}
+                }
             }
-        }
+        })
     })
 
-    var point3d = new MyApp.Point.ThreeD()
+    var myapp = new MyApp() //exception
+
+    var point3d = new MyApp.Point.ThreeD() //ok
+
+    ...
+
+    //promoting Module to class
+    Class("MyApp", {
+        ...
+    })
+    var myapp = new MyApp() //ok
 </code></pre>
 
 <h1 id="author">AUTHOR</h1>
