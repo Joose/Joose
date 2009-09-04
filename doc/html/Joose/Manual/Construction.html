@@ -7,9 +7,21 @@
 <p>You do not need to define a constructor method for your classes. Really. Instead, define an <code>initialize</code> method. </p>
 
 <p>When you build a class using Joose it will be managed by the instance of Joose.Meta.Class. This instance (a <em>metaclass instance</em>) provides a constructor for you. 
-This constructor will perform attributes initialization and then will call a <code>initialize</code> method with the same arguments.</p>
+This constructor will perform attributes initialization and then will call a <code>initialize</code> method with the same arguments. </p>
 
-<p>However, if you are still sure you need a custom constructor you may provide it using a <code>constructor</code> builder:</p>
+<p>If you inherit from parent class, you need to call the inherited <code>initialize</code>, however usually you should just define an <code>after</code> modifier:</p>
+
+<pre><code>    Class('User', {
+        isa : Person,
+
+        after : {
+            initialize : function () {
+            } 
+        }
+    })
+</code></pre>
+
+<p>If you are still sure you need a custom constructor you may provide it using a <code>constructor</code> builder:</p>
 
 <pre><code>    Class('User', {
 
