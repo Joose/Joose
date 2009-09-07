@@ -144,6 +144,8 @@ methods (see <a href="Mutability.html">Joose.Manual.Mutability</a> for details)<
     var point3d = new MyApp.Point.ThreeD()
 </code></pre>
 
+<p><code>body</code> builder is a correct place to perform some action after creation of class, because in general case, the creation may be an asynchronous (for dependency loading for example).</p>
+
 <h1 id="modules">MODULES</h1>
 
 <p>Modules are classes, which consists from the <code>body</code> only. Modules may not be instantiated, however, its possible to "promote" Module to Class.
