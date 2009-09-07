@@ -5,11 +5,13 @@ TODO
 
 - convert all OVERRIDE modifiers in core to AROUND? (need to benchmark them 1st)
 
-- implement optimization for methods/OVERRIDE modifiers w/o SUPER calls
+- implement optimization for methods/OVERRIDE modifiers w/o SUPER calls ) probably should be configurable, to avoid increasing startup overhead 
 - add override check for PUT modifiers 
 
+- check overridableness of method and attribute metaclasses
+
  
-- fix Test.Run under FF3.5
+- fix multiple failures under FF3.5
 - add SKIP and TODO methods to Test.Run
 - add warnings about SUPER on proto level in OPERA
 
