@@ -11,7 +11,7 @@ TODO
 - check overridableness of method and attribute metaclasses
 
  
-- fix multiple failures under FF3.5
+
 - add SKIP and TODO methods to Test.Run
 - add warnings about SUPER on proto level in OPERA
 
@@ -50,3 +50,4 @@ DONE
 - migrate AUGMENT modifier to closures
 - anonymous classes
 - refactor helpers
+- fix multiple failures under FF3.5
