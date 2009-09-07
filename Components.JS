@@ -37,18 +37,20 @@ COMPONENTS = {
         "Joose.Managed.StemElement.MetaRoles",
         "Joose.Managed.MetaRole",
 	    
+        "Joose.Managed.Attribute",
+        
+        "Joose.Managed.PropertySet.Namespace",
+        
+        "Joose.Managed.Attribute.Builder",
+        "Joose.Managed.My",
+        "Joose.Namespace.Able",
+        
+        "Joose.Managed.Bootstrap",
+        
 	    "Joose.Meta.Class",
 	    "Joose.Meta.Role",
 	    
 	    "Joose.Meta.Class.Detached",
-	    
-	    "Joose.Managed.Attribute",
-        
-	    "Joose.Managed.PropertySet.Namespace",
-	    
-	    "Joose.Managed.Attribute.Builder",
-	    "Joose.Managed.My",
-	    "Joose.Namespace.Able",
 	    
 	    "Joose.Namespace.Keeper",
 	    "Joose.Namespace.Manager",
