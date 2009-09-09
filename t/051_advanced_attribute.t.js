@@ -1,5 +1,5 @@
 StartTest(function (t) {
-    t.plan(30)
+    t.plan(36)
     
     //==================================================================================================================================================================================
     t.diag("Advanced attributes")    
@@ -154,6 +154,42 @@ StartTest(function (t) {
     })    
     
     t.ok(typeof testClass2.func == 'object', "'func' attribute initialized #2")    
-    t.ok(testClass2.func != testClass1.func, "'init' creates different instances for each call")    
+    t.ok(testClass2.func != testClass1.func, "'init' creates different instances for each call")
+    
+    
+    //==================================================================================================================================================================================
+    t.diag("'private' attributes imitation")
+    
+    Class('TestClass2', {
+        has : {
+            res : {
+                is : 'rw',
+                init : 'advanced',
+                isPrivate : true
+            },
+            
+            _res1 : {
+                is : 'rw',
+                init : 'private'
+            }
+        }
+    })    
+    
+    var testClass2 = new TestClass2()
+    
+    t.ok(!testClass2.res, '"Private" attribute is not visible')
+    
+    t.ok(testClass2.getRes() == 'advanced', '"Private" attribute was correctly initialized')
+    
+    
+    testClass2.setRes('newvalue')
+    t.ok(testClass2.getRes() == 'newvalue', '"Private" attribute was correctly changed')
+    
+    t.ok(TestClass2.meta.getAttribute('_res1').isPrivate, 'Attribute with leading underscore becomes private')
+    t.ok(testClass2.getRes1() == 'private', '.. and receives getter')
+    
+    testClass2.setRes1('newvalue1')
+    t.ok(testClass2.getRes1() == 'newvalue1', '.. and setter')
     
 })    
+
