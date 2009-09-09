@@ -1,5 +1,5 @@
 StartTest(function (t) {
-    t.plan(34)
+    t.plan(35)
     
     //==================================================================================================================================================================================
     t.diag("MetaRoles (roles which applies to metaclass of applicant")
@@ -18,7 +18,7 @@ StartTest(function (t) {
         }
     
     })
-
+    
     
     Class('TestClass', {
         
@@ -29,6 +29,7 @@ StartTest(function (t) {
     
     t.ok(TestClass.meta.isDetached(), "TestClass's meta is detached")
     t.ok(TestClass.meta.customProcess() == 'custom', "Meta role were applied")
+    
 
     
     //==================================================================================================================================================================================
@@ -39,7 +40,7 @@ StartTest(function (t) {
     })
     
     t.ok(!TestClass.meta.isDetached(), "TestClass's meta is attached back")
-
+    
     
     //==================================================================================================================================================================================
     t.diag("Indirect builder's composing")
@@ -77,7 +78,7 @@ StartTest(function (t) {
     
     t.ok(CustomBuilderWrapper.meta.hasAttribute('custom') && CustomBuilderWrapper.meta.getAttribute('custom').value == 'attribute', "CustomBuilderWrapper has correct attribute 'custom'")
     
-    
+
     Class('TestClass2', {
         
         does : CustomBuilderWrapper,
@@ -90,6 +91,9 @@ StartTest(function (t) {
     })
     t.ok(TestClass2, 'TestClass2 class was created')
     
+    t.ok(TestClass2.meta.stem.properties.attributes.definedIn == TestClass2.meta.stem, 'Stem of class with detached meta is in the sane condition')
+    
+    
     t.ok(TestClass2.meta.isDetached(), "TestClass2's meta is detached")
     t.ok(TestClass2.meta.builder.isDetached(), "TestClass2's builder is detached")
     t.ok(TestClass2.meta.stem.isDetached(), "TestClass2's stem is detached")
@@ -100,6 +104,7 @@ StartTest(function (t) {
     
     //==================================================================================================================================================================================
     t.diag("Mutability #2")
+    
     
     TestClass2.meta.extend({
         doesnt : CustomBuilderWrapper
