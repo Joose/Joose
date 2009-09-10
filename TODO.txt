@@ -3,6 +3,8 @@ TODO
 
 - does for superclasses
 
+- fix namespace managers executeIn to omit the args?
+
 - Ext.applyIf analog
 
 - JooseX.Meta.Configurable (allows builders which will configure the meta + aliases for them)
