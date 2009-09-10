@@ -1,6 +1,12 @@
 TODO
 ====
 
+- does for superclasses
+
+- Ext.applyIf analog
+
+- JooseX.Meta.Configurable (allows builders which will configure the meta + aliases for them)
+
 - migrate to github
 
 - convert all OVERRIDE modifiers in core to AROUND? (need to benchmark them 1st)
