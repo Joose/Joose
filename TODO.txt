@@ -1,8 +1,6 @@
 TODO
 ====
 
-- does for superclasses
-
 - fix namespace managers executeIn to omit the args?
 
 - Ext.applyIf analog
@@ -59,3 +57,4 @@ DONE
 - anonymous classes
 - refactor helpers
 - fix multiple failures under FF3.5
+- does for superclasses
