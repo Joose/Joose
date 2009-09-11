@@ -111,7 +111,10 @@ StartTest(function (t) {
     
     t.ok(TestRole2.meta.does(TestRole1), 'TestRole2 does TestRole1')
     t.ok(!TestRole1.meta.does(TestRole2), 'TestRole1 doesnt TestRole2')
+
     
+    //==================================================================================================================================================================================
+    t.diag("Reflection - does with mutability & inheritance")
     
     TestClass1.meta.extend({ does : TestRole2 })
     
