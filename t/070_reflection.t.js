@@ -1,18 +1,9 @@
 StartTest(function (t) {
-    t.plan(12)
-    
-    //==================================================================================================================================================================================
-    t.diag("Reflection - does")
-    
-    t.ok(Joose.Meta.Class.meta.does(Joose.Namespace.Able), 'Joose.Meta.Class does Joose.Namespace.Able')
-    t.ok(Joose.Meta.Class.meta.does(Joose.Managed.My), 'Joose.Meta.Class does Joose.Managed.My')
-    t.ok(Joose.Meta.Class.meta.does(Joose.Managed.Attribute.Builder), 'Joose.Meta.Class does Joose.Managed.Attribute.Builder')
-    t.ok(Joose.Meta.Class.meta.does(Joose.Managed.MetaRole), 'Joose.Meta.Class does Joose.Managed.MetaRole')
-    
-    
+    t.plan(18)
     
     //==================================================================================================================================================================================
     t.diag("Reflection - getMethods")
+    
     
     Class('TestClass1', {
         has : {
@@ -78,5 +69,57 @@ StartTest(function (t) {
     attributes.eachOwn(function () { count++ })
     
     t.ok(count == 2, "TestClass2 has 2 own attributes")
+    
+    
+    //==================================================================================================================================================================================
+    t.diag("Reflection - does")
+    
+    t.ok(Joose.Meta.Class.meta.does(Joose.Namespace.Able), 'Joose.Meta.Class does Joose.Namespace.Able')
+    t.ok(Joose.Meta.Class.meta.does(Joose.Managed.My), 'Joose.Meta.Class does Joose.Managed.My')
+    t.ok(Joose.Meta.Class.meta.does(Joose.Managed.Attribute.Builder), 'Joose.Meta.Class does Joose.Managed.Attribute.Builder')
+    t.ok(Joose.Meta.Class.meta.does(Joose.Managed.MetaRole), 'Joose.Meta.Class does Joose.Managed.MetaRole')
+    
+    
+    Role('TestRole1', {
+        
+        has : {
+            attr1 : 'value1'
+        },
+        
+        methods : {
+            process1 : function () {
+                return 'result1'
+            }
+        }
+    
+    })
+
+    Role('TestRole2', {
+        
+        does : TestRole1, 
+        
+        has : {
+            attr2 : 'value2'
+        },
+        
+        methods : {
+            process2 : function () {
+                return 'result2'
+            }
+        }
+    })
+    
+    t.ok(TestRole2.meta.does(TestRole1), 'TestRole2 does TestRole1')
+    t.ok(!TestRole1.meta.does(TestRole2), 'TestRole1 doesnt TestRole2')
+    
+    
+    TestClass1.meta.extend({ does : TestRole2 })
+    
+    t.ok(TestClass1.meta.does(TestRole2), 'TestClass1 does TestRole2')
+    t.ok(TestClass1.meta.does(TestRole1), 'TestClass1 does TestRole1')
+    
+    t.ok(TestClass2.meta.does(TestRole2), 'TestClass2 does TestRole2')
+    t.ok(TestClass2.meta.does(TestRole1), 'TestClass2 does TestRole1')
+    
     
 })
