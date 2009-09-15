@@ -1,5 +1,5 @@
 StartTest(function (t) {
-    t.plan(36)
+    t.plan(38)
     
     //==================================================================================================================================================================================
     t.diag("Symbiont - separate, built-in class, (analog of class-methods + class-attributes + class-roles + ...)")
@@ -162,5 +162,32 @@ StartTest(function (t) {
     t.ok(TestClass2.my.meta.hasAttribute('veryBaseAttr'), "TestClass2.my has 'veryBaseAttr' attribute"); 
     t.ok(TestClass2.my.meta.hasMethod('veryBaseMethod'), "TestClass2.my has 'veryBaseMethod' method")
     
-
+    
+    //==================================================================================================================================================================================
+    t.diag("'my' with custom (and delayed) meta")
+    
+    Class('CustomMeta', {
+        
+        isa  : Joose.Meta.Class,
+        meta : Joose.Meta.Class
+    })
+    
+    
+    Class('TestClass3', {
+        
+        my : {
+            meta : function () { return CustomMeta },
+            
+            has : {
+                att3 : 'value3'
+            },
+            
+            methods : {
+                process3 : function () { return 'testclass3' }
+            }
+        }
+    })
+    
+    t.ok(TestClass3.my, 'Symbiont was created')
+    t.ok(TestClass3.my.meta instanceof CustomMeta, 'Symbiont has correct metaclass')
 })
