@@ -1,0 +1,8 @@
+_build
+Build
+blib
+.project
+.externalToolBuilders
+MANIFEST.bak
+Makefile.PL
+/inc/*

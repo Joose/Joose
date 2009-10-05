@@ -1,0 +1,187 @@
+{
+   "resources" : {
+      "license" : "http://dev.perl.org/licenses/"
+   },
+   "meta-spec" : {
+      "version" : "1.4",
+      "url" : "http://module-build.sourceforge.net/META-spec-v1.4.html"
+   },
+   "generated_by" : "Module::Build version 0.3201",
+   "version" : "3.001",
+   "name" : "Joose",
+   "author" : [
+      "SamuraiJack"
+   ],
+   "license" : "perl",
+   "provides" : {
+      "Joose.Meta.Role" : {
+         "version" : null,
+         "file" : "lib/Joose/Meta/Role.js"
+      },
+      "Joose.Managed.Property.MetaRole" : {
+         "version" : null,
+         "file" : "lib/Joose/Managed/Property/MetaRole.js"
+      },
+      "Joose.Managed.Property.MethodModifier" : {
+         "version" : null,
+         "file" : "lib/Joose/Managed/Property/MethodModifier.js"
+      },
+      "Joose" : {
+         "version" : null,
+         "file" : "lib/Joose.js"
+      },
+      "Joose.Meta.Object" : {
+         "version" : null,
+         "file" : "lib/Joose/Meta/Object.js"
+      },
+      "Joose.Meta.Class.Detached" : {
+         "version" : null,
+         "file" : "lib/Joose/Meta/Class/Detached.js"
+      },
+      "Joose.Meta.Class" : {
+         "version" : null,
+         "file" : "lib/Joose/Meta/Class.js"
+      },
+      "Joose.Managed.Property.Attribute" : {
+         "version" : null,
+         "file" : "lib/Joose/Managed/Property/Attribute.js"
+      },
+      "Joose.Managed.Property.MethodModifier.Around" : {
+         "version" : null,
+         "file" : "lib/Joose/Managed/Property/MethodModifier/Around.js"
+      },
+      "Joose.Helper" : {
+         "version" : null,
+         "file" : "lib/Joose/Helper.js"
+      },
+      "Joose.Namespace.Manager" : {
+         "version" : null,
+         "file" : "lib/Joose/Namespace/Manager.js"
+      },
+      "Joose.Managed.Attribute.Builder" : {
+         "version" : null,
+         "file" : "lib/Joose/Managed/Attribute/Builder.js"
+      },
+      "Joose.Managed.Class" : {
+         "version" : null,
+         "file" : "lib/Joose/Managed/Class.js"
+      },
+      "Joose.Managed.PropertySet.Containable" : {
+         "version" : null,
+         "file" : "lib/Joose/Managed/PropertySet/Containable.js"
+      },
+      "Joose.Managed.StemElement.Requirements" : {
+         "version" : null,
+         "file" : "lib/Joose/Managed/StemElement/Requirements.js"
+      },
+      "Joose.Managed.StemElement.MethodModifiers" : {
+         "version" : null,
+         "file" : "lib/Joose/Managed/StemElement/MethodModifiers.js"
+      },
+      "Joose.Namespace.Keeper" : {
+         "version" : null,
+         "file" : "lib/Joose/Namespace/Keeper.js"
+      },
+      "Joose.Managed.Property.MethodModifier.Put" : {
+         "version" : null,
+         "file" : "lib/Joose/Managed/Property/MethodModifier/Put.js"
+      },
+      "Joose.Proto.Class" : {
+         "version" : null,
+         "file" : "lib/Joose/Proto/Class.js"
+      },
+      "Joose.Managed.Property.MethodModifier.Override" : {
+         "version" : null,
+         "file" : "lib/Joose/Managed/Property/MethodModifier/Override.js"
+      },
+      "Joose.Managed.My" : {
+         "version" : null,
+         "file" : "lib/Joose/Managed/My.js"
+      },
+      "Joose.Managed.PropertySet.Composition" : {
+         "version" : null,
+         "file" : "lib/Joose/Managed/PropertySet/Composition.js"
+      },
+      "Joose.Managed.PropertySet.Mutable" : {
+         "version" : null,
+         "file" : "lib/Joose/Managed/PropertySet/Mutable.js"
+      },
+      "Joose.Managed.Property.MethodModifier.After" : {
+         "version" : null,
+         "file" : "lib/Joose/Managed/Property/MethodModifier/After.js"
+      },
+      "Joose.Managed.PropertySet.Namespace" : {
+         "version" : null,
+         "file" : "lib/Joose/Managed/PropertySet/Namespace.js"
+      },
+      "Joose.Managed.MetaRole" : {
+         "version" : null,
+         "file" : "lib/Joose/Meta/MetaRole.js"
+      },
+      "Joose.Managed.Property.MethodModifier.Augment" : {
+         "version" : null,
+         "file" : "lib/Joose/Managed/Property/MethodModifier/Augment.js"
+      },
+      "Joose.Managed.Stem" : {
+         "version" : null,
+         "file" : "lib/Joose/Managed/Stem.js"
+      },
+      "Joose.Proto.Object" : {
+         "version" : null,
+         "file" : "lib/Joose/Proto/Object.js"
+      },
+      "Joose.Managed.StemElement.MetaRoles" : {
+         "version" : null,
+         "file" : "lib/Joose/Managed/StemElement/MetaRoles.js"
+      },
+      "Joose.Managed.PropertySet" : {
+         "version" : null,
+         "file" : "lib/Joose/Managed/PropertySet.js"
+      },
+      "Joose.Managed.Property.MethodModifier.Before" : {
+         "version" : null,
+         "file" : "lib/Joose/Managed/Property/MethodModifier/Before.js"
+      },
+      "Joose.Managed.Attribute" : {
+         "version" : null,
+         "file" : "lib/Joose/Managed/Attribute.js"
+      },
+      "Joose.Managed.Property.ConflictMarker" : {
+         "version" : null,
+         "file" : "lib/Joose/Managed/Property/ConflictMarker.js"
+      },
+      "Joose.Managed.Role" : {
+         "version" : null,
+         "file" : "lib/Joose/Managed/Role.js"
+      },
+      "Joose.Managed.Property" : {
+         "version" : null,
+         "file" : "lib/Joose/Managed/Property.js"
+      },
+      "Joose.Managed.Property.Requirement" : {
+         "version" : null,
+         "file" : "lib/Joose/Managed/Property/Requirement.js"
+      },
+      "Joose.Managed.Builder" : {
+         "version" : null,
+         "file" : "lib/Joose/Managed/Builder.js"
+      },
+      "Task.Joose.core" : {
+         "version" : null,
+         "file" : "lib/Task/Joose/core.js"
+      },
+      "Joose.Managed.StemElement.Attributes" : {
+         "version" : null,
+         "file" : "lib/Joose/Managed/StemElement/Attributes.js"
+      },
+      "Joose.Namespace.Able" : {
+         "version" : null,
+         "file" : "lib/Joose/Namespace/Able.js"
+      },
+      "Joose.Managed.StemElement.Methods" : {
+         "version" : null,
+         "file" : "lib/Joose/Managed/StemElement/Methods.js"
+      }
+   },
+   "abstract" : "Post modern self-hosting meta object system for JavaScript with support for classes, inheritance, mixins, traits, method modifiers and more."
+}
