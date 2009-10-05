@@ -7,8 +7,6 @@ TODO
 
 - JooseX.Meta.Configurable (allows builders which will configure the meta + aliases for them)
 
-- migrate to github
-
 - convert all OVERRIDE modifiers in core to AROUND? (need to benchmark them 1st)
 
 - implement optimization for methods/OVERRIDE modifiers w/o SUPER calls ) probably should be configurable, to avoid increasing startup overhead 
@@ -58,3 +56,5 @@ DONE
 - refactor helpers
 - fix multiple failures under FF3.5
 - does for superclasses
+- migrate to github
+
