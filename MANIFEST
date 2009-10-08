@@ -3,6 +3,7 @@ bin/yuicompressor-2.4.1.jar
 Build.PL
 Components.JS
 doc/html/Joose.html
+doc/html/Joose/Cookbook.html
 doc/html/Joose/Helper.html
 doc/html/Joose/Managed/Attribute.html
 doc/html/Joose/Managed/Attribute/Builder.html
@@ -66,6 +67,7 @@ doc/html/Joose/Proto/Empty.html
 doc/html/Joose/Proto/Object.html
 doc/html/Task/Joose/Core.html
 doc/mmd/Joose.txt
+doc/mmd/Joose/Cookbook.txt
 doc/mmd/Joose/Helper.txt
 doc/mmd/Joose/Managed/Attribute.txt
 doc/mmd/Joose/Managed/Attribute/Builder.txt
@@ -134,6 +136,7 @@ inc/Module/JSAN.pm
 inc/Module/JSAN/DSL.pm
 INSTALL
 lib/Joose.js
+lib/Joose/Cookbook.js
 lib/Joose/Helper.js
 lib/Joose/Managed/Attribute.js
 lib/Joose/Managed/Attribute/Builder.js

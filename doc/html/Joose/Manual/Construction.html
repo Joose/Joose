@@ -9,7 +9,7 @@
 <p>When you build a class using Joose it will be managed by the instance of Joose.Meta.Class. This instance (a <em>metaclass instance</em>) provides a constructor for you. 
 This constructor will perform attributes initialization and then will call a <code>initialize</code> method with the same arguments. </p>
 
-<p>If you inherit from parent class, you need to call the inherited <code>initialize</code>, however usually you should just define an <code>after</code> modifier:</p>
+<p>If you inherit from parent class, you need to call the inherited <code>initialize</code>, however usually you may just define an <code>after</code> modifier (see <a href="MethodModifiers.html">Joose.Manual.MethodModifiers</a> for other modifiers):</p>
 
 <pre><code>    Class('User', {
         isa : Person,
@@ -87,7 +87,7 @@ After declaration, Joose translates the class's name to constructor and place it
     var myapp = new MyApp()
 </code></pre>
 
-<p>Note, how <code>MyApp</code> class was created already after its namespace segment was declared.</p>
+<p>Note, how <code>MyApp</code> class was created already <em>after</em> its namespace segment was declared. This is perfectly valid declaration.</p>
 
 <h1 id="bodybuilder"><code>body</code> BUILDER</h1>
 
@@ -113,6 +113,7 @@ After declaration, Joose translates the class's name to constructor and place it
 
             MyApp.Point.ThreeD.meta.extend({
                 methods : {
+                    additionalMethod : function () {}
                 }
             })
         }
@@ -144,12 +145,11 @@ methods (see <a href="Mutability.html">Joose.Manual.Mutability</a> for details)<
     var point3d = new MyApp.Point.ThreeD()
 </code></pre>
 
-<p><code>body</code> builder is a correct place to perform some action after creation of class, because in general case, the creation may be an asynchronous (for dependency loading for example).</p>
+<p><strong>NOTE:</strong> <code>body</code> builder is a correct place to perform some action after creation of class, because in general case, the creation may be asynchronous (for dependency loading for example).</p>
 
 <h1 id="modules">MODULES</h1>
 
-<p>Modules are classes, which consists from the <code>body</code> only. Modules may not be instantiated, however, its possible to "promote" Module to Class.
-<code>Module</code> helper also can be called with <code>body</code> as 2nd argument directly: </p>
+<p>Modules are classes, which consists from the <code>body</code> only. Modules may not be instantiated. <code>Module</code> helper also can be called with <code>body</code> as 2nd argument directly: </p>
 
 <pre><code>    Module("MyApp", function () {
 
@@ -165,13 +165,14 @@ methods (see <a href="Mutability.html">Joose.Manual.Mutability</a> for details)<
         })
     })
 
-    var myapp = new MyApp() //exception
+    var myapp = new MyApp() //exception, modules can't be instantiated
 
     var point3d = new MyApp.Point.ThreeD() //ok
+</code></pre>
 
-    ...
+<p>Its possible to "promote" Module to Class.</p>
 
-    //promoting Module to class
+<pre><code>    //promoting Module to class
     Class("MyApp", {
         ...
     })

@@ -7,28 +7,31 @@
 <p>Joose attributes may have many properties, and attributes are probably the one of the most powerful and flexible part of Joose. 
 You can create a powerful class simply by declaring attributes. In fact, it's possible to have classes that consist solely of attribute declarations.</p>
 
-<p>An attribute is a property that every member of a class has. For example, we might say that "every Person object has a first name and last name". Attributes can be optional, so that we can say "some Person objects have a social security number (and some don't)".</p>
+<p>An attribute is a property that every member of a class has. For example, we might say that "every Person object has a first name and last name". 
+Attributes can be optional, so that we can say "some Person objects have a social security number (and some don't)".</p>
 
 <p>At its simplest, an attribute can be thought of as a named value (as in a hash) that can be read and set. However, attributes can also have defaults, type constraints, delegation and much more.</p>
 
-<p>In other languages, attributes are also referred to as slots or properties.</p>
+<p>Attributes are also referred to as slots or properties.</p>
 
-<p>However, all the "attributes magic" is often skipped by beginners, as its generally an advanced topic. Thats why its provided outside of the core, as JooseX.Attribute extension. In this document we'll cover only the base capabilities of attributes, which are included in the core.</p>
+<p>However, all the "attributes magic" is often skipped by beginners, as its generally an advanced topic. Thats why its provided outside of the core, as JooseX.Attribute extension. 
+In this document we'll cover only the base capabilities of attributes, which are included in the core.</p>
 
-<h1 id="basicattributeoptions">BASIC ATTRIBUTE OPTIONS</h1>
+<h1 id="basicattribute-havebuilder">BASIC ATTRIBUTE - <code>have</code> builder</h1>
 
 <p>The simplest attribute in Joose can be constructed with <em>have</em> builder:</p>
 
 <pre><code>    Class('Person', {
         have : {
-            firstName : 'John Doe'
+            firstName : 'JohnDoe'
         }
     })
 </code></pre>
 
-<p>This says that all Person objects have an "first_name" attribute, which has a default value 'John Doe'. Default value will be installed directly to the class's prototype without any modifications. Thats all, no other features. This type of attribute is used primarily in the Joose internals and low-level extensions.</p>
+<p>This says that all Person objects have an "first_name" attribute, which has a default value 'JohnDoe'. Default value will be installed directly to the class's prototype without any modifications. 
+Thats all, no other features. This type of attribute is used primarily in the Joose internals and low-level extensions.</p>
 
-<h1 id="advancedattributeoptions">ADVANCED ATTRIBUTE OPTIONS</h1>
+<h1 id="advancedattribute-hasbuilder">ADVANCED ATTRIBUTE - <code>has</code> builder</h1>
 
 <p>The advanced attribute in Joose can be constructed with <em>has</em> builder:</p>
 
@@ -41,7 +44,7 @@ You can create a powerful class simply by declaring attributes. In fact, it's po
     })
 </code></pre>
 
-<p>The options passed to <em>has</em> define the properties of the attribute. There can be many options (provided in the extension packages), but in the simplest form you just need to set <em>is</em>, which can be either 'rw' (read-write) or 'ro' (read-only). 
+<p>The options passed to <em>has</em> define the properties of the attribute. There can be many options (provided in the extension packages), but in the simplest form you just need to set <strong><code>is</code></strong>, which can be either 'rw' (read-write) or 'ro' (read-only). 
 When an attribute is 'rw', you can change it by passing a value to its <em>accessor</em>. When an attribute is 'ro', you may only read the current value of the attribute.</p>
 
 <h2 id="accessormethods">Accessor methods</h2>
@@ -64,7 +67,7 @@ Write accessor has the name 'setAttributeName'. If you declared your attribute a
 
 <h2 id="defaultvalue">Default value</h2>
 
-<p>To specify the default value for the attribute use <em>init</em> property. In the example above 'username' attribute will be initialized with default value 'root'. </p>
+<p>To specify the default value for the attribute use <code>init</code> property. In the example above attribute <code>username</code> will be initialized with default value 'root'. </p>
 
 <pre><code>    Class('User', {
         isa : Person,
@@ -75,13 +78,13 @@ Write accessor has the name 'setAttributeName'. If you declared your attribute a
     })
 </code></pre>
 
-<p>If you'll provide a function as the value for <em>init</em>, it will be called during initialization with the following signature:
-<strong>func(attributeName, config)</strong>, where <strong>config</strong> is the 1st argument passed to constructor. Function will be called as class's method (in the instance's scope).</p>
+<p>If you'll provide a function as the value for <code>init</code>, it will be called during initialization with the following signature:
+<code>func(attributeName, config)</code>, where <code>config</code> is the 1st argument passed to constructor. Function will be called as class's method (in the instance's scope).</p>
 
 <h2 id="simplifiedform.attributehelpers">Simplified form. Attribute helpers</h2>
 
 <p>Advanced attributes also allows a simplified form, when the attribute's properties object is provided as an atomic value (string or number for example).
-In this case, this value is treated as value of 'init' property, value of 'is' remains 'undefined'.</p>
+In this case, this value is treated as value of <code>init</code> property, value of <code>is</code> remains undefined (no accessors will be created for this attribute).</p>
 
 <p>The following examples are equivalent:</p>
 
@@ -101,23 +104,12 @@ In this case, this value is treated as value of 'init' property, value of 'is' r
 
         has : {
             password : '12345',
-            lastLogin : function () { return new Date() }
-        }
-    })
-
-    ...
-
-    Class('User', {
-        isa : Person,
-
-        has : {
-            password : '12345',
             lastLogin : Joose.Now
         }
     })
 </code></pre>
 
-<p>The 'Joose.Now' construct in the last example is an <em>attribute helper</em> - a simple function, which return a certain initializing value.</p>
+<p>The <code>Joose.Now</code> construct in the last example is an <em>attribute helper</em> - a simple function, which return a certain initializing value.</p>
 
 <p>Joose provides following attribute helpers:</p>
 
@@ -130,26 +122,32 @@ In this case, this value is treated as value of 'init' property, value of 'is' r
 
 <h2 id="requiredornot">Required or not?</h2>
 
-<p>By default, all attributes are optional, and do not need to be provided at object construction time. If you want to make an attribute required, simply set the required option to true:</p>
+<p>By default, all attributes are optional, and do not need to be provided at object construction time. If you want to make an attribute required, simply set the <code>required</code> option to true:</p>
 
 <pre><code>    has : {
-        username : { is : 'rw', init : 'root', required : true }
+        username : { 
+            required : true,
+
+            is : 'rw', 
+            init : 'root'  
+        }
     }
 </code></pre>
 
 <p>There is a caveat worth mentioning in regards to what "required" actually means.</p>
 
-<p>Basically, all it says is that this attribute ('username') must be provided to the constructor. It does not say anything about its value, so it could be 'null' or 'undefined'.</p>
+<p>Basically, all it says is that this attribute (<code>username</code>) must be provided to the constructor. It does not say anything about its value, so it could be 'null' or 'undefined'.</p>
 
 <h2 id="custommetaclass">Custom Metaclass </h2>
 
 <p>One of Joose's best features is that it can be extended in all sorts of ways through the use of custom metaclasses.</p>
 
-<p>When declaring an attribute, you can change its default metaclass with the 'meta' property:</p>
+<p>When declaring an attribute, you can change its default metaclass with the <code>meta</code> property:</p>
 
 <pre><code>    has : {
         password : {
             meta : JooseX.Attribute.Hashed,
+
             init : '12345',
             hashType : 'SHA-1',
             salt : 'custom_metaclass'
@@ -157,10 +155,10 @@ In this case, this value is treated as value of 'init' property, value of 'is' r
     }
 </code></pre>
 
-<p>In this case, the 'password' attribute will be created using JooseX.Attribute.Hashed metaclss, which probably will provide a special setter method, which replace the actual attribute value with its hashed version.</p>
+<p>In this case, the <code>password</code> attribute will be created using hypotetical <code>JooseX.Attribute.Hashed</code> metaclss, which probably will provide a special setter method, which replace the actual attribute value with its hashed version.</p>
 
-<p>There are a number of JooseX modules on JSAN which provide useful attribute metaclasses. See <a href="[Joose.Manual.JooseX]<a href="[Joose.Manual.JooseX][1]">1</a>">Joose.Manual.JooseX</a> for some examples. You can also write your own metaclasses. 
-See the "Meta" and "Extending" recipes in <a href="[Joose.Cookbook]<a href="[Joose.Cookbook][2]">2</a>">Joose.Cookbook</a> for examples.</p>
+<p>There are a number of JooseX modules on JSAN which provide useful attribute metaclasses. See <a href="JooseX.html">Joose.Manual.JooseX</a> for some examples. You can also write your own metaclasses. 
+See the "Meta" and "Extending" recipes in <a href="../Cookbook.html">Joose.Cookbook</a> for examples.</p>
 
 <h1 id="attributeinheritance">ATTRIBUTE INHERITANCE</h1>
 
@@ -170,7 +168,7 @@ See the "Meta" and "Extending" recipes in <a href="[Joose.Cookbook]<a href="[Joo
 
 <h1 id="moreonattributes">MORE ON ATTRIBUTES</h1>
 
-<p>Joose attributes are a big topic, and this document glosses over a few aspects. We recommend that you read the <a href="[JooseX.Attribute]<a href="[JooseX.Attribute][3]">3</a>">JooseX.Attribute</a> documentation as further reading.</p>
+<p>Joose attributes are a big topic, and this document glosses over a few aspects. We recommend that you read the <a href="http://openjsan.org/go?l=JooseX.Attribute">JooseX.Attribute</a> documentation as further reading.</p>
 
 <h1 id="author">AUTHOR</h1>
 

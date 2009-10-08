@@ -6,6 +6,8 @@ NAME
 Joose.Manual.Installation - The installation procedure for Joose.
 
 
+=====
+
 AUTHOR
 ======
 

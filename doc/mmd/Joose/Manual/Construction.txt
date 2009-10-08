@@ -13,7 +13,8 @@ You do not need to define a constructor method for your classes. Really. Instead
 When you build a class using Joose it will be managed by the instance of Joose.Meta.Class. This instance (a *metaclass instance*) provides a constructor for you. 
 This constructor will perform attributes initialization and then will call a `initialize` method with the same arguments. 
 
-If you inherit from parent class, you need to call the inherited `initialize`, however usually you should just define an `after` modifier:
+If you inherit from parent class, you need to call the inherited `initialize`, however usually you may just define an `after` modifier (see [Joose.Manual.MethodModifiers][modifiers] for other modifiers):
+
 
         Class('User', {
             isa : Person,
@@ -23,7 +24,6 @@ If you inherit from parent class, you need to call the inherited `initialize`, h
                 } 
             }
         })
- 
 
 If you are still sure you need a custom constructor you may provide it using a `constructor` builder:
 
@@ -93,7 +93,7 @@ After declaration, Joose translates the class's name to constructor and place it
         var point3d = new MyApp.Point.ThreeD()
         var myapp = new MyApp()
 
-Note, how `MyApp` class was created already after its namespace segment was declared.
+Note, how `MyApp` class was created already *after* its namespace segment was declared. This is perfectly valid declaration.
 
 
 `body` BUILDER
@@ -121,6 +121,7 @@ Each class also support special builder `body`, which should be a function.
                 
                 MyApp.Point.ThreeD.meta.extend({
                     methods : {
+                        additionalMethod : function () {}
                     }
                 })
             }
@@ -151,14 +152,13 @@ You may declare new classes (or roles) in the `body`. Such class's constructor w
         var point = new MyApp.Point()
         var point3d = new MyApp.Point.ThreeD()
 
-`body` builder is a correct place to perform some action after creation of class, because in general case, the creation may be an asynchronous (for dependency loading for example).
+**NOTE:** `body` builder is a correct place to perform some action after creation of class, because in general case, the creation may be asynchronous (for dependency loading for example).
 
 
 MODULES
 =======
 
-Modules are classes, which consists from the `body` only. Modules may not be instantiated, however, its possible to "promote" Module to Class.
-`Module` helper also can be called with `body` as 2nd argument directly: 
+Modules are classes, which consists from the `body` only. Modules may not be instantiated. `Module` helper also can be called with `body` as 2nd argument directly: 
 
         Module("MyApp", function () {
         
@@ -174,12 +174,12 @@ Modules are classes, which consists from the `body` only. Modules may not be ins
             })
         })
         
-        var myapp = new MyApp() //exception
+        var myapp = new MyApp() //exception, modules can't be instantiated
         
         var point3d = new MyApp.Point.ThreeD() //ok
-        
-        ...
-        
+
+Its possible to "promote" Module to Class.
+ 
         //promoting Module to class
         Class("MyApp", {
             ...
@@ -211,4 +211,5 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 
 [1]: Mutability.html
+[modifiers]: MethodModifiers.html
 

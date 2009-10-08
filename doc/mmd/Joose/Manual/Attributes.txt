@@ -12,30 +12,33 @@ INTRODUCTION
 Joose attributes may have many properties, and attributes are probably the one of the most powerful and flexible part of Joose. 
 You can create a powerful class simply by declaring attributes. In fact, it's possible to have classes that consist solely of attribute declarations.
 
-An attribute is a property that every member of a class has. For example, we might say that "every Person object has a first name and last name". Attributes can be optional, so that we can say "some Person objects have a social security number (and some don't)".
+An attribute is a property that every member of a class has. For example, we might say that "every Person object has a first name and last name". 
+Attributes can be optional, so that we can say "some Person objects have a social security number (and some don't)".
 
 At its simplest, an attribute can be thought of as a named value (as in a hash) that can be read and set. However, attributes can also have defaults, type constraints, delegation and much more.
 
-In other languages, attributes are also referred to as slots or properties.
+Attributes are also referred to as slots or properties.
 
-However, all the "attributes magic" is often skipped by beginners, as its generally an advanced topic. Thats why its provided outside of the core, as JooseX.Attribute extension. In this document we'll cover only the base capabilities of attributes, which are included in the core.
+However, all the "attributes magic" is often skipped by beginners, as its generally an advanced topic. Thats why its provided outside of the core, as JooseX.Attribute extension. 
+In this document we'll cover only the base capabilities of attributes, which are included in the core.
 
 
-BASIC ATTRIBUTE OPTIONS
+BASIC ATTRIBUTE - `have` builder
 =======================
 
 The simplest attribute in Joose can be constructed with *have* builder:
 
         Class('Person', {
             have : {
-                firstName : 'John Doe'
+                firstName : 'JohnDoe'
             }
         })
 
-This says that all Person objects have an "first_name" attribute, which has a default value 'John Doe'. Default value will be installed directly to the class's prototype without any modifications. Thats all, no other features. This type of attribute is used primarily in the Joose internals and low-level extensions.
+This says that all Person objects have an "first_name" attribute, which has a default value 'JohnDoe'. Default value will be installed directly to the class's prototype without any modifications. 
+Thats all, no other features. This type of attribute is used primarily in the Joose internals and low-level extensions.
 
 
-ADVANCED ATTRIBUTE OPTIONS
+ADVANCED ATTRIBUTE - `has` builder
 ==========================
 
 The advanced attribute in Joose can be constructed with *has* builder:
@@ -49,7 +52,7 @@ The advanced attribute in Joose can be constructed with *has* builder:
         })
 
 
-The options passed to *has* define the properties of the attribute. There can be many options (provided in the extension packages), but in the simplest form you just need to set *is*, which can be either 'rw' (read-write) or 'ro' (read-only). 
+The options passed to *has* define the properties of the attribute. There can be many options (provided in the extension packages), but in the simplest form you just need to set **`is`**, which can be either 'rw' (read-write) or 'ro' (read-only). 
 When an attribute is 'rw', you can change it by passing a value to its *accessor*. When an attribute is 'ro', you may only read the current value of the attribute.
 
 Accessor methods
@@ -74,7 +77,7 @@ Class can provide custom implementation of the accessor methods, they will not b
 Default value
 ----------------------------------
 
-To specify the default value for the attribute use *init* property. In the example above 'username' attribute will be initialized with default value 'root'. 
+To specify the default value for the attribute use `init` property. In the example above attribute `username` will be initialized with default value 'root'. 
 
         Class('User', {
             isa : Person,
@@ -84,8 +87,8 @@ To specify the default value for the attribute use *init* property. In the examp
             }
         })
 
-If you'll provide a function as the value for *init*, it will be called during initialization with the following signature:
-**func(attributeName, config)**, where **config** is the 1st argument passed to constructor. Function will be called as class's method (in the instance's scope).
+If you'll provide a function as the value for `init`, it will be called during initialization with the following signature:
+`func(attributeName, config)`, where `config` is the 1st argument passed to constructor. Function will be called as class's method (in the instance's scope).
 
 
 
@@ -93,7 +96,7 @@ Simplified form. Attribute helpers
 ----------------------------------
 
 Advanced attributes also allows a simplified form, when the attribute's properties object is provided as an atomic value (string or number for example).
-In this case, this value is treated as value of 'init' property, value of 'is' remains 'undefined'.
+In this case, this value is treated as value of `init` property, value of `is` remains undefined (no accessors will be created for this attribute).
 
 The following examples are equivalent:
 
@@ -113,22 +116,12 @@ The following examples are equivalent:
     
             has : {
                 password : '12345',
-                lastLogin : function () { return new Date() }
-            }
-        })
-    
-        ...
-    
-        Class('User', {
-            isa : Person,
-    
-            has : {
-                password : '12345',
                 lastLogin : Joose.Now
             }
         })
+    
 
-The 'Joose.Now' construct in the last example is an *attribute helper* - a simple function, which return a certain initializing value.
+The `Joose.Now` construct in the last example is an *attribute helper* - a simple function, which return a certain initializing value.
 
 Joose provides following attribute helpers:
 
@@ -137,18 +130,24 @@ Joose provides following attribute helpers:
 - Joose.Function - return empty function 
 - Joose.Now - return current timestamp
 
+
 Required or not?
 ----------------
 
-By default, all attributes are optional, and do not need to be provided at object construction time. If you want to make an attribute required, simply set the required option to true:
+By default, all attributes are optional, and do not need to be provided at object construction time. If you want to make an attribute required, simply set the `required` option to true:
 
         has : {
-            username : { is : 'rw', init : 'root', required : true }
+            username : { 
+                required : true,
+                
+                is : 'rw', 
+                init : 'root'  
+            }
         }
 
 There is a caveat worth mentioning in regards to what "required" actually means.
 
-Basically, all it says is that this attribute ('username') must be provided to the constructor. It does not say anything about its value, so it could be 'null' or 'undefined'.
+Basically, all it says is that this attribute (`username`) must be provided to the constructor. It does not say anything about its value, so it could be 'null' or 'undefined'.
 
 
 Custom Metaclass 
@@ -156,18 +155,19 @@ Custom Metaclass
 
 One of Joose's best features is that it can be extended in all sorts of ways through the use of custom metaclasses.
 
-When declaring an attribute, you can change its default metaclass with the 'meta' property:
+When declaring an attribute, you can change its default metaclass with the `meta` property:
 
         has : {
             password : {
                 meta : JooseX.Attribute.Hashed,
+                
                 init : '12345',
                 hashType : 'SHA-1',
                 salt : 'custom_metaclass'
             }
         }
 
-In this case, the 'password' attribute will be created using JooseX.Attribute.Hashed metaclss, which probably will provide a special setter method, which replace the actual attribute value with its hashed version.
+In this case, the `password` attribute will be created using hypotetical `JooseX.Attribute.Hashed` metaclss, which probably will provide a special setter method, which replace the actual attribute value with its hashed version.
 
 There are a number of JooseX modules on JSAN which provide useful attribute metaclasses. See [Joose.Manual.JooseX][1] for some examples. You can also write your own metaclasses. 
 See the "Meta" and "Extending" recipes in [Joose.Cookbook][2] for examples.
@@ -208,7 +208,7 @@ Redistribution and use in source and binary forms, with or without modification,
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 
-[1]: [Joose.Manual.JooseX][1]
-[2]: [Joose.Cookbook][2]
-[3]: [JooseX.Attribute][3]
+[1]: JooseX.html
+[2]: ../Cookbook.html
+[3]: http://openjsan.org/go?l=JooseX.Attribute
 

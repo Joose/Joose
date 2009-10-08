@@ -37,14 +37,32 @@ These builders are what you use to define your class. For example, you might def
 Attributes are described in the [Joose.Manual.Attributes][2] documentation.
 
 
-When you use Joose, your class will become a subclass of Joose.Proto.Object. The Joose.Proto.Object class provides a default constructor and a number of additional methods. 
+When you use Joose, your class will become a subclass of `Joose.Proto.Object`. The `Joose.Proto.Object` class provides a default `initialize` method and a number of additional methods. 
 You can read more about this in the [Joose][3] document.
 
-It also creates instance of `Joose.Meta.Class` for your class. This metaclass instance is now available as a meta property on your class, for example: `Person.meta`
+Joose creates an instance of `Joose.Meta.Class` for your class. This metaclass instance is now available as a meta property on your class, for example: `Person.meta`
 
 The metaclass object provides an introspection API for your class. It is also used by Joose itself under the hood to add attributes, compose roles, and so on. 
 In fact, all of Joose's sugar does the real work by calling methods on this metaclass object (and other meta API objects).
 
+
+ANONYMOUS CLASSES
+=================
+
+If you'll omit the class name, Joose will create an *anonymous* class. Anonymous class behave very much the same as usual class, expect that it will not have
+publically available constructor's. Its a good idea to capture this constructor in the variable:
+
+        var anonoymous = Class({
+            has : {
+                firstName : { is : 'rw' }
+            },
+            
+            methods : {
+                trimLeading : function () {
+                    ...
+                }
+            }
+        })
 
 SUBCLASSING (`isa` builder)
 ===========================
