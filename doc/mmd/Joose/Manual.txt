@@ -22,6 +22,12 @@ Joose provides complete introspection for all Joose-using classes. This means yo
 Joose is based in large part on the [Moose][1] system, which in turn borrows a lot of from Perl 6 object system, as well as drawing on the best ideas from CLOS, Smalltalk, and many other languages.
 
 
+WHAT ISN'T Joose?
+=================
+
+Joose isn't a new language or sources preprocessor. The code written in Joose, executes like regular JavaScript, and can be run in any modern JavaScript engine.
+
+
 WHY Joose?
 ==========
 
@@ -73,15 +79,15 @@ TABLE OF CONTENTS
 
 This manual consists of a number of documents.
 
-- Joose.Manual.Installation[18]
+- [Joose.Manual.Installation][installation]
     
-    Describes the recommended installation procedure for Joose.
+    Describes the installation procedure for Joose.
 
 - [Joose.Manual.Concepts][2]
 
     Introduces Joose concepts, and contrasts them against "raw" JavaScript.
 
-- Joose.Manual.Unsweetened
+- [Joose.Manual.Unsweetened][unsweetened]
 
     Shows two example classes, each written first with Joose and then with "raw JavaScript".
 
@@ -95,7 +101,7 @@ This manual consists of a number of documents.
 
 - [Joose.Manual.Construction][5]
 
-    Learn how objects are built in Joose, and in particular about the BUILD and BUILDARGS methods. Also covers object destruction with DEMOLISH.
+    Learn how objects are built in Joose.
 
 - [Joose.Manual.MethodModifiers][6]
 
@@ -119,9 +125,9 @@ This manual consists of a number of documents.
 
 - [Joose.Manual.Reflection][10]
 
-    Joose's meta API system lets you ask classes about their parents, children, methods, attributes, etc.
+    Joose's meta API system lets you ask classes about their parent, children, methods, attributes, etc.
 
-- Joose.Manual.MetaRoles[17]
+- Joose.Manual.MetaRoles[metaroles]
 
     Joose allows you to modify not only class's behavior, but also behaviour of its metaclass. Read this document to know how. 
     
@@ -214,5 +220,7 @@ Documentation is based on original Moose::Manual documentation, copyright 2006-2
 [15]: Manual/Delta.html
 [16]: Manual/Traits.html
 [17]: Manual/MetaRoles.html
-[18]: Manual/Installation.html
+[installation]: Manual/Installation.html
+[unsweetened]: Manual/Unsweetened.html
+[metaroles]: Manual/MetaRoles.html
 

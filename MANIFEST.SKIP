@@ -45,10 +45,11 @@
 \B\._
 # Avoid archives of this distribution
 \bJoose-[\d\.\_]+
-^Build.PL$
 .tar.gz$
 ^tests/lib/
 Joose-3.001
 
 .externalToolBuilders
 ^todo/
+^\.git\b
+^\.project\b
