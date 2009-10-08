@@ -13,7 +13,7 @@ To really understand it, you'll have to read a other docs, or may be examine sou
 
 <h1 id="gettingstarted">GETTING STARTED</h1>
 
-<p>The usual entry point to the meta API is through a class's metaclass instance, which is a Joose.Meta.Class. This is available by accessing the <code>meta</code> property on a class or instance:</p>
+<p>The usual entry point to the meta API is through a class's metaclass instance, which is usually a <code>Joose.Meta.Class</code>. This is available by accessing the <code>meta</code> property on a class or instance:</p>
 
 <pre><code>    Class('User', {
         ...
@@ -35,9 +35,11 @@ To really understand it, you'll have to read a other docs, or may be examine sou
     })
 </code></pre>
 
-<p>The <code>eachAll</code> method is documented in [Joose.Managed.PropertySet.Containable][1]. It returns an instance of <code>Joose.Managed.PropertySet.Containable</code> class, which represents a set of attributes defined in the class (and its parent).</p>
+<p>The <code>getAttributes</code> method is documented in <a href="http://openjsan.org/go?l=Joose.Managed.PropertySet.Containable">Joose.Managed.PropertySet.Containable</a>. It returns an instance of <code>Joose.Managed.PropertySet.Containable</code> class, which represents a set of attributes defined in the class (and its parent).</p>
 
-<p>The 1st argument for iterator function will be usually an instance of [Joose.Managed.Attribute][2]
+<p>This instance provides an <code>eachAll</code> iterator, which will call a provided function for each element ('all' stands for: both defined in the class or in the superclass).</p>
+
+<p>The 1st argument for iterator function will be usually an instance of <a href="http://openjsan.org/go?l=Joose.Managed.Attribute">Joose.Managed.Attribute</a>
 Note that sometimes it may actually be a subclass of <code>Joose.Managed.Attribute</code>, as Joose uses different classes to represent usual attribute, delegation attributes, etc.</p>
 
 <p>You can also get a list of methods:</p>
@@ -62,14 +64,16 @@ Note that sometimes it may actually be a subclass of <code>Joose.Managed.Attribu
     })
 </code></pre>
 
+<p>This way is guaranteed to produce consistent changes.</p>
+
 <h1 id="goingfurther">GOING FURTHER</h1>
 
-<p>If you're interested in extending Joose, we recommend reading all of the "Meta" and "Extending" recipes in the [Joose.Cookbook][3]. Those recipes show various practical applications of the metaclass API.</p>
+<p>If you're interested in extending Joose, we recommend reading all of the "Meta" and "Extending" recipes in the <a href="../Cookbook.html">Joose.Cookbook</a>. Those recipes show various practical applications of the metaclass API.</p>
 
 <p>If you'd like to write your own extensions, one of the best ways to learn more about this is to look at other similar extensions to see how they work. 
-You'll probably also need to read various API docs, including the docs for the various Joose.Meta.* classes.</p>
+You'll probably also need to read various API docs, including the docs for the various <code>Joose.Meta.*</code> classes.</p>
 
-<p>Finally, we welcome questions on the Joose mailing list and IRC. Information on the mailing list, IRC, and more references can be found in the [Joose][4] docs.</p>
+<p>Finally, we welcome questions on the Joose mailing list and IRC. Information on the mailing list, IRC, and more references can be found in the <a href="../../Joose.html">Joose</a> docs.</p>
 
 <h1 id="author">AUTHOR</h1>
 
@@ -92,8 +96,3 @@ You'll probably also need to read various API docs, including the docs for the v
 </ul>
 
 <p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. </p>
-
-<p>[1] : Joose.Managed.PropertySet.Containable
-[2] : Joose.Managed.Attribute
-[3] : Joose.Cookbook
-[4] : Joose</p>

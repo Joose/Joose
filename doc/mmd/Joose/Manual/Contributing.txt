@@ -108,7 +108,7 @@ without the various hangups that happened while they were trying to do it (commi
 
 However, by far the biggest benefit is that the number of commits that go into master is eventually reduced, and they are simple and coherent, making it much easier for people maintaining branches to stay up to date.
 
-All large changes should be documented in [Joose.Manual.Delta][1]
+All large changes should be documented in [Joose.Manual.Delta][delta]
 
 
 APPROVAL WORKFLOW
@@ -128,13 +128,14 @@ These items don't really require approval beyond one of the core contributors ju
 Larger bug fixes, doc additions and TODO or failing tests.
 ----------------------------------------------------------
 
-Larger bug fixes should be reviewed by at least one cabal member and should be tested using the cpan-stable-smolder script in the Joose-dev-utils repository.
+Larger bug fixes should be reviewed by at least one cabal member and should be extensively tested.
 
 New documentation is always welcome, but should also be reviewed by a cabal member for accuracy.
 
 TODO tests are basically feature requests, see our "NEW FEATURES" section for more information on that. If your feature needs core support, create a topic/ branch using the "STANDARD WORKFLOW" and start hacking away.
 
-Failing tests are basically bug reports. You should find a core contributor and/or cabal member to see if it is a real bug, then submit the bug and your test to the RT queue. Source control is not a bug reporting tool.
+Failing tests are basically bug reports. You should find a core contributor and/or cabal member to see if it is a real bug, then submit the bug and your test to the [issues tracker](http://code.google.com/p/joose-js/issues/list). 
+Source control is not a bug reporting tool.
 
 New user-facing features.
 -------------------------
@@ -208,7 +209,10 @@ Obviously there is no technical limitation on the number of branches. You can fr
     git checkout -b my-project--topic/foo my-project
 
 (unfortunately Git will not allow my-project/foo as a branch name if my-project is a valid ref).
-THE "PU" BRANCH ^
+
+
+THE "PU" BRANCH
+===============
 
 To make things easier for longer lived branches (whether topics or projects), the 'pu' branch is basically what happens if you merge all of the branches and topics together with master.
 
@@ -243,9 +247,9 @@ Any branch that could still realistically be merged in the future, even if it ha
 TESTS, TESTS, TESTS
 ===================
 
-If you write any code for Joose or Class.MOP, you must add tests for that code. If you do not write tests then we cannot guarantee your change will not be removed or altered at a later date, as there is nothing to confirm this is desired behavior.
+If you write any code for Joose, you must add tests for that code. If you do not write tests then we cannot guarantee your change will not be removed or altered at a later date, as there is nothing to confirm this is desired behavior.
 
-If your code change/addition is deep within the bowels of Joose/Class.MOP and your test exercises this feature in a non-obvious way, please add some comments either near the code in question or in the test so that others know.
+If your code change/addition is deep within the bowels of Joose and your test exercises this feature in a non-obvious way, please add some comments either near the code in question or in the test so that others know.
 
 We also greatly appreciate documentation to go with your changes, and an entry in the Changes file. Make sure to give yourself credit!
 
@@ -253,13 +257,15 @@ We also greatly appreciate documentation to go with your changes, and an entry i
 BACKWARDS COMPATIBILITY
 =======================
 
-Change is inevitable, and Joose is not immune to this. We do our best to maintain backwards compatibility, but we do not want the code base to become overburdened by this. This is not to say that we will be frivolous with our changes, quite the opposite, just that we are not afraid of change and will do our best to keep it as painless as possible for the end user.
+Change is inevitable, and Joose is not immune to this. We do our best to maintain backwards compatibility, but we do not want the code base to become overburdened by this. 
+This is not to say that we will be frivolous with our changes, quite the opposite, just that we are not afraid of change and will do our best to keep it as painless as possible for the end user.
 
-The rule is that if you do something that is not backwards compatible, you must do at least one deprecation cycle (more if it is larger change). For really larger or radical changes dev releases may be needed as well (the Cabal will decide on this on a case-per-case basis).
+The rule is that if you do something that is not backwards compatible, you must do at least one deprecation cycle (more if it is larger change). 
+For really larger or radical changes dev releases may be needed as well (the Cabal will decide on this on a case-per-case basis).
 
 The preference with regard to deprecation is to warn loudly and often so that users will have time to fix their usages.
 
-All backwards incompatible changes must be documented in Joose.Manual.Delta. Make sure to document any useful tips or workarounds for the change in that document.
+All backwards incompatible changes must be documented in [Joose.Manual.Delta][delta]. Make sure to document any useful tips or workarounds for the change in that document.
 
 
 AUTHOR
@@ -290,6 +296,6 @@ Redistribution and use in source and binary forms, with or without modification,
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
 
-[1]: Joose.Manual.Delta
+[delta]: Delta.html
 
 

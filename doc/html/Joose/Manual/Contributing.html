@@ -98,7 +98,7 @@ without the various hangups that happened while they were trying to do it (commi
 
 <p>However, by far the biggest benefit is that the number of commits that go into master is eventually reduced, and they are simple and coherent, making it much easier for people maintaining branches to stay up to date.</p>
 
-<p>All large changes should be documented in <a href="Joose.Manual.Delta">Joose.Manual.Delta</a></p>
+<p>All large changes should be documented in <a href="Delta.html">Joose.Manual.Delta</a></p>
 
 <h1 id="approvalworkflow">APPROVAL WORKFLOW</h1>
 
@@ -114,13 +114,14 @@ The preferred way is to send a request to the mailing list for review/approval, 
 
 <h2 id="largerbugfixesdocadditionsandtodoorfailingtests.">Larger bug fixes, doc additions and TODO or failing tests.</h2>
 
-<p>Larger bug fixes should be reviewed by at least one cabal member and should be tested using the cpan-stable-smolder script in the Joose-dev-utils repository.</p>
+<p>Larger bug fixes should be reviewed by at least one cabal member and should be extensively tested.</p>
 
 <p>New documentation is always welcome, but should also be reviewed by a cabal member for accuracy.</p>
 
 <p>TODO tests are basically feature requests, see our "NEW FEATURES" section for more information on that. If your feature needs core support, create a topic/ branch using the "STANDARD WORKFLOW" and start hacking away.</p>
 
-<p>Failing tests are basically bug reports. You should find a core contributor and/or cabal member to see if it is a real bug, then submit the bug and your test to the RT queue. Source control is not a bug reporting tool.</p>
+<p>Failing tests are basically bug reports. You should find a core contributor and/or cabal member to see if it is a real bug, then submit the bug and your test to the <a href="http://code.google.com/p/joose-js/issues/list">issues tracker</a>. 
+Source control is not a bug reporting tool.</p>
 
 <h2 id="newuser-facingfeatures.">New user-facing features.</h2>
 
@@ -187,8 +188,9 @@ The preferred way is to send a request to the mailing list for review/approval, 
 <pre><code>git checkout -b my-project--topic/foo my-project
 </code></pre>
 
-<p>(unfortunately Git will not allow my-project/foo as a branch name if my-project is a valid ref).
-THE "PU" BRANCH ^</p>
+<p>(unfortunately Git will not allow my-project/foo as a branch name if my-project is a valid ref).</p>
+
+<h1 id="thepubranch">THE "PU" BRANCH</h1>
 
 <p>To make things easier for longer lived branches (whether topics or projects), the 'pu' branch is basically what happens if you merge all of the branches and topics together with master.</p>
 
@@ -220,21 +222,23 @@ THE "PU" BRANCH ^</p>
 
 <h1 id="teststeststests">TESTS, TESTS, TESTS</h1>
 
-<p>If you write any code for Joose or Class.MOP, you must add tests for that code. If you do not write tests then we cannot guarantee your change will not be removed or altered at a later date, as there is nothing to confirm this is desired behavior.</p>
+<p>If you write any code for Joose, you must add tests for that code. If you do not write tests then we cannot guarantee your change will not be removed or altered at a later date, as there is nothing to confirm this is desired behavior.</p>
 
-<p>If your code change/addition is deep within the bowels of Joose/Class.MOP and your test exercises this feature in a non-obvious way, please add some comments either near the code in question or in the test so that others know.</p>
+<p>If your code change/addition is deep within the bowels of Joose and your test exercises this feature in a non-obvious way, please add some comments either near the code in question or in the test so that others know.</p>
 
 <p>We also greatly appreciate documentation to go with your changes, and an entry in the Changes file. Make sure to give yourself credit!</p>
 
 <h1 id="backwardscompatibility">BACKWARDS COMPATIBILITY</h1>
 
-<p>Change is inevitable, and Joose is not immune to this. We do our best to maintain backwards compatibility, but we do not want the code base to become overburdened by this. This is not to say that we will be frivolous with our changes, quite the opposite, just that we are not afraid of change and will do our best to keep it as painless as possible for the end user.</p>
+<p>Change is inevitable, and Joose is not immune to this. We do our best to maintain backwards compatibility, but we do not want the code base to become overburdened by this. 
+This is not to say that we will be frivolous with our changes, quite the opposite, just that we are not afraid of change and will do our best to keep it as painless as possible for the end user.</p>
 
-<p>The rule is that if you do something that is not backwards compatible, you must do at least one deprecation cycle (more if it is larger change). For really larger or radical changes dev releases may be needed as well (the Cabal will decide on this on a case-per-case basis).</p>
+<p>The rule is that if you do something that is not backwards compatible, you must do at least one deprecation cycle (more if it is larger change). 
+For really larger or radical changes dev releases may be needed as well (the Cabal will decide on this on a case-per-case basis).</p>
 
 <p>The preference with regard to deprecation is to warn loudly and often so that users will have time to fix their usages.</p>
 
-<p>All backwards incompatible changes must be documented in Joose.Manual.Delta. Make sure to document any useful tips or workarounds for the change in that document.</p>
+<p>All backwards incompatible changes must be documented in <a href="Delta.html">Joose.Manual.Delta</a>. Make sure to document any useful tips or workarounds for the change in that document.</p>
 
 <h1 id="author">AUTHOR</h1>
 

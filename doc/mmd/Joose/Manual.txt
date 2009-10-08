@@ -127,7 +127,7 @@ This manual consists of a number of documents.
 
     Joose's meta API system lets you ask classes about their parent, children, methods, attributes, etc.
 
-- [Joose.Manual.MetaRoles][metaroles]
+- [TODO: Joose.Manual.MetaRoles][metaroles]
 
     Joose allows you to modify not only class's behavior, but also behaviour of its metaclass. Read this document to know how. 
     

@@ -19,7 +19,7 @@
         }
     })
 
-    Class('TidyPerson', {
+    Class('Person.Tidy', {
         isa : Person,
 
         before : {
@@ -46,7 +46,7 @@
     })
 </code></pre>
 
-<p>Now if I call new TidyPerson().eat('apple') I'll get the following output:</p>
+<p>Now if I call <code>new Person.Tidy().eat('apple')</code> I'll get the following output:</p>
 
 <pre><code>    washing hands
     yummy
@@ -62,7 +62,9 @@ Since Rhino travers object properties in random order, if you'll provide more th
 
 <h1 id="whyusethem">WHY USE THEM?</h1>
 
-<p>Method modifiers have many uses. One very common use is in roles. This lets roles alter the behavior of methods in the classes that use them. See [Joose.Manual.Roles][1] for more information about roles.</p>
+<p>Method modifiers have many uses. Generally, they simplify class logic, making it more "natural" and descriptable in natural words.</p>
+
+<p>Another very common use of method modifiers is in roles. This lets roles alter the behavior of methods in the classes that use them. See <a href="Roles.html">Joose.Manual.Roles</a> for more information about roles.</p>
 
 <p>Since modifiers are mostly useful in roles, some of the examples below are a bit artificial. They're intended to give you an idea of how modifiers work, but may not be the most natural usage.</p>
 
@@ -76,10 +78,10 @@ In both cases the returning value still returns from original method, not from m
 <pre><code>    var tidyPerson = new TidyPerson()
     var res = tidyPerson.eat('apple')
 
-    console.log(res == 'yummy') # returns 'yummy'
+    console.log(res == 'yummy') # returns 'yummy' from the inherited method
 </code></pre>
 
-<p>Another use for the before modifier would be to do some sort of prechecking on a method call or setter. For example:</p>
+<p>Another use for the 'before' modifier would be to do some sort of prechecking on a method call or setter. For example:</p>
 
 <pre><code>    Class('Bus', {
         isa : Vehicle,
@@ -94,7 +96,7 @@ In both cases the returning value still returns from original method, not from m
 
 <p>This lets us implement logical checks that don't make sense as type constraints. In particular, they're useful for defining logical rules about an object's state changes.</p>
 
-<p>Similarly, an after modifier could be used for logging an action that was taken, and so on.</p>
+<p>Similarly, an 'after' modifier could be used for logging an action that was taken, and so on.</p>
 
 <h1 id="overrideandaround">OVERRIDE and AROUND</h1>
 
@@ -102,9 +104,9 @@ In both cases the returning value still returns from original method, not from m
 and you can even decide to simply not call the original method at all. You can also modify the return value of the original method.</p>
 
 <pre><code>    Class('Person', {
-        have : {
-            firstName : null,
-            lastName : null
+        has : {
+            firstName : { is : 'rw' },
+            lastName : { is : 'rw' }
         },
 
         methods : {
@@ -115,7 +117,7 @@ and you can even decide to simply not call the original method at all. You can a
             },
 
             chatOnIRC : function (partner, message) {
-                return this.type(partner + ': ' + message 
+                return this.type(partner + ': ' + message)
             }
         }
     })
@@ -142,8 +144,9 @@ and you can even decide to simply not call the original method at all. You can a
     })
 </code></pre>
 
-<p>An 'override' modifier allows you to use the <strong>this.SUPER(arg1, arg2, ...)</strong> call in the modifier. As expected this call will execute the original method with provided arguments.
-Its possible also to specify the arguments in the "packed" form, as array, with <strong>this.SUPERARG(argumentsArray)</strong>. This variant is usually used as <strong>this.SUPERARG(arguments)</strong></p>
+<p>An 'override' modifier allows you to use the <code>this.SUPER(arg1, arg2, ...)</code> call in the modifier. As expected this call will execute the original method with provided arguments.
+Its possible also to specify the arguments in the "packed" form, as array, with <code>this.SUPERARG(argumentsArray)</code>. This variant is usually used as <code>this.SUPERARG(arguments)</code> and is an
+equivalent for <code>this.SUPER.apply(this, arguments)</code>.</p>
 
 <p>An 'around' modifier receives the original method as its first argument, then any arguments passed to the original method.</p>
 
@@ -151,7 +154,7 @@ Its possible also to specify the arguments in the "packed" form, as array, with 
 
 <p>The augment modifier provides a sort of inverted subclassing. You provide part of the implementation in a superclass, and then document that subclasses are expected to provide the rest.</p>
 
-<p>The superclass calls <strong>this.INNER()</strong>, which then calls the augment modifier in the subclass:</p>
+<p>The superclass calls <code>this.INNER()</code>, which then calls the 'augment' modifier in the subclass:</p>
 
 <pre><code>    Class('Document', {
 
@@ -167,7 +170,7 @@ Its possible also to specify the arguments in the "packed" form, as array, with 
     })
 </code></pre>
 
-<p>Using <strong>this.INNER()</strong> in this method makes it possible for one or more subclasses to then augment this method with their own specific implementation:</p>
+<p>Using <code>this.INNER()</code> in this method makes it possible for one or more subclasses to then augment this method with their own specific implementation:</p>
 
 <pre><code>    Class('Report', {
         isa : Document,
@@ -184,7 +187,7 @@ Its possible also to specify the arguments in the "packed" form, as array, with 
     })
 </code></pre>
 
-<p>When we call 'as_xml' on a Report object, we get something like this:</p>
+<p>When we call <code>as_xml</code> on a <code>Report</code> object, we get something like this:</p>
 
 <pre><code>      &lt;document&gt;
       &lt;report&gt;
@@ -192,7 +195,7 @@ Its possible also to specify the arguments in the "packed" form, as array, with 
       &lt;/document&gt;
 </code></pre>
 
-<p>But we also called <strong>this.INNER()</strong> in Report, so we can continue subclassing and adding more content inside the document:</p>
+<p>But we also called <code>this.INNER()</code> in <code>Report</code>, so we can continue subclassing and adding more content inside the document:</p>
 
 <pre><code>    Class('Report.IncomeAndExpenses', {
         isa : Report,
@@ -221,10 +224,10 @@ Its possible also to specify the arguments in the "packed" form, as array, with 
       &lt;/document&gt;
 </code></pre>
 
-<p>What makes this combination of 'augment' and <strong>this.INNER()</strong> special is that it allows us to have methods which are called from parent (least specific) to child (most specific). This inverts the normal inheritance pattern.</p>
+<p>What makes this combination of <code>augment</code> and <code>this.INNER()</code> special is that it allows us to have methods which are called from parent (least specific) to child (most specific). This inverts the normal inheritance pattern.</p>
 
-<p>Note that in Report.IncomeAndExpenses we call <strong>this.INNER()</strong> again. If the object is an instance of Report.IncomeAndExpenses then this call is a no-op, and just returns false.
-However, if later we will decide to further subclass the Report.IncomeAndExpenses, than its 'as_xml' will still include the content, provided by subclass.</p>
+<p>Note that in <code>Report.IncomeAndExpenses</code> we call <code>this.INNER()</code> again. If the object is an instance of <code>Report.IncomeAndExpenses</code> then this call is a no-op, and just returns <code>undefined</code>.
+However, if later we will decide to further subclass the <code>Report.IncomeAndExpenses</code>, than its <code>as_xml</code> will still include the content, provided by subclass.</p>
 
 <h1 id="author">AUTHOR</h1>
 
