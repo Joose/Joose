@@ -1,6 +1,43 @@
 <h1 id="name">NAME</h1>
 
-<p>Joose.Manual.MetaRoles - Special kind of Roles in Joose.</p>
+<p>Joose.Manual.MetaRoles - Yet another special kind of Roles in Joose.</p>
+
+<h1 id="whatisameta-role">WHAT IS A META-ROLE?</h1>
+
+<p>Meta-role is a usual role, applied to a meta-class instance. Because of that, meta-role is also a <a href="Traits.html">trait</a>.</p>
+
+<p>Like any other Role, meta-role modifies the class, adding some re-usable behavior to it. Most probably this behaviour will be related
+to the constructing of the class being modified, for example it will provide additional builders for class.</p>
+
+<h1 id="applyingmeta-role">APPLYING META-ROLE</h1>
+
+<p>Meta roles can be added to class using the <code>metaRole</code> or <code>trait</code> builders:</p>
+
+<pre><code>    Class('Person', {
+
+        trait : JooseX.Storable,
+
+        has : {
+            firstName : {},
+            lastName  : {}
+        }
+    })
+</code></pre>
+
+<p>Here we declared a class <code>Person</code>, which metaclass instance (<code>Person.meta</code>) will have trait <code>JooseX.Storable</code> applied.</p>
+
+<p>This trait probably provides the facilities to serialize the current state of the class and later restore it.</p>
+
+<p>See <a href="../Cookbook/MetaRole.html">this</a> Cookbook recipe on how to create custom meta-role.</p>
+
+<h1 id="removingmeta-role">REMOVING META-ROLE</h1>
+
+<p>For symmetry, its possible to remove the meta-role, using <code>removeMetaRole</code> builder:</p>
+
+<pre><code>    Person.meta.extend({
+        removeMetaRole : JooseX.Storable
+    })
+</code></pre>
 
 <h1 id="author">AUTHOR</h1>
 
