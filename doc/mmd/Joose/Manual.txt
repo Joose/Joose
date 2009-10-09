@@ -79,7 +79,7 @@ TABLE OF CONTENTS
 
 This manual consists of a number of documents.
 
-- [TODO: Joose.Manual.Installation][installation]
+- [Joose.Manual.Installation][installation]
     
     Describes the installation procedure for Joose.
 
@@ -111,7 +111,7 @@ This manual consists of a number of documents.
 
     A role is something a class does (like "Debuggable" or "Printable"). Roles provide a way of adding behavior to classes that is orthogonal to inheritance.
 
-- [Joose.Manual.Traits][traits]
+- [TODO: Joose.Manual.Traits][traits]
 
     A trait is just a role, applied to a particular instance and modified its behaviour only, not a whole class.
 

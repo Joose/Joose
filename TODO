@@ -1,0 +1,93 @@
+TASKS
+=====
+
+- derive 'stable' branch
+
+- fix namespace managers executeIn to omit the args?
+
+- Ext.applyIf analog?
+
+- check overridableness of method and attribute metaclasses
+
+- add benchmarking capabilities to Test.Run
+- fix frames double loading in Opera (Test.Run)
+
+- add SKIP and TODO methods to Test.Run
+- add warnings about SUPER on proto level in OPERA
+
+
+- fix OpenJSAN.org html extraction method
+- fix JSAN shell 'install' command
+
+- Joose.Cookbook
+- Joose.Manual (Traits, Unsweetened, Contributing, ...)
+   - Installation 
+    -- for Mac OS
+    -- verify that procedure works several platforms (CPAN Testers at least) especially on Windows  
+
+
+
+CORE FEATURES
+=============
+
+- Class as Role? spec&implemented or remove
+
+- 'immutable' builder
+
+- implement optimization for methods/OVERRIDE modifiers w/o SUPER calls ) probably should be configurable, to avoid increasing of startup overhead 
+
+- add override check for PUT modifiers
+
+- global 'traits' config? to apply traits immediatly after instance creation?
+
+- some kind of obfuscator to reduce codebase size  
+
+
+REFACTORING POSSIBILITIES
+=========================
+
+- move builderClass and stemClass to private attributes (with leading underscore)?
+
+ -or-
+
+- merge 'builder' into class itself?
+
+- metaclass as subclass of stem?
+
+
+- refactor addRole (add something like 'beforeAdd' hook, which is very often needs to be overridden)
+
+- convert all OVERRIDE modifiers in core to AROUND? (need to benchmark them 1st)
+
+
+
+EXTENSIONS
+==========
+
+- JooseX.Builder.Also (to address Rhino issues and allow multiple modifiers in the same class)
+
+- JooseX.Role.Parameterized
+
+- JooseX.Type
+
+- JooseX.Meta.Configurable (allows builders which will configure the meta + aliases for them)
+
+- JooseX.Attribute:
+ - delegation
+ - predicating/clearing
+ - typing, coercion
+ - traits for attributes
+
+
+
+DONE
+====
+
+- refactor methods & modifiers to reduce overhead
+- migrate AUGMENT modifier to closures
+- anonymous classes
+- refactor helpers
+- fix multiple failures under FF3.5
+- does for superclasses
+- migrate to github
+

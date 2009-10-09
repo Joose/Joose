@@ -2,13 +2,98 @@
 
 <p>Joose.Manual.Installation - The installation procedure for Joose.</p>
 
-<p>=====</p>
+<h1 id="jsan">JSAN</h1>
+
+<p>Joose is distributing via JSAN - <a href="#jsan" title="JSAN">JavaScript Archive Network</a>. To install Joose you'll need to install JSAN shell first - a small unix-shell-like programm.
+It communicate directly with closest JSAN mirror and can download and install any JSAN module for you.</p>
+
+<p>JSAN shell is written in perl, so the 1st step is to obtain Perl.</p>
+
+<h1 id="obtainingperl">1. OBTAINING PERL</h1>
+
+<h2 id="linux">Linux</h2>
+
+<p>If you are on any relatively modern Linux distribution, you may skip this step, since you already have perl and all required perl modules. </p>
+
+<h2 id="windows">Windows</h2>
+
+<p>Windows users should install <a href="http://strawberryperl.com/">Strawberry perl</a>. Straberry perl is preferred against ActiveState perl, because it comes with the compiler included.</p>
+
+<p><em>NOTE:</em> After installation, you may need to relogin (or restart) to see the updates in the PATH envinroment variable.</p>
+
+<h1 id="installingshell">2. INSTALLING SHELL</h1>
+
+<h2 id="installingshell">Installing shell</h2>
+
+<p>Launch a console (<code>cmd</code> on Windows). Then type:</p>
+
+<pre><code>   &gt; cpan JSAN::Shell
+</code></pre>
+
+<p>Thats all, now wait until shell will be installed. You may be asked about installing its pre-requisites - answer 'yes'. </p>
+
+<h1 id="installingjoose">3. INSTALLING JOOSE</h1>
+
+<p>Launch a console (<code>cmd</code> on Windows). Then type:</p>
+
+<pre><code>    &gt; jsan2
+</code></pre>
+
+<p>This should launch a JSAN shell and display a prompt, similar to this:</p>
+
+<pre><code>    Checking for Internet access...
+    Locating closest JSAN mirror...
+
+    jsan shell -- JSAN repository explorer and package installer (v2.0006)
+               -- Copyright 2005 - 2009 Adam Kennedy.
+               -- Type 'help' for a summary of available commands.
+
+    jsan&gt;
+</code></pre>
+
+<p>In the shell, type:</p>
+
+<pre><code>    jsan&gt; install Joose
+</code></pre>
+
+<p>Thats all, shell will download and install Joose for you. Please refer to <a href="http://search.cpan.org/dist/JSAN-Shell/lib/JSAN/Shell.pm">JSAN::Shell documentation</a>
+for details on using shell. </p>
+
+<h1 id="configuringyoursystem">4. CONFIGURING YOUR SYSTEM</h1>
+
+<p>After successfull completition of the procedure above, Joose will be installed in the local JavaScript library.</p>
+
+<p>The path to the library will be:</p>
+
+<ul>
+<li>/usr/local/lib/jsan</li>
+</ul>
+
+<p>on Linux systems</p>
+
+<ul>
+<li>c:\JSAN</li>
+</ul>
+
+<p>on Windows systems.</p>
+
+<p>As a convention, its recommended to configure you local web server (you have one installed, right? ;) that way, that the root starting url <code>/jsan</code>
+will point at the <code>lib</code> subdirectory of JSAN library: <code>/usr/local/lib/jsan/lib</code> for example.</p>
+
+<p>This way you can load any installed JSAN module via url like: <code>/jsan/Useful/Module/Name.js</code></p>
+
+<h1 id="sourcefilestoinclude">5. SOURCE FILES TO INCLUDE</h1>
+
+<p>To use Joose on your pages you'll need to include the following source file (from the root of the JSAN library)</p>
+
+<pre><code>/lib/Task/Joose/Core.js
+</code></pre>
+
+<p>This file contains all the sources concatenated into one. </p>
 
 <h1 id="author">AUTHOR</h1>
 
 <p>Nickolay Platonov <a href="mailto:nickolay8@gmail.com">nickolay8@gmail.com</a></p>
-
-<p>Heavily based on the original content of Moose::Manual, by Dave Rolsky <a href="mailto:autarch@urth.org">autarch@urth.org</a></p>
 
 <h1 id="copyrightandlicense">COPYRIGHT AND LICENSE</h1>
 
