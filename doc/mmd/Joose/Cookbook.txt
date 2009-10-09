@@ -13,19 +13,22 @@ Most recipes present some code demonstrating some feature, and then explain the 
 
 You should probably read the [Joose.Manual][manual] first. The manual explains Joose concepts without being too code-heavy.
 
-=head1 RECIPES
 
-=head2 Basic Joose
+RECIPES
+=======
 
-These recipes will give you a good overview of Joose's capabilities, starting
-with simple attribute declaration, and moving on to more powerful features like
-laziness, types, type coercion, method modifiers, and more.
+Basic Joose
+-----------
 
-=over 4
 
-=item L<Joose::Cookbook::Basics::Recipe1> - The (always classic) B<Point> example
+These recipes will give you a good overview of Joose's capabilities, starting with simple attribute declaration, 
+and moving on to more powerful features like method modifiers, and more.
+
+- [Joose.Cookbook.Basics.Recipe1][basics1] - The (always classic) **Point** example
 
 A simple Joose-based class. Demonstrates Joose attributes and subclassing.
+
+<div style="display:none">
 
 =item L<Joose::Cookbook::Basics::Recipe2> - A simple B<BankAccount> example
 
@@ -240,6 +243,8 @@ it under the same terms as Perl itself.
 =cut
 
 
+</div>
+
 AUTHORS
 =======
 
@@ -270,4 +275,6 @@ Documentation is based on original Moose::Manual documentation, copyright 2006-2
 
 
 [manual]: Manual.html
+[basics1]: Cookbook/Basics/Recipe1.html
+
 

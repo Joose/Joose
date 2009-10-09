@@ -4,6 +4,7 @@ Build.PL
 Components.JS
 doc/html/Joose.html
 doc/html/Joose/Cookbook.html
+doc/html/Joose/Cookbook/Basics/Recipe1.html
 doc/html/Joose/Helper.html
 doc/html/Joose/Managed/Attribute.html
 doc/html/Joose/Managed/Attribute/Builder.html
@@ -68,6 +69,7 @@ doc/html/Joose/Proto/Object.html
 doc/html/Task/Joose/Core.html
 doc/mmd/Joose.txt
 doc/mmd/Joose/Cookbook.txt
+doc/mmd/Joose/Cookbook/Basics/Recipe1.txt
 doc/mmd/Joose/Helper.txt
 doc/mmd/Joose/Managed/Attribute.txt
 doc/mmd/Joose/Managed/Attribute/Builder.txt
@@ -137,6 +139,7 @@ inc/Module/JSAN/DSL.pm
 INSTALL
 lib/Joose.js
 lib/Joose/Cookbook.js
+lib/Joose/Cookbook/Basics/Recipe1.js
 lib/Joose/Helper.js
 lib/Joose/Managed/Attribute.js
 lib/Joose/Managed/Attribute/Builder.js
@@ -224,4 +227,4 @@ t/055_role_to_instance_application.t.js
 t/060_modules.t.js
 t/070_reflection.t.js
 t/index.html
-TODO.txt
+TODO
