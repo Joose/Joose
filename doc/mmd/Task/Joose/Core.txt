@@ -3,7 +3,7 @@
 Name
 ====
 
-Joose - A postmodern object system for JavaScript
+Joose - A postmodern class system for JavaScript
 
 
 SYNOPSIS
@@ -39,7 +39,11 @@ SYNOPSIS
             }
         })
         
-        var point = new Point.ThreeD()
+        var point = new Point.ThreeD({
+            x : 1,
+            y : 2,
+            z : 3
+        })
 
 
 DESCRIPTION
@@ -63,11 +67,6 @@ If you're new to Joose, the best place to start is the [Joose.Manual][1] docs, f
 The cookbook recipes on Joose basics will get you up to speed with many of Joose's features quickly. Once you have an idea of what Joose can do, you can use the API documentation to get more detail on features which interest you.
 
 
-Joose Extensions
-----------------
-
-The JooseX. namespace is the official place to find Joose extensions. These extensions can be found on the [JSAN][3].
-
  
 BUILDING CLASSES WITH JOOSE
 ===========================
@@ -90,6 +89,8 @@ Only valid in the scope of usual methods and OVERRIDE method modifiers. Calls a 
 
 Only valid in the scope of usual methods and OVERRIDE method modifiers. Calls a superclass's method with the "packed" arguments, provided as array. Usually used as: `this.SUPERARG(arguments)`
 
+This method is just a shortcut for `this.SUPER.apply(this, arguments)`
+
   - `this.initialize()`
 
 Default `initialize` method is empty function.
@@ -100,11 +101,11 @@ Defalt string coercion is string "a ClassName", where ClassName is a name of ins
  
   - `this.detach()`
 
-Detaches the instance from its class. See more details [here][!!]
+Detaches the instance from its class. See the details [here][traits]
 
   - `this.attach()`
 
-Attaches the instance back to its class. See more details [here][!!]
+Attaches the instance back to its class. See the details [here][traits]
 
   - `this.isDetached()`
 
@@ -118,7 +119,7 @@ Joose provides a number of properties to all instances of your classes.
 
   - `this.constructor`
 
-A class with which `this` instance were constructed.
+A class with which `this` instance was constructed.
 
   - `this.meta`
 
@@ -132,7 +133,7 @@ Joose also provides a number of properties to classes.
 
   - `class.meta`
 
-An instance of metaclass for 'this' instance's class. The same as 'this.meta' for instances of `class`
+An instance of metaclass for this class. The same as `this.meta` for instances of `class`
 
   - `class.my`
 
@@ -152,19 +153,27 @@ Declaration helpers
 Declaration helpers allows you to declare a class, role or module.
 
   - `Class(String name, Object builders)`
+  
+Declares a class, using provided builders. `name` will be transformed into class's constructor. See the details [here][construction]
 
   - `Class(Object buildersObj)`
+  
+Declares an anonymous class.
   
   - `Role(String name, Object builders)`
 
   - `Role(Object buildersObj)`
+  
+The same helpers for Roles. See [Roles][roles].
 
   - `Module(String name, Object builders)`
 
   - `Module(String name, Function body)`
 
+The same helpers for Modules. See the details [here][construction]
 
-Joose provides a number of small helpers methods, which you might found useful. 
+
+Joose also provides a number of small helpers functions, which you might found useful. 
 
 Helpers for Arrays
 ------------------
@@ -191,7 +200,7 @@ Helpers for Strings
 
   - `Joose.S.saneSplit(str, delimeter)`
 
-Implements a perl-like 'split', which returns empty array for splitting empty string (not an array with an empty string). Behave as standard `String.prototype.split` in other aspects.
+Implements a perl-like 'split', which returns empty array for splitted empty string (not an array with an empty string). Behave as standard `String.prototype.split` in other aspects.
 
   - `Joose.S.uppercaseFirst(string)`
 
@@ -221,7 +230,7 @@ Copies all the properties of `source` object to the `target` (*excluding* inheri
     
   - `Joose.O.getMutableCopy(object)`
 
-Returns a "mutable copy" of `object`. "Mutable copy" is actually an empty object, which however inherit all the properties of original source via prototype chain.
+Returns a "mutable copy" of `object`. "Mutable copy" is an empty object, which however inherit all the properties of original via prototype chain.
 
   - `Joose.O.extend(target, source)`
 
@@ -281,24 +290,32 @@ You can also specify traits which will be applied to your metaclass:
             ....
         })
 
-When you do this, your class's meta object will have the specified traits applied to it. See [Joose.Manual.Roles][5] for more details.
+When you do this, your class's meta object will have the specified traits applied to it. See [Joose.Manual.Roles][5] and [Joose.Manual.Traits][traits] for further details.
     
 
 The JooseX. namespace
 =====================
 
 Generally if you're writing an extension for Joose itself you'll want to put your extension in the JooseX. namespace. This namespace is specifically for extensions that make Joose better or different in some fundamental way. 
-It is traditionally not for a package that just happens to use Joose. See [Joose.Manual.JooseX][7] for more details.
+It is traditionally not for a package that just happens to use Joose. 
 
+These extensions can be found on the [JSAN][3]. See [Joose.Manual.JooseX][7] for more details.
+
+
+<div style="display:none">
 
 CAVEATS
 =======
+
+The moment of trait application.
 
 Attributes in traits.
 
 Refering to meta instance from the constructor
 
 Method modifiers order in Rhino
+
+</div>
 
 
 GETTING HELP
@@ -324,8 +341,11 @@ SEE ALSO
 
 [http://code.google.com/p/joose-js/](http://code.google.com/p/joose-js/)
 
-This is the official web home of Joose, it contains links to our public SVN repository as well as links to a number of talks and articles on Joose and Joose related technologies.
+This is the official web home of Joose.
 
+[http://github.com/Joose/Joose](http://github.com/Joose/Joose)
+
+Our version control repository.
 
 [http://www.iinteractive.com/moose](http://www.iinteractive.com/moose)
 
@@ -387,3 +407,7 @@ Documentation is based on original Moose::Manual documentation, copyright 2006-2
 [6]: Joose/Manual/Singleton.html
 [7]: Joose/Manual/JooseX.html
 [8]: Joose/Manual/Contributing.html
+
+[construction]: Joose/Manual/Construction.html
+[traits]: Joose/Manual/Traits.html
+[roles]: Joose/Manual/Roles.html

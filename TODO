@@ -18,6 +18,9 @@ TASKS
 
 - fix OpenJSAN.org html extraction method
 - fix JSAN shell 'install' command
+- release JSAN::Shell
+- release Module::Build::Functions (CSJ)
+- release Module::JSAN
 
 - Joose.Cookbook
 - Joose.Manual (Traits, Unsweetened, Contributing, ...)
@@ -35,8 +38,6 @@ CORE FEATURES
 - 'immutable' builder
 
 - implement optimization for methods/OVERRIDE modifiers w/o SUPER calls ) probably should be configurable, to avoid increasing of startup overhead 
-
-- add override check for PUT modifiers
 
 - global 'traits' config? to apply traits immediatly after instance creation?
 
@@ -90,4 +91,4 @@ DONE
 - fix multiple failures under FF3.5
 - does for superclasses
 - migrate to github
-
+- add override check for PUT modifiers
