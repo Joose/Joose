@@ -78,7 +78,7 @@ EXTENSIONS
  - typing, coercion
  - traits for attributes
 
-
+- JooseX.Method.Overloaded
 
 DONE
 ====
