@@ -9,7 +9,7 @@ Joose.Manual - What is Joose, and how do I use it?
 WHAT IS Joose?
 ==============
 
-Joose is a complete object system for JavaScript. Consider any modern object-oriented language (which JavaScript definitely isn't). 
+Joose is a complete object system for JavaScript. Consider any modern object-oriented language. 
 It provides keywords for attribute declaration, object construction, inheritance, and maybe more. These keywords are part of the language, and you don't care how they are implemented.
 
 Joose aims to do the same thing for JavaScript. We can't actually create new keywords, but we do offer "sugar" that looks a lot like them. More importantly, with Joose, you define your class declaratively, 
