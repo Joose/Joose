@@ -3,8 +3,6 @@ TASKS
 
 - derive 'stable' branch
 
-- fix namespace managers executeIn to omit the args?
-
 - Ext.applyIf analog?
 
 - check overridableness of method and attribute metaclasses
@@ -98,3 +96,4 @@ DONE
 - does for superclasses
 - migrate to github
 - add override check for PUT modifiers
+- fix namespace managers executeIn to omit the args?
