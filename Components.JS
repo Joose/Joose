@@ -47,7 +47,9 @@ COMPONENTS = {
         
         "Joose.Managed.Bootstrap",
         
-	    "Joose.Meta.Class",
+        "Joose.Meta.Object",
+	    
+        "Joose.Meta.Class",
 	    "Joose.Meta.Role",
 	    
 	    "Joose.Meta.Class.Detached",
