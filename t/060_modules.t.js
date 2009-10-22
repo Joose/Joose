@@ -7,11 +7,12 @@ StartTest(function (t) {
     t.ok(Joose.Namespace.Manager, "Joose.Namespace.Manager is here")
     t.ok(Joose.Namespace.Keeper, "Joose.Namespace.Keeper is here")
     
-    var global = Joose.Namespace.Manager.my.global
+    var global      = Joose.Namespace.Manager.my.global
+    var globalNs    = Joose.Namespace.Manager.my.globalNs
     
     t.ok(global, "There is a global namespace")
-    t.ok(global.meta.ns instanceof Joose.Managed.PropertySet.Namespace, "And it has an instance of Joose.Managed.PropertySet.Namespace")
-    t.ok(global.meta.ns.container == Joose.top, "Container of global namespace is a top scope")
+    t.ok(globalNs instanceof Joose.Managed.PropertySet.Namespace, "And it has an instance of Joose.Managed.PropertySet.Namespace")
+    t.ok(globalNs.container == Joose.top, "Container of global namespace is a top scope")
     
     Module('TestModule', {
         body : function (module) {
