@@ -39,6 +39,8 @@ CORE FEATURES
 
 - implement optimization for methods/OVERRIDE modifiers w/o SUPER calls ) probably should be configurable, to avoid increasing of startup overhead 
 
+- BUILD method to prepare the arguments passed to constructor
+
 - global 'traits' config? to apply traits immediatly after instance creation?
 
 - some kind of obfuscator to reduce codebase size  
