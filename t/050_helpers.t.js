@@ -418,7 +418,7 @@ StartTest(function (t) {
     //==================================================================================================================================================================================
     t.diag("Modifying helper")
     
-    Joose.Helper.my.meta.extend({
+    Joose.Namespace.Manager.my.meta.extend({
         override : {
             Class : function (name, props) {
                 return this.SUPER(name + '_', props)

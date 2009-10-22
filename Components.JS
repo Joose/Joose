@@ -55,9 +55,7 @@ COMPONENTS = {
 	    "Joose.Meta.Class.Detached",
 	    
 	    "Joose.Namespace.Keeper",
-	    "Joose.Namespace.Manager",
-	    
-	    "Joose.Helper"
+	    "Joose.Namespace.Manager"
 	]
     
 } 
