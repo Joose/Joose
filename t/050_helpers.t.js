@@ -434,7 +434,7 @@ StartTest(function (t) {
         }
     })
     
-    t.ok(new Private_().result() == 10, "'Class' helper were modified correctly")
+    t.ok(new Private_().result() == 10, "'Class' helper was modified correctly")
     
     
         
