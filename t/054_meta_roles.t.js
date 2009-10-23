@@ -6,7 +6,7 @@ StartTest(function (t) {
     
     t.ok(Joose.Managed.Property.MetaRole, "Joose.Managed.Property.MetaRole is here")
 //    t.ok(Joose.Managed.StemElement.MetaRoles, "Joose.Managed.StemElement.MetaRoles is here")
-    t.ok(Joose.Trait.Able, "Joose.Trait.Able is here")
+//    t.ok(Joose.Trait.Able, "Joose.Trait.Able is here")
 
     
     Role('MetaRole', {
