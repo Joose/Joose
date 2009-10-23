@@ -56,8 +56,6 @@ REFACTORING POSSIBILITIES
 - metaclass as subclass of stem?
 
 
-- refactor addRole (add something like 'beforeAdd' hook, which is very often needs to be overridden)
-
 - convert all OVERRIDE modifiers in core to AROUND? (need to benchmark them 1st)
 
 - merge Containable to something
@@ -97,3 +95,4 @@ DONE
 - migrate to github
 - add override check for PUT modifiers
 - fix namespace managers executeIn to omit the args?
+- refactor addRole (add something like 'beforeAdd' hook, which is very often needs to be overridden)

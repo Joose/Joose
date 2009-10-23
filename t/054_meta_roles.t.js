@@ -5,8 +5,6 @@ StartTest(function (t) {
     t.diag("MetaRoles (roles which applies to metaclass of applicant")
     
     t.ok(Joose.Managed.Property.MetaRole, "Joose.Managed.Property.MetaRole is here")
-//    t.ok(Joose.Managed.StemElement.MetaRoles, "Joose.Managed.StemElement.MetaRoles is here")
-//    t.ok(Joose.Trait.Able, "Joose.Trait.Able is here")
 
     
     Role('MetaRole', {
@@ -30,14 +28,12 @@ StartTest(function (t) {
         }
     
     })
-    
-//    debugger
+
     
     Class('TestClass', {
-        
         traits : MetaRole
-        
     })
+    
     t.ok(TestClass, 'TestClass class was created')
     
     t.ok(TestClass.meta.meta.isDetached, "TestClass's meta is detached")
@@ -88,7 +84,7 @@ StartTest(function (t) {
     
     Role('CustomBuilderWrapper', {
         
-        trait : CustomBuilder,
+        traits : CustomBuilder,
         
         sugar : {
             name : 'custom',
@@ -98,7 +94,7 @@ StartTest(function (t) {
     })
     
     t.ok(CustomBuilderWrapper, 'CustomBuilderWrapper role was created')
-    t.ok(CustomBuilderWrapper.meta.isDetached, "CustomBuilderWrapper's meta is detached (Role consume metaroles also)")
+    t.ok(CustomBuilderWrapper.meta.meta.isDetached, "CustomBuilderWrapper's meta is detached (Role consume metaroles also)")
     
     t.ok(CustomBuilderWrapper.meta.hasAttribute('custom') && CustomBuilderWrapper.meta.getAttribute('custom').value == 'attribute', "CustomBuilderWrapper has correct attribute 'custom'")
     
@@ -116,7 +112,7 @@ StartTest(function (t) {
     t.ok(TestClass2, 'TestClass2 class was created')
     
     
-    t.ok(TestClass2.meta.isDetached, "TestClass2's meta is detached")
+    t.ok(TestClass2.meta.meta.isDetached, "TestClass2's meta is detached")
     
     t.ok(TestClass2.meta.builder.meta.hasMethod('sugar'), "TestClass2's builder received new method")
     
