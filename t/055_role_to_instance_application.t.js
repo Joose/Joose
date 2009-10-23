@@ -1,12 +1,11 @@
 StartTest(function (t) {
-    t.plan(33)
+    t.plan(46)
     
     //==================================================================================================================================================================================
     t.diag("Role application")
     
     t.ok(Joose.Meta.Role, "Joose.Meta.Role is here")
     t.ok(Joose.Meta.Class, "Joose.Meta.Class is here")
-    t.ok(Joose.Meta.Class.Detached, "Joose.Meta.Class.Detached is here")
     
     //==================================================================================================================================================================================
     t.diag("Role creation")
@@ -40,17 +39,14 @@ StartTest(function (t) {
     
     Class('Creature')
     
-    var creature = new Creature()
+    var creature = new Creature({
+        detached : true
+    })
     creature.own_attr = true
     
-    creature.detach()
-    
-    t.ok(creature.meta.constructor == Joose.Meta.Class.Detached, "Instance was detached")
+    t.ok(creature.meta.isDetached, "Instance was detached")
     t.ok(creature.constructor != Creature, "Instance was detached, indeed")
-    t.ok(creature.isDetached(), "Instance was detached, indeed #2")
-    
-    t.ok(creature.own_attr == true, "Original attributes havn't changed")
-    t.ok(typeof creature.walking == 'undefined', "Attributes were not applied")
+    t.ok(creature instanceof Creature, "However its still creature")
     
     creature.meta.extend({
         does : [{
@@ -68,6 +64,7 @@ StartTest(function (t) {
         }]
     })
     
+    t.ok(creature.own_attr == true, "Original attributes havn't changed")
 
     t.ok(creature.meta.hasAttribute('walking') && creature.meta.getAttribute('walking').value == false, "creature has correct attribute 'walking'")
     t.ok(creature.meta.hasAttribute('eating') && creature.meta.getAttribute('eating').value == false, "creature has correct attribute 'eating'")
@@ -77,12 +74,58 @@ StartTest(function (t) {
     t.ok(creature.meta.hasMethod('stopEat'), 'creature has method stopEat')
     t.ok(!creature.meta.hasMethod('stop'), 'creature hasnt method stop')
     
+    t.ok(!Creature.meta.hasAttribute('walking'), "Creature class still has no 'walking' attribute")
+    t.ok(!Creature.meta.hasAttribute('eating'), "Creature class still has no 'eating' attribute")
+    t.ok(!Creature.meta.hasMethod('walk'), 'Creature class has no method walk')
+    t.ok(!Creature.meta.hasMethod('eat'), 'Creature class has no method eat')
+    t.ok(!Creature.meta.hasMethod('stopWalk'), 'Creature class has no has method stopWalk')
+    t.ok(!Creature.meta.hasMethod('stopEat'), 'Creature class has no has method stopEat')
+    t.ok(!Creature.meta.hasMethod('stop'), 'Creature class has no hasnt method stop')
+
+    
     creature.walk('there')
     t.ok(creature.walking, 'Creature is walking')
     creature.stopWalk()
     t.ok(!creature.walking, 'Creature is not walking')
     
 
+    //==================================================================================================================================================================================
+    t.diag("Composing a role to an empty instance via 'trait'")
+    
+    var creature2 = new Creature({
+        trait : [{
+            role : Walk,
+            alias : {
+                stop : 'stopWalk'
+            },
+            exclude : [ 'stop' ]
+        }, {
+            role : Eat,
+            alias : {
+                stop : 'stopEat'
+            },
+            exclude : [ 'stop' ]
+        }]
+    })
+    
+    t.ok(creature2.meta.isDetached, "Instance was detached")
+    t.ok(creature2.constructor != Creature, "Instance was detached, indeed")
+    t.ok(creature2 instanceof Creature, "However its still creature2")
+    
+    t.ok(creature2.meta.hasAttribute('walking') && creature2.meta.getAttribute('walking').value == false, "creature2 has correct attribute 'walking'")
+    t.ok(creature2.meta.hasAttribute('eating') && creature2.meta.getAttribute('eating').value == false, "creature2 has correct attribute 'eating'")
+    t.ok(creature2.meta.hasMethod('walk'), 'creature2 has method walk')
+    t.ok(creature2.meta.hasMethod('eat'), 'creature2 has method eat')
+    t.ok(creature2.meta.hasMethod('stopWalk'), 'creature2 has method stopWalk')
+    t.ok(creature2.meta.hasMethod('stopEat'), 'creature2 has method stopEat')
+    t.ok(!creature2.meta.hasMethod('stop'), 'creature2 hasnt method stop')
+    
+    creature2.walk('there')
+    t.ok(creature2.walking, 'Creature is walking')
+    creature2.stopWalk()
+    t.ok(!creature2.walking, 'Creature is not walking')
+    
+    
     //==================================================================================================================================================================================
     t.diag("Cannibal creature && Role.apply testing")
     
@@ -91,17 +134,17 @@ StartTest(function (t) {
         
         override : {
             eat : function (food) { 
-                if (food.constructor == this.constructor) this.SUPER(food); 
+                if (food.constructor == this.constructor) this.SUPER(food)
             }
         }
     })
     
-    Cannibalism.meta.apply(creature)
+    creature.meta.extend({ does : Cannibalism })
     
     creature.eat({})
     t.ok(!creature.eating, "Creature becomes cannibal ))")
 
-    Cannibalism.meta.unapply(creature)
+    creature.meta.extend({ doesnt : Cannibalism })
     
     creature.eat({})
     t.ok(creature.eating, "Creature now eats usual food again")
@@ -110,11 +153,9 @@ StartTest(function (t) {
     //==================================================================================================================================================================================
     t.diag("Attaching instance back")
     
-    creature.attach()
-    
-    t.ok(creature.meta.constructor == Joose.Meta.Class, "Instance was attached back")
-    t.ok(creature.constructor == Creature, "Instance was attached back, indeed")
-    t.ok(!creature.isDetached(), "Instance was attached back, indeed #2")
+    creature.meta.extend({
+        doesnt : [ Walk, Eat ]
+    })
     
     t.ok(creature.own_attr == true, "Original attributes still havn't changed")
     t.ok(!creature.meta.hasAttribute('walking'), "creature hasnt 'walking' attribute")
@@ -131,6 +172,8 @@ StartTest(function (t) {
     
     Class('TestClass', {
         my : {
+//            trait : Walk,
+            
             methods : {
                 process : function () {
                     return 'res'
@@ -147,13 +190,18 @@ StartTest(function (t) {
     
     t.ok(TestClass && TestClass.my.process() == 'res', "TestClass was created correctly")
     
-    var testClass = new TestClass()
+//    var my = TestClass.my
+//    
+//    t.ok(my.meta.isDetached, "'my' instance was detached")
+//    t.ok(my.meta.hasAttribute('walking') && my.walking == false, "'my' instance has correct attribute 'walking'")
+//    t.ok(my.meta.hasMethod('walk'), "'my' instance has method walk")
+//    t.ok(my.meta.hasMethod('stop'), "'my' instance has method stop")
     
+    
+    var testClass = new TestClass({
+        detached : true
+    })
+    
+    t.ok(testClass.meta.isDetached, "Instance of 'TestClass' was created detached")
     t.ok(testClass.process() == 'res', "Instance of 'TestClass' has a correct 'process' method")
-    
-    testClass.detach()
-    t.ok(testClass.process() == 'res', "Instance of 'TestClass' has a correct 'process' method after detaching")
-    
-    testClass.attach()
-    t.ok(testClass.process() == 'res', "Instance of 'TestClass' has a correct 'process' method after attaching")
 })
