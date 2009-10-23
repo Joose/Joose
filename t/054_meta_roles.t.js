@@ -5,7 +5,7 @@ StartTest(function (t) {
     t.diag("MetaRoles (roles which applies to metaclass of applicant")
     
     t.ok(Joose.Managed.Property.MetaRole, "Joose.Managed.Property.MetaRole is here")
-    t.ok(Joose.Managed.StemElement.MetaRoles, "Joose.Managed.StemElement.MetaRoles is here")
+//    t.ok(Joose.Managed.StemElement.MetaRoles, "Joose.Managed.StemElement.MetaRoles is here")
     t.ok(Joose.Trait.Able, "Joose.Trait.Able is here")
 
     
@@ -31,10 +31,11 @@ StartTest(function (t) {
     
     })
     
+//    debugger
     
     Class('TestClass', {
         
-        trait : MetaRole
+        traits : MetaRole
         
     })
     t.ok(TestClass, 'TestClass class was created')
