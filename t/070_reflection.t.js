@@ -77,7 +77,7 @@ StartTest(function (t) {
     t.ok(Joose.Meta.Class.meta.does(Joose.Namespace.Able), 'Joose.Meta.Class does Joose.Namespace.Able')
     t.ok(Joose.Meta.Class.meta.does(Joose.Managed.My), 'Joose.Meta.Class does Joose.Managed.My')
     t.ok(Joose.Meta.Class.meta.does(Joose.Managed.Attribute.Builder), 'Joose.Meta.Class does Joose.Managed.Attribute.Builder')
-    t.ok(Joose.Meta.Class.meta.does(Joose.Managed.MetaRole), 'Joose.Meta.Class does Joose.Managed.MetaRole')
+    t.ok(Joose.Meta.Class.meta.does(Joose.Trait.Able), 'Joose.Meta.Class does Joose.Trait.Able')
     
     
     Role('TestRole1', {
