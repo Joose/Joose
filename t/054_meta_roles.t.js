@@ -57,9 +57,9 @@ StartTest(function (t) {
         removeTrait : MetaRole
     })
     
-    t.ok(!TestClass.meta.hasAttribute('customInitCalled'), "TestClass's meta has no 'customInitCalled' attribute")
+    t.ok(!TestClass.meta.meta.hasAttribute('customInitCalled'), "TestClass's meta has no 'customInitCalled' attribute")
     
-    t.ok(!TestClass.meta.hasMethod('customProcess'), "TestClass's meta has no 'customProcess' method")
+    t.ok(!TestClass.meta.meta.hasMethod('customProcess'), "TestClass's meta has no 'customProcess' method")
     t.ok(!TestClass.meta.customProcess, ".. indeed")
     
     
