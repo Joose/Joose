@@ -40,12 +40,12 @@ StartTest(function (t) {
     })
     t.ok(TestClass, 'TestClass class was created')
     
-    t.ok(TestClass.meta.isDetached, "TestClass's meta is detached")
+    t.ok(TestClass.meta.meta.isDetached, "TestClass's meta is detached")
     
-    t.ok(TestClass.meta.hasAttribute('customInitCalled'), "TestClass's meta has 'customInitCalled' attribute")
+    t.ok(TestClass.meta.meta.hasAttribute('customInitCalled'), "TestClass's meta has 'customInitCalled' attribute")
     t.ok(TestClass.meta.customInitCalled, ".. and it was initialized on early constructring stage")
     
-    t.ok(TestClass.meta.hasMethod('customProcess'), "TestClass's meta has 'customProcess' method")
+    t.ok(TestClass.meta.meta.hasMethod('customProcess'), "TestClass's meta has 'customProcess' method")
     t.ok(TestClass.meta.customProcess() == 'custom', ".. and its working correctly")
     
 
