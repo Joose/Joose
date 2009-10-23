@@ -1,5 +1,5 @@
 StartTest(function (t) {
-    t.plan(1)
+    t.plan(29)
     
     //==================================================================================================================================================================================
     t.diag("MetaRoles (roles which applies to metaclass of applicant")
@@ -60,9 +60,11 @@ StartTest(function (t) {
     
     
     //==================================================================================================================================================================================
-    t.diag("Indirect builder's composing")
+    t.diag("Indirect trait composing")
     
     Role('CustomBuilder', {
+        
+        does : MetaRole,
         
         builder : {
             methods : {
@@ -98,15 +100,17 @@ StartTest(function (t) {
     
     t.ok(CustomBuilderWrapper.meta.hasAttribute('custom') && CustomBuilderWrapper.meta.getAttribute('custom').value == 'attribute', "CustomBuilderWrapper has correct attribute 'custom'")
     
+    
+//    debugger
 
     Class('TestClass2', {
         
         does : CustomBuilderWrapper,
         
-        sugar : {
-            name : 'custom',
-            value : 'attribute'
-        }
+//        sugar : {
+//            name : 'custom',
+//            value : 'attribute'
+//        }
         
     })
     t.ok(TestClass2, 'TestClass2 class was created')
@@ -114,9 +118,17 @@ StartTest(function (t) {
     
     t.ok(TestClass2.meta.meta.isDetached, "TestClass2's meta is detached")
     
-    t.ok(TestClass2.meta.builder.meta.hasMethod('sugar'), "TestClass2's builder received new method")
+    t.ok(TestClass2.meta.meta.hasAttribute('customInitCalled'), "TestClass2's meta has 'customInitCalled' attribute")
+    t.ok(TestClass2.meta.customInitCalled, ".. and it was initialized on early constructring stage")
     
-    t.ok(TestClass2.meta.hasAttribute('custom') && TestClass2.meta.getAttribute('custom').value == 'attribute', "TestClass2 has correct attribute 'custom'")
+    t.ok(TestClass2.meta.meta.hasMethod('customProcess'), "TestClass2's meta has 'customProcess' method")
+    t.ok(TestClass2.meta.customProcess() == 'custom', ".. and its working correctly")
+    
+    
+    
+//    t.ok(TestClass2.meta.builder.meta.hasMethod('sugar'), "TestClass2's builder received new method")
+//    
+//    t.ok(TestClass2.meta.hasAttribute('custom') && TestClass2.meta.getAttribute('custom').value == 'attribute', "TestClass2 has correct attribute 'custom'")
     
     //==================================================================================================================================================================================
     t.diag("Mutability #2")
@@ -128,6 +140,10 @@ StartTest(function (t) {
     
     t.ok(!TestClass2.meta.builder.meta.hasMethod('sugar'), "TestClass2's builder have no 'sugar' method")
     
+    t.ok(!TestClass2.meta.meta.hasAttribute('customInitCalled'), "TestClass2's meta has no 'customInitCalled' attribute")
+    
+    t.ok(!TestClass2.meta.meta.hasMethod('customProcess'), "TestClass2's meta has no 'customProcess' method")
+    t.ok(!TestClass2.meta.customProcess, ".. indeed")
     
     //==================================================================================================================================================================================
     t.diag("MetaRoles inheritance")
@@ -136,10 +152,10 @@ StartTest(function (t) {
         
         does : CustomBuilderWrapper,
         
-        sugar : {
-            name : 'custom3',
-            value : 'attribute3'
-        }
+//        sugar : {
+//            name : 'custom3',
+//            value : 'attribute3'
+//        }
         
     })
     t.ok(TestClass3, 'TestClass3 class was created')
@@ -148,18 +164,22 @@ StartTest(function (t) {
     Class('TestClass4', {
         isa : TestClass3,
         
-        sugar : {
-            name : 'custom4',
-            value : 'attribute4'
-        }
+//        sugar : {
+//            name : 'custom4',
+//            value : 'attribute4'
+//        }
         
     })
     t.ok(TestClass4, 'TestClass4 class was created')
     
 //    t.ok(TestClass4.meta.isDetached, "TestClass4's meta is detached")
-    t.ok(TestClass4.meta.builder.meta.hasMethod('sugar'), "TestClass4's builder received new method")
+//    t.ok(TestClass4.meta.builder.meta.hasMethod('sugar'), "TestClass4's builder received new method")
     
-    t.ok(TestClass4.meta.hasAttribute('custom4') && TestClass4.meta.getAttribute('custom4').value == 'attribute4', "TestClass4 has correct attribute 'custom4'")
+    t.ok(TestClass4.meta.meta.hasAttribute('customInitCalled'), "TestClass4's meta has 'customInitCalled' attribute")
+    t.ok(TestClass4.meta.customInitCalled, ".. and it was initialized on early constructring stage")
+    
+    
+//    t.ok(TestClass4.meta.hasAttribute('custom4') && TestClass4.meta.getAttribute('custom4').value == 'attribute4', "TestClass4 has correct attribute 'custom4'")
 
     
     //==================================================================================================================================================================================
@@ -170,6 +190,8 @@ StartTest(function (t) {
     })
     
 //    t.ok(!TestClass4.meta.isDetached(), "TestClass4's meta is attached back")
-    t.ok(!TestClass4.meta.builder.meta.hasMethod('sugar'), "TestClass4's builder no longer have 'sugar' method")
+//    t.ok(!TestClass4.meta.builder.meta.hasMethod('sugar'), "TestClass4's builder no longer have 'sugar' method")
+    
+    t.ok(!TestClass4.meta.meta.hasAttribute('customInitCalled'), "TestClass4's meta has no 'customInitCalled' attribute")
     
 })

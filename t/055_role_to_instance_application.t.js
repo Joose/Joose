@@ -1,5 +1,5 @@
 StartTest(function (t) {
-    t.plan(46)
+    t.plan(50)
     
     //==================================================================================================================================================================================
     t.diag("Role application")
@@ -172,7 +172,7 @@ StartTest(function (t) {
     
     Class('TestClass', {
         my : {
-//            trait : Walk,
+            trait : Walk,
             
             methods : {
                 process : function () {
@@ -190,12 +190,12 @@ StartTest(function (t) {
     
     t.ok(TestClass && TestClass.my.process() == 'res', "TestClass was created correctly")
     
-//    var my = TestClass.my
-//    
-//    t.ok(my.meta.isDetached, "'my' instance was detached")
-//    t.ok(my.meta.hasAttribute('walking') && my.walking == false, "'my' instance has correct attribute 'walking'")
-//    t.ok(my.meta.hasMethod('walk'), "'my' instance has method walk")
-//    t.ok(my.meta.hasMethod('stop'), "'my' instance has method stop")
+    var myMeta = TestClass.my.meta
+    
+    t.ok(myMeta.meta.isDetached, "'my' instance was detached")
+    t.ok(myMeta.meta.hasAttribute('walking') && myMeta.walking == false, "'my' instance has correct attribute 'walking'")
+    t.ok(myMeta.meta.hasMethod('walk'), "'my' instance has method walk")
+    t.ok(myMeta.meta.hasMethod('stop'), "'my' instance has method stop")
     
     
     var testClass = new TestClass({
