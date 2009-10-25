@@ -31,15 +31,11 @@ TASKS
 CORE FEATURES
 =============
 
-- Class as Role? spec&implemented or remove
-
 - 'immutable' builder
 
 - implement optimization for methods/OVERRIDE modifiers w/o SUPER calls ) probably should be configurable, to avoid increasing of startup overhead 
 
 - BUILD method to prepare the arguments passed to constructor
-
-- global 'traits' config? to apply traits immediatly after instance creation?
 
 - some kind of obfuscator to reduce codebase size  
 
@@ -96,3 +92,5 @@ DONE
 - add override check for PUT modifiers
 - fix namespace managers executeIn to omit the args?
 - refactor addRole (add something like 'beforeAdd' hook, which is very often needs to be overridden)
+- global 'traits' config? to apply traits immediatly after instance creation?
+- Class as Role? spec&implemented or remove

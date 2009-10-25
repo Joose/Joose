@@ -4,6 +4,25 @@ StartTest(function (t) {
     //==================================================================================================================================================================================
     t.diag("Using Class as Role")
     
+    Role('PseudoRole1', {
+        have : {
+            res1 : 'pseudoRole1'
+        },
+        
+        methods : {
+            process1 : function () {
+                return 'processFromPseudoRole1'
+            }
+        },
+        
+        
+        after : {
+            process1 : function () {
+                this.res = 'resFromAfter'
+            }
+        }
+    })
+    
     
     Class('PseudoRole', {
         have : {
