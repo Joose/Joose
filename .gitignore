@@ -1,7 +1,7 @@
 _build
 Build
 blib
-.project
+//.project
 .externalToolBuilders
 MANIFEST.bak
 Makefile.PL
