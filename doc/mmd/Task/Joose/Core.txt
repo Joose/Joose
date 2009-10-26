@@ -307,10 +307,6 @@ These extensions can be found on the [JSAN][3]. See [Joose.Manual.JooseX][7] for
 CAVEATS
 =======
 
-The moment of trait application.
-
-Attributes in traits.
-
 Refering to meta instance from the constructor
 
 Method modifiers order in Rhino
