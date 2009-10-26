@@ -35,13 +35,13 @@ CORE FEATURES
 
 - implement optimization for methods/OVERRIDE modifiers w/o SUPER calls ) probably should be configurable, to avoid increasing of startup overhead 
 
-- BUILD method to prepare the arguments passed to constructor
-
 - some kind of obfuscator to reduce codebase size  
 
 
 REFACTORING POSSIBILITIES
 =========================
+
+- merge bootstrap role into managed class
 
 - refactor Joose.Helper to a global "instantiator" of classes. Then it will be possible to apply roles to it, to globally modify the class creation process 
 
@@ -97,3 +97,4 @@ DONE
 - global 'traits' config? to apply traits immediatly after instance creation?
 - Class as Role? spec&implemented or remove
 - subclass builder and stem classes on-demand only
+- BUILD method to prepare the arguments passed to constructor
