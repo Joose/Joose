@@ -22,6 +22,10 @@ TASKS
 
 - Joose.Cookbook
 - Joose.Manual (Traits, Unsweetened, Contributing, ...)
+
+    - constructing (BUILD)
+    - traits
+
    - Installation 
     -- for Mac OS
     -- verify that procedure works several platforms (CPAN Testers at least) especially on Windows  
