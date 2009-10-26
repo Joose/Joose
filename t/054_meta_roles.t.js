@@ -1,12 +1,10 @@
 StartTest(function (t) {
     
-    t.plan(37)
+    t.plan(36)
     
     //==================================================================================================================================================================================
     t.diag("MetaRoles (roles which applies to metaclass of applicant")
     
-    t.ok(Joose.Managed.Property.MetaRole, "Joose.Managed.Property.MetaRole is here")
-
     
     Role('MetaRole', {
         
