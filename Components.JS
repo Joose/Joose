@@ -20,7 +20,6 @@ COMPONENTS = {
         
         "Joose.Managed.PropertySet",
         "Joose.Managed.PropertySet.Mutable",
-        "Joose.Managed.PropertySet.Containable",
         
         "Joose.Managed.StemElement.Attributes",
         "Joose.Managed.StemElement.Methods",
