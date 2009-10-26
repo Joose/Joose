@@ -58,7 +58,6 @@ doc/html/Joose/Manual/Traits.html
 doc/html/Joose/Manual/Unsweetened.html
 doc/html/Joose/Meta/Class.html
 doc/html/Joose/Meta/Class/Detached.html
-doc/html/Joose/Meta/MetaRole.html
 doc/html/Joose/Meta/Role.html
 doc/html/Joose/Namespace/Able.html
 doc/html/Joose/Namespace/Keeper.html
@@ -123,7 +122,6 @@ doc/mmd/Joose/Manual/Traits.txt
 doc/mmd/Joose/Manual/Unsweetened.txt
 doc/mmd/Joose/Meta/Class.txt
 doc/mmd/Joose/Meta/Class/Detached.txt
-doc/mmd/Joose/Meta/MetaRole.txt
 doc/mmd/Joose/Meta/Role.txt
 doc/mmd/Joose/Namespace/Able.txt
 doc/mmd/Joose/Namespace/Keeper.txt
@@ -132,6 +130,7 @@ doc/mmd/Joose/Proto/Class.txt
 doc/mmd/Joose/Proto/Empty.txt
 doc/mmd/Joose/Proto/Object.txt
 doc/mmd/Task/Joose/Core.txt
+inc/Module/Build/Functions.pm
 inc/Module/Build/Functions/DSL.pm
 inc/Module/Build/JSAN/Installable.pm
 inc/Module/JSAN.pm
@@ -140,18 +139,15 @@ INSTALL
 lib/Joose.js
 lib/Joose/Cookbook.js
 lib/Joose/Cookbook/Basics/Recipe1.js
-lib/Joose/Helper.js
 lib/Joose/Managed/Attribute.js
 lib/Joose/Managed/Attribute/Builder.js
 lib/Joose/Managed/Bootstrap.js
 lib/Joose/Managed/Builder.js
 lib/Joose/Managed/Class.js
-lib/Joose/Managed/MetaRole.js
 lib/Joose/Managed/My.js
 lib/Joose/Managed/Property.js
 lib/Joose/Managed/Property/Attribute.js
 lib/Joose/Managed/Property/ConflictMarker.js
-lib/Joose/Managed/Property/MetaRole.js
 lib/Joose/Managed/Property/MethodModifier.js
 lib/Joose/Managed/Property/MethodModifier/After.js
 lib/Joose/Managed/Property/MethodModifier/Around.js
@@ -162,13 +158,11 @@ lib/Joose/Managed/Property/MethodModifier/Put.js
 lib/Joose/Managed/Property/Requirement.js
 lib/Joose/Managed/PropertySet.js
 lib/Joose/Managed/PropertySet/Composition.js
-lib/Joose/Managed/PropertySet/Containable.js
 lib/Joose/Managed/PropertySet/Mutable.js
 lib/Joose/Managed/PropertySet/Namespace.js
 lib/Joose/Managed/Role.js
 lib/Joose/Managed/Stem.js
 lib/Joose/Managed/StemElement/Attributes.js
-lib/Joose/Managed/StemElement/MetaRoles.js
 lib/Joose/Managed/StemElement/MethodModifiers.js
 lib/Joose/Managed/StemElement/Methods.js
 lib/Joose/Managed/StemElement/Requirements.js
@@ -192,8 +186,7 @@ lib/Joose/Manual/Singleton.js
 lib/Joose/Manual/Traits.js
 lib/Joose/Manual/Unsweetened.js
 lib/Joose/Meta/Class.js
-lib/Joose/Meta/Class/Detached.js
-lib/Joose/Meta/MetaRole.js
+lib/Joose/Meta/Object.js
 lib/Joose/Meta/Role.js
 lib/Joose/Namespace/Able.js
 lib/Joose/Namespace/Keeper.js
@@ -203,7 +196,6 @@ lib/Joose/Proto/Empty.js
 lib/Joose/Proto/Object.js
 lib/Task/Joose/Core.js
 LICENCE
-Makefile.PL
 MANIFEST			This list of files
 META.json
 README
@@ -220,6 +212,7 @@ t/040_my_symbiont.t.js
 t/045_role_builder.t.js
 t/050_helpers.t.js
 t/051_advanced_attribute.t.js
+t/052_advanced_attribute.t.js
 t/052_role_application_advanced.t.js
 t/053_using_class_as_role.t.js
 t/054_meta_roles.t.js
