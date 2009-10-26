@@ -43,6 +43,8 @@ CORE FEATURES
 REFACTORING POSSIBILITIES
 =========================
 
+- refactor Joose.Helper to a global "instantiator" of classes. Then it will be possible to apply roles to it, to globally modify the class creation process 
+
 - move builderClass and stemClass to private attributes (with leading underscore)?
 
  -or-
