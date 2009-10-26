@@ -54,8 +54,8 @@ REFACTORING POSSIBILITIES
 
 - convert all OVERRIDE modifiers in core to AROUND? (need to benchmark them 1st)
 
-- merge Containable to something
 
+- merge Containable to Mutable
 - cleanClone of Stem move to Composition
 
 
@@ -94,3 +94,4 @@ DONE
 - refactor addRole (add something like 'beforeAdd' hook, which is very often needs to be overridden)
 - global 'traits' config? to apply traits immediatly after instance creation?
 - Class as Role? spec&implemented or remove
+- subclass builder and stem classes on-demand only

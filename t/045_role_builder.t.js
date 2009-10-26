@@ -1,14 +1,11 @@
 StartTest(function (t) {
-    t.plan(12)
+    t.plan(10)
     
     //==================================================================================================================================================================================
     t.diag("Builder in the Role")
     
     t.ok(Joose.Meta.Role, "Joose.Meta.Role is here")
     t.ok(Joose.Meta.Class, "Joose.Meta.Class is here")
-    
-    t.ok(Joose.Meta.Role.meta.hasAttribute('builderRole'), "Joose.Meta.Role has 'builderRole' attribute")
-    t.ok(Joose.Meta.Role.meta.hasAttribute('stemRole'), "Joose.Meta.Role has 'builderRole' attribute")
     
     
     //==================================================================================================================================================================================
@@ -31,10 +28,10 @@ StartTest(function (t) {
     
     t.ok(typeof RoleWithBuilder == 'function', "RoleWithBuilder was created")
     
-    t.ok(RoleWithBuilder.meta.builderRole, "RoleWithBuilder has 'builderRole'")
-    t.ok(RoleWithBuilder.meta.builderRole.meta instanceof Joose.Managed.Role, ".. and its a Joose.Managed.Role")
+    t.ok(RoleWithBuilder.meta.builderClassMutated, "RoleWithBuilder has 'mutated' 'builderClass'")
+    t.ok(RoleWithBuilder.meta.builderClass.meta instanceof Joose.Managed.Role, ".. and its a Joose.Managed.Role")
     
-    t.ok(RoleWithBuilder.meta.builderRole.meta.hasMethod('testHandler'), "builderRole has 'testHandler' method"); 
+    t.ok(RoleWithBuilder.meta.builderClass.meta.hasMethod('testHandler'), "builderRole has 'testHandler' method"); 
     
     
     //==================================================================================================================================================================================
@@ -91,6 +88,4 @@ StartTest(function (t) {
     })
     
     t.ok(TestClass1.meta.hasOwnMethod('result1') && testClass1.result1() == 'TestClass11', "Builder was extened and works correctly")
-    
-    
 })
