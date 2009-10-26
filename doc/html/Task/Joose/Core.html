@@ -236,7 +236,7 @@ Joose is being tested using an automated unit-test suite that is being run in al
 <code>func</code> is called as: <code>func(value, name), where</code>value<code>is the value of the</code>name<code>property of</code>object`.</p>
 
 <ul>
-<li><code>Joose.O.eachSafe(object, func, scope)</code></li>
+<li><code>Joose.O.eachOwn(object, func, scope)</code></li>
 </ul>
 
 <p>Calls a <code>func</code> in the optional <code>scope</code> for each property of the <code>object</code> (<em>excluding</em> inherited via prototype chain). 
@@ -249,7 +249,7 @@ Joose is being tested using an automated unit-test suite that is being run in al
 <p>Copies all the properties of <code>source</code> object to the <code>target</code> (<em>including</em> inherited via prototype chain). </p>
 
 <ul>
-<li><code>Joose.O.copySafe(source, target)</code></li>
+<li><code>Joose.O.copyOwn(source, target)</code></li>
 </ul>
 
 <p>Copies all the properties of <code>source</code> object to the <code>target</code> (<em>excluding</em> inherited via prototype chain). </p>
