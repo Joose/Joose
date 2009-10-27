@@ -164,7 +164,7 @@ StartTest(function (t) {
     
     
     //==================================================================================================================================================================================
-    t.diag("'my' with custom (and delayed) meta")
+    t.diag("'my' with custom meta")
     
     Class('CustomMeta', {
         
@@ -176,7 +176,7 @@ StartTest(function (t) {
     Class('TestClass3', {
         
         my : {
-            meta : function () { return CustomMeta },
+            meta : CustomMeta,
             
             has : {
                 att3 : 'value3'
