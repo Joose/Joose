@@ -37,7 +37,7 @@ These builders are what you use to define your class. For example, you might def
 Attributes are described in the [Joose.Manual.Attributes][2] documentation.
 
 
-When you use Joose, your class will become a subclass of `Joose.Proto.Object`. The `Joose.Proto.Object` class provides a default `initialize` method and a number of additional methods. 
+When you use Joose, your class will become a subclass of `Joose.Meta.Object`. The `Joose.Meta.Object` class provides a default `initialize` method and a number of additional methods. 
 You can read more about this in the [Joose][3] document.
 
 Joose creates an instance of `Joose.Meta.Class` for your class. This metaclass instance is now available as a meta property on your class, for example: `Person.meta`

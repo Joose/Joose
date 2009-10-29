@@ -4,33 +4,8 @@
 
 <h1 id="wherestheconstructor">WHERE'S THE CONSTRUCTOR?</h1>
 
-<p>You do not need to define a constructor method for your classes. Really. Instead, define an <code>initialize</code> method. </p>
-
-<p>When you build a class using Joose it will be managed by the instance of Joose.Meta.Class. This instance (a <em>metaclass instance</em>) provides a constructor for you. 
-This constructor will perform attributes initialization and then will call a <code>initialize</code> method with the same arguments. </p>
-
-<p>If you inherit from parent class, you need to call the inherited <code>initialize</code>, however usually you may just define an <code>after</code> modifier (see <a href="MethodModifiers.html">Joose.Manual.MethodModifiers</a> for other modifiers):</p>
-
-<pre><code>    Class('User', {
-        isa : Person,
-
-        after : {
-            initialize : function () {
-            } 
-        }
-    })
-</code></pre>
-
-<p>If you are still sure you need a custom constructor you may provide it using a <code>constructor</code> builder:</p>
-
-<pre><code>    Class('User', {
-
-        constructor : function (i, really, know, what, iam, doing) {
-        }
-
-        ....
-    })
-</code></pre>
+<p>You do not need to define a constructor method for your classes. Really. Instead, define an <code>initialize</code> method. Joose provides your classes with
+the default <code>initialize</code> method which will initialize the attributes of your class, so don't forget to call the inherited <code>initialize</code> (or use <code>after</code> modifier)</p>
 
 <h1 id="objectconstructionandattributes">OBJECT CONSTRUCTION AND ATTRIBUTES</h1>
 
@@ -41,18 +16,74 @@ Simply define a class and you're ready to start creating objects!</p>
         isa : Person,
 
         has : {
+            username : { init : 'nobody' },
             password : { init : '12345' },
             lastLogin : { init : function () { return new Date() } }
+        },
+
+        after : {
+            initialize : function (props) {
+                if (props.custom == '...') { ... }
+            } 
         }
     })
 
     var user = new User({
         password : 'abcdef',
-        lastLogin : 'Yesterday'
+        lastLogin : 'Yesterday',
+
+        custom  : 'custom'
     })
 </code></pre>
 
-<p>If, during construction, you'll provide a function as an initializing value, it will be assigned as-is (not will be called).</p>
+<p>If, during construction, you'll provide a function as an initializing value, it will be assigned as-is (will not be called).</p>
+
+<h1 id="theinstantiationworkflow">THE INSTANTIATION WORKFLOW</h1>
+
+<ol>
+<li><code>new constructor(property1, property2)</code></li>
+<li><code>this.BUILD(property1, property2)</code></li>
+<li><code>this.initialize({ name1 : property1, name2 : property2})</code></li>
+</ol>
+
+<p>When you build a class using Joose, it provides a <em>default constructor</em> for you. This constructor will perform some low-level initialization and then will call a <code>BUILD</code> method with the same arguments.</p>
+
+<p><code>BUILD</code> method should return an object, which properties directly corresponds to class attributes. Default <code>BUILD</code> method just checks whether the 1st arguments passed to it is an <code>Object</code>. If so, it by-passes it to <code>initialize</code> method. </p>
+
+<p>Default <code>initialize</code> method uses properties of the object passed to it, for attributes initialization.</p>
+
+<p>If you inherit from parent class, you need to call the inherited <code>initialize</code>, however usually you may just define an <code>after</code> modifier (see above for an example):</p>
+
+<h1 id="customparameterstoconstructor">CUSTOM PARAMETERS TO CONSTRUCTOR</h1>
+
+<p>If you need to pass the parameters to constructor in another way, override the <code>BUILD</code> method, and "normalize" the parameters, before they'll be passed to <code>initialize</code>. 
+For example, let imagine we need to define the <code>User</code> class, which will accept the <code>username</code> as 1st argument to constructor and <code>password</code> as 2nd:</p>
+
+<pre><code>    var user = new User('root', 'foobar') 
+</code></pre>
+
+<p>Then we need to provide the following <code>BUILD</code> method:        </p>
+
+<pre><code>    Class('User', {
+
+        ...
+
+        methods : {
+            BUILD : function (usr, pwd) {
+                return {
+                    username : usr,
+                    password : pwd
+                }
+            }
+        }
+
+        after : {
+            initialize : function (props) {
+                if (props.username == '...') { ... }
+            } 
+        }
+    })
+</code></pre>
 
 <h1 id="namespaces">NAMESPACES</h1>
 
@@ -177,6 +208,19 @@ methods (see <a href="Mutability.html">Joose.Manual.Mutability</a> for details)<
         ...
     })
     var myapp = new MyApp() //ok
+</code></pre>
+
+<h1 id="customconstructors">CUSTOM CONSTRUCTORS</h1>
+
+<p>If you are still sure you need a custom constructor you may provide it using a <code>constructor</code> builder:</p>
+
+<pre><code>    Class('User', {
+
+        constructor : function (i, really, know, what, iam, doing) {
+        }
+
+        ....
+    })
 </code></pre>
 
 <h1 id="author">AUTHOR</h1>

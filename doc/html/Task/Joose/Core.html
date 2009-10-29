@@ -63,12 +63,12 @@ Joose is being tested using an automated unit-test suite that is being run in al
 <p>Joose makes every attempt to provide as much convenience as possible during class construction/definition, but still stay out of your way if you want it to. Here are a few items to note when building classes with Joose.</p>
 
 <ul>
-<li>Unless specified with 'isa', any class which uses Joose will inherit from Joose.Proto.Object.</li>
+<li>Unless specified with 'isa', any class which uses Joose will inherit from Joose.Meta.Object.</li>
 </ul>
 
 <h1 id="providedinstancemethods">PROVIDED INSTANCE METHODS</h1>
 
-<p>Joose provides a number of methods to all your classes, mostly through the inheritance from Joose.Proto.Object.</p>
+<p>Joose provides a number of methods to all your classes, mostly through the inheritance from Joose.Meta.Object.</p>
 
 <ul>
 <li><code>this.SUPER(arg1, arg2, ...)</code></li>
@@ -80,39 +80,27 @@ Joose is being tested using an automated unit-test suite that is being run in al
 <li><code>this.SUPERARG(Array arg)</code></li>
 </ul>
 
-<p>Only valid in the scope of usual methods and OVERRIDE method modifiers. Calls a superclass's method with the "packed" arguments, provided as array. Usually used as: <code>this.SUPERARG(arguments)</code></p>
-
-<p>This method is just a shortcut for <code>this.SUPER.apply(this, arguments)</code></p>
+<p>Only valid in the scope of usual methods and OVERRIDE method modifiers. Calls a superclass's method with the "packed" arguments, provided as array. Usually used as: <code>this.SUPERARG(arguments)</code>
+This method is just a shortcut for <code>this.SUPER.apply(this, arguments)</code></p>
 
 <ul>
-<li><code>this.initialize()</code></li>
+<li><code>this.BUILD([Object arg])</code></li>
 </ul>
 
-<p>Default <code>initialize</code> method is empty function.</p>
+<p>Default <code>BUILD</code> method checks whether the 1st argument passed to it is an Object. If so, it passes it to <code>initialize</code> method. This method also optionally <em>detaches</em> current instance. 
+See <a href="Joose/Manual/Traits.html">Joose.Manual.Traits</a> for details.</p>
+
+<ul>
+<li><code>this.initialize(Object properties)</code></li>
+</ul>
+
+<p>Default <code>initialize</code> method uses <code>properties</code> to initialize the attributes of current instance.</p>
 
 <ul>
 <li><code>this.toString()</code></li>
 </ul>
 
 <p>Defalt string coercion is string "a ClassName", where ClassName is a name of instance's class.</p>
-
-<ul>
-<li><code>this.detach()</code></li>
-</ul>
-
-<p>Detaches the instance from its class. See the details <a href="Joose/Manual/Traits.html">here</a></p>
-
-<ul>
-<li><code>this.attach()</code></li>
-</ul>
-
-<p>Attaches the instance back to its class. See the details <a href="Joose/Manual/Traits.html">here</a></p>
-
-<ul>
-<li><code>this.isDetached()</code></li>
-</ul>
-
-<p>Returns boolean value, indicating whether this instance is detached from its class.</p>
 
 <h1 id="providedinstanceproperties">PROVIDED INSTANCE PROPERTIES</h1>
 
@@ -232,27 +220,26 @@ Joose is being tested using an automated unit-test suite that is being run in al
 <li><code>Joose.O.each(object, func, scope)</code></li>
 </ul>
 
-<p>Calls a <code>func</code> in the optional <code>scope</code> for each property of the <code>object</code> (<em>including</em> inherited via prototype chain). 
+<p>Calls a <code>func</code> in the optional <code>scope</code> for <em>all</em> properties of the <code>object</code> (<em>including</em> inherited via prototype chain). 
 <code>func</code> is called as: <code>func(value, name), where</code>value<code>is the value of the</code>name<code>property of</code>object`.</p>
 
 <ul>
 <li><code>Joose.O.eachOwn(object, func, scope)</code></li>
 </ul>
 
-<p>Calls a <code>func</code> in the optional <code>scope</code> for each property of the <code>object</code> (<em>excluding</em> inherited via prototype chain). 
-<code>func</code> is called as: <code>func(value, name), where</code>value<code>is the value of the</code>name<code>property of</code>object`.</p>
+<p>Calls a <code>func</code> in the optional <code>scope</code> for only "own" properties of the <code>object</code>. <code>func</code> is called as: <code>func(value, name), where</code>value<code>is the value of the</code>name<code>property of</code>object`.</p>
 
 <ul>
 <li><code>Joose.O.copy(source, target)</code></li>
 </ul>
 
-<p>Copies all the properties of <code>source</code> object to the <code>target</code> (<em>including</em> inherited via prototype chain). </p>
+<p>Copies <em>all</em> the properties of <code>source</code> object to the <code>target</code> (<em>including</em> inherited via prototype chain). </p>
 
 <ul>
 <li><code>Joose.O.copyOwn(source, target)</code></li>
 </ul>
 
-<p>Copies all the properties of <code>source</code> object to the <code>target</code> (<em>excluding</em> inherited via prototype chain). </p>
+<p>Copies only the "own" properties of <code>source</code> object to the <code>target</code>. </p>
 
 <ul>
 <li><code>Joose.O.getMutableCopy(object)</code></li>

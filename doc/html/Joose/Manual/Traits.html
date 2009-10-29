@@ -38,27 +38,48 @@ Other instances are not affected. </p>
     })
 </code></pre>
 
-<h1 id="applyingtrait.detaching.">APPLYING TRAIT. DETACHING.</h1>
+<h1 id="applyingtrait.detaching">APPLYING TRAIT. DETACHING</h1>
 
-<p>To apply the trait, you need first to <em>detach</em> the instance from its class, using the standard <code>detach</code> method, which is inherited from <code>Joose.Proto.Object</code></p>
+<p>Traits can be applied only during object's instantiation. To apply the trait, provide the "pseudo-builder" <code>trait</code> (or <code>traits</code>) to class constructor:</p>
 
-<pre><code>    var parser = new Parser()
-
-    parser.detach()
-</code></pre>
-
-<p>After that, the <code>parser</code> instance will have its own instance of metaclass, separated from <code>Person</code>, and you can <em>extend</em> it as usual:</p>
-
-<pre><code>    console.log(parser.meta != Parser.meta) // true, instance was detached
-
-    parser.meta.extend({
-        does : Logger
+<pre><code>    var parser = new Parser({
+        trait : Logger
     })
 </code></pre>
 
 <p>Now this particular <code>parser</code> instance will perform additional loging during work. Note that any other instances of <code>Parser</code> will not be not affected.</p>
 
-<h1 id="removingtrait.attaching.">REMOVING TRAIT. ATTACHING.</h1>
+<p>You may also return the <code>trait</code> builder from the <code>BUILD</code> method (if you are using custom parameters processing).</p>
+
+<p>Under the hood, the <code>parser</code> instance will have its own instance of metaclass, separated from <code>Person</code>:</p>
+
+<pre><code>    console.log(parser.meta != Parser.meta) // true, instance was detached
+    console.log(parser instanceof Parser)   // true, its still Parser however )
+</code></pre>
+
+<p>You can <em>extend</em> this particular instance as usual class:</p>
+
+<pre><code>    parser.meta.extend({
+        does : AnotherLogger
+    })
+</code></pre>
+
+<p>If you don't want to apply trait during object's instantiation, but planning to do it later, you need to create it as <em>detached</em>. Use pseudo-builder <code>detached</code> for that:</p>
+
+<pre><code>    var parser = new Parser({
+        detached : true
+    })
+
+    ...
+
+    //later
+
+    if (...) parser.meta.extend({
+        does : Logger
+    })
+</code></pre>
+
+<h1 id="removingtrait.">REMOVING TRAIT.</h1>
 
 <p>You may decide to remove the trait (rememeber, all Joose classes are mutable at run-time).</p>
 
@@ -66,13 +87,6 @@ Other instances are not affected. </p>
         doesnot : Logger
     })
 </code></pre>
-
-<p>or just attach an instance back to its class</p>
-
-<pre><code>    parser.attach()
-</code></pre>
-
-<p>After attaching any applied traits will be  removed.</p>
 
 <h1 id="author">AUTHOR</h1>
 

@@ -46,9 +46,9 @@
 This means that we import some functions which serve as Joose "keywords". 
 These aren't real language keywords, they're just JavaScript functions exported into our package.</p>
 
-<p>Joose automatically makes our class a subclass of <a href="http://openjsan.org/go?l=Joose.Proto.Object">Joose.Proto.Object</a>.
-The <code>Joose.Proto.Object</code> class provides us with a constructor that
-respects our attributes, as well other features. See <a href="http://openjsan.org/go?l=Joose.Proto.Object">Joose.Proto.Object</a> for details.</p>
+<p>Joose automatically makes our class a subclass of <a href="http://openjsan.org/go?l=Joose.Meta.Object">Joose.Meta.Object</a>.
+The <code>Joose.Meta.Object</code> class provides us with a constructor that
+respects our attributes, as well other features. See <a href="http://openjsan.org/go?l=Joose.Meta.Object">Joose.Meta.Object</a> for details.</p>
 
 <p>Now, onto the keywords. The first one we see here is <code>Class</code>, which starts the declaration of the class.</p>
 
@@ -140,7 +140,7 @@ It should be defined in the <code>methods</code> builder:</p>
 
 <p>The choice of whether to use a method modifier, and which one to use, is often a question of style as much as functionality.</p>
 
-<p>Since <code>Point</code> inherits from <a href="http://openjsan.org/go?l=Joose.Proto.Object">Joose.Proto.Object</a>, it will also inherit the default <code>Joose.Proto.Object</code> constructor:</p>
+<p>Since <code>Point</code> inherits from <a href="http://openjsan.org/go?l=Joose.Meta.Object">Joose.Meta.Object</a>, it will also inherit the default <code>Joose.Meta.Object</code> constructor:</p>
 
 <pre><code>    var point1 = new Point({ x : 5, y : 7})
     var point3d = new Point3D({ x : 5, y : 7, z : -5})

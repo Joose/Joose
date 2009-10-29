@@ -44,41 +44,54 @@ Any role can be used as a trait. There is no special `Trait` helper or other syn
         })
 
 
-APPLYING TRAIT. DETACHING.
-==========================
+APPLYING TRAIT. DETACHING
+=========================
 
-To apply the trait, you need first to *detach* the instance from its class, using the standard `detach` method, which is inherited from `Joose.Proto.Object`
+Traits can be applied only during object's instantiation. To apply the trait, provide the "pseudo-builder" `trait` (or `traits`) to class constructor:
 
-        var parser = new Parser()
-        
-        parser.detach()
-    
-After that, the `parser` instance will have its own instance of metaclass, separated from `Person`, and you can *extend* it as usual:
-    
-        console.log(parser.meta != Parser.meta) // true, instance was detached
-        
-        parser.meta.extend({
-            does : Logger
+        var parser = new Parser({
+            trait : Logger
         })
-    
+        
 Now this particular `parser` instance will perform additional loging during work. Note that any other instances of `Parser` will not be not affected.
 
+
+You may also return the `trait` builder from the `BUILD` method (if you are using custom parameters processing).
+
+Under the hood, the `parser` instance will have its own instance of metaclass, separated from `Person`:
+    
+        console.log(parser.meta != Parser.meta) // true, instance was detached
+        console.log(parser instanceof Parser)   // true, its still Parser however )
+        
+You can *extend* this particular instance as usual class:
+        
+        parser.meta.extend({
+            does : AnotherLogger
+        })
+        
+If you don't want to apply trait during object's instantiation, but planning to do it later, you need to create it as *detached*. Use pseudo-builder `detached` for that:
+
+        var parser = new Parser({
+            detached : true
+        })
+        
+        ...
+        
+        //later
+        
+        if (...) parser.meta.extend({
+            does : Logger
+        })
+
  
-REMOVING TRAIT. ATTACHING.
-==========================
+REMOVING TRAIT.
+===============
 
 You may decide to remove the trait (rememeber, all Joose classes are mutable at run-time).
 
         parser.meta.extend({
             doesnot : Logger
         })
-
-or just attach an instance back to its class
-        
-        parser.attach()
-        
-After attaching any applied traits will be  removed.
-
 
 AUTHOR
 ======

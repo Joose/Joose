@@ -1,5 +1,6 @@
 StartTest(function (t) {
-    t.plan(50)
+    
+    t.plan(54)
     
     //==================================================================================================================================================================================
     t.diag("Role application")
@@ -193,7 +194,7 @@ StartTest(function (t) {
     var myMeta = TestClass.my.meta
     
     t.ok(myMeta.meta.isDetached, "'my' instance was detached")
-    t.ok(myMeta.meta.hasAttribute('walking') && myMeta.walking == false, "'my' instance has correct attribute 'walking'")
+    t.ok(myMeta.meta.hasAttribute('walking') && myMeta.walking === false, "'my' instance has correct attribute 'walking'")
     t.ok(myMeta.meta.hasMethod('walk'), "'my' instance has method walk")
     t.ok(myMeta.meta.hasMethod('stop'), "'my' instance has method stop")
     
@@ -204,4 +205,32 @@ StartTest(function (t) {
     
     t.ok(testClass.meta.isDetached, "Instance of 'TestClass' was created detached")
     t.ok(testClass.process() == 'res', "Instance of 'TestClass' has a correct 'process' method")
+    
+    
+    //==================================================================================================================================================================================
+    t.diag("Traits and custom 'BUILD' method")
+    
+    Class('TestClass2', {
+        
+        has : {
+            attr : 'value'
+        },
+        
+        methods : {
+            
+            BUILD : function (attr, trait) {
+                return {
+                    attr : attr,
+                    trait : trait
+                }
+            }
+        }
+    })
+    
+    var testClass2 = new TestClass2('testvalue', Walk)
+    
+    t.ok(testClass2.meta.isDetached, "Instance of 'TestClass2' was created detached")
+    t.ok(testClass2.meta.hasAttribute('walking') && testClass2.walking === false, "'testClass2' instance has correct attribute 'walking'")
+    t.ok(testClass2.meta.hasMethod('walk'), "'testClass2' instance has method walk")
+    t.ok(testClass2.meta.hasMethod('stop'), "'testClass2' instance has method stop")
 })
