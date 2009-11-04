@@ -1,5 +1,6 @@
 StartTest(function (t) {
-    t.plan(65)
+    
+    t.plan(66)
     
     //==================================================================================================================================================================================
     t.diag("Modules")
@@ -416,7 +417,18 @@ StartTest(function (t) {
     
     
     //==================================================================================================================================================================================
-    t.diag("Modifying helper")
+    t.diag("Creating class with low-level meta")
+    
+    Class('TestProto', {
+        meta : Joose.Proto.Class
+    })
+      
+    t.ok(TestProto, "Class with meta Joose.Proto.Class was successfully created via 'Class' helper")
+    
+    
+    
+    //==================================================================================================================================================================================
+    t.diag("Modifying helper - should be the last test(!), as it modifies the 'Class'")
     
     Joose.Namespace.Manager.my.meta.extend({
         override : {
@@ -436,6 +448,4 @@ StartTest(function (t) {
     
     t.ok(new Private_().result() == 10, "'Class' helper was modified correctly")
     
-    
-        
 })
