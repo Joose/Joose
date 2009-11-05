@@ -1,6 +1,7 @@
 TASKS
 =====
 
+
 - derive 'stable' branch
 
 - Ext.applyIf analog?
@@ -47,7 +48,9 @@ REFACTORING POSSIBILITIES
 
 - merge bootstrap role into managed class
 
-- refactor Joose.Helper to a global "instantiator" of classes. Then it will be possible to apply roles to it, to globally modify the class creation process 
+
+- if (this.hasAttribute('builderClass')) this.getBuiderTarget()
+- + stem
 
 - move builderClass and stemClass to private attributes (with leading underscore)?
 
@@ -61,8 +64,6 @@ REFACTORING POSSIBILITIES
 - convert all OVERRIDE modifiers in core to AROUND? (need to benchmark them 1st)
 
 
-- merge Containable to Mutable
-- cleanClone of Stem move to Composition
 
 
 
@@ -102,3 +103,6 @@ DONE
 - Class as Role? spec&implemented or remove
 - subclass builder and stem classes on-demand only
 - BUILD method to prepare the arguments passed to constructor
+- refactor Joose.Helper to a global "instantiator" of classes. Then it will be possible to apply roles to it, to globally modify the class creation process
+- merge Containable to Mutable
+- cleanClone of Stem move to Composition
