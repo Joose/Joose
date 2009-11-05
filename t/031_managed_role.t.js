@@ -151,20 +151,20 @@ StartTest(function (t) {
         }]
     }).c
     
-    t.ok(!E1.meta.hasAttribute('B1'), "F don't received B1")
+    t.ok(!E1.meta.hasAttribute('B1'), "E1 don't received B1")
     
-    t.ok(E1.meta.hasMethod('A2') && E1.meta.getMethod('A2') == B.meta.getMethod('A2'), "F still received A2 from B")
+    t.ok(E1.meta.hasMethod('A2') && E1.meta.getMethod('A2') == B.meta.getMethod('A2'), "E1 still received A2 from B")
     t.ok(E1.meta.hasMethod('B2') && E1.meta.getMethod('B2') == E.meta.getMethod('B2'), 'E1 received B2')
     
-    t.ok(E1.meta.hasAttribute('A1'), "F now received A1 from A without conflict")
+    t.ok(E1.meta.hasAttribute('A1'), "E1 now received A1 from A without conflict")
     t.ok(!(E1.meta.getAttribute('A1') instanceof Joose.Managed.Property.ConflictMarker), 'A1 is not a conflict marker')
-    t.ok(E1.meta.getAttribute('A1') == A.meta.getAttribute('A1'), "F now received A1 from A")
+    t.ok(E1.meta.getAttribute('A1') == A.meta.getAttribute('A1'), "E1 now received A1 from A")
     
-    t.ok(E1.meta.hasAttribute('A1_from_A'), 'F received A1_from_A #1')
-    t.ok(E1.meta.getAttribute('A1_from_A').value == 'A1', 'F received A1_from_A #2')
+    t.ok(E1.meta.hasAttribute('A1_from_A'), 'E1 received A1_from_A #1')
+    t.ok(E1.meta.getAttribute('A1_from_A').value == 'A1', 'E1 received A1_from_A #2')
     
-    t.ok(E1.meta.hasAttribute('A1_from_B'), 'F received A1_from_B #1')
-    t.ok(E1.meta.getAttribute('A1_from_B').value == 'B-A1', 'F received A1_from_B #2')
+    t.ok(E1.meta.hasAttribute('A1_from_B'), 'E1 received A1_from_B #1')
+    t.ok(E1.meta.getAttribute('A1_from_B').value == 'B-A1', 'E1 received A1_from_B #2')
     
     
     //==================================================================================================================================================================================

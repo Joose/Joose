@@ -117,21 +117,21 @@ StartTest(function (t) {
         exclude : [ 'A1', 'B1' ]
     })
     
-    t.ok(!E1.haveProperty('B1'), "F don't received B1")
+    t.ok(!E1.haveProperty('B1'), "E1 don't received B1")
     
-    t.ok(E1.haveProperty('B2'), 'F received B2 #1')
-    t.ok(E1.getProperty('B2') == B.getProperty('B2'), 'F received B2 #2')
+    t.ok(E1.haveProperty('B2'), 'E1 received B2 #1')
+    t.ok(E1.getProperty('B2') == B.getProperty('B2'), 'E1 received B2 #2')
     
-    t.ok(E1.haveProperty('A1'), "F now received A1 from A without conflict")
-    t.ok(E1.getProperty('A1') == A.getProperty('A1'), "F now received A1 from A")
+    t.ok(E1.haveProperty('A1'), "E1 now received A1 from A without conflict")
+    t.ok(E1.getProperty('A1') == A.getProperty('A1'), "E1 now received A1 from A")
     
-    t.ok(E1.haveProperty('A1_from_A'), 'F received A1_from_A #1')
-    t.ok(E1.getProperty('A1_from_A').value == 'A1', 'F received A1_from_A #2')
+    t.ok(E1.haveProperty('A1_from_A'), 'E1 received A1_from_A #1')
+    t.ok(E1.getProperty('A1_from_A').value == 'A1', 'E1 received A1_from_A #2')
     
-    t.ok(E1.haveProperty('A1_from_B'), 'F received A1_from_B #1')
-    t.ok(E1.getProperty('A1_from_B').value == 'B-A1', 'F received A1_from_B #2')
+    t.ok(E1.haveProperty('A1_from_B'), 'E1 received A1_from_B #1')
+    t.ok(E1.getProperty('A1_from_B').value == 'B-A1', 'E1 received A1_from_B #2')
     
-    t.ok(E1.haveProperty('A2'), "F still received A2 from B")
-    t.ok(E1.getProperty('A2') == B.getProperty('A2'), "F still received A2 from B")
+    t.ok(E1.haveProperty('A2'), "E1 still received A2 from B")
+    t.ok(E1.getProperty('A2') == B.getProperty('A2'), "E1 still received A2 from B")
     
 })
