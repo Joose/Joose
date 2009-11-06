@@ -1,6 +1,6 @@
 StartTest(function (t) {
     
-    t.plan(3)
+    t.plan(6)
     
     //==================================================================================================================================================================================
     t.diag("Initialization of advanced attributes in subclasses of Joose.Meta.Class")
@@ -28,7 +28,7 @@ StartTest(function (t) {
     
     t.ok(TestMeta, "'TestMeta' class was created")
     
-    t.ok(TestMeta.meta.hasAttribute('attr'), "'Test' class has 'attr' attribute")
+    t.ok(TestMeta.meta.hasAttribute('attr'), "'TestMeta' class has 'attr' attribute")
     
     
     //==================================================================================================================================================================================
@@ -38,5 +38,37 @@ StartTest(function (t) {
     
     t.ok(testMeta.attr == '123', "Attribute 'attr' was correctly initialized")
     
+    
+    //==================================================================================================================================================================================
+    t.diag("Creation for Roles")
+    
+    
+    Class('TestMeta2', {
+        
+        meta : Joose.Meta.Class,
+        
+        isa : Joose.Meta.Role,
+        
+        has : {
+            attr         : { 
+                is : 'rw', 
+                init : function () {
+                    return '123'
+                } 
+            }
+        }
+    })
+    
+    t.ok(TestMeta2, "'TestMeta2' class was created")
+    
+    t.ok(TestMeta2.meta.hasAttribute('attr'), "'TestMeta2' class has 'attr' attribute")
+    
+    
+    //==================================================================================================================================================================================
+    t.diag("Instantiation for Roles")
+    
+    var testMeta2 = new TestMeta2('NewRole', {})
+    
+    t.ok(testMeta2.attr == '123', "Attribute 'attr' was correctly initialized for roles")
 })    
 
