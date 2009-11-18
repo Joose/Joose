@@ -9,7 +9,7 @@ TASKS
 - check overridableness of method and attribute metaclasses
 
 - add benchmarking capabilities to Test.Run
-- fix frames double loading in Opera (Test.Run)
+
 
 - add SKIP and TODO methods to Test.Run
 - add warnings about SUPER on proto level in OPERA
@@ -22,11 +22,7 @@ TASKS
 - release Module::JSAN
 
 - Joose.Cookbook
-- Joose.Manual (Traits, Unsweetened, Contributing, ...)
-
-    - constructing (BUILD)
-    - traits
-
+- Joose.Manual 
    - Installation 
     -- for Mac OS
     -- verify that procedure works several platforms (CPAN Testers at least) especially on Windows  
@@ -46,10 +42,12 @@ CORE FEATURES
 REFACTORING POSSIBILITIES
 =========================
 
+- refactor advanced attributes from roles to adding methods directly (should be well-test covered first)
+
 - merge bootstrap role into managed class
 
 
-- if (this.hasAttribute('builderClass')) this.getBuiderTarget()
+- if (this.hasAttribute('builderClass')) this.getBuiderTarget() - to create a separate builder class for each metaclass
 - + stem
 
 - move builderClass and stemClass to private attributes (with leading underscore)?
@@ -106,3 +104,4 @@ DONE
 - refactor Joose.Helper to a global "instantiator" of classes. Then it will be possible to apply roles to it, to globally modify the class creation process
 - merge Containable to Mutable
 - cleanClone of Stem move to Composition
+- fix frames double loading in Opera (Test.Run)
