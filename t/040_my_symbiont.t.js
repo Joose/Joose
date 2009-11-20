@@ -1,5 +1,6 @@
 StartTest(function (t) {
-    t.plan(38)
+    
+    t.plan(40)
     
     //==================================================================================================================================================================================
     t.diag("Symbiont - separate, built-in class, (analog of class-methods + class-attributes + class-roles + ...)")
@@ -51,6 +52,9 @@ StartTest(function (t) {
     
     t.ok(TestClass.my.res == 'class', "Symbiont's attribute was correctly installed")
     t.is(TestClass.my.result(), 'TestClass:class', "Symbiont's method was correctly installed")
+    
+    t.ok(testClass.my.res == 'class', "Symbiont is also accesible via 'my' in prototype")
+    t.is(testClass.my.result(), 'TestClass:class', "... indeed")
     
     
     //==================================================================================================================================================================================
