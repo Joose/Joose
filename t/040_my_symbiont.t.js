@@ -1,6 +1,6 @@
 StartTest(function (t) {
     
-    t.plan(40)
+    t.plan(42)
     
     //==================================================================================================================================================================================
     t.diag("Symbiont - separate, built-in class, (analog of class-methods + class-attributes + class-roles + ...)")
@@ -23,7 +23,9 @@ StartTest(function (t) {
         
         my : {
             have : {
-                res : 'class'
+                res : 'class',
+                
+                targetMeta : null
             },
             
             methods : {
@@ -42,6 +44,9 @@ StartTest(function (t) {
 
     t.ok(TestClass.my.meta.hasAttribute('res'), "TestClass.my has 'res' attribute"); 
     t.ok(TestClass.my.meta.hasMethod('result'), "TestClass.my has 'result' method")
+    
+    t.ok(TestClass.my.targetMeta == TestClass.meta, "Target meta was passed to 'my' constructor")
+    t.ok(TestClass.my.targetMeta.c == TestClass, ".. and it allows us to access the containing constructor")
     
     
     var testClass = new TestClass()
