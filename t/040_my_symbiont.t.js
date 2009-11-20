@@ -1,6 +1,6 @@
 StartTest(function (t) {
     
-    t.plan(42)
+    t.plan(44)
     
     //==================================================================================================================================================================================
     t.diag("Symbiont - separate, built-in class, (analog of class-methods + class-attributes + class-roles + ...)")
@@ -199,4 +199,19 @@ StartTest(function (t) {
     
     t.ok(TestClass3.my, 'Symbiont was created')
     t.ok(TestClass3.my.meta instanceof CustomMeta, 'Symbiont has correct metaclass')
+
+    
+    
+    //==================================================================================================================================================================================
+    t.diag("Inheritance of custom meta in my")
+    
+    
+    Class('TestClass4', {
+        
+        isa : TestClass3
+    })
+    
+    t.ok(TestClass4.my, 'Symbiont was created')
+    t.ok(TestClass4.my.meta instanceof CustomMeta, 'Symbiont has correct metaclass')
+    
 })
