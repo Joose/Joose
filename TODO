@@ -1,6 +1,17 @@
-TASKS
+IDEAS
 =====
 
+- 'immutable' builder
+
+- implement optimization for methods/OVERRIDE modifiers w/o SUPER calls ) probably should be configurable, to avoid increasing of startup overhead 
+
+- some kind of obfuscator to reduce codebase size ?
+
+- some kind of compiler to skip class construction stage (for immutable classes)?
+
+
+TASKS
+=====
 
 - derive 'stable' branch
 
@@ -29,26 +40,20 @@ TASKS
 
 
 
-CORE FEATURES
-=============
-
-- 'immutable' builder
-
-- implement optimization for methods/OVERRIDE modifiers w/o SUPER calls ) probably should be configurable, to avoid increasing of startup overhead 
-
-- some kind of obfuscator to reduce codebase size  
-
-
 REFACTORING POSSIBILITIES
 =========================
 
 - refactor advanced attributes from roles to adding methods directly (should be well-test covered first)
+
+- merge advanced attribute Role into bootstrap role
 
 - merge bootstrap role into managed class
 
 
 - if (this.hasAttribute('builderClass')) this.getBuiderTarget() - to create a separate builder class for each metaclass
 - + stem
+- needs a test
+
 
 - move builderClass and stemClass to private attributes (with leading underscore)?
 
@@ -57,7 +62,6 @@ REFACTORING POSSIBILITIES
 - merge 'builder' into class itself?
 
 - metaclass as subclass of stem?
-
 
 - convert all OVERRIDE modifiers in core to AROUND? (need to benchmark them 1st)
 
@@ -70,7 +74,7 @@ EXTENSIONS
 
 - JooseX.Builder.Also (to address Rhino issues and allow multiple modifiers in the same class)
 
-- JooseX.Role.Parameterized
+- JooseX.Meta.Parameterized
 
 - JooseX.Type
 
