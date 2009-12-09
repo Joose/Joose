@@ -3,11 +3,11 @@ IDEAS
 
 - 'immutable' builder
 
-- implement optimization for methods/OVERRIDE modifiers w/o SUPER calls ) probably should be configurable, to avoid increasing of startup overhead 
 
 - some kind of obfuscator to reduce codebase size ?
 
 - some kind of compiler to skip class construction stage (for immutable classes)?
+
 
 
 TASKS
@@ -21,7 +21,6 @@ TASKS
 
 - add benchmarking capabilities to Test.Run
 
-
 - add SKIP and TODO methods to Test.Run
 - add warnings about SUPER on proto level in OPERA
 
@@ -34,9 +33,25 @@ TASKS
 
 - Joose.Cookbook
 - Joose.Manual 
+   - rewrite 'my' Singleton as Class methods (and create a separate Singleton core metaclass or JooseX)
    - Installation 
     -- for Mac OS
     -- verify that procedure works several platforms (CPAN Testers at least) especially on Windows  
+
+
+
+AFTER HAVING A BENCHMARK SUITE
+==============================
+
+- convert all OVERRIDE modifiers in core to AROUND? (need to benchmark them 1st)
+- implement optimization for methods/OVERRIDE modifiers w/o SUPER calls ) probably should be configurable, to avoid increasing of startup overhead 
+- statically:
+
+     methods : {
+        function () {
+            //no SUPER inside
+        }.raw() /* by helper script */
+     }
 
 
 
@@ -63,7 +78,7 @@ REFACTORING POSSIBILITIES
 
 - metaclass as subclass of stem?
 
-- convert all OVERRIDE modifiers in core to AROUND? (need to benchmark them 1st)
+
 
 
 
@@ -72,9 +87,11 @@ REFACTORING POSSIBILITIES
 EXTENSIONS
 ==========
 
+- JooseX.Class.Singleton; http://gist.github.com/243923
+
 - JooseX.Builder.Also (to address Rhino issues and allow multiple modifiers in the same class)
 
-- JooseX.Meta.Parameterized
+- JooseX.Meta.Parameterized (aka parameterized roles, + classes)
 
 - JooseX.Type
 
