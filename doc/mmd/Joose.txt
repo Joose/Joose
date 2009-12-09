@@ -308,7 +308,9 @@ Method modifiers order in Rhino
 GETTING HELP
 ============
 
-We offer both a mailing list and an active IRC channel.
+We offer a forum, a mailing list and an active IRC channel.
+
+The forum is at [http://joose.it/forum](http://joose.it/forum)
 
 The mailing list is <a href="mailto:joose-js@googlegroups.com">joose-js@googlegroups.com</a>. To subscribe, visit: [http://groups.google.com/group/joose-js](http://groups.google.com/group/joose-js)
 
