@@ -63,8 +63,6 @@ AFTER HAVING A BENCHMARK SUITE
 REFACTORING POSSIBILITIES
 =========================
 
-- refactor advanced attributes from roles to adding methods directly (should be well test-covered first)
-
 - merge advanced attribute Role into bootstrap role
 
 - merge bootstrap role into managed class?
@@ -113,6 +111,7 @@ EXTENSIONS
 DONE
 ====
 
+- refactor advanced attributes from roles to adding methods directly (should be well test-covered first)
 - refactor methods & modifiers to reduce overhead
 - migrate AUGMENT modifier to closures
 - anonymous classes
