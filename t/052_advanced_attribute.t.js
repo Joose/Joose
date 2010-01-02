@@ -1,6 +1,6 @@
 StartTest(function (t) {
     
-    t.plan(10)
+    t.plan(14)
     
     //==================================================================================================================================================================================
     t.diag("Advanced attributes and class's body")
@@ -30,7 +30,7 @@ StartTest(function (t) {
 
     
     //==================================================================================================================================================================================
-    t.diag("Consumin of advanced attribute from Role")    
+    t.diag("Consumption of advanced attribute from Role")    
     
     Role('TestRole', {
         has : {
@@ -42,6 +42,10 @@ StartTest(function (t) {
     })    
     
     t.ok(TestRole.meta.hasAttribute('res'), "'res' attribute was added")    
+
+    t.ok(TestRole.meta.hasMethod('getRes'), "Getter method was created")
+    t.ok(TestRole.meta.hasMethod('setRes'), "Setter method was created")
+    
     
     
     var advAttr = TestRole.meta.getAttribute('res')    
