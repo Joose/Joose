@@ -1,5 +1,7 @@
 StartTest(function (t) {
-    t.plan(36)
+    
+    t.plan(34)
+    
     
     //==================================================================================================================================================================================
     t.diag("Advanced attributes")    
@@ -27,8 +29,6 @@ StartTest(function (t) {
     t.ok(advAttr instanceof Joose.Managed.Attribute, "'res' attribute is a Joose.Managed.Attribute instance")    
     
     t.ok(advAttr.value == 'advanced' && TestClass.prototype.res == 'advanced', "Attribute has a correct initial value")    
-    t.ok(advAttr.role.meta.hasMethod('getRes'), "Attribute's role has getter")    
-    t.ok(advAttr.role.meta.hasMethod('setRes'), "Attribute's role has setter")    
     
     t.ok(TestClass.meta.hasMethod('getRes'), "Getter method was added")    
     t.ok(TestClass.meta.hasMethod('setRes'), "Setter method was added")    

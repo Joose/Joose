@@ -1,6 +1,6 @@
 StartTest(function (t) {
     
-    t.plan(14)
+    t.plan(17)
     
     //==================================================================================================================================================================================
     t.diag("Advanced attributes and class's body")
@@ -30,7 +30,7 @@ StartTest(function (t) {
 
     
     //==================================================================================================================================================================================
-    t.diag("Consumption of advanced attribute from Role")    
+    t.diag("Consumption of advanced attribute from Role #1")    
     
     Role('TestRole', {
         has : {
@@ -55,13 +55,16 @@ StartTest(function (t) {
     t.ok(advAttr.value == 'advanced', "Attribute has a correct initial value")    
     
 
-    
     Class('TestClass', {
         
         does : TestRole
     })
     
     t.ok(TestClass.meta.hasAttribute('res'), "Attribute 'res' was consumed from Role")
+
+    t.ok(TestClass.meta.hasMethod('getRes'), ".. along with getter")
+    t.ok(TestClass.meta.hasMethod('setRes'), ".. and setter")
+    
     
     var advAttr1 = TestClass.meta.getAttribute('res')    
     
@@ -70,8 +73,28 @@ StartTest(function (t) {
     t.ok(advAttr1.value == 'advanced', "Attribute has a correct initial value")
     
     
-    t.ok(TestClass.meta.hasMethod('getRes'), "Getter method was created")
-    t.ok(TestClass.meta.hasMethod('setRes'), "Setter method was created")
+    //==================================================================================================================================================================================
+    t.diag("Consumption of advanced attribute from Role #2")    
+    
+    
+    Class('TestClass2', {
+        
+        does : TestRole,
+        
+        has : {
+            res : {
+                is : 'rw',
+                init : 'fromClass'
+            }
+        }
+    })
+    
+    
+    t.ok(TestClass2.meta.hasMethod('getRes'), "Getter method was created")
+    t.ok(TestClass2.meta.hasMethod('setRes'), "Setter method was created")
+    
+    t.ok(TestClass2.meta.getAttribute('res').value == 'fromClass', "Created attribute has a correct value - received from class")
+
     
 })    
 
