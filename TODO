@@ -3,7 +3,6 @@ IDEAS
 
 - 'immutable' builder
 
-
 - some kind of obfuscator to reduce codebase size ?
 
 - some kind of compiler to skip class construction stage (for immutable classes)?
@@ -12,6 +11,8 @@ IDEAS
 
 TASKS
 =====
+
+- add exception for inheritance from nothing ( isa : null )
 
 - derive 'stable' branch
 
@@ -30,6 +31,10 @@ TASKS
 - release JSAN::Shell
 - release Module::Build::Functions (CSJ)
 - release Module::JSAN
+
+
+DOCS
+====
 
 - Joose.Cookbook
 - Joose.Manual 
@@ -58,11 +63,11 @@ AFTER HAVING A BENCHMARK SUITE
 REFACTORING POSSIBILITIES
 =========================
 
-- refactor advanced attributes from roles to adding methods directly (should be well-test covered first)
+- refactor advanced attributes from roles to adding methods directly (should be well test-covered first)
 
 - merge advanced attribute Role into bootstrap role
 
-- merge bootstrap role into managed class
+- merge bootstrap role into managed class?
 
 
 - if (this.hasAttribute('builderClass')) this.getBuiderTarget() - to create a separate builder class for each metaclass

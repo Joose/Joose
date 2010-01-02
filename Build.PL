@@ -1,4 +1,4 @@
-use Module::JSAN::DSL;
+use inc::Module::JSAN::DSL;
 
 
 name                Joose
