@@ -58,6 +58,7 @@ doc/html/Joose/Manual/Traits.html
 doc/html/Joose/Manual/Unsweetened.html
 doc/html/Joose/Meta/Class.html
 doc/html/Joose/Meta/Class/Detached.html
+doc/html/Joose/Meta/Object.html
 doc/html/Joose/Meta/Role.html
 doc/html/Joose/Namespace/Able.html
 doc/html/Joose/Namespace/Keeper.html
@@ -122,6 +123,7 @@ doc/mmd/Joose/Manual/Traits.txt
 doc/mmd/Joose/Manual/Unsweetened.txt
 doc/mmd/Joose/Meta/Class.txt
 doc/mmd/Joose/Meta/Class/Detached.txt
+doc/mmd/Joose/Meta/Object.txt
 doc/mmd/Joose/Meta/Role.txt
 doc/mmd/Joose/Namespace/Able.txt
 doc/mmd/Joose/Namespace/Keeper.txt
@@ -182,7 +184,7 @@ lib/Joose/Manual/MethodModifiers.js
 lib/Joose/Manual/Mutability.js
 lib/Joose/Manual/Reflection.js
 lib/Joose/Manual/Roles.js
-lib/Joose/Manual/Singleton.js
+lib/Joose/Manual/Static.js
 lib/Joose/Manual/Traits.js
 lib/Joose/Manual/Unsweetened.js
 lib/Joose/Meta/Class.js
@@ -195,6 +197,7 @@ lib/Joose/Proto/Class.js
 lib/Joose/Proto/Empty.js
 lib/Joose/Proto/Object.js
 lib/Task/Joose/Core.js
+lib/Task/Joose/Stable.js
 LICENCE
 MANIFEST			This list of files
 META.json
@@ -212,6 +215,7 @@ t/040_my_symbiont.t.js
 t/045_role_builder.t.js
 t/050_helpers.t.js
 t/051_advanced_attribute.t.js
+t/052_adv_attr_in_metaclasses.t.js
 t/052_advanced_attribute.t.js
 t/052_role_application_advanced.t.js
 t/053_using_class_as_role.t.js

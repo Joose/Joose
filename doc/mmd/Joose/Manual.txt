@@ -115,9 +115,9 @@ This manual consists of a number of documents.
 
     A trait is just a role, applied to a particular instance and modified its behaviour only, not a whole class.
 
-- [Joose.Manual.Singleton][8]
+- [Joose.Manual.Static][8]
 
-    Joose provides a singleton pattern "out of the box". 
+    Joose also provides static methods and attributes. 
     
 - [Joose.Manual.Mutability][9]
 
@@ -213,7 +213,7 @@ Documentation is based on original Moose::Manual documentation, copyright 2006-2
 [5]: Manual/Construction.html
 [6]: Manual/MethodModifiers.html
 [7]: Manual/Roles.html
-[8]: Manual/Singleton.html
+[8]: Manual/Static.html
 [9]: Manual/Mutability.html
 [10]: Manual/Reflection.html
 [11]: Manual/JooseX.html
