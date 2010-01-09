@@ -6,3 +6,4 @@ blib
 MANIFEST.bak
 Makefile.PL
 /inc/*
+/Joose-*
