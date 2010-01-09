@@ -26,7 +26,6 @@ TASKS
 - add warnings about SUPER on proto level in OPERA
 
 
-- fix OpenJSAN.org html extraction method
 - fix JSAN shell 'install' command
 
 - release Module::Build::Functions (CSJ)
@@ -110,6 +109,7 @@ EXTENSIONS
 DONE
 ====
 
+- fix OpenJSAN.org html extraction method
 - release JSAN::Shell
 - rewrite 'my' Singleton as Class methods (and create a separate Singleton core metaclass or JooseX)
 - refactor advanced attributes from roles to adding methods directly (should be well test-covered first)

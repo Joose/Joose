@@ -104,20 +104,20 @@ In this case, this value is treated as value of <code>init</code> property, valu
 
         has : {
             password : '12345',
-            lastLogin : Joose.Now
+            lastLogin : Joose.I.Now
         }
     })
 </code></pre>
 
-<p>The <code>Joose.Now</code> construct in the last example is an <em>attribute helper</em> - a simple function, which return a certain initializing value.</p>
+<p>The <code>Joose.I.Now</code> construct in the last example is an <em>attribute initializer</em> - a function, which return a certain initializing value.</p>
 
-<p>Joose provides following attribute helpers:</p>
+<p>Joose provides following attribute initializers:</p>
 
 <ul>
-<li>Joose.Array - return empty array</li>
-<li>Joose.Object- return empty oject</li>
-<li>Joose.Function - return empty function </li>
-<li>Joose.Now - return current timestamp</li>
+<li>Joose.I.Array - return empty array</li>
+<li>Joose.I.Object- return empty oject</li>
+<li>Joose.I.Function - return empty function </li>
+<li>Joose.I.Now - return current timestamp</li>
 </ul>
 
 <h2 id="requiredornot">Required or not?</h2>

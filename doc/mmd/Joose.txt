@@ -245,17 +245,22 @@ Helpers for Attributes declaration
 
 To simplify declaration of attributes Joose provides a number of default attributes initializers (see [Joose.Manual.Attributes][4] for details)
 
- - `Joose.Array`
+ - `Joose.I.Array`
 
 Returns empty Array when called
 
- - `Joose.Object`
+ - `Joose.I.Object`
 
 Returns empty Object when called
 
-- `Joose.Function`
+- `Joose.I.Function`
 
 Returns empty Function when called (which in turn will return empty function)
+
+- `Joose.I.Now`
+
+Returns new instance of `Date` 
+
 
 
 METACLASS

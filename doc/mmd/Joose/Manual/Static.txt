@@ -22,7 +22,7 @@ To declare a static part of your class use `my` builder:
         
             my : {
                 has : {
-                    types : Joose.Object
+                    types : Joose.I.Object
                 },
                 
                 does : [ JooseX.Storable ],
