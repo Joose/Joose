@@ -54,6 +54,7 @@ doc/html/Joose/Manual/Mutability.html
 doc/html/Joose/Manual/Reflection.html
 doc/html/Joose/Manual/Roles.html
 doc/html/Joose/Manual/Singleton.html
+doc/html/Joose/Manual/Static.html
 doc/html/Joose/Manual/Traits.html
 doc/html/Joose/Manual/Unsweetened.html
 doc/html/Joose/Meta/Class.html
@@ -67,6 +68,7 @@ doc/html/Joose/Proto/Class.html
 doc/html/Joose/Proto/Empty.html
 doc/html/Joose/Proto/Object.html
 doc/html/Task/Joose/Core.html
+doc/html/Task/Joose/Stable.html
 doc/mmd/Joose.txt
 doc/mmd/Joose/Cookbook.txt
 doc/mmd/Joose/Cookbook/Basics/Recipe1.txt
@@ -119,6 +121,7 @@ doc/mmd/Joose/Manual/Mutability.txt
 doc/mmd/Joose/Manual/Reflection.txt
 doc/mmd/Joose/Manual/Roles.txt
 doc/mmd/Joose/Manual/Singleton.txt
+doc/mmd/Joose/Manual/Static.txt
 doc/mmd/Joose/Manual/Traits.txt
 doc/mmd/Joose/Manual/Unsweetened.txt
 doc/mmd/Joose/Meta/Class.txt
@@ -132,6 +135,7 @@ doc/mmd/Joose/Proto/Class.txt
 doc/mmd/Joose/Proto/Empty.txt
 doc/mmd/Joose/Proto/Object.txt
 doc/mmd/Task/Joose/Core.txt
+doc/mmd/Task/Joose/Stable.txt
 inc/Module/Build/Functions.pm
 inc/Module/Build/Functions/DSL.pm
 inc/Module/Build/JSAN/Installable.pm

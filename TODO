@@ -28,7 +28,7 @@ TASKS
 
 - fix OpenJSAN.org html extraction method
 - fix JSAN shell 'install' command
-- release JSAN::Shell
+
 - release Module::Build::Functions (CSJ)
 - release Module::JSAN
 
@@ -38,7 +38,6 @@ DOCS
 
 - Joose.Cookbook
 - Joose.Manual 
-   - rewrite 'my' Singleton as Class methods (and create a separate Singleton core metaclass or JooseX)
    - Installation 
     -- for Mac OS
     -- verify that procedure works several platforms (CPAN Testers at least) especially on Windows  
@@ -111,6 +110,8 @@ EXTENSIONS
 DONE
 ====
 
+- release JSAN::Shell
+- rewrite 'my' Singleton as Class methods (and create a separate Singleton core metaclass or JooseX)
 - refactor advanced attributes from roles to adding methods directly (should be well test-covered first)
 - refactor methods & modifiers to reduce overhead
 - migrate AUGMENT modifier to closures
