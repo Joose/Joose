@@ -48,12 +48,12 @@ StartTest(function (t) {
     //==================================================================================================================================================================================
     t.diag("Extending of builder")
     
-    var TestMetaClass = new Joose.Managed.Class('TestClass1', {
+    var TestMetaClass = new Joose.Managed.Class('TestMetaClass', {
         isa : Joose.Managed.Class,
         
         builder : {
             methods : {
-                testHandler : function (meta, props) {
+                testBuilder : function (meta, props) {
                     var name = props.name
                     var value = props.value
                     
@@ -70,7 +70,7 @@ StartTest(function (t) {
     var TestClass1 = new TestMetaClass('TestClass1', {
         isa : TestClass,
         
-        testHandler : {
+        testBuilder : {
             name : 'result',
             value : 'TestClass1'
         }
@@ -83,7 +83,7 @@ StartTest(function (t) {
 
     
     var TestClass11 = new TestMetaClass('TestClass11', {
-        testHandler : {
+        testBuilder : {
             name : 'result',
             value : 'TestClass11'
         }
