@@ -36,8 +36,8 @@ StartTest(function (t) {
     }).c
     
     
-    t.ok(SuperMetaClass.meta.getAttributedClass('builderClass').meta.hasMethod('testBuilder2'), "'SuperMetaClass' received 'testBuilder2'")
-    t.ok(!BaseMetaClass.meta.getAttributedClass('builderClass').meta.hasMethod('testBuilder2'), "BaseMetaClass don't received 'testBuilder2'")
+    t.ok(SuperMetaClass.meta.getClassInAttribute('builderClass').meta.hasMethod('testBuilder2'), "'SuperMetaClass' received 'testBuilder2'")
+    t.ok(!BaseMetaClass.meta.getClassInAttribute('builderClass').meta.hasMethod('testBuilder2'), "BaseMetaClass don't received 'testBuilder2'")
 
     //==================================================================================================================================================================================
     t.diag("Mutation of builder class")
@@ -58,8 +58,8 @@ StartTest(function (t) {
         }
     })
     
-    t.ok(BaseMetaClass.meta.getAttributedClass('builderClass').meta.hasMethod('testBuilder'), "BaseMetaClass extended its builder class")
+    t.ok(BaseMetaClass.meta.getClassInAttribute('builderClass').meta.hasMethod('testBuilder'), "BaseMetaClass extended its builder class")
     
-    t.ok(SuperMetaClass.meta.getAttributedClass('builderClass').meta.hasMethod('testBuilder2'), "and it reflected in sub-meta-classes")
+    t.ok(SuperMetaClass.meta.getClassInAttribute('builderClass').meta.hasMethod('testBuilder2'), "and it reflected in sub-meta-classes")
     
 })

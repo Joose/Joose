@@ -43,7 +43,7 @@ StartTest(function (t) {
     
     t.ok(TestClass1.meta.hasOwnMethod('result') && testClass1.result() == 'TestClass1', "Builder was extened and works correctly #1")
     
-    t.ok(BaseMetaClass.meta.getAttributedClass('builderClass').meta.hasMethod('testBuilder'), "BaseMetaClass extended its builder class")
+    t.ok(BaseMetaClass.meta.getClassInAttribute('builderClass').meta.hasMethod('testBuilder'), "BaseMetaClass extended its builder class")
     
     
 
@@ -66,8 +66,8 @@ StartTest(function (t) {
     }).c
     
     
-    t.ok(SuperMetaClass.meta.getAttributedClass('builderClass').meta.hasMethod('testBuilder'), "'SuperMetaClass' inherited 'testBuilder'")
-    t.ok(SuperMetaClass.meta.getAttributedClass('builderClass').meta.hasMethod('testBuilder2'), "'SuperMetaClass' received 'testBuilder2'")
+    t.ok(SuperMetaClass.meta.getClassInAttribute('builderClass').meta.hasMethod('testBuilder'), "'SuperMetaClass' inherited 'testBuilder'")
+    t.ok(SuperMetaClass.meta.getClassInAttribute('builderClass').meta.hasMethod('testBuilder2'), "'SuperMetaClass' received 'testBuilder2'")
     
     
     

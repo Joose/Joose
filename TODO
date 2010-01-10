@@ -41,6 +41,7 @@ DOCS
     -- for Mac OS
     -- verify that procedure works several platforms (CPAN Testers at least) especially on Windows  
 
+- document how class can be used as role (w/o inherited properties)
 
 
 AFTER HAVING A BENCHMARK SUITE

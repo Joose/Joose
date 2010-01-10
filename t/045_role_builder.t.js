@@ -28,10 +28,10 @@ StartTest(function (t) {
     
     t.ok(typeof RoleWithBuilder == 'function', "RoleWithBuilder was created")
     
-    t.ok(RoleWithBuilder.meta.builderClassMutated, "RoleWithBuilder has 'mutated' 'builderClass'")
-    t.ok(RoleWithBuilder.meta.builderClass.meta instanceof Joose.Managed.Role, ".. and its a Joose.Managed.Role")
+    t.ok(RoleWithBuilder.meta.builderRole, "RoleWithBuilder has 'builderRole'")
+    t.ok(RoleWithBuilder.meta.builderRole.meta instanceof Joose.Managed.Role, ".. and its a Joose.Managed.Role")
     
-    t.ok(RoleWithBuilder.meta.builderClass.meta.hasMethod('testHandler'), "builderRole has 'testHandler' method"); 
+    t.ok(RoleWithBuilder.meta.builderRole.meta.hasMethod('testHandler'), "builderRole has 'testHandler' method"); 
     
     
     //==================================================================================================================================================================================
