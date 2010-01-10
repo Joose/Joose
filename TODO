@@ -66,9 +66,6 @@ REFACTORING POSSIBILITIES
 - merge bootstrap role into managed class?
 
 
-- if (this.hasAttribute('builderClass')) this.getBuiderTarget() - to create a separate builder class for each metaclass
-- + stem
-- needs a test
 
 
 - move builderClass and stemClass to private attributes (with leading underscore)?
@@ -109,6 +106,9 @@ EXTENSIONS
 DONE
 ====
 
+- if (this.hasAttribute('builderClass')) this.getBuiderTarget() - to create a separate builder class for each metaclass
+- + stem
+- needs a test
 - fix OpenJSAN.org html extraction method
 - release JSAN::Shell
 - rewrite 'my' Singleton as Class methods (and create a separate Singleton core metaclass or JooseX)
