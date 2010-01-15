@@ -60,8 +60,8 @@ Joose core package is only 8kb (YUI+gz).
 INSTALLATION
 ============
 
-For installation instructions please refer to INSTALL file in the root of this distribution
-
+For installation instructions please refer to INSTALL file in the root of this distribution or this link:
+[http://openjsan.org/go?l=Joose.Manual.Installation](http://openjsan.org/go?l=Joose.Manual.Installation)
 
 DOCUMENTATION
 =============
