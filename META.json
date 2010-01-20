@@ -6,11 +6,13 @@
       "version" : "1.4",
       "url" : "http://module-build.sourceforge.net/META-spec-v1.4.html"
    },
-   "generated_by" : "Module::Build version 0.35",
+   "generated_by" : "Module::Build version 0.3601",
    "version" : "3.003",
    "name" : "Joose",
    "author" : [
-      "Nickolay Platonov (aka SamuraiJack) <nplatonov@cpan.org>"
+      "Nickolay Platonov (aka SamuraiJack) <nplatonov@cpan.org>",
+      "Malte Ubl",
+      "Jeremy Wall"
    ],
    "license" : "bsd",
    "provides" : {
@@ -257,6 +259,6 @@
    },
    "abstract" : "Post modern self-hosting meta object system for JavaScript with support for classes, inheritance, roles, traits, method modifiers and more.",
    "configure_requires" : {
-      "Module::Build" : "0.35"
+      "Module::Build" : "0.36"
    }
 }

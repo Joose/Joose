@@ -3,30 +3,27 @@ IDEAS
 
 - 'immutable' builder
 
-- some kind of obfuscator to reduce codebase size ?
-
-- some kind of compiler to skip class construction stage (for immutable classes)?
-
+- some kind of obfuscator to reduce codebase size?? (function () { var a='Joose', b='Managed'; top[a][b] etc })()
+- try Closure compacter
 
 
 TASKS
 =====
 
 - add exception for inheritance from nothing ( isa : null )
+- allow regexes as initialization values for advanced attributes
+- alias static methods (not properties) to the constructor (should be delegates to 'my')
 
 - derive 'stable' branch
 
-- Ext.applyIf analog?
-
 - check overridableness of method and attribute metaclasses
 
-- add benchmarking capabilities to Test.Run
 
 - add SKIP and TODO methods to Test.Run
 - add warnings about SUPER on proto level in OPERA
 
 
-- fix JSAN shell 'install' command
+- fix JSAN shell 'install' command (prefix)
 
 - release Module::Build::Functions (CSJ)
 - release Module::JSAN
@@ -36,19 +33,25 @@ DOCS
 ====
 
 - Joose.Cookbook
+    - add receipts
+    
 - Joose.Manual 
    - Installation 
-    -- for Mac OS
+    -- check the procedure on Mac OS
     -- verify that procedure works several platforms (CPAN Testers at least) especially on Windows  
 
 - document how class can be used as role (w/o inherited properties)
 
 
-AFTER HAVING A BENCHMARK SUITE
-==============================
+OPTIMIZATION
+============
+
+- first, add benchmarking capabilities to Test.Run (or separate benchmarking suite module)
 
 - convert all OVERRIDE modifiers in core to AROUND? (need to benchmark them 1st)
+
 - implement optimization for methods/OVERRIDE modifiers w/o SUPER calls ) probably should be configurable, to avoid increasing of startup overhead 
+    and/or
 - statically:
 
      methods : {
@@ -62,7 +65,7 @@ AFTER HAVING A BENCHMARK SUITE
 REFACTORING POSSIBILITIES
 =========================
 
-- merge advanced attribute Role into bootstrap role
+- merge advanced attribute Role into bootstrap role?
 
 - merge bootstrap role into managed class?
 
@@ -75,9 +78,7 @@ REFACTORING POSSIBILITIES
 
 - merge 'builder' into class itself?
 
-- metaclass as subclass of stem?
-
-
+- metaclass as subclass of stem (is that possible at all?)
 
 
 
@@ -85,6 +86,8 @@ REFACTORING POSSIBILITIES
 
 EXTENSIONS
 ==========
+
+- JooseX.Attribute.Accessor.Unified - getter and setter as single function
 
 - JooseX.Class.Singleton; http://gist.github.com/243923
 
@@ -103,6 +106,8 @@ EXTENSIONS
  - traits for attributes
 
 - JooseX.Method.Overloaded
+
+
 
 DONE
 ====
