@@ -7,3 +7,4 @@ MANIFEST.bak
 Makefile.PL
 /inc/*
 /Joose-*
+/doc/*
