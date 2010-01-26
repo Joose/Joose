@@ -53,5 +53,4 @@ Joose-3.001
 ^todo/
 ^\.git\b
 ^\.project\b
-^doc\b
 ^MYMETA.yml$

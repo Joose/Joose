@@ -2,11 +2,11 @@
    "resources" : {
       "license" : "http://www.opensource.org/licenses/bsd-license.php"
    },
+   "generated_by" : "Module::Build version 0.3601",
    "meta-spec" : {
       "version" : "1.4",
       "url" : "http://module-build.sourceforge.net/META-spec-v1.4.html"
    },
-   "generated_by" : "Module::Build version 0.3601",
    "version" : "3.003",
    "name" : "Joose",
    "author" : [
@@ -24,13 +24,13 @@
          "version" : null,
          "file" : "lib/Joose/Manual/Classes.js"
       },
-      "Joose.Managed.Property.MethodModifier" : {
-         "version" : null,
-         "file" : "lib/Joose/Managed/Property/MethodModifier.js"
-      },
       "Joose.Manual.Traits" : {
          "version" : null,
          "file" : "lib/Joose/Manual/Traits.js"
+      },
+      "Joose.Managed.Property.MethodModifier" : {
+         "version" : null,
+         "file" : "lib/Joose/Managed/Property/MethodModifier.js"
       },
       "Joose" : {
          "version" : "3.003",
@@ -44,33 +44,33 @@
          "version" : null,
          "file" : "lib/Joose/Manual/Reflection.js"
       },
-      "Joose.Meta.Class" : {
-         "version" : null,
-         "file" : "lib/Joose/Meta/Class.js"
-      },
       "Joose.Cookbook" : {
          "version" : null,
          "file" : "lib/Joose/Cookbook.js"
       },
-      "Joose.Managed.Property.Attribute" : {
+      "Joose.Meta.Class" : {
          "version" : null,
-         "file" : "lib/Joose/Managed/Property/Attribute.js"
+         "file" : "lib/Joose/Meta/Class.js"
       },
       "Joose.Manual.Construction" : {
          "version" : null,
          "file" : "lib/Joose/Manual/Construction.js"
       },
+      "Joose.Managed.Property.Attribute" : {
+         "version" : null,
+         "file" : "lib/Joose/Managed/Property/Attribute.js"
+      },
       "Task.Joose.Stable" : {
          "version" : "3.001",
          "file" : "lib/Task/Joose/Stable.js"
       },
-      "Joose.Managed.Property.MethodModifier.Around" : {
-         "version" : null,
-         "file" : "lib/Joose/Managed/Property/MethodModifier/Around.js"
-      },
       "Joose.Manual.Contributing" : {
          "version" : null,
          "file" : "lib/Joose/Manual/Contributing.js"
+      },
+      "Joose.Managed.Property.MethodModifier.Around" : {
+         "version" : null,
+         "file" : "lib/Joose/Managed/Property/MethodModifier/Around.js"
       },
       "Joose.Namespace.Manager" : {
          "version" : null,
@@ -88,57 +88,57 @@
          "version" : null,
          "file" : "lib/Joose/Managed/StemElement/Requirements.js"
       },
-      "Joose.Manual.BestPractices" : {
-         "version" : null,
-         "file" : "lib/Joose/Manual/BestPractices.js"
-      },
       "Joose.Manual.Mutability" : {
          "version" : null,
          "file" : "lib/Joose/Manual/Mutability.js"
+      },
+      "Joose.Manual.BestPractices" : {
+         "version" : null,
+         "file" : "lib/Joose/Manual/BestPractices.js"
       },
       "Joose.Manual.Roles" : {
          "version" : null,
          "file" : "lib/Joose/Manual/Roles.js"
       },
-      "Joose.Managed.StemElement.MethodModifiers" : {
-         "version" : null,
-         "file" : "lib/Joose/Managed/StemElement/MethodModifiers.js"
-      },
       "Joose.Namespace.Keeper" : {
          "version" : null,
          "file" : "lib/Joose/Namespace/Keeper.js"
       },
-      "Joose.Managed.Property.MethodModifier.Put" : {
+      "Joose.Managed.StemElement.MethodModifiers" : {
          "version" : null,
-         "file" : "lib/Joose/Managed/Property/MethodModifier/Put.js"
+         "file" : "lib/Joose/Managed/StemElement/MethodModifiers.js"
       },
       "Joose.Proto.Class" : {
          "version" : null,
          "file" : "lib/Joose/Proto/Class.js"
       },
-      "Joose.Managed.My" : {
+      "Joose.Managed.Property.MethodModifier.Put" : {
          "version" : null,
-         "file" : "lib/Joose/Managed/My.js"
+         "file" : "lib/Joose/Managed/Property/MethodModifier/Put.js"
       },
       "Joose.Managed.Property.MethodModifier.Override" : {
          "version" : null,
          "file" : "lib/Joose/Managed/Property/MethodModifier/Override.js"
       },
-      "Joose.Managed.PropertySet.Composition" : {
+      "Joose.Managed.My" : {
          "version" : null,
-         "file" : "lib/Joose/Managed/PropertySet/Composition.js"
+         "file" : "lib/Joose/Managed/My.js"
       },
       "Joose.Manual.Concepts" : {
          "version" : null,
          "file" : "lib/Joose/Manual/Concepts.js"
       },
-      "Joose.Cookbook.Basics.Recipe1" : {
+      "Joose.Managed.PropertySet.Composition" : {
          "version" : null,
-         "file" : "lib/Joose/Cookbook/Basics/Recipe1.js"
+         "file" : "lib/Joose/Managed/PropertySet/Composition.js"
       },
       "Joose.Managed.PropertySet.Mutable" : {
          "version" : null,
          "file" : "lib/Joose/Managed/PropertySet/Mutable.js"
+      },
+      "Joose.Cookbook.Basics.Recipe1" : {
+         "version" : null,
+         "file" : "lib/Joose/Cookbook/Basics/Recipe1.js"
       },
       "Joose.Managed.Property.MethodModifier.After" : {
          "version" : null,
@@ -148,13 +148,13 @@
          "version" : null,
          "file" : "lib/Joose/Managed/PropertySet/Namespace.js"
       },
-      "Joose.Manual.JooseX" : {
-         "version" : null,
-         "file" : "lib/Joose/Manual/JooseX.js"
-      },
       "Joose.Managed.Property.MethodModifier.Augment" : {
          "version" : null,
          "file" : "lib/Joose/Managed/Property/MethodModifier/Augment.js"
+      },
+      "Joose.Manual.JooseX" : {
+         "version" : null,
+         "file" : "lib/Joose/Manual/JooseX.js"
       },
       "Joose.Manual.MetaRoles" : {
          "version" : null,
@@ -164,29 +164,29 @@
          "version" : null,
          "file" : "lib/Joose/Manual/Static.js"
       },
-      "Joose.Proto.Object" : {
-         "version" : null,
-         "file" : "lib/Joose/Proto/Object.js"
-      },
       "Joose.Managed.Stem" : {
          "version" : null,
          "file" : "lib/Joose/Managed/Stem.js"
       },
-      "Joose.Manual.Delta" : {
+      "Joose.Proto.Object" : {
          "version" : null,
-         "file" : "lib/Joose/Manual/Delta.js"
+         "file" : "lib/Joose/Proto/Object.js"
       },
       "Joose.Manual.MethodModifiers" : {
          "version" : null,
          "file" : "lib/Joose/Manual/MethodModifiers.js"
       },
-      "Joose.Managed.PropertySet" : {
+      "Joose.Manual.Delta" : {
          "version" : null,
-         "file" : "lib/Joose/Managed/PropertySet.js"
+         "file" : "lib/Joose/Manual/Delta.js"
       },
       "Joose.Managed.Property.MethodModifier.Before" : {
          "version" : null,
          "file" : "lib/Joose/Managed/Property/MethodModifier/Before.js"
+      },
+      "Joose.Managed.PropertySet" : {
+         "version" : null,
+         "file" : "lib/Joose/Managed/PropertySet.js"
       },
       "Joose.Manual.FAQ" : {
          "version" : null,
@@ -196,37 +196,37 @@
          "version" : "3.003",
          "file" : "lib/Task/Joose/Core.js"
       },
-      "Joose.Manual.Installation" : {
+      "Joose.Managed.Property.ConflictMarker" : {
          "version" : null,
-         "file" : "lib/Joose/Manual/Installation.js"
+         "file" : "lib/Joose/Managed/Property/ConflictMarker.js"
       },
       "Joose.Managed.Attribute" : {
          "version" : null,
          "file" : "lib/Joose/Managed/Attribute.js"
       },
-      "Joose.Managed.Property.ConflictMarker" : {
+      "Joose.Manual.Installation" : {
          "version" : null,
-         "file" : "lib/Joose/Managed/Property/ConflictMarker.js"
-      },
-      "Joose.Managed.Role" : {
-         "version" : null,
-         "file" : "lib/Joose/Managed/Role.js"
+         "file" : "lib/Joose/Manual/Installation.js"
       },
       "Joose.Managed.Property" : {
          "version" : null,
          "file" : "lib/Joose/Managed/Property.js"
       },
-      "Joose.Manual.Attributes" : {
+      "Joose.Managed.Role" : {
          "version" : null,
-         "file" : "lib/Joose/Manual/Attributes.js"
+         "file" : "lib/Joose/Managed/Role.js"
+      },
+      "Joose.Managed.Property.Requirement" : {
+         "version" : null,
+         "file" : "lib/Joose/Managed/Property/Requirement.js"
       },
       "Joose.Proto.Empty" : {
          "version" : null,
          "file" : "lib/Joose/Proto/Empty.js"
       },
-      "Joose.Managed.Property.Requirement" : {
+      "Joose.Manual.Attributes" : {
          "version" : null,
-         "file" : "lib/Joose/Managed/Property/Requirement.js"
+         "file" : "lib/Joose/Manual/Attributes.js"
       },
       "Joose.Managed.Builder" : {
          "version" : null,
