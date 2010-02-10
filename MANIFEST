@@ -124,6 +124,7 @@ doc/mmd/Task/Joose/Core.txt
 doc/mmd/Task/Joose/Stable.txt
 inc/Module/Build/Functions.pm
 inc/Module/Build/Functions/DSL.pm
+inc/Module/Build/JSAN.pm
 inc/Module/Build/JSAN/Installable.pm
 inc/Module/JSAN.pm
 inc/Module/JSAN/DSL.pm

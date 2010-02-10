@@ -7,7 +7,7 @@
       "version" : "1.4",
       "url" : "http://module-build.sourceforge.net/META-spec-v1.4.html"
    },
-   "version" : "3.003",
+   "version" : "3.004",
    "name" : "Joose",
    "author" : [
       "Nickolay Platonov (aka SamuraiJack) <nplatonov@cpan.org>",
@@ -15,6 +15,7 @@
       "Jeremy Wall"
    ],
    "license" : "bsd",
+   "static_dir" : "static",
    "provides" : {
       "Joose.Meta.Role" : {
          "version" : null,
@@ -257,8 +258,5 @@
          "file" : "lib/Joose/Managed/StemElement/Methods.js"
       }
    },
-   "abstract" : "Post modern self-hosting meta object system for JavaScript with support for classes, inheritance, roles, traits, method modifiers and more.",
-   "configure_requires" : {
-      "Module::Build" : "0.36"
-   }
+   "abstract" : "Post modern self-hosting meta object system for JavaScript with support for classes, inheritance, roles, traits, method modifiers and more."
 }
