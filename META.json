@@ -7,7 +7,7 @@
       "version" : "1.4",
       "url" : "http://module-build.sourceforge.net/META-spec-v1.4.html"
    },
-   "version" : "3.004",
+   "version" : "3.005",
    "name" : "Joose",
    "author" : [
       "Nickolay Platonov (aka SamuraiJack) <nplatonov@cpan.org>",
@@ -60,10 +60,6 @@
       "Joose.Managed.Property.Attribute" : {
          "version" : null,
          "file" : "lib/Joose/Managed/Property/Attribute.js"
-      },
-      "Task.Joose.Stable" : {
-         "version" : "3.001",
-         "file" : "lib/Task/Joose/Stable.js"
       },
       "Joose.Manual.Contributing" : {
          "version" : null,

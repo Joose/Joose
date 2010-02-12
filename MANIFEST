@@ -188,9 +188,8 @@ lib/Joose/Proto/Class.js
 lib/Joose/Proto/Empty.js
 lib/Joose/Proto/Object.js
 lib/Task/Joose/Core.js
-lib/Task/Joose/Stable.js
 LICENCE
-MANIFEST			This list of files
+MANIFEST
 META.json
 README.md
 t/010_proto_class.t.js
