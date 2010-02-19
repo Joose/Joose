@@ -175,6 +175,7 @@ StartTest(function (t) {
         }
     })    
     
+    
     var testClass2 = new TestClass2()
     
     t.ok(!testClass2.res, '"Private" attribute is not visible')
