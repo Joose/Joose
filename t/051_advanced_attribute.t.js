@@ -1,6 +1,6 @@
 StartTest(function (t) {
     
-    t.plan(34)
+    t.plan(38)
     
     
     //==================================================================================================================================================================================
@@ -191,5 +191,35 @@ StartTest(function (t) {
     testClass2.setRes1('newvalue1')
     t.ok(testClass2.getRes1() == 'newvalue1', '.. and setter')
     
+    
+    
+    //==================================================================================================================================================================================
+    t.diag("Custom setter/getter names")
+    
+    Class('TestClass3', {
+        has : {
+            res : {
+                is : 'rw',
+                init : 'advanced3',
+                
+                getterName : 'GETRES',
+                setterName : 'SETRES'
+            }
+        }
+    })    
+    
+    t.ok(TestClass3.meta.hasMethod('GETRES') && TestClass3.meta.hasMethod('SETRES'), 'Custom getter/setter were added')
+    
+    
+    var testClass3 = new TestClass3()
+    
+    t.ok(testClass3.res == 'advanced3', 'Attribute was initialized correctly')
+    
+    t.ok(testClass3.GETRES() == 'advanced3', 'Customized getter works correctly')
+    
+    
+    testClass3.SETRES('custom')
+
+    t.ok(testClass3.GETRES() == 'custom', 'Customized setter works correctly')
 })    
 
