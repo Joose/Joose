@@ -168,7 +168,7 @@ StartTest(function (t) {
                 isPrivate : true
             },
             
-            _res1 : {
+            __res1 : {
                 is : 'rw',
                 init : 'private'
             }
@@ -186,7 +186,7 @@ StartTest(function (t) {
     testClass2.setRes('newvalue')
     t.ok(testClass2.getRes() == 'newvalue', '"Private" attribute was correctly changed')
     
-    t.ok(TestClass2.meta.getAttribute('_res1').isPrivate, 'Attribute with leading underscore becomes private')
+    t.ok(TestClass2.meta.getAttribute('res1').isPrivate, 'Attribute with 2 leading underscores becomes private')
     t.ok(testClass2.getRes1() == 'private', '.. and receives getter')
     
     testClass2.setRes1('newvalue1')
