@@ -1,6 +1,7 @@
 .gitignore
 bin/yuicompressor-2.4.1.jar
 Build.PL
+Changes
 Components.JS
 doc/html/Joose.html
 doc/html/Joose/Cookbook.html

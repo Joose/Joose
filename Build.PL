@@ -2,7 +2,7 @@ use inc::Module::JSAN::DSL;
 
 
 name                Joose
-version             3.005
+version             3.006
 	
 author              'Nickolay Platonov (aka SamuraiJack) <nplatonov@cpan.org>'
 author              'Malte Ubl'

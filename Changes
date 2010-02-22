@@ -1,0 +1,18 @@
+3.006   Mon, Feb 22, 2010
+
+    [ENHANCEMENTS]
+    
+    - Added 'Changes' log
+    - the actual slot, to which the attribute of the class is applied became configurable
+      this will allow to have nicer "private" attributes and combined accessors
+    - some progress on docs (mentioned custom names for accessors and 'isPrivate' option)
+
+    
+    [API CHANGES]
+
+    -none-
+    
+
+    [BUG FIXES]
+    
+    -none-

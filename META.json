@@ -7,7 +7,7 @@
       "version" : "1.4",
       "url" : "http://module-build.sourceforge.net/META-spec-v1.4.html"
    },
-   "version" : "3.005",
+   "version" : "3.006",
    "name" : "Joose",
    "author" : [
       "Nickolay Platonov (aka SamuraiJack) <nplatonov@cpan.org>",
