@@ -1,6 +1,6 @@
 StartTest(function (t) {
     
-    t.plan(36)
+    t.plan(38)
     
     //==================================================================================================================================================================================
     t.diag("MetaRoles (roles which applies to metaclass of applicant")
@@ -180,6 +180,41 @@ StartTest(function (t) {
 
     
     //==================================================================================================================================================================================
+    t.diag("Overriding 'defaultConstructor' from trait")
+    
+    var constructorOverriden = false
+    
+    Role('MetaRoleWithConstructor', {
+        override : {
+            
+            defaultConstructor : function () {
+                var original = this.SUPER()
+                
+                return function () {
+                    constructorOverriden = true
+                    
+                    return original.apply(this, arguments)
+                }
+            }
+        }
+    })
+    
+//    debugger
+
+    Class('TestClass5', {
+        isa : TestClass3,
+        
+        trait : MetaRoleWithConstructor
+    })
+    t.ok(TestClass5, 'TestClass5 class was created')
+    
+    var testClass5 = new TestClass5()
+    
+    t.ok(constructorOverriden, "Overriden 'defaultConstructor' was called")
+    
+    
+    
+    //==================================================================================================================================================================================
     t.diag("Mutability #3")
     
     TestClass3.meta.extend({
@@ -190,5 +225,6 @@ StartTest(function (t) {
     t.ok(!TestClass4.meta.builder.meta.hasMethod('sugar'), "TestClass4's builder no longer have 'sugar' method")
     
     t.ok(!TestClass4.meta.meta.hasAttribute('customInitCalled'), "TestClass4's meta has no 'customInitCalled' attribute")
+    
     
 })
