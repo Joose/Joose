@@ -1,3 +1,17 @@
+3.007 
+
+    [ENHANCEMENTS]
+    
+    - Class/Role/Module in the global scope aliased as Joose.Class/Joose.Role/Joose.Module
+    - Joose no longer overwrites the Class/Role/Module symbols in global scope (should allow Prototype support)
+    
+    
+    [BUG FIXES]
+    
+    - fixed bug, when traits weren't applied to the class with already detached meta 
+    (when the meta already had traits) 
+
+
 3.006   Mon, Feb 22, 2010
 
     [ENHANCEMENTS]

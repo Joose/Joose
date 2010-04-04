@@ -1,6 +1,6 @@
 StartTest(function (t) {
     
-    t.plan(66)
+    t.plan(68)
     
     //==================================================================================================================================================================================
     t.diag("Modules")
@@ -426,6 +426,28 @@ StartTest(function (t) {
     t.ok(TestProto, "Class with meta Joose.Proto.Class was successfully created via 'Class' helper")
     
     
+    //==================================================================================================================================================================================
+    t.diag("Class helpers and global scope")
+    
+    var customSymbol = CustomSymbol = {}
+    
+    Class('Test.Meta', {
+        isa : Joose.Meta.Class
+    })
+      
+    Joose.Namespace.Manager.my.register('CustomSymbol', Test.Meta)
+    
+    
+    t.ok(customSymbol == CustomSymbol, "Global symbol wasn't overriden")
+    
+    Joose.CustomSymbol('TestClass2', {
+        methods : {
+            process : function () { return 'res' }
+        }
+    })
+    
+    t.ok(TestClass2.meta instanceof Test.Meta, "Helper for CustomSymbol metaclass was aliased to Joose.CustomSymbol")
+
     
     //==================================================================================================================================================================================
     t.diag("Modifying helper - should be the last test(!), as it modifies the 'Class'")
