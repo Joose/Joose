@@ -25,7 +25,7 @@ StartTest(function (t) {
             have : {
                 res : 'class',
                 
-                targetMeta : null
+                HOST : null
             },
             
             methods : {
@@ -43,10 +43,10 @@ StartTest(function (t) {
     t.ok(TestClass.meta.hasMethod('result'), "TestClass has 'result' method")
 
     t.ok(TestClass.my.meta.hasAttribute('res'), "TestClass.my has 'res' attribute"); 
+    t.ok(TestClass.my.meta.hasAttribute('HOST'), "TestClass.my has 'HOST' attribute");
     t.ok(TestClass.my.meta.hasMethod('result'), "TestClass.my has 'result' method")
     
-    t.ok(TestClass.my.targetMeta == TestClass.meta, "Target meta was passed to 'my' constructor")
-    t.ok(TestClass.my.targetMeta.c == TestClass, ".. and it allows us to access the containing constructor")
+    t.ok(TestClass.my.HOST == TestClass, "Host class was passed to 'my' constructor")
     
     
     var testClass = new TestClass()

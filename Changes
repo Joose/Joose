@@ -4,6 +4,7 @@
     
     - Class/Role/Module in the global scope aliased as Joose.Class/Joose.Role/Joose.Module
     - Joose no longer overwrites the Class/Role/Module symbols in global scope (should allow Prototype support)
+    - Static instance ('my') now receives a special 'HOST' configuration parameter during instantiation, containing a hosting class constructor 
     
     
     [BUG FIXES]
