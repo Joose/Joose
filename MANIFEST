@@ -131,6 +131,7 @@ inc/Module/JSAN.pm
 inc/Module/JSAN/DSL.pm
 INSTALL
 lib/Joose.js
+lib/Joose.mmd
 lib/Joose/Cookbook.js
 lib/Joose/Cookbook/Basics/Recipe1.js
 lib/Joose/Managed/Attribute.js
@@ -193,6 +194,7 @@ LICENCE
 MANIFEST
 META.json
 README.md
+t/001_helpers.t.js
 t/010_proto_class.t.js
 t/011_propertyset.t.js
 t/012_propertyset_mutable.t.js
