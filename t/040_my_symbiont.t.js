@@ -11,6 +11,11 @@ StartTest(function (t) {
     t.ok(Joose.Meta.Class.meta.hasAttribute('myClass'), "Joose.Meta.Class has 'myClass' attribute")
     t.ok(Joose.Meta.Role.meta.hasAttribute('myClass'), "Joose.Meta.Role has 'myClass' attribute")
     
+    
+    //declaring a module first to make sure the HOST will accept a correct constructor
+    Module('TestClass', {})
+    
+    
     Class('TestClass', {
         have : {
             res : 'instance'
