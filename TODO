@@ -10,6 +10,8 @@ IDEAS
 TASKS
 =====
 
+- test Joose.O helpers
+
 - add exception for inheritance from nothing ( isa : null )
 - allow regexes as initialization values for advanced attributes
 - alias static methods (not properties) to the constructor (should be delegates to 'my')

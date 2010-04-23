@@ -1,6 +1,6 @@
 StartTest(function (t) {
     
-    t.plan(8)
+    t.plan(15)
     
     //==================================================================================================================================================================================
     t.diag("Joose.A.*")
@@ -8,16 +8,17 @@ StartTest(function (t) {
     
     var counter = 0
     
-    Joose.A.each([ 1, 2, 3, 4, 5 ], function (value) {
+    var res = Joose.A.each([ 1, 2, 3, 4, 5 ], function (value) {
         
         t.ok(value == ++counter, 'Joose.A.each works as expected')
     })
     
+    t.ok(res === undefined, 'Result value is correct #1')
 
     
     counter = 0
     
-    Joose.A.each([ 1, 2, 3, 4, 5 ], function (value) {
+    res = Joose.A.each([ 1, 2, 3, 4, 5 ], function (value) {
         
         counter++
         
@@ -25,6 +26,7 @@ StartTest(function (t) {
     })
     
     t.ok(counter == 3, "Joose.A.each can be stopped by returning a 'false' value")
+    t.ok(res === false, 'Result value is correct #2')
     
     
     
@@ -36,6 +38,32 @@ StartTest(function (t) {
     
     t.ok(res[0] == 2, "Joose.A.map works as expected #1")
     t.ok(res[1] == 3, "Joose.A.map works as expected #2")
+  
     
+    //==================================================================================================================================================================================
+    t.diag("Joose.O.*")
+    
+    
+    var res = Joose.O.each({ foo : 'bar', bar : 'baz' }, function (value, key) {
+        // we aren't checking the number of pairs, assuming some people are using Joose with the 
+        // frameworks, which extends `Object` prototype (god help them :)
+        
+        if (key == 'foo') t.ok(value == 'bar', '1st key/value is correct')
+        if (key == 'bar') t.ok(value == 'baz', '2nd key/value is correct')
+    })
+    
+    t.ok(res === undefined, 'Result value is correct #1')
+
+    
+    counter = 0
+    
+    var res = Joose.O.each({ foo : 'bar', bar : 'baz' }, function (value, key) {
+        counter++
+        
+        return false
+    })
+    
+    t.ok(counter == 1, "Joose.O.each can be stopped by returning a 'false' value")
+    t.ok(res === false, 'Result value is correct #2')
     
 })

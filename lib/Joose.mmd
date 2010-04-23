@@ -171,6 +171,7 @@ Helpers for Arrays
   - `Joose.A.each(array, func, scope)`
 
 Calls a `func` in the optional `scope` for each element of `array` as: `func(element, index)`, where `index` is the index of element in the `array`. Returning a `false` from `func` stops the iteration.
+If the iteration were stopped with returned `false` value, this helper also return `false`. Otherwise it returns undefined value.
 
   - `Joose.A.map(array, func, scope)`
 
@@ -209,19 +210,20 @@ Helpers for Objects
 
 Calls a `func` in the optional `scope` for *all* properties of the `object` (*including* inherited via prototype chain). 
 `func` is called as: `func(value, name), where `value` is the value of the `name` property of `object`. Returning a `false` from `func` stops the iteration.
+If the iteration were stopped with returned `false` value, this helper also return `false`. Otherwise it returns undefined value.
 
   - `Joose.O.eachOwn(object, func, scope)`
 
 Calls a `func` in the optional `scope` for only "own" properties of the `object`. `func` is called as: `func(value, name), where `value` is the value of the `name` property of `object`.
-Returning a `false` from `func` stops the iteration.
+Returning a `false` from `func` stops the iteration. If the iteration were stopped with returned `false` value, this helper also return `false`. Otherwise it returns undefined value.
     
-  - `Joose.O.copy(source, target)`
+  - `Joose.O.copy(source, target?)`
 
-Copies *all* the properties of `source` object to the `target` (*including* inherited via prototype chain). 
+Copies *all* the properties of `source` object to the `target` (which is created as empty object if not supplied). (*including* inherited via prototype chain). Returns `target`. 
 
-  - `Joose.O.copyOwn(source, target)`
+  - `Joose.O.copyOwn(source, target?)`
 
-Copies only the "own" properties of `source` object to the `target`. 
+Copies only the "own" properties of `source` object to the `target` (which is created as empty object if not supplied).. Returns `target`. 
     
   - `Joose.O.getMutableCopy(object)`
 
