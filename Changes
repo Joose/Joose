@@ -7,11 +7,14 @@
     - Static instance ('my') now receives a special 'HOST' configuration parameter during instantiation, containing a hosting class constructor
     - returning 'false' from Joose.A/O.each iterators stops the iteration and can be propagated further 
     - added `Joose.A.map` helper
-    - attributes initialization moved from `initialize` method to constructor, this don't break the previous behavior 
-        (which was somewhat restrictive - only `after` ) and allows:
-            1) the `before` modifier for `initialize` with already initialized attributes
-            2) better support for inheriting from non-Joose classes (which may not have `initialize` at all)
+    - attributes initialization moved from `initialize` method to constructor (it was somewhat restrictive - only allows `after` modifiers), this allows:
+        1) the `before` modifier for `initialize` with already initialized attributes
+        2) better support for inheriting from non-Joose classes (which may not have `initialize` at all)
+    - added ability to specify the arbitrary method (by name) for attributes initialization ("builder" in Moose meaning)
     
+    [API CHANGES]
+
+    -none-
     
     [BUG FIXES]
     

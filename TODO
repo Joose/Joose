@@ -6,9 +6,6 @@ IDEAS
 - some kind of obfuscator to reduce codebase size?? (function () { var a='Joose', b='Managed'; top[a][b] etc })()
 - try Closure compacter
 
-- rewrite the core in more functional style (should give noticable speed-up for class mutations, as there will be no 'deCompose' stage - 
-we'll just clear the prototype and the re-apply it from scratch)
-
 - "immutable traits" (should have name) - cache the derived meta-class, then re-use it, instead of re-creating for each instance
    should give cheap "lightweight" traits
 
@@ -16,6 +13,12 @@ we'll just clear the prototype and the re-apply it from scratch)
 
 TASKS
 =====
+
+- rewrite the core in more functional style (should give noticeable speed-up for class mutations, as there will be no 'deCompose' stage - 
+        we'll just clear the prototype and the re-apply it from scratch, plus - we'll also noticeable reduce the codebase)
+
+
+- ability to specify the method for attribute initialization ("builder" in Moose meaning)
 
 - ability to freely inherit from non-Joose classes
 

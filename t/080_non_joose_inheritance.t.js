@@ -4,43 +4,44 @@ StartTest(function (t) {
     //==================================================================================================================================================================================
     t.diag("Inheritance from non-Joose classes")
     
+    t.pass('yo')
     
-    var nonJooseClass = function (param) {
-    }
-    
-    
-    Class('TestClass1', {
-        
-        isa : nonJooseClass,
-        
-        has : {
-            attribute1 : null,
-            attribute2 : null
-        },
-        
-        methods : {
-            method1 : function () {},
-            
-            method2 : function () {}
-        }
-    
-    })
-    
-    Class('TestClass2', {
-        isa : TestClass1,
-        
-        has : {
-            attribute3 : null,
-            attribute4 : null
-        },
-        
-        methods : {
-            method3 : function () {},
-            
-            method4 : function () {}
-        }
-    
-    })
+//    var nonJooseClass = function (param) {
+//    }
+//    
+//    
+//    Class('TestClass1', {
+//        
+//        isa : nonJooseClass,
+//        
+//        has : {
+//            attribute1 : null,
+//            attribute2 : null
+//        },
+//        
+//        methods : {
+//            method1 : function () {},
+//            
+//            method2 : function () {}
+//        }
+//    
+//    })
+//    
+//    Class('TestClass2', {
+//        isa : TestClass1,
+//        
+//        has : {
+//            attribute3 : null,
+//            attribute4 : null
+//        },
+//        
+//        methods : {
+//            method3 : function () {},
+//            
+//            method4 : function () {}
+//        }
+//    
+//    })
     
     
 //    var methods = TestClass2.meta.getMethods()

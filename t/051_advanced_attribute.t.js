@@ -1,6 +1,6 @@
 StartTest(function (t) {
     
-    t.plan(38)
+    t.plan(41)
     
     
     //==================================================================================================================================================================================
@@ -222,5 +222,33 @@ StartTest(function (t) {
     testClass3.SETRES('custom')
 
     t.ok(testClass3.GETRES() == 'custom', 'Customized setter works correctly')
+    
+    
+    //==================================================================================================================================================================================
+    t.diag("Initializing in builder method")
+    
+    Class('TestClass4', {
+        has : {
+            res : {
+                is : 'rw',
+                builder : 'this._buildRes'
+            }
+        },
+        
+        methods : {
+            _buildRes : function (name, config) {
+                
+                t.ok(name == 'res', 'Name was correctly passed into attribute builder')
+                t.ok(config.foo == 'bar', 'Config was correctly passed into attribute builder')
+                
+                return 123
+            }
+        }
+    })    
+
+    
+    var testClass4 = new TestClass4({ foo : 'bar' })
+    
+    t.ok(testClass4.res == 123, 'Attribute was correctly initialized from builder')
 })    
 
