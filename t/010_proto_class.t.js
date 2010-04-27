@@ -1,5 +1,5 @@
 StartTest(function (t) {
-    t.plan(26)
+    t.plan(29)
     
     //==================================================================================================================================================================================
     t.diag("Joose.Proto.Class")
@@ -90,6 +90,10 @@ StartTest(function (t) {
     t.ok(testClass1 instanceof TestClass1, "testClass1 isa TestClass1")
     t.ok(testClass1 instanceof TestClass, "testClass1 isa TestClass")
     t.ok(testClass1 instanceof Joose.Proto.Object, "testClass1 isa Joose.Proto.Object")
+    
+    t.ok(TestClass1.meta.isa(TestClass1), "TestClass1 isa TestClass1")
+    t.ok(TestClass1.meta.isa(TestClass), "TestClass1 isa TestClass")
+    t.ok(TestClass1.meta.isa(Joose.Proto.Object), "TestClass1 isa Joose.Proto.Object")
     
     t.ok(Joose.Proto.Class.meta instanceof Joose.Proto.Object, "Joose.Proto.Class.meta isa Joose.Proto.Object")
     
