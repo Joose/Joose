@@ -1,6 +1,6 @@
 StartTest(function (t) {
     
-    t.plan(54)
+    t.plan(55)
     
     //==================================================================================================================================================================================
     t.diag("Role application")
@@ -48,6 +48,8 @@ StartTest(function (t) {
     t.ok(creature.meta.isDetached, "Instance was detached")
     t.ok(creature.constructor != Creature, "Instance was detached, indeed")
     t.ok(creature instanceof Creature, "However its still creature")
+    
+    t.ok(creature.meta.name == 'Creature', 'Class name for detached instances is still the same')
     
     creature.meta.extend({
         does : [{
