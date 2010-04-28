@@ -25,10 +25,11 @@
 
     -none-
     
+    
     [BUG FIXES]
     
-    - fixed bug, when traits weren't applied to the class with already detached meta 
-    (when the meta already had traits)
+    - fixed bug, when traits weren't applied to the class with already detached meta (when the meta already had traits)
+    
     - fixed bug, when the metaclass of detached instance had no name 
 
 
