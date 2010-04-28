@@ -1,6 +1,6 @@
 StartTest(function (t) {
     
-    t.plan(44)
+    t.plan(49)
     
     //==================================================================================================================================================================================
     t.diag("Symbiont - separate, built-in class, (analog of class-methods + class-attributes + class-roles + ...)")
@@ -62,6 +62,7 @@ StartTest(function (t) {
     
     t.ok(TestClass.my.res == 'class', "Symbiont's attribute was correctly installed")
     t.is(TestClass.my.result(), 'TestClass:class', "Symbiont's method was correctly installed")
+    t.is(TestClass.result(), 'TestClass:class', "Symbiont's method was correctly aliased to constructor")
     
     t.ok(testClass.my.res == 'class', "Symbiont is also accesible via 'my' in prototype")
     t.is(testClass.my.result(), 'TestClass:class', "... indeed")
@@ -106,6 +107,13 @@ StartTest(function (t) {
     t.ok(!TestClass.my.walking, 'TestClass.my is not walking')
         
     
+    TestClass.walk('there')
+    t.ok(TestClass.my.walking, 'TestClass.my is walking #2')
+    
+    TestClass.stop()
+    t.ok(!TestClass.my.walking, 'TestClass.my is not walking #2')
+    
+    
     //==================================================================================================================================================================================
     t.diag("Symbiont inheritance")
     
@@ -128,6 +136,8 @@ StartTest(function (t) {
     t.ok(SubTestClass.my.meta.hasMethod('result'), "SubTestClass.my has 'result' method")
     t.is(SubTestClass.my.res, 'SubTestClass:res', "Symbiont's 'after' modifier was executed")
     t.is(SubTestClass.my.result(), 'SubTestClass:class', "Symbiont's method was correctly overriden")
+    
+    t.is(SubTestClass.result(), 'SubTestClass:class', "Symbiont's method was correctly overriden #2")
     
     
     //==================================================================================================================================================================================
@@ -154,7 +164,7 @@ StartTest(function (t) {
         },
         
         methods : {
-            veryBaseMethod : function () {}
+            veryBaseMethod : function () { return 'veryBase' }
         }
     })
     
@@ -175,6 +185,8 @@ StartTest(function (t) {
     
     t.ok(TestClass2.my.meta.hasAttribute('veryBaseAttr'), "TestClass2.my has 'veryBaseAttr' attribute"); 
     t.ok(TestClass2.my.meta.hasMethod('veryBaseMethod'), "TestClass2.my has 'veryBaseMethod' method")
+    
+    t.ok(TestClass2.veryBaseMethod() == 'veryBase', "TestClass2.my has 'veryBaseMethod' method aliased")
     
     
     //==================================================================================================================================================================================

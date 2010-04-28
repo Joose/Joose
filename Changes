@@ -3,14 +3,23 @@
     [ENHANCEMENTS]
     
     - Class/Role/Module in the global scope aliased as Joose.Class/Joose.Role/Joose.Module
+    
     - Joose no longer overwrites the Class/Role/Module symbols in global scope (should allow Prototype support)
+    
     - Static instance ('my') now receives a special 'HOST' configuration parameter during instantiation, containing a hosting class constructor
+    
+    - Static methods are now aliased directly to the host constructor, and can be used without `my`
+    
     - returning 'false' from Joose.A/O.each iterators stops the iteration and can be propagated further 
+    
     - added `Joose.A.map` helper
+    
     - attributes initialization moved from `initialize` method to constructor (it was somewhat restrictive - only allows `after` modifiers), this allows:
         1) the `before` modifier for `initialize` with already initialized attributes
         2) better support for inheriting from non-Joose classes (which may not have `initialize` at all)
+    
     - added ability to specify the arbitrary method (by name) for attributes initialization ("builder" in Moose meaning)
+    
     
     [API CHANGES]
 
