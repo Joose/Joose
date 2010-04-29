@@ -1,5 +1,5 @@
 StartTest(function (t) {
-    t.plan(60)
+    t.plan(62)
     
     //==================================================================================================================================================================================
     t.diag("Modules")
@@ -15,6 +15,10 @@ StartTest(function (t) {
     t.ok(globalNs.container == Joose.top, "Container of global namespace is a top scope")
     
     Module('TestModule', {
+        
+        VERSION : 0.01,
+        AUTHORITY : 'auth',
+        
         body : function (module) {
             this.foo = 'bar'
             module.bar = 'baz'
@@ -23,6 +27,9 @@ StartTest(function (t) {
     
     t.ok(TestModule, 'Something in the module spot appears')
     t.ok(TestModule.meta.constructor == Joose.Namespace.Keeper, '.. and its a Joose.Namespace.Keeper')
+    
+    t.ok(TestModule.meta.VERSION == 0.01, 'Correct VERSION detected')
+    t.ok(TestModule.meta.AUTHORITY == 'auth', 'Correct AUTHORITY detected')
     
     t.ok(TestModule.meta.ns.container == TestModule, 'Container of namespace is a module function')
     t.is(TestModule.foo, 'bar', 'Body of module was executed in the scope of its container')
