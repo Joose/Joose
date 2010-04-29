@@ -2,7 +2,11 @@
 
     [ENHANCEMENTS]
     
-    -none-
+    - added ability to prefix the namespace declaration with '.' which will switch to global namespace
+
+    - added NodeJS detection
+
+    - exporting created constructors to global NodeJS scope
     
     [API CHANGES]
 

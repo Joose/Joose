@@ -1,5 +1,5 @@
 StartTest(function (t) {
-    t.plan(56)
+    t.plan(60)
     
     //==================================================================================================================================================================================
     t.diag("Modules")
@@ -92,6 +92,11 @@ StartTest(function (t) {
                 this.foo = 'bar'
                 mod.bar = 'baz'
             })
+            
+            Module(".Global.Test3", function (mod) {
+                this.foo = 'bar3'
+                mod.bar = 'baz3'
+            })
         }
     })
     
@@ -109,6 +114,11 @@ StartTest(function (t) {
     t.ok(TestModule.Test3, 'Something in the nested module spot appears')
     t.ok(TestModule.Test3.meta.constructor == Joose.Namespace.Keeper, '.. and its a Joose.Namespace.Keeper')
     t.ok(TestModule.Test3.foo == 'bar' && TestModule.Test3.bar == 'baz', 'TestModule.Test3 was correctly setuped')
+
+    
+    t.ok(Global.Test3, 'Something in the nested module spot appears')
+    t.ok(Global.Test3.meta.constructor == Joose.Namespace.Keeper, '.. and its a Joose.Namespace.Keeper')
+    t.ok(Global.Test3.foo == 'bar3' && Global.Test3.bar == 'baz3', 'Global.Test3 was correctly setuped')
     
     
     //==================================================================================================================================================================================
@@ -232,6 +242,14 @@ StartTest(function (t) {
                     })
                     t.ok(Level1.Level2.Level3_2.Level4 && Level1.Level2.Level3_2.Level4.meta.constructor == Joose.Meta.Class, "Level1.Level2.Level3_2.Level4 spot filled correctly")
                     t.ok(new Level1.Level2.Level3_2.Level4().four() == 4, "Level1.Level2.Level3_2.Level4 class constructed correctly")
+                    
+                    
+                    Class(".Glob.Level44", {
+                        methods : {
+                            four : function () { return 44 }
+                        }
+                    })
+                    t.ok(Glob.Level44 && Glob.Level44.meta.constructor == Joose.Meta.Class, "Glob.Level44 spot filled correctly")
                 }
             })
             t.ok(Level1.Level2.Level3_2 && Level1.Level2.Level3_2.meta.constructor == Joose.Namespace.Keeper, "Level1.Level2.Level3_2 spot filled correctly")
