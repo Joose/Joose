@@ -1,6 +1,6 @@
 StartTest(function (t) {
     
-    t.plan(17)
+    t.plan(19)
     
     //==================================================================================================================================================================================
     t.diag("Advanced attributes and class's body")
@@ -95,6 +95,21 @@ StartTest(function (t) {
     
     t.ok(TestClass2.meta.getAttribute('res').value == 'fromClass', "Created attribute has a correct value - received from class")
 
+
+    //==================================================================================================================================================================================
+    t.diag("Webkit & RegExp attributes")
     
+    
+    Class('Bar', {
+        has : { 
+            regex1  : { is: 'rw', init: /abc/ }, 
+            regex2  : /abc/ 
+        }
+    })
+    
+    var bar = new Bar()
+
+    t.ok(bar.regex1.test(/123abc123/), 'Attribute was correctly initialized with RegExp #1')
+    t.ok(bar.regex2.test(/123abc123/), 'Attribute was correctly initialized with RegExp #2')
 })    
 

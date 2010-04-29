@@ -1,4 +1,21 @@
-3.007 
+3.008   -in progress- 
+
+    [ENHANCEMENTS]
+    
+    -none-
+    
+    [API CHANGES]
+
+    -none-
+    
+    
+    [BUG FIXES]
+    
+    - fixed bug, related to fact, that typeof /a/ == 'function' in WebKit, it was preventing initializing of attribute with regexp  
+    
+
+
+3.007   Wed, Apr 27, 2010 
 
     [ENHANCEMENTS]
     

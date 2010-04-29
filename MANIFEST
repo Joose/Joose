@@ -62,7 +62,6 @@ doc/html/Joose/Proto/Class.html
 doc/html/Joose/Proto/Empty.html
 doc/html/Joose/Proto/Object.html
 doc/html/Task/Joose/Core.html
-doc/html/Task/Joose/Stable.html
 doc/mmd/Joose.txt
 doc/mmd/Joose/Cookbook.txt
 doc/mmd/Joose/Cookbook/Basics/Recipe1.txt
@@ -122,7 +121,6 @@ doc/mmd/Joose/Proto/Class.txt
 doc/mmd/Joose/Proto/Empty.txt
 doc/mmd/Joose/Proto/Object.txt
 doc/mmd/Task/Joose/Core.txt
-doc/mmd/Task/Joose/Stable.txt
 inc/Module/Build/Functions.pm
 inc/Module/Build/Functions/DSL.pm
 inc/Module/Build/JSAN.pm

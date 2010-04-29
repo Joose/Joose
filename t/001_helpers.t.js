@@ -1,6 +1,6 @@
 StartTest(function (t) {
     
-    t.plan(15)
+    t.plan(17)
     
     //==================================================================================================================================================================================
     t.diag("Joose.A.*")
@@ -65,5 +65,14 @@ StartTest(function (t) {
     
     t.ok(counter == 1, "Joose.O.each can be stopped by returning a 'false' value")
     t.ok(res === false, 'Result value is correct #2')
+    
+    
+    //==================================================================================================================================================================================
+    t.diag("Webkit & RegExp issue")
+    
+    t.ok(Joose.O.isFunction(function () {}), 'Function detected correctly')
+    
+    t.ok(!Joose.O.isFunction(/a/), 'RegExp is not a function')
+    
     
 })
