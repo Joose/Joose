@@ -14,12 +14,6 @@ IDEAS
 TASKS
 =====
 
-- rewrite the core in more functional style (should give noticeable speed-up for class mutations, as there will be no 'deCompose' stage - 
-        we'll just clear the prototype and the re-apply it from scratch, plus - we'll also noticeable reduce the codebase)
-
-
-- ability to specify the method for attribute initialization ("builder" in Moose meaning)
-
 - ability to freely inherit from non-Joose classes
 
 - inter-op with NodeJS
@@ -27,12 +21,7 @@ TASKS
 - test Joose.O helpers
 
 - add exception for inheritance from nothing ( isa : null )
-- allow regexes as initialization values for advanced attributes
 
-- alias static methods (not properties) to the constructor (should be delegates to 'my') 
-    Some.Class.method = function () { 
-        this.my.method.apply(this.my, arguments) 
-    }
 
 - derive 'stable' branch
 
@@ -58,6 +47,8 @@ DOCS
 
 - document how class can be used as role (w/o inherited properties)
 
+- document internals, notably the introspection API
+
 
 OPTIMIZATION
 ============
@@ -80,6 +71,10 @@ OPTIMIZATION
 
 REFACTORING POSSIBILITIES
 =========================
+
+- rewrite the core in more functional style (should give noticeable speed-up for class mutations, as there will be no 'unApply' stage - 
+        we'll just clear the prototype and the re-apply it from scratch, plus - we'll also receive a noticeable reduce of the codebase)
+
 
 - merge advanced attribute Role into bootstrap role?
 
@@ -125,6 +120,12 @@ EXTENSIONS
 DONE
 ====
 
+- ability to specify the method for attribute initialization ("builder" in Moose meaning)
+- alias static methods (not properties) to the constructor (should be delegates to 'my') 
+    Some.Class.method = function () { 
+        this.my.method.apply(this.my, arguments) 
+    }
+- allow regexes as initialization values for advanced attributes
 - fix JSAN shell 'install' command (prefix)
 - release Module::Build::Functions (CSJ)
 - release Module::JSAN
