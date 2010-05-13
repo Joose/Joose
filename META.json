@@ -7,7 +7,7 @@
       "version" : "1.4",
       "url" : "http://module-build.sourceforge.net/META-spec-v1.4.html"
    },
-   "version" : "3.008",
+   "version" : "3.009",
    "name" : "Joose",
    "author" : [
       "Nickolay Platonov (aka SamuraiJack) <nplatonov@cpan.org>",
@@ -34,7 +34,7 @@
          "file" : "lib/Joose/Managed/Property/MethodModifier.js"
       },
       "Joose" : {
-         "version" : "3.008",
+         "version" : "3.009",
          "file" : "lib/Joose.js"
       },
       "Joose.Meta.Object" : {
@@ -190,7 +190,7 @@
          "file" : "lib/Joose/Manual/FAQ.js"
       },
       "Task.Joose.Core" : {
-         "version" : "3.008",
+         "version" : "3.009",
          "file" : "lib/Task/Joose/Core.js"
       },
       "Joose.Managed.Property.ConflictMarker" : {
