@@ -22,7 +22,7 @@
          "file" : "lib/Joose/Meta/Role.js"
       },
       "Joose.Manual.Classes" : {
-         "version" : null,
+         "version" : "0.01",
          "file" : "lib/Joose/Manual/Classes.js"
       },
       "Joose.Manual.Traits" : {
@@ -150,7 +150,7 @@
          "file" : "lib/Joose/Managed/Property/MethodModifier/Augment.js"
       },
       "Joose.Manual.JooseX" : {
-         "version" : null,
+         "version" : "1.23",
          "file" : "lib/Joose/Manual/JooseX.js"
       },
       "Joose.Manual.MetaRoles" : {

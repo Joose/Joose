@@ -1,8 +1,10 @@
-3.008   -in progress- 
+3.008   Thu, May 13, 2010
 
     [ENHANCEMENTS]
     
-    - added ability to prefix the namespace declaration with '.' which will switch to global namespace
+    - added ability to prefix the namespace declaration with '.' which will switch the current namespace to global
+    
+    - added ability to specify VERSION and AUTHORITY builders (AUTHORITY is reserved for future use with Jx.N.D)
 
     - added NodeJS detection
 
@@ -15,7 +17,7 @@
     
     [BUG FIXES]
     
-    - fixed bug, related to fact, that typeof /a/ == 'function' in WebKit, it was preventing initializing of attribute with regexp  
+    - fixed bug, related to fact, that typeof /a/ == 'function' in WebKit, it was preventing initializing of attributes with regexp  
     
 
 
