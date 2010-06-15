@@ -1,9 +1,10 @@
-3.009   .............
+Release history for Joose:
+
+{{ $NEXT }}
 
     [ENHANCEMENTS]
     
-    -none-
-
+    - switched to Dist::Zilla for distribution management
     
     [API CHANGES]
 
