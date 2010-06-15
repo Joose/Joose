@@ -75,7 +75,7 @@ ACKNOWLEDGEMENTS
 
 Many thanks to the whole Moose community for being icebreaker in the meta world. 
 
-Special thanks to Dave Rolsky for the excellent Moose documentation written, on which this document is based.
+Special thanks to Dave Rolsky for the excellent Moose documentation, on which this document is based.
 
 
 AUTHORS

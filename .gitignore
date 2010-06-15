@@ -1,10 +1,5 @@
-_build
-Build
-blib
+__buildcache
+.build
 //.project
 .externalToolBuilders
-MANIFEST.bak
-Makefile.PL
-/inc/*
 /Joose-*
-/doc/*
