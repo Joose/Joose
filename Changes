@@ -6,6 +6,8 @@ Release history for Joose:
     
     - switched to Dist::Zilla for distribution management
     
+    - some speed up of the core PropertySet iterators
+    
     [API CHANGES]
 
     -none-

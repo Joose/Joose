@@ -18,7 +18,7 @@ TASKS
 
 - inter-op with NodeJS
 
-- test Joose.O helpers
+- test Joose.O helpers (partially done)
 
 - add exception for inheritance from nothing ( isa : null )
 
@@ -72,7 +72,7 @@ OPTIMIZATION
 REFACTORING POSSIBILITIES
 =========================
 
-- rewrite the core in more functional style (should give noticeable speed-up for class mutations, as there will be no 'unApply' stage - 
+- rewrite the core in more functional style - remove 'unApply' stage (should give noticeable speed-up for class mutations, as there will be no 'unApply' stage - 
         we'll just clear the prototype and the re-apply it from scratch, plus - we'll also receive a noticeable reduce of the codebase)
 
 
