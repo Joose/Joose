@@ -8,6 +8,9 @@ Release history for Joose:
     
     - some speed up of the core PropertySet iterators
     
+    - if any value gets returned from `initialize` method, it gets returned as the result of the constructor,
+      otherwise the instance itself is returned
+    
     [API CHANGES]
 
     -none-
