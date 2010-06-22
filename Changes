@@ -10,6 +10,8 @@ Release history for Joose:
     
     - if any value gets returned from `initialize` method, it gets returned as the result of the constructor,
       otherwise the instance itself is returned
+      
+    - added 'beforeConsumedBy' hook, allowing the property sets to act somehow before being consumed
     
     [API CHANGES]
 
