@@ -2,6 +2,8 @@ Release history for Joose:
 
 {{ $NEXT }}
 
+3.009     2010-06-22 19:21
+
     [ENHANCEMENTS]
     
     - switched to Dist::Zilla for distribution management
