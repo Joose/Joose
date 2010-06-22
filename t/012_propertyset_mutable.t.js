@@ -28,7 +28,7 @@ StartTest(function (t) {
     B.addProperty('B2', { init : 'B2'} )
     B.addProperty('A1', { init : 'B-A1'} )
     
-    B.setComposeInfo(A)
+    B.addComposeInfo(A)
     
     B.close()
     
@@ -40,7 +40,7 @@ StartTest(function (t) {
     var C = new Joose.Managed.PropertySet.Mutable()
     C.addProperty('C1', { init : 'C1'} )
     
-    C.setComposeInfo(B)
+    C.addComposeInfo(B)
     
     C.close()
     
@@ -51,7 +51,7 @@ StartTest(function (t) {
     E.addProperty('E1', { init : 'E1'} )
     E.addProperty('E2', { init : 'E2'} )
     
-    E.setComposeInfo(A, B)
+    E.addComposeInfo(A, B)
     
     E.close()
     
@@ -71,7 +71,7 @@ StartTest(function (t) {
     var D = new Joose.Managed.PropertySet.Mutable()
     D.addProperty('D1', { init : 'D1'} )
 
-    D.setComposeInfo(B, E)
+    D.addComposeInfo(B, E)
     
     D.close()
     
@@ -89,7 +89,7 @@ StartTest(function (t) {
     F.addProperty('F1', { init : 'F1'} )
     F.addProperty('A1', { init : 'F-A1'} )
     
-    F.setComposeInfo(C, D, E)
+    F.addComposeInfo(C, D, E)
     
     F.close()
     
@@ -113,7 +113,7 @@ StartTest(function (t) {
     var E1 = new Joose.Managed.PropertySet.Mutable()
     E1.addProperty('E11', { init : 'E11'} )
     
-    E1.setComposeInfo({
+    E1.addComposeInfo({
         propertySet : A,
         alias : {
             A1 : 'A1_from_A'
