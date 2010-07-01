@@ -2,6 +2,19 @@ Release history for Joose:
 
 {{ $NEXT }}
 
+    [ENHANCEMENTS]
+    
+    - platform detection made exception-less
+    
+    [API CHANGES]
+
+    -none-
+
+    
+    [BUG FIXES]
+    
+    -none-
+
 3.009     2010-06-22 19:21
 
     [ENHANCEMENTS]
