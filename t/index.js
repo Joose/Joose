@@ -1,17 +1,17 @@
 var Harness
 
 if (typeof process != 'undefined' && process.pid) {
-    require('Task/Joose/NodeJS')
-    require('Task/Scope/Provider/Core')
-    require('Task/Test/Run/NodeJS')
+    require('Task/Test/Run/NodeJSBundle')
     
     Harness = Test.Run.Harness.NodeJS
 } else
-    Harness = Test.Run.Harness.ExtJS
+    Harness = Test.Run.Harness.Browser.ExtJS
 
     
-Harness.configure({
-	title          : 'Joose test suite',
+Harness.my.configure({
+	title           : 'Joose test suite',
+    
+    verbosity       : 0,
 	
 	preload : [
 	    'Task.Joose.Core'
@@ -19,7 +19,7 @@ Harness.configure({
 })
 
 
-Harness.start(
+Harness.my.start(
     '001_helpers.t.js',
     '010_proto_class.t.js',
     '011_propertyset.t.js',
