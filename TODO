@@ -9,14 +9,17 @@ IDEAS
 - "immutable traits" (should have name) - cache the derived meta-class, then re-use it, instead of re-creating for each instance
    should give cheap "lightweight" traits
 
+- add alias 'static' for 'my'?
 
+- property set & stem should only provide the composition logic, `apply/unapply` logic should be delegated to meta
+  (in form of hooks?)
 
 TASKS
 =====
 
+
 - ability to freely inherit from non-Joose classes
 
-- inter-op with NodeJS
 
 - test Joose.O helpers (partially done)
 
@@ -120,6 +123,7 @@ EXTENSIONS
 DONE
 ====
 
+- inter-op with NodeJS
 - ability to specify the method for attribute initialization ("builder" in Moose meaning)
 - alias static methods (not properties) to the constructor (should be delegates to 'my') 
     Some.Class.method = function () { 

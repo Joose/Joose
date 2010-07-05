@@ -33,6 +33,7 @@ Harness.my.start(
     '032_role_application_basic.t.js',
     '033_role_application_sugar.t.js',
     '040_my_symbiont.t.js',
+    '041_my_mutation.t.js',
     '045_role_builder.t.js',
     '050_helpers.t.js',
     '051_advanced_attribute.t.js',

@@ -6,6 +6,10 @@ Release history for Joose:
     
     - platform detection made exception-less
     
+    - test suite is now passing on NodeJS platform (was adapted to recent changes Test.Run)
+    
+    - starting from this release, version number will increase in 2nd digit
+    
     [API CHANGES]
 
     -none-
@@ -13,7 +17,7 @@ Release history for Joose:
     
     [BUG FIXES]
     
-    -none-
+    - fixed bug, when aliases for static methods could be messed up during class mutation
 
 3.009     2010-06-22 19:21
 
