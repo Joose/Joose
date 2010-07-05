@@ -6,7 +6,7 @@ Release history for Joose:
     
     - platform detection made exception-less
     
-    - test suite is now passing on NodeJS platform (was adapted to recent changes Test.Run)
+    - test suite is now passing on the NodeJS platform (has been adapted to recent changes Test.Run)
     
     - starting from this release, version number will increase in 2nd digit
     

@@ -8,18 +8,21 @@ if (typeof process != 'undefined' && process.pid) {
     Harness = Test.Run.Harness.Browser.ExtJS
 
     
-Harness.my.configure({
+Harness.configure({
 	title           : 'Joose test suite',
     
     verbosity       : 0,
 	
+//    transparentEx   : true,
+//    runCore         : 'sequential',
+    
 	preload : [
 	    'Task.Joose.Core'
     ]
 })
 
 
-Harness.my.start(
+Harness.start(
     '001_helpers.t.js',
     '010_proto_class.t.js',
     '011_propertyset.t.js',
