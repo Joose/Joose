@@ -2,15 +2,11 @@ Release history for Joose:
 
 {{ $NEXT }}
 
-3.01      2010-07-05 18:15
-
     [ENHANCEMENTS]
     
     - platform detection made exception-less
     
     - test suite is now passing on the NodeJS platform (has been adapted to recent changes Test.Run)
-    
-    - starting from this release, version number will increase in 2nd digit
     
     [API CHANGES]
 
