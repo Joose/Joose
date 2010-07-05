@@ -2,6 +2,8 @@ Release history for Joose:
 
 {{ $NEXT }}
 
+3.010     2010-07-05 19:01
+
     [ENHANCEMENTS]
     
     - platform detection made exception-less
