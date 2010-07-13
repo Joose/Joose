@@ -9,7 +9,7 @@ IDEAS
 - "immutable traits" (should have name) - cache the derived meta-class, then re-use it, instead of re-creating for each instance
    should give cheap "lightweight" traits
 
-- add alias 'static' for 'my'?
+- add alias 'static' for 'my'? (during declaration, reserved word)
 
 - property set & stem should only provide the composition logic, `apply/unapply` logic should be delegated to meta
   (in form of hooks?)
@@ -27,11 +27,12 @@ TASKS
 
 
 - derive 'stable' branch
+- merge Joose3 to 'master'
 
 - check overridableness of method and attribute metaclasses
+- add simple attributes 'defaultMethodClass' ala 'defaultAttributeClass'
 
 
-- add SKIP and TODO methods to Test.Run
 - add warnings about SUPER on proto level in OPERA
 
 
@@ -79,6 +80,8 @@ REFACTORING POSSIBILITIES
         we'll just clear the prototype and the re-apply it from scratch, plus - we'll also receive a noticeable reduce of the codebase)
 
 
+- only schedule the calls to `preApply/postUnApply` when it explicitly asked by attribute? (currently just skipped for requirements for example)
+
 - merge advanced attribute Role into bootstrap role?
 
 - merge bootstrap role into managed class?
@@ -114,7 +117,7 @@ EXTENSIONS
  - delegation
  - predicating/clearing
  - typing, coercion
- - traits for attributes
+ - traits for attributes (test)
 
 - JooseX.Method.Overloaded
 
@@ -123,6 +126,7 @@ EXTENSIONS
 DONE
 ====
 
+- add SKIP and TODO methods to Test.Run
 - inter-op with NodeJS
 - ability to specify the method for attribute initialization ("builder" in Moose meaning)
 - alias static methods (not properties) to the constructor (should be delegates to 'my') 
