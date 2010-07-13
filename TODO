@@ -41,7 +41,7 @@ TASKS
 DOCS
 ====
 
-- replace the examples of static usage to constructors (newFromConfig, newFromSomethingElse) 
+- replace the examples of 'static' usage to constructors (newFromConfig, newFromSomethingElse) 
 
 - Joose.Cookbook
     - add receipts
@@ -109,11 +109,10 @@ EXTENSIONS
 
 - JooseX.Builder.Also (to address Rhino issues and allow multiple modifiers in the same class)
 
-- JooseX.Meta.Parameterized (aka parameterized roles, + classes)
-
 - JooseX.Type
-
-- JooseX.Meta.Configurable (allows builders which will configure the meta + aliases for them)
+    - every class is a type
+    - every role is a type?
+    - types deriving (check Moose)
 
 - JooseX.Attribute:
  - delegation
@@ -122,12 +121,13 @@ EXTENSIONS
  - traits for attributes (test)
 
 - JooseX.Method.Overloaded
-
+- JooseX.Method.Labeled
 
 
 DONE
 ====
 
+- JooseX.Meta.Parameterized (aka parameterized roles, + classes)
 - add SKIP and TODO methods to Test.Run
 - inter-op with NodeJS
 - ability to specify the method for attribute initialization ("builder" in Moose meaning)
