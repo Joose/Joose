@@ -41,6 +41,8 @@ TASKS
 DOCS
 ====
 
+- replace the examples of static usage to constructors (newFromConfig, newFromSomethingElse) 
+
 - Joose.Cookbook
     - add receipts
     
