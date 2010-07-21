@@ -15,7 +15,7 @@ Release history for Joose:
     
     [BUG FIXES]
     
-    -none-
+    - fixed bug, when calling `Module` over previously declared class didn't trigger a call to `body` 
     
     
 3.010     2010-07-05 19:01
