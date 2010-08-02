@@ -1,0 +1,294 @@
+Joose.Internals
+===============
+
+
+Fundamental concepts
+--------------------
+
+Metaclass is the class, the instances of which, in turn, represent classes.
+
+Do all classes have metaclasses? Chicken & egg problem - what is the metaclass of the metaclass?
+
+Everything is mutable - the changes in the class/role propagates through all depended classes. 
+
+
+1st layer - Joose.Proto.Class
+=============================
+
+
+Joose.Proto.Class solves chicken&egg problem - its class, which is a meta-class for itself! 
+This makes Joose truly self-hosted and fully introspectable. 
+
+Classes of the Joose.Proto.Class level are very close to "raw" javascript. Attributes & methods
+are almost the same things - they generally just go directly to the prototype. No builders, roles, no
+method modifiers.
+
+Inheritance is implemented using famous "prototype chain" approach (Joose.O.getMutableCopy) 
+
+t/010_proto_class.t.js
+
+All classes inherit from Joose.Proto.Object by default.
+
+Other internal classes of Joose are written using Joose.Proto.Class as the meta-class.
+
+
+Abstract classes
+===================
+
+
+Joose.Managed.Property
+----------------------
+
+An abstract property. Generally a name/value pair. 
+
+A property is supposed to be (possible) shared among several classes (via roles). So can't assume
+it belongs to a specific class. 
+
+Property is supposed to be applied/unapplied to/from the class, through the following cycle: `preApply/apply`
+and `unApply/postUnApply` 
+
+
+Joose.Managed.PropertySet isa Joose.Managed.Property
+----------------------------------------------------
+
+An abstract, unordered collection of properties.    
+
+1. It supports the composition operation (`composeFrom` method). Can consume several other
+sets. Those sets are first flattened into intermediate set (possible with conflicts). Properties
+can be aliased and/or excluded. Follows the traits spec: http://www.iam.unibe.ch/~scg/Research/Traits/
+
+2. It simply propagate the `preApply/apply/unApply/postUnApply` to its elements.
+
+
+Joose.Managed.PropertySet.Mutable isa Joose.Managed.PropertySet
+---------------------------------------------------------------
+
+A mutable property set. Track the depended sets (derivatives). Propagate the changes through the derivatives.
+
+Track the sets from which its composed (composedFrom).
+
+Can be in 2 states: open (opened > 0) / closed (opened == 0). 
+
+Mutation only allowing when opened. 
+
+When opened from the closed state the set is *de-composed* - cleaned from all properties which weren't defined 
+in this set. Before that all derivatives are also opened.
+
+When closing from the opened == 1 state, the set is *re-composed* using the `composedFrom` data and inherited 
+`composeFrom` method. 
+ 
+Can be opened several times - will be a no-op. Each close operation should have matching open.
+
+Initially the set is open (opened == 1) 
+
+
+
+Joose.Managed.PropertySet.Composition isa Joose.Managed.PropertySet.Mutable
+---------------------------------------------------------------------------
+
+Higher-order mutable property set. Its a property set, which has other property sets as the elements 
+(propertyMetaClass           : Joose.Managed.PropertySet.Mutable)
+
+It defines the order of properties processing (`processOrder`), also adds the reverse processing order,
+which is important for unapplying things.
+
+It translates the higher-level operations to individual properties. That is, when 2 Compositions
+are asked to be flattened for example, they flat their's individual properties. When composition is asked
+to alias its properties, it translate this information to its properties, etc
+ 
+When the composition is de-composed it opens its properties (and vice-versa). 
+
+
+Foundations of the 2nd meta-layer
+=================================
+
+
+Joose.Managed.Stem isa Joose.Managed.PropertySet.Composition
+------------------------------------------------------------
+
+A concrete (not abstract) implementation of the Joose.Managed.PropertySet.Composition.
+
+Forms the "stem" of the class - as the stem of tree. 
+The branches are: [ 'attributes', 'methods', 'requirements', 'methodsModifiers' ]
+
+Each of those is the element (property) of the stem. In the same time, each of those
+branches is a collection of individual properties - collection of attributes, methods, etc.
+
+Stem also initiates the `preApply/apply` action during re-composition.
+
+IMPORTANT: During `preApply` the class is still open, and can mutate. During `apply` stage,
+the class definition is "final" and should only be somehow "materialized" in the prototype
+of the class, but not changed.
+
+During de-composition stem initiates the `unapply/postUnApply` action.
+
+
+Joose.Managed.Property.Attribute isa Joose.Managed.Property
+------------------------------------------------------------
+
+A very simple attribute. Just set its value to the prototype, using the `slot` as the name
+of the property. By default `slot == name`, but in special cases, those can be different.
+ 
+`getRawValueFrom/setRawValueTo` are supposed to be the low-level and **side-effects free**
+methods to get/set the value of the attribute. All custom attributes should provide a suitable
+implementation.
+
+
+Joose.Managed.Property.ConflictMarker isa Joose.Managed.Property
+----------------------------------------------------------------
+
+A simple composition conflict marker, which just throws an exception when applied to the class.
+
+
+Joose.Managed.Property.Requirement isa : Joose.Managed.Property
+---------------------------------------------------------------------------------
+
+A simple requirement, which, when applied to the class, will throw the exception unless the class
+has the method with the same name.
+ 
+
+Joose.Managed.Property.MethodModifier isa Joose.Managed.Property
+----------------------------------------------------------------
+
+Abstract method modifier. Collects some information about the method (whether its already presented
+in the class, whether its inherited or own, etc) and pass it to the `prepareModifier` method.
+Then applies the returned method wrapper to the prototype.
+
+Note, that usual methods are implemented as special "Put" modifiers.
+
+
+Joose.Managed.Property.MethodModifier.* isa Joose.Managed.Property.MethodModifier
+---------------------------------------------------------------------------------
+
+Various method modifiers
+
+
+Joose.Managed.StemElement.Attributes isa Joose.Managed.PropertySet.Mutable
+--------------------------------------------------------------------------
+
+A simple property set, contaning Joose.Managed.Property.Attribute as elements
+
+
+Joose.Managed.StemElement.Methods isa Joose.Managed.PropertySet.Mutable
+--------------------------------------------------------------------------
+
+A simple property set, contaning Joose.Managed.Property.MethodModifier.Put as elements
+
+It also skips the `preApply/postUnApply` stages to speed up the mutations
+
+
+Joose.Managed.StemElement.Requirements isa Joose.Managed.PropertySet.Mutable
+--------------------------------------------------------------------------
+
+A simple property set, contaning Joose.Managed.Property.Requirement as elements
+
+Requirements do not conflict - and the `flattenTo/composeTo` are overriden accordingly
+
+
+Joose.Managed.StemElement.MethodModifiers isa Joose.Managed.PropertySet.Mutable
+--------------------------------------------------------------------------
+
+A property set, containing method modifiers (the elements are arrays of modifiers 
+for each method).
+
+Method modifiers do not conflict as well.
+
+
+Joose.Managed.Builder
+---------------------
+
+A class, containing the collection of the class "builders". Builders are the methods of this class.
+
+Each builder match a 1st level entry in the class definition. It receives an instance of
+metaclass as the 1st argument, and the definition information as the 2nd. 
+
+
+
+
+
+2nd meta-layer - Joose.Managed.Class
+====================================
+
+On this layer the class obtains a new capabilities. First of all, class definition now consists
+from individual "builders". Then the attributes, methods and method modifiers appears.
+
+Classes now can consume other classes (actually roles, see below). And finally the class
+can be instantiated with the traits.
+
+
+Joose.Managed.Class isa Joose.Proto.Class
+-----------------------------------------
+
+The meta-class implementing all the features, described above. It inherit from Joose.Proto.Class,
+and overrides most of its methods to use stem and builder.
+
+Most of the "composition" functionality is delegating to the stem.
+Most of the "building" functionality is delegating to the builder.
+
+IMPORTANT: Though the Joose.Managed.Class implements all those features, by itself, it has the
+instance of Joose.Proto.Class as meta-class. So, Joose.Managed.Class *by itself* can't consume
+roles for example. As we definitely want the class system, with more capable default meta-class, we need
+the 3rd meta-layer (which will be relatively small and mostly as the bootstraping step).
+
+Another reason for the 3rd meta-level is the attribute. We also definitely want the attribute class
+to be able consume roles and has other advanced features. 
+
+
+Joose.Managed.Role isa Joose.Managed.Class
+------------------------------------------
+
+A special meta-class, which don't allow the class to inherit from other classes and to be instantiated.
+It's stem also skips the `apply/unapply` stages (not the `preApply/postUnapply`!)
+
+Its also makes the `requires` builder visible for user.
+
+
+3rd meta-layer - Joose.Meta.Class
+=================================
+
+Joose.Managed.Bootstrap
+-----------------------
+
+A collection of roles, implementing the namespacing, static part (my), and switching to the advanced
+attributes by default.
+
+
+Joose.Meta.Class isa Joose.Managed.Class, does Joose.Managed.Bootstrap
+----------------------------------------------------------------------
+
+A subclass of Joose.Managed.Class, extended with some additional features.
+
+Its still have the Joose.Managed.Class as the meta though, so, for example, when extending 
+Joose.Meta.Class directly (very advanced operation) its only possible to use basic attributes. 
+
+
+Joose.Meta.Role isa Joose.Managed.Role, does Joose.Managed.Bootstrap
+----------------------------------------------------------------------
+
+A subclass of Joose.Managed.Role, extended with some additional features.
+
+
+
+
+
+
+
+- document internals, notably the introspection API
+    -- properties hierarchy (Property -> PropetySet -> Mutable -> Composition -> Stem)
+    -- property's life stages (preApply/apply/unapply/postUnApply)
+    
+    -- brief description of built-in properties (attributes/methods/method modifiers/requirements)
+    
+    -- meta levels (proto/managed/meta)
+        --- reasons for the 3rd level
+        
+    -- life stages of class
+        --- initialize/extractConstructor/adaptConstructor/construct/prepareProps/extractSuperClass/
+            processSuperClass/adaptPrototype/finalize/processStem/extend/
+        --- class mutation (extend, stem open/closed)
+    
+    -- namespaces and class declaration
+        --- declaration (with helpers, goes trough the Joose.Namespace.Manager)
+        --- mutation (bypass the Joose.Namespace.Manager, managed by metaclass)
+        --- Joose.Namespace.Keeper
+
