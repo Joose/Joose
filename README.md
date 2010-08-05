@@ -7,41 +7,52 @@ Joose - A postmodern class system for JavaScript
 SYNOPSIS
 ========
 
-        Class("Point", {
+    Class('Person', {
         
-            has: {
-                x: {is: "ro"},
-                y: {is: "rw"},
+        methods : {
+            eat : function (food) {
+                console.log('yummy')
+                
+                return 'yummy'
+            }
+        }
+    })
+
+
+    
+    Class('Person.Tidy', {
+        isa : Person,
+        
+        before : {
+            eat : function (food) {
+                this.washHands()
+            }
+        },
+        
+        after : {
+            eat : function (food) {
+                this.brushTeeth()
+            }
+        },
+        
+        methods : {
+        
+            washHands : function (food) {
+                console.log('washing hands')
             },
             
-            methods: {
-                clear: function () {
-                    var x = this.getX()
-                    this.setY(0)
-                }
-            }
-        })
-        
-        Class("Point.ThreeD", {
-        
-            isa: Point,
-            
-            has: {
-                z: {}
+            brushTeeth : function (food) {
+                console.log('brushing teeth')
             },
             
-            after: {
-                clear: function () {
-                    this.z = 0
-                }
+            eat : function (food) {
+                this.SUPER(food)
             }
-        })
-        
-        var point = new Point.ThreeD({
-            x : 1,
-            y : 2,
-            z : 3
-        })
+        }
+    })
+    
+    
+    var person = new Person.Tidy()
 
 
 DESCRIPTION
