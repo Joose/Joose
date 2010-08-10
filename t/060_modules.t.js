@@ -1,5 +1,4 @@
 StartTest(function (t) {
-    t.plan(62)
     
     //==================================================================================================================================================================================
     t.diag("Modules")
@@ -22,14 +21,15 @@ StartTest(function (t) {
         body : function (module) {
             this.foo = 'bar'
             module.bar = 'baz'
+            
+            t.ok(TestModule.meta.VERSION == 0.01, 'Correct VERSION detected')
+            t.ok(TestModule.meta.AUTHORITY == 'auth', 'Correct AUTHORITY detected')
         }
     })
     
     t.ok(TestModule, 'Something in the module spot appears')
     t.ok(TestModule.meta.constructor == Joose.Namespace.Keeper, '.. and its a Joose.Namespace.Keeper')
     
-    t.ok(TestModule.meta.VERSION == 0.01, 'Correct VERSION detected')
-    t.ok(TestModule.meta.AUTHORITY == 'auth', 'Correct AUTHORITY detected')
     
     t.ok(TestModule.meta.ns.container == TestModule, 'Container of namespace is a module function')
     t.is(TestModule.foo, 'bar', 'Body of module was executed in the scope of its container')
@@ -282,4 +282,5 @@ StartTest(function (t) {
     })
     
     
+    t.done()
 })
