@@ -71,14 +71,17 @@ Joose core package is only 8kb (YUI+gz).
 INSTALLATION
 ============
 
-For installation instructions please refer to INSTALL file in the root of this distribution or this link:
-[http://openjsan.org/go?l=Joose.Manual.Installation](http://openjsan.org/go?l=Joose.Manual.Installation)
+From "npm":
+
+    [sudo] npm install joose 
+
+
+For other options please refer to: <http://openjsan.org/go?l=Joose.Manual.Installation>
 
 DOCUMENTATION
 =============
 
-For documentation please refer to: 
-[http://openjsan.org/go?l=Joose](http://openjsan.org/go?l=Joose)
+For documentation please refer to: <http://openjsan.org/go?l=Joose>
 
 
 ACKNOWLEDGEMENTS
@@ -87,6 +90,14 @@ ACKNOWLEDGEMENTS
 Many thanks to the whole Moose community for being icebreaker in the meta world. 
 
 Special thanks to Dave Rolsky for the excellent Moose documentation, on which this document is based.
+
+
+SEE ALSO
+========
+
+Web-site : <http://joose.it>
+
+Mailing list: <http://groups.google.com/group/joose-js>
 
 
 AUTHORS
