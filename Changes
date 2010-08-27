@@ -10,7 +10,8 @@ Release history for Joose:
     - now its possible to inherit from non-Joose superclasses 
         (see http://openjsan.org/go/?l=Joose.Manual.Classes for details)
     
-    - starting from this release, Joose will be also distributed via the `npm` package manager
+    - starting from this release, Joose will be also distributed via the `npm` package manager,
+        > [sudo] npm install joose 
     
     - updated Joose.Manual.Installation entry
     
