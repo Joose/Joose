@@ -7,7 +7,8 @@ Release history for Joose:
     - references to global RegExp object replaced with references to constructor of regexp instance,
       to allow the advanced optimizations with Google Closure optimizer (thanks to: sirrobert)
       
-    -  
+    - Now its possible to inherit from non-Joose superclasses 
+        (see http://openjsan.org/go/?l=Joose.Manual.Classes for details)
     
     
     [API CHANGES]

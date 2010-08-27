@@ -49,8 +49,7 @@ Harness.start(
     '056_arbitrary_object_from_constructor.t.js',
     '060_modules.t.js',
     '061_modules.t.js',
-    '070_reflection.t.js'
-    //,
-    //'080_non_joose_inheritance.t.js'
+    '070_reflection.t.js',
+    '080_non_joose_inheritance.t.js'
 )
 
