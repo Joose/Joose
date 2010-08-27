@@ -2,6 +2,8 @@ Release history for Joose:
 
 {{ $NEXT }}
 
+3.011     2010-08-27 21:11
+
     [ENHANCEMENTS]
     
     - references to global RegExp object replaced with references to constructor of regexp instance,
