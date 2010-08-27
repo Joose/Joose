@@ -101,6 +101,7 @@ Web-site : <http://joose.it>
 
 Mailing list: <http://groups.google.com/group/joose-js>
 
+IRC channel : [#joose](http://webchat.freenode.net/?randomnick=1&channels=joose&prompt=1) on freenode
 
 AUTHORS
 =======
