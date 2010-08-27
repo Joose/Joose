@@ -53,3 +53,4 @@ Harness.start(
     //,
     //'080_non_joose_inheritance.t.js'
 )
+

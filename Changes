@@ -5,7 +5,9 @@ Release history for Joose:
     [ENHANCEMENTS]
     
     - references to global RegExp object replaced with references to constructor of regexp instance,
-      to allow the advanced optimizations with Google Closure optimizer (thanks to: sirrobert) 
+      to allow the advanced optimizations with Google Closure optimizer (thanks to: sirrobert)
+      
+    -  
     
     
     [API CHANGES]
