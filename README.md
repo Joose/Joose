@@ -65,6 +65,8 @@ The main goal of Joose is to make JavaScript Object Oriented Programming easier,
 The Joose framework has been successfully used in multiple production systems for twelve months now and has been proven to be very stable. 
 Joose is being tested using an automated unit-test suite that is being run in all major browsers (Firefox, IE, Safari, Opera and Chrome).
 
+Joose also fully supports NodeJS platform. 
+
 Joose core package is only 8kb (YUI+gz).
 
 
