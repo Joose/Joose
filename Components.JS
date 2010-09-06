@@ -50,6 +50,5 @@ COMPONENTS = {
         "Joose.Namespace.Manager"
     ]
     
-    
 }
 
