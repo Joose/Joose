@@ -2,6 +2,8 @@ Release history for Joose:
 
 {{ $NEXT }}
 
+3.012     2010-10-05 11:33
+
     [ENHANCEMENTS]
     
     - added 'hasValue/clearValue' methods for the attribute
