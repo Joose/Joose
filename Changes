@@ -2,6 +2,22 @@ Release history for Joose:
 
 {{ $NEXT }}
 
+    [ENHANCEMENTS]
+    
+    - added 'hasValue/clearValue' methods for the attribute
+    - removed 'get/setRawValue' methods of the attribute
+    
+    - minor fixes in package.json for `npm`
+    
+    [API CHANGES]
+
+    -none-
+
+    
+    [BUG FIXES]
+    
+    - none 
+
 3.011     2010-08-27 21:11
 
     [ENHANCEMENTS]
