@@ -1,10 +1,6 @@
 TASKS
 =====
 
-- ability to freely inherit from non-Joose superclasses
-    -- extensive test suite
-    -- implementation
-
 - test Joose.O.* helpers (partially done)
 
 - add exception for inheritance from nothing ( isa : null )
@@ -165,6 +161,9 @@ IDEAS
 DONE
 ====
 
+- ability to freely inherit from non-Joose superclasses
+    -- extensive test suite
+    -- implementation
 - JooseX.Meta.Parameterized (aka parameterized roles, + classes)
 - add SKIP and TODO methods to Test.Run
 - inter-op with NodeJS
