@@ -2,6 +2,18 @@ Release history for Joose:
 
 {{ $NEXT }}
 
+    [ENHANCEMENTS]
+    
+    -none-
+    
+    [API CHANGES]
+
+    - returned 'get/setRawValue' methods of the attribute with a bit different semantic (low-level, not documented)
+    
+    [BUG FIXES]
+    
+    - none 
+
 3.012     2010-10-05 11:33
 
     [ENHANCEMENTS]
@@ -18,7 +30,7 @@ Release history for Joose:
     
     [BUG FIXES]
     
-    - none 
+    -none-
 
 3.011     2010-08-27 21:11
 
