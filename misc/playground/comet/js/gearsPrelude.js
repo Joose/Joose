@@ -1,1 +1,0 @@
-google.gears.workerPool.allowCrossOrigin()
