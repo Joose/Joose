@@ -2,6 +2,20 @@ Release history for Joose:
 
 {{ $NEXT }}
 
+    
+    [ENHANCEMENTS]
+    
+    - switching to `npm` only as the distribution channel (migrating from JSAN)
+    
+    [API CHANGES]
+
+    -none-
+    
+    [BUG FIXES]
+    
+    - fixed bug, when instantiating a class with traits and which is a subclass of non-joose class
+      it could have been instantiated with wrong parameters
+
 3.013     2010-10-11 15:57
 
     [ENHANCEMENTS]
