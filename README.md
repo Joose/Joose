@@ -73,7 +73,7 @@ Joose core package is only 8kb (YUI+gz).
 INSTALLATION
 ============
 
-From "npm":
+From [npm](http://github.com/isaacs/npm/)
 
     [sudo] npm install joose 
 
