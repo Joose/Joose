@@ -14,7 +14,7 @@
 
 <h1 id="installingfromtarball">INSTALLING FROM TARBALL</h1>
 
-<p>The complete list of the released tarballs is available for download here: <a href="http://openjsan.org/go?d=Joose">http://openjsan.org/go?d=Joose</a></p>
+<p>The latest released tarball is available for downloading here <a href="http://nodul.es/modules/joose">http://nodul.es/modules/joose</a> </p>
 
 <h2 id="sourcefilestoinclude">Source files to include</h2>
 
@@ -26,8 +26,6 @@
 <p>It contains all the individual source files concatenated into one.</p>
 
 <h1 id="installingfromnpm">INSTALLING FROM <code>npm</code></h1>
-
-<p>If you are on Linux box and planning to use Joose only for server-side code, then the most straightforward way will be to use <code>npm</code> package manager.</p>
 
 <ol>
 <li>Installing <code>npm</code></li>
@@ -42,7 +40,7 @@
 </code></pre></li>
 </ol>
 
-<p>You probably will need to <code>sudo</code> the command above.</p>
+<p>You may need to <code>sudo</code> the command above.</p>
 
 <p>After this you can use Joose as follows:</p>
 
@@ -73,103 +71,40 @@
 <p><code>require('joose')</code> will <em>modify the global scope</em> - will add the <code>Joose</code>, <code>Class</code>, <code>Role</code> and <code>Module</code> symbols to it.
 <code>Class</code>, <code>Role</code> and <code>Module</code> are also being exported from <code>require</code>. </p>
 
-<h1 id="installingfromjsan">INSTALLING FROM JSAN</h1>
+<h2 id="configuringyoursystemforcross-platformcode.">3. Configuring your system for cross-platform code.</h2>
 
-<p>One more distrubution channel of <code>Joose</code> is JSAN - <a href="http://openjsan.org">JavaScript Archive Network</a>. Use this channel, if you are
-on Windows or planning to share Joose code unchanged between the browser/server.</p>
+<p>If you are planning to use Joose and Joose extensions in the browsers, you way want to also complete the following steps:</p>
 
-<p>To install <code>Joose</code> you'll need to install JSAN shell first - a small, cross-platform, unix-shell-like program. 
-It communicate directly with closest JSAN mirror and can download and install any JSAN module for you.</p>
+<h3 id="addthenpm_root.jsantoyournode_pathenviromentvariable">3.1 Add the <code>$NPM_ROOT/.jsan</code> to your NODE_PATH enviroment variable</h3>
 
-<p>JSAN shell is written in perl, so the 1st step is to obtain Perl.</p>
+<p>Here the <code>$NPM_ROOT</code> is the "root" setting of your <code>npm</code> installation. You can retrieve it with the following command:</p>
 
-<h2 id="obtainingperl">1. Obtaining perl</h2>
-
-<h2 id="linux">Linux</h2>
-
-<p>If you are on any Linux distribution, you may skip this step, since you already have perl and all required perl modules. </p>
-
-<h2 id="windows">Windows</h2>
-
-<p>Windows users should install <a href="http://strawberryperl.com/">Strawberry perl</a>. Straberry perl is preferable than ActiveState perl, because it comes with the compiler included.</p>
-
-<p><em>NOTE:</em> After installation, you may need to relogin (or reboot) to see the updates in the PATH environment variable.</p>
-
-<h2 id="installingshell">2. Installing shell</h2>
-
-<p>Launch a console (<code>cmd</code> on Windows). Then type (you may need to <code>sudo</code> this command):</p>
-
-<pre><code>   &gt; cpan JSAN::Shell
+<pre><code>npm config get root 2&gt;/dev/null
 </code></pre>
 
-<p>Thats all, now wait until shell will be installed. You may be asked about installing its pre-requisites - answer 'yes'. </p>
+<p>Typically its <code>/usr/local/lib/node</code>. So, to do that, add this line to your <code>~/.bashrc</code>:</p>
 
-<h2 id="installingjoose">3. Installing <code>Joose</code></h2>
-
-<p>Launch a console (<code>cmd</code> on Windows). Then type:</p>
-
-<pre><code>    &gt; jsan
+<pre><code>export NODE_PATH=/usr/local/lib/node/.jsan
 </code></pre>
 
-<p>This should launch a JSAN shell and display a prompt, similar to this:</p>
+<h3 id="createanaliasforyourlocalwebserver">3.2 Create an alias for your local webserver</h3>
 
-<pre><code>    Checking for Internet access...
-    Locating closest JSAN mirror...
+<p>Configure you local web server that way, that the url <code>http://localhost/jsan</code> will point to the <code>/usr/local/lib/node/.jsan</code> (the directory from previous step).</p>
 
-    jsan shell -- JSAN repository explorer and package installer (v2.03)
-               -- Copyright 2005 - 2009 Adam Kennedy.
-               -- Type 'help' for a summary of available commands.
-
-    jsan&gt;
-</code></pre>
-
-<p>If this is the first time you installing the JSAN module, setup the installation path ('prefix' setting can be saved, so you won't need to enter again):</p>
-
-<pre><code>    jsan&gt; set prefix /your/installation/path/
-</code></pre>
-
-<p>Then, type:</p>
-
-<pre><code>    jsan&gt; install Joose
-</code></pre>
-
-<p>Thats all, shell will download and install <code>Joose</code> for you. </p>
-
-<p>For the list of available commands, try <code>help</code>. Also refer to <a href="http://search.cpan.org/dist/JSAN-Shell/lib/JSAN/Shell.pm">JSAN::Shell documentation</a> for details. </p>
-
-<h2 id="configuringyoursystem">4. Configuring your system</h2>
-
-<p>After successful completion of the procedure above, <code>Joose</code> will be installed in your local JavaScript library (you've specified its location with 'prefix').</p>
-
-<p>For example, the path to the library can be:</p>
-
-<pre><code>/usr/local/lib/jsan
-</code></pre>
-
-<p>on Linux systems, or</p>
-
-<pre><code>c:\JSAN
-</code></pre>
-
-<p>on Windows systems.</p>
-
-<h3 id="accessingjsanmodulesfrombrowser">4.1 Accessing JSAN modules from browser</h3>
-
-<p>As a convention, configure you local web server that way, that the url <code>http://localhost/jsan</code> 
-will point at the <code>lib</code> subdirectory of JSAN library: <code>/usr/local/lib/jsan/lib</code> for example.</p>
-
-<p>This way you can load any installed JSAN module via url like: <code>http://localhost/jsan/Useful/Module/Name.js</code></p>
-
-<h3 id="accessingjsanmodulesfromnodejs">4.2 Accessing JSAN modules from NodeJS</h3>
-
-<p>You may want to include the path to JSAN library to the <code>NODE_PATH</code> enviroment variable:</p>
-
-<pre><code>export NODE_PATH=/usr/local/lib/jsan/lib
-</code></pre>
-
-<p>After this, you can load any installed JSAN module from the NodeJS, like:</p>
+<p>After this setup, you can either require the browser-related code from NodeJS (it uses CamelCase for modules names as a convention):</p>
 
 <pre><code>require('Useful/Module')
+
+// or, with JooseX.Namespace.Depended
+
+use('Useful.Module', function () { ... })
+</code></pre>
+
+<p>Or you can load it in the browsers in the exactly the same way:</p>
+
+<pre><code>// JooseX.Namespace.Depended only
+
+use('Useful.Module', function () { ... })
 </code></pre>
 
 <h1 id="author">AUTHOR</h1>
@@ -178,7 +113,7 @@ will point at the <code>lib</code> subdirectory of JSAN library: <code>/usr/loca
 
 <h1 id="copyrightandlicense">COPYRIGHT AND LICENSE</h1>
 
-<p>Copyright (c) 2008-2009, Malte Ubl, Nickolay Platonov</p>
+<p>Copyright (c) 2008-2010, Malte Ubl, Nickolay Platonov</p>
 
 <p>All rights reserved.</p>
 
