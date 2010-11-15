@@ -78,12 +78,12 @@ From [npm](http://github.com/isaacs/npm/)
     [sudo] npm install joose 
 
 
-For other options please refer to: <http://openjsan.org/go?l=Joose.Manual.Installation>
+For other options please refer to: <http://joose.github.com/Joose/doc/html/Joose/Manual/Installation.html>
 
 DOCUMENTATION
 =============
 
-For documentation please refer to: <http://openjsan.org/go?l=Joose>
+For documentation please refer to: <http://joose.github.com/Joose>
 
 
 ACKNOWLEDGEMENTS
@@ -117,7 +117,7 @@ Nickolay Platonov
 COPYRIGHT AND LICENSE
 =====================
 
-Copyright (c) 2008-2009, Malte Ubl, Nickolay Platonov
+Copyright (c) 2008-2010, Malte Ubl, Nickolay Platonov
 
 All rights reserved.
 
