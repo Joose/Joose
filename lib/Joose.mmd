@@ -7,6 +7,12 @@ Joose - A postmodern class system for JavaScript
 SYNOPSIS
 ========
 
+In browsers (see [Manual.Installation](Joose/Manual/Installation.html)):
+        
+        <script type="text/javascript" src="/jsan/Task/Joose/Core.js"></script>
+
+Then:
+
         Class("Point", {
         
             has: {
@@ -43,6 +49,41 @@ SYNOPSIS
             z : 3
         })
 
+In NodeJS:
+
+        var Class = require('joose').Class
+        
+        var Point = exports.Point = Class({
+            has: {
+                x: {is: "ro"},
+                y: {is: "rw"},
+            },
+            
+            methods: {
+                clear: function () {
+                    var x = this.getX()
+                    this.setY(0)
+                }
+            }
+        })
+
+
+        exports.Point3D = Class({
+        
+            isa: Point,
+            
+            has: {
+                z: {}
+            },
+            
+            after: {
+                clear: function () {
+                    this.z = 0
+                }
+            }
+        })
+
+
 
 DESCRIPTION
 ===========
@@ -52,7 +93,7 @@ Joose is a self-hosting meta object system for JavaScript with support for class
 The main goal of Joose is to make JavaScript Object Oriented Programming easier, more consistent and less tedious. With Joose you can to think more about what you want to do and less about the mechanics of OOP.
 
 The Joose framework has been successfully used in multiple production systems for twelve months now and has been proven to be very stable. 
-Joose is being tested using an automated unit-test suite that is being run in all major browsers (Firefox, IE, Safari, Opera and Chrome).
+Joose is being tested using an automated unit-test suite that is being run in all major browsers (Firefox, IE, Safari, Opera and Chrome) and on NodeJS server-side platform.
 
 Joose core package is only 8kb (YUI+gz).
 

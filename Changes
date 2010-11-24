@@ -2,6 +2,19 @@ Release history for Joose:
 
 {{ $NEXT }}
 
+    [ENHANCEMENTS]
+    
+    - throw Error and not just string with more meaningful message on attempt to instantiate empty module
+    
+    [API CHANGES]
+
+    -none-
+    
+    [BUG FIXES]
+    
+    -none-
+
+
 3.015     2010-11-15 13:31
 
 
