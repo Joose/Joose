@@ -101,7 +101,7 @@ StartTest(function (t) {
     
     t.ok(result instanceof Joose.Managed.Property.MethodModifier.Put, "'result' method have a meta object - instance of Joose.Managed.Property.MethodModifier.Put")
     
-    t.ok(result.value == TestClass1.prototype.result._contain, "'result' method is a wrapper")
+    t.ok(result.value == TestClass1.prototype.result.__CONTAIN__, "'result' method is a wrapper")
     
     
     var res = TestClass1.meta.getAttribute('res')
