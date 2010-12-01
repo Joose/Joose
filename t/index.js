@@ -50,6 +50,7 @@ Harness.start(
     '060_modules.t.js',
     '061_modules.t.js',
     '070_reflection.t.js',
+    '071_reflection_current_method.t.js',
     '080_non_joose_inheritance.t.js'
 )
 
