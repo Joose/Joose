@@ -146,7 +146,7 @@ StartTest(function (t) {
         Class('TestCreature2', {
             requires : [ 'walk' ]
         })
-    }, Joose.is_IE ? "" : "Unknow builder [requires] was used during extending of [TestCreature2]", "'requires' builder can only be used with Roles")
+    }, Joose.is_IE ? "" : "Unknown builder [requires] was used during extending of [TestCreature2]", "'requires' builder can only be used with Roles")
     
     
     //==================================================================================================================================================================================

@@ -4,8 +4,7 @@ Release history for Joose:
 
     [ENHANCEMENTS]
     
-    - throw Error and not just string with more meaningful message on attempt to instantiate empty module
-    - throw Error when requirements for Role is not satisfied
+    - throw 'Error' instances instead of plain strings in various places
     - initial progress on reflection, allowing to receive the currently running method
     
     [API CHANGES]

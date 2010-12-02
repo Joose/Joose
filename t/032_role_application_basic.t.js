@@ -52,7 +52,7 @@ StartTest(function (t) {
         var Creature = new Joose.Managed.Class('Creature', {
             requires : [ 'walk' ]
         }).c
-    }, "Unknow builder [requires] was used during extending of [Creature]", "'requires' builder can only be used with Roles")
+    }, "Unknown builder [requires] was used during extending of [Creature]", "'requires' builder can only be used with Roles")
     
     
     //==================================================================================================================================================================================
