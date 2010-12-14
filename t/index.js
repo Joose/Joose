@@ -43,6 +43,7 @@ Harness.start(
     '052_advanced_attribute.t.js',
     '052_role_application_advanced.t.js',
     '052_adv_attr_in_metaclasses.t.js',
+    '052_advanced_attribute_set_raw_inlining.t.js',
     '053_using_class_as_role.t.js',
     '054_meta_roles.t.js',
     '055_role_to_instance_application.t.js',
