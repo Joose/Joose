@@ -9,11 +9,11 @@ Release history for Joose:
     
     [API CHANGES]
 
-    -none-
+    - setters no longer are being used for initial instance initialization (prior 'initialize' method)
     
     [BUG FIXES]
     
-    -none-
+    - fixed a very specific bug, related to subclassing non-joose classes with custom constructor
 
 
 3.015     2010-11-15 13:31
