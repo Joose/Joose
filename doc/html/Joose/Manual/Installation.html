@@ -12,9 +12,9 @@
 
 <p>You can install Joose from the following sources:</p>
 
-<h1 id="installingfromtarball">INSTALLING FROM TARBALL</h1>
+<h1 id="installingfromtarball">1. INSTALLING FROM TARBALL</h1>
 
-<p>The latest released tarball is available for downloading here <a href="http://nodul.es/modules/joose">http://nodul.es/modules/joose</a> </p>
+<p>The latest released tarball is available for downloading either from <a href="http://nodul.es/modules/joose">http://nodul.es/modules/joose</a> or from <a href="http://npm.mape.me/">http://npm.mape.me/</a> (search for package 'joose').</p>
 
 <h2 id="sourcefilestoinclude">Source files to include</h2>
 
@@ -25,20 +25,12 @@
 
 <p>It contains all the individual source files concatenated into one.</p>
 
-<h1 id="installingfromnpm">INSTALLING FROM <code>npm</code></h1>
+<h1 id="installingfromnpm">2. INSTALLING FROM <code>npm</code></h1>
 
-<ol>
-<li>Installing <code>npm</code></li>
-</ol>
+<p>First, install <code>npm</code> (please refer to : <a href="http://github.com/isaacs/npm/">http://github.com/isaacs/npm/</a>). Then, from command line:</p>
 
-<p>Please refer to : <a href="http://github.com/isaacs/npm/">http://github.com/isaacs/npm/</a></p>
-
-<ol>
-<li><p>Installing <code>Joose</code></p>
-
-<pre><code>&gt; npm install joose
-</code></pre></li>
-</ol>
+<pre><code>    &gt; npm install joose
+</code></pre>
 
 <p>You may need to <code>sudo</code> the command above.</p>
 
@@ -71,11 +63,11 @@
 <p><code>require('joose')</code> will <em>modify the global scope</em> - will add the <code>Joose</code>, <code>Class</code>, <code>Role</code> and <code>Module</code> symbols to it.
 <code>Class</code>, <code>Role</code> and <code>Module</code> are also being exported from <code>require</code>. </p>
 
-<h2 id="configuringyoursystemforcross-platformcode.">3. Configuring your system for cross-platform code.</h2>
+<h1 id="configuringyoursystemforcross-platformcode.">3. Configuring your system for cross-platform code.</h1>
 
 <p>If you are planning to use Joose and Joose extensions in the browsers, you way want to also complete the following steps:</p>
 
-<h3 id="addthenpm_root.jsantoyournode_pathenviromentvariable">3.1 Add the <code>$NPM_ROOT/.jsan</code> to your NODE_PATH enviroment variable</h3>
+<h2 id="addthenpm_root.jsantoyournode_pathenviromentvariable">3.1 Add the <code>$NPM_ROOT/.jsan</code> to your NODE_PATH enviroment variable</h2>
 
 <p>Here the <code>$NPM_ROOT</code> is the "root" setting of your <code>npm</code> installation. You can retrieve it with the following command:</p>
 
@@ -87,7 +79,7 @@
 <pre><code>export NODE_PATH=/usr/local/lib/node/.jsan
 </code></pre>
 
-<h3 id="createanaliasforyourlocalwebserver">3.2 Create an alias for your local webserver</h3>
+<h2 id="createanaliasforyourlocalwebserver">3.2 Create an alias for your local webserver</h2>
 
 <p>Configure you local web server that way, that the url <code>http://localhost/jsan</code> will point to the <code>/usr/local/lib/node/.jsan</code> (the directory from previous step).</p>
 

@@ -87,7 +87,7 @@ Write accessor has the name 'setAttributeName'. If you declared your attribute a
 <p>If you'll provide a function as the value for <code>init</code>, it will be called during initialization with the following signature:
 <code>func(attributeName, config)</code>, where <code>config</code> is the 1st argument passed to constructor. Function will be called as class's method (in the instance's scope).</p>
 
-<p>Value, returned from function, will be used for initialization. <strong>Note</strong>, that if the attribute is <code>rw</code> it will be passed further to the setter method, and not applied directly to instance.</p>
+<p>Value, returned from function, will be used for initialization. <strong>Note</strong>, that if there is setter method, it won't be used during initialization - value will be just assigned to instance.</p>
 
 <p>Any other values, provided as <code>init</code> value, will be applied to prototype of the class directly.</p>
 
@@ -121,8 +121,8 @@ In this case, this value is treated as value of <code>init</code> property, valu
         isa : Person,
 
         has : {
-            password : { init : '12345' },
-            lastLogin : { init : function () { return new Date() } }
+            password    : { init : '12345' },
+            lastLogin   : { init : function () { return new Date() } }
         }
     })
 
@@ -144,7 +144,7 @@ In this case, this value is treated as value of <code>init</code> property, valu
 
 <ul>
 <li>Joose.I.Array - return empty array</li>
-<li>Joose.I.Object- return empty oject</li>
+<li>Joose.I.Object- return empty object</li>
 <li>Joose.I.Function - return empty function </li>
 <li>Joose.I.Now - return current timestamp</li>
 </ul>
@@ -225,11 +225,11 @@ initialization value for it, use its "public" name:</p>
 
 <pre><code>    has : {
         password : {
-            meta : JooseX.Attribute.Hashed,
+            meta        : JooseX.Attribute.Hashed,
 
-            init : '12345',
-            hashType : 'SHA-1',
-            salt : 'custom_metaclass'
+            init        : '12345',
+            hashType    : 'SHA-1',
+            salt        : 'custom_metaclass'
         }
     }
 </code></pre>
