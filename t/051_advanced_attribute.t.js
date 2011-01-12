@@ -236,7 +236,7 @@ StartTest(function (t) {
         },
         
         methods : {
-            _buildRes : function (name, config) {
+            _buildRes : function (config, name) {
                 
                 t.ok(name == 'res', 'Name was correctly passed into attribute builder')
                 t.ok(config.foo == 'bar', 'Config was correctly passed into attribute builder')
