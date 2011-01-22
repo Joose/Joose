@@ -51,6 +51,20 @@ StartTest(function (t) {
     
     t.ok(app, '`Base.App` has been successfully instantiated')
     
+  
+    //==================================================================================================================================================================================
+    t.diag("`Class` re-declaration ")
+    
+    
+    Class('Test')
+    
+    t.throws_ok(function () {
+        
+        Class('Test')
+        
+    }, Joose.is_IE ? "" : "Double declaration of [Test]", "Double class declaration is detected")
+    
+    
     
     t.done()
 })

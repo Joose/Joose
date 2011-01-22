@@ -2,10 +2,36 @@ Release history for Joose:
 
 {{ $NEXT }}
 
+
+    [ENHANCEMENTS]
+    
+    - none
+    
+    [API CHANGES]
+
+    - removed support for class extension via `Class` keyword - now it will throw the "Double declaration of [ClassName]" exception
+      use ClassName.meta.extend() instead
+    
+    [BUG FIXES]
+    
+    - none
+
+
 3.017     2011-01-12 18:33
 
+    [ENHANCEMENTS]
+    
     - added `strToClass` helper function
     - added Joose.A.eachR iterator
+    
+    [API CHANGES]
+
+    - none
+    
+    [BUG FIXES]
+    
+    - none
+
 
 3.016     2010-12-14 15:33
 

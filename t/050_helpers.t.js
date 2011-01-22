@@ -63,9 +63,9 @@ StartTest(function (t) {
     
 
     //==================================================================================================================================================================================
-    t.diag("Class extension via helper")
+    t.diag("Class extension")
     
-    Class('TestClass', {
+    TestClass.meta.extend({
         have : {
             res1 : 'instance1'
         },
