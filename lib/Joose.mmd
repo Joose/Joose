@@ -302,11 +302,19 @@ Returns empty Object when called
 
 - `Joose.I.Function`
 
-Returns empty Function when called (which in turn will return empty function)
+Returns empty Function when called (which in turn will return Joose.I.Function)
 
 - `Joose.I.Now`
 
-Returns new instance of `Date` 
+Returns new instance of `Date` (at the time of class instantiation)
+
+
+CONFIGURATION
+=============
+
+You can provide some configuration options to Joose. To specify them before Joose has been loaded, create a global `JOOSE_CFG` object. At the time of Joose loading, it will alias it as `Joose.C` symbol.
+
+`Joose.C` is the place, where various extension will check for configuration options.
 
 
 

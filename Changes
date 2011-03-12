@@ -7,6 +7,7 @@ Release history for Joose:
     
     - added a sanity checks before consuming a role or inheriting from superclass (should evalutes to "true")
     - from now on, include the "Task/Joose/Core" bundle in the root of distribution as "task-joose-core.js"
+    - added a `Joose.C` symbol for configuration options; can be specified as the JOOSE_CFG prior Joose has been loaded
     
     [API CHANGES]
 
