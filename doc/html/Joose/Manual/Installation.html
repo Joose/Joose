@@ -14,11 +14,16 @@
 
 <h1 id="installingfromtarball">1. INSTALLING FROM TARBALL</h1>
 
-<p>The latest released tarball is available for downloading either from <a href="http://nodul.es/modules/joose">http://nodul.es/modules/joose</a> or from <a href="http://npm.mape.me/">http://npm.mape.me/</a> (search for package 'joose').</p>
+<p>The latest released tarball is available for downloading from <a href="http://search.npmjs.org/#/joose">http://search.npmjs.org/#/joose</a>. Alternative locations: <a href="http://nodul.es/modules/joose">http://nodul.es/modules/joose</a> and <a href="http://npm.mape.me/">http://npm.mape.me/</a> (search for package 'joose').</p>
 
 <h2 id="sourcefilestoinclude">Source files to include</h2>
 
-<p>To use Joose include the following source file in your project (from the root of the tarball)</p>
+<p>To use Joose include the following source file in your page/project (from the root of the tarball)</p>
+
+<pre><code>task-joose-core.js
+</code></pre>
+
+<p>or from another location:</p>
 
 <pre><code>lib/Task/Joose/Core.js
 </code></pre>
@@ -83,7 +88,7 @@
 
 <p>Configure you local web server that way, that the url <code>http://localhost/jsan</code> will point to the <code>/usr/local/lib/node/.jsan</code> (the directory from previous step).</p>
 
-<p>After this setup, you can either require the browser-related code from NodeJS (it uses CamelCase for modules names as a convention):</p>
+<p>After theis setup, you can either require the browser-related code from NodeJS (it uses CamelCase for modules names as a convention):</p>
 
 <pre><code>require('Useful/Module')
 
@@ -105,7 +110,7 @@ use('Useful.Module', function () { ... })
 
 <h1 id="copyrightandlicense">COPYRIGHT AND LICENSE</h1>
 
-<p>Copyright (c) 2008-2010, Malte Ubl, Nickolay Platonov</p>
+<p>Copyright (c) 2008-2011, Malte Ubl, Nickolay Platonov</p>
 
 <p>All rights reserved.</p>
 

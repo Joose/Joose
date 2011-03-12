@@ -349,13 +349,19 @@ Returning a</code>false<code>from</code>func<code>stops the iteration. If the it
 <li><code>Joose.I.Function</code></li>
 </ul>
 
-<p>Returns empty Function when called (which in turn will return empty function)</p>
+<p>Returns empty Function when called (which in turn will return Joose.I.Function)</p>
 
 <ul>
 <li><code>Joose.I.Now</code></li>
 </ul>
 
-<p>Returns new instance of <code>Date</code> </p>
+<p>Returns new instance of <code>Date</code> (at the time of class instantiation)</p>
+
+<h1 id="configuration">CONFIGURATION</h1>
+
+<p>You can provide some configuration options to Joose. To specify them before Joose has been loaded, create a global <code>JOOSE_CFG</code> object. At the time of Joose loading, it will alias it as <code>Joose.C</code> symbol.</p>
+
+<p><code>Joose.C</code> is the place, where various extension will check for configuration options.</p>
 
 <h1 id="metaclass">METACLASS</h1>
 
@@ -446,7 +452,7 @@ The <a href="Joose/Manual/Contributing.html">Joose.Manual.Contributing</a> has m
 
 <h1 id="copyrightandlicense">COPYRIGHT AND LICENSE</h1>
 
-<p>Copyright (c) 2008-2010, Malte Ubl, Nickolay Platonov</p>
+<p>Copyright (c) 2008-2011, Malte Ubl, Nickolay Platonov</p>
 
 <p>All rights reserved.</p>
 
