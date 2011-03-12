@@ -5,7 +5,8 @@ Release history for Joose:
 
     [ENHANCEMENTS]
     
-    - none
+    - added a sanity checks before consuming a role or inheriting from superclass (should evalutes to "true")
+    - from now on, include the "Task/Joose/Core" bundle in the root of distribution as "task-joose-core.js"
     
     [API CHANGES]
 
