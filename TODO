@@ -3,15 +3,11 @@ TASKS
 
 - test Joose.O.* helpers (partially done)
 
-- add exception for inheritance from nothing ( isa : null )
-
-
 - derive 'stable' branch (should track releases of Task.Joose.Stable)
+
 - merge Joose3 to 'master'
 
 - add simple attribute 'defaultMethodClass' ala 'defaultAttributeClass'
-
-- add warnings about SUPER on proto level in OPERA
 
 
 DOCUMENTATION
@@ -98,6 +94,8 @@ REFACTORING
 
 - make all stem elements lazy, so class w/o modifiers for example won't spent time for them
 
+- introduce subs - degraded methods w/o ability to call SUPER
+
 EXTENSIONS
 ==========
 
@@ -162,6 +160,7 @@ IDEAS
 DONE
 ====
 
+- add exception for inheritance from nothing ( isa : null )
 - ability to freely inherit from non-Joose superclasses
     -- extensive test suite
     -- implementation
