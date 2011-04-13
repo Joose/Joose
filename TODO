@@ -96,6 +96,7 @@ REFACTORING
 
 - sanitize the `create` method of Joose.Namespace.Manager
 
+- make all stem elements lazy, so class w/o modifiers for example won't spent time for them
 
 EXTENSIONS
 ==========
