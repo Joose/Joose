@@ -6,13 +6,6 @@ StartTest(function (t) {
     t.ok(Joose.Namespace.Manager, "Joose.Namespace.Manager is here")
     t.ok(Joose.Namespace.Keeper, "Joose.Namespace.Keeper is here")
     
-    var global      = Joose.Namespace.Manager.my.global
-    var globalNs    = Joose.Namespace.Manager.my.globalNs
-    
-    t.ok(global, "There is a global namespace")
-    t.ok(globalNs instanceof Joose.Managed.PropertySet.Namespace, "And it has an instance of Joose.Managed.PropertySet.Namespace")
-    t.ok(globalNs.container == Joose.top, "Container of global namespace is a top scope")
-    
     Module('TestModule', {
         
         VERSION : 0.01,
@@ -30,8 +23,6 @@ StartTest(function (t) {
     t.ok(TestModule, 'Something in the module spot appears')
     t.ok(TestModule.meta.constructor == Joose.Namespace.Keeper, '.. and its a Joose.Namespace.Keeper')
     
-    
-    t.ok(TestModule.meta.ns.container == TestModule, 'Container of namespace is a module function')
     t.is(TestModule.foo, 'bar', 'Body of module was executed in the scope of its container')
     t.is(TestModule.bar, 'baz', 'Module namespacekeeper was also passed as 1st argument to body')
 

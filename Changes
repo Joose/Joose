@@ -2,6 +2,19 @@ Release history for Joose:
 
 {{ $NEXT }}
 
+    [ENHANCEMENTS]
+    
+    - none
+    
+    [API CHANGES]
+
+    - removed the undocumented namespaces facility (was not in use anyway)
+    
+    [BUG FIXES]
+    
+    - none
+
+
 3.018     2011-03-12 12:58
 
 

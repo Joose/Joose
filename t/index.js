@@ -13,7 +13,7 @@ Harness.configure({
     
     verbosity       : 0,
 	
-//    transparentEx   : true,
+    transparentEx   : true,
 //    runCore         : 'sequential',
     
 	preload : [

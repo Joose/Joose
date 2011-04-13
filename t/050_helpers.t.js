@@ -1,15 +1,10 @@
 StartTest(function (t) {
     
-    t.plan(68)
-    
     //==================================================================================================================================================================================
     t.diag("Modules")
     
     t.ok(Joose.Namespace.Manager, "Joose.Namespace.Manager is here")
     t.ok(Joose.Namespace.Keeper, "Joose.Namespace.Keeper is here")
-    
-    t.ok(Joose.Meta.Class.meta.hasAttribute('ns'), "Joose.Meta.Class's meta has 'ns' attribute")
-    t.ok(Joose.Meta.Role.meta.hasAttribute('ns'), "Joose.Meta.Role's meta has 'ns' attribute")
     
     
     Module('TestModule', {})
@@ -469,5 +464,7 @@ StartTest(function (t) {
     })
     
     t.ok(new Private_().result() == 10, "'Class' helper was modified correctly")
+    
+    t.done()
     
 })

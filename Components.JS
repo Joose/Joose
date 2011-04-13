@@ -34,8 +34,6 @@ COMPONENTS = {
                     
         "Joose.Managed.Attribute",
         
-        "Joose.Managed.PropertySet.Namespace",
-        
         "Joose.Managed.Attribute.Builder",
         "Joose.Managed.My",
         "Joose.Namespace.Able",
