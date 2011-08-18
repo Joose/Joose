@@ -22,7 +22,7 @@ Harness.configure({
     ],
     
 	preload : [
-	    '../lib/Task/Joose/Core.js'
+	    '../joose-all.js'
     ]
 })
 
