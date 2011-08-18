@@ -134,6 +134,7 @@ StartTest(function (t) {
     t.ok(obj2.param2 == 10, '`Correct parameter #2')
     t.ok(obj2.attribute1 == 'foo', '`Correct parameter #3')
     
+    t.expectGlobals('TestClass1', 'TestClass2')
     
     t.done()
 })

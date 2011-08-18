@@ -59,6 +59,7 @@ StartTest(function (t) {
     
     a2.method1()
     
+    t.expectGlobals('TestClass1', 'TestClass2')
 
     t.done()
 })

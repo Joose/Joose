@@ -1,7 +1,5 @@
 StartTest(function (t) {
     
-    t.plan(19)
-    
     //==================================================================================================================================================================================
     t.diag("Advanced attributes and class's body")
     
@@ -111,5 +109,9 @@ StartTest(function (t) {
 
     t.ok(bar.regex1.test(/123abc123/), 'Attribute was correctly initialized with RegExp #1')
     t.ok(bar.regex2.test(/123abc123/), 'Attribute was correctly initialized with RegExp #2')
+    
+    t.autoCheckGlobals = false
+    
+    t.done()
 })    
 

@@ -3,6 +3,8 @@ StartTest(function (t) {
     //==================================================================================================================================================================================
     t.diag("Modules")
     
+    t.autoCheckGlobals = false
+    
     t.ok(Joose.Namespace.Manager, "Joose.Namespace.Manager is here")
     t.ok(Joose.Namespace.Keeper, "Joose.Namespace.Keeper is here")
     

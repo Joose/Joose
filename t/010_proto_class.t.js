@@ -1,5 +1,4 @@
 StartTest(function (t) {
-    t.plan(29)
     
     //==================================================================================================================================================================================
     t.diag("Joose.Proto.Class")
@@ -103,4 +102,5 @@ StartTest(function (t) {
     t.is("" + testClass1, 'a TestClass1', "testClass1 stringified correctly")
     t.is("" + testClass1.meta,'a Joose.Proto.Class', "testClass1's meta stringified correctly")
     
+    t.done()
 })

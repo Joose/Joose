@@ -75,7 +75,7 @@ INSTALLATION
 
 From [npm](http://github.com/isaacs/npm/)
 
-    [sudo] npm install joose 
+    [sudo] npm install joose --unsafe-perm=true 
 
 
 For other options please refer to: <http://joose.github.com/Joose/doc/html/Joose/Manual/Installation.html>

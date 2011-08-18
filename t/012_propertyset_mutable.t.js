@@ -1,12 +1,15 @@
 StartTest(function (t) {
-    t.plan(53)
     
     //==================================================================================================================================================================================
     t.diag("Joose.Managed.PropertySet.Mutable")
     
     t.ok(Joose.Managed.PropertySet.Mutable, "Joose.Managed.PropertySet.Mutable is here")
     
-
+//
+//    t.fail('yo')
+//    
+//    throw "yo"
+    
     //==================================================================================================================================================================================
     t.diag("Sanity")
     
@@ -189,4 +192,5 @@ StartTest(function (t) {
     t.ok(!(F.getProperty('A1') instanceof Joose.Managed.Property.ConflictMarker), 'A1 of F is now not a conflict marker')
     t.ok(F.getProperty('A1') == A.getProperty('A1'), 'A1 of F is now obtained from A')
     
+    t.done()
 })

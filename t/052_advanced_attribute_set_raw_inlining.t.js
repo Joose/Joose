@@ -96,6 +96,8 @@ StartTest(function (t) {
     t.like(test.setMyAttr2.__CONTAIN__.toString(), /setRawValueTo/, 'Call to `setRawValueTo` has not been inlined')
     t.like(test.getMyAttr2.__CONTAIN__.toString(), /getRawValueFrom/, 'Call to `setRawValueTo` has not been inlined')
     
+    t.expectGlobals('My', 'Test')
+    
     t.done()    
 })    
 

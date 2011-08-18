@@ -12,7 +12,7 @@ Release history for Joose:
     
     [BUG FIXES]
     
-    - none
+    - fixed 1 leaked global 
 
 
 3.018     2011-03-12 12:58

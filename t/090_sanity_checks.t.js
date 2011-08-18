@@ -29,5 +29,7 @@ StartTest(function (t) {
     }, Joose.is_IE ? '' : 'Attempt to consume an undefined Role into [TestClass2]', 'Empty Role is detected')
     
     
+    t.expectGlobals('TestClass1', 'TestClass2')
+    
     t.done()
 })

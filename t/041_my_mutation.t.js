@@ -49,6 +49,8 @@ StartTest(function (t) {
         
     })
     
+    t.expectGlobals('TestRole', 'TestRole2', 'TestClass')
+    
     t.ok(TestClass.my.res == 'class', "Symbiont is accesible via 'my' in prototype")
     t.is(TestClass.my.result(), 'TestClass:class', "`result` method works correctly")
     

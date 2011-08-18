@@ -1,7 +1,5 @@
 StartTest(function (t) {
     
-    t.plan(6)
-    
     //==================================================================================================================================================================================
     t.diag("Initialization of advanced attributes in subclasses of Joose.Meta.Class")
     
@@ -70,5 +68,9 @@ StartTest(function (t) {
     var testMeta2 = new TestMeta2('NewRole', {})
     
     t.ok(testMeta2.attr == '123', "Attribute 'attr' was correctly initialized for roles")
+    
+    t.expectGlobals('TestMeta', 'TestMeta2')
+    
+    t.done()
 })    
 

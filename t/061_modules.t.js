@@ -64,7 +64,7 @@ StartTest(function (t) {
         
     }, Joose.is_IE ? "" : "Double declaration of [Test]", "Double class declaration is detected")
     
-    
+    t.expectGlobals('Test', 'Base')
     
     t.done()
 })

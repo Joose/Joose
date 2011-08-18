@@ -1,5 +1,4 @@
 StartTest(function (t) {
-    t.plan(38)
     
     //==================================================================================================================================================================================
     t.diag("Joose.Managed.PropertySet")
@@ -134,4 +133,5 @@ StartTest(function (t) {
     t.ok(E1.haveProperty('A2'), "E1 still received A2 from B")
     t.ok(E1.getProperty('A2') == B.getProperty('A2'), "E1 still received A2 from B")
     
+    t.done()
 })
