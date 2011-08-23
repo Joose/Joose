@@ -12,7 +12,8 @@ Release history for Joose:
     
     [BUG FIXES]
     
-    - fixed 1 leaked global 
+    - fixed 1 leaked global
+    - fixed a bug, preventing roles to have `toString` (and other non-enumerable) methods 
 
 
 3.018     2011-03-12 12:58

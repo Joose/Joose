@@ -5,11 +5,6 @@ StartTest(function (t) {
     
     t.ok(Joose.Managed.PropertySet.Mutable, "Joose.Managed.PropertySet.Mutable is here")
     
-//
-//    t.fail('yo')
-//    
-//    throw "yo"
-    
     //==================================================================================================================================================================================
     t.diag("Sanity")
     

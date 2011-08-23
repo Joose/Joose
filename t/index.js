@@ -42,10 +42,7 @@ Harness.start(
         group       : 'Managed class tests',
         
         items       : [
-            {
-                url                 : '020_managed_class.t.js',
-                forceDOMVisible     : true
-            },
+            '020_managed_class.t.js',
             '021_method_modifiers.t.js',
             '022_inheriting_from_proto_class.t.js',
             '023_builder_stem_inheritance.t.js',
@@ -53,11 +50,7 @@ Harness.start(
             '031_managed_role.t.js',
             '032_role_application_basic.t.js',
             '033_role_application_sugar.t.js',
-            {
-                url                 : '040_my_symbiont.t.js',
-                forceDOMVisible     : true
-            },
-            
+            '040_my_symbiont.t.js',
             '041_my_mutation.t.js',
             '045_role_builder.t.js'
         ]
@@ -76,15 +69,12 @@ Harness.start(
             '054_meta_roles.t.js',
             '055_role_to_instance_application.t.js',
             '056_arbitrary_object_from_constructor.t.js',
+            '057_role_with_tostring.t.js',
             {
                 group       : 'Misc',
                 
                 items       : [
-                    {
-                        url                 : '060_modules.t.js',
-                        forceDOMVisible     : true
-                    },
-                    
+                    '060_modules.t.js',
                     '061_modules.t.js',
                     '070_reflection.t.js',
                     '071_reflection_current_method.t.js',
