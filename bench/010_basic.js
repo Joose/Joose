@@ -1,6 +1,7 @@
 StartBenchmark(
     {
-        title       : 'Class creation time',
+        title       : 'Simple class creation time',
+        id          : 'class-creation-simple',
         
         run         : function () {
             return Class({
@@ -21,6 +22,7 @@ StartBenchmark(
     }, 
     {
         title       : 'Class instantiation time',
+        id          : 'class-instantiation-simple',
         
         prepare     : function () {
             return {

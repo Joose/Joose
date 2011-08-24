@@ -81,8 +81,8 @@ StartTest(function (t) {
         
         has : {
             res : {
-                is : 'rw',
-                init : 'fromClass'
+                is      : 'rw',
+                init    : 'fromClass'
             }
         }
     })
@@ -110,8 +110,24 @@ StartTest(function (t) {
     t.ok(bar.regex1.test(/123abc123/), 'Attribute was correctly initialized with RegExp #1')
     t.ok(bar.regex2.test(/123abc123/), 'Attribute was correctly initialized with RegExp #2')
     
-    t.autoCheckGlobals = false
+
+        //==================================================================================================================================================================================
+    t.diag("Webkit & RegExp attributes")
     
+    
+    Class('Baz', {
+        has : { 
+            barClass  : Bar 
+        }
+    })
+    
+    var baz = new Baz()
+
+    t.ok(baz.barClass == Bar, 'Correct attribute initialization with Class')
+
+    
+    
+    t.expectGlobals('Test', 'TestRole', 'TestClass', 'TestClass2', 'Bar', 'Baz')
     t.done()
 })    
 

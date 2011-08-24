@@ -4,7 +4,8 @@ Release history for Joose:
 
     [ENHANCEMENTS]
     
-    - none
+    - detect when a class (a function like: `func.meta.c == func`) has been provided as `init` value for the attribute
+      and do not call it during initialization
     
     [API CHANGES]
 
