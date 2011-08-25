@@ -1,4 +1,4 @@
-COMPONENTS = {
+{
     
     All : {
         saveAs          : 'joose-all.js',
