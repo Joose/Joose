@@ -4,6 +4,9 @@ COMPONENTS = {
         saveAs          : 'joose-all.js',
         
         contains        : [
+            {
+                text    : ';(function () {'
+            },
             'Joose',
             'Joose.Proto.Empty',
             'Joose.Proto.Object',
@@ -48,7 +51,10 @@ COMPONENTS = {
             'Joose.Meta.Role',
             
             'Joose.Namespace.Keeper',
-            'Joose.Namespace.Manager'
+            'Joose.Namespace.Manager',
+            {
+                text    : '})();'
+            },
         ]
     },
     
