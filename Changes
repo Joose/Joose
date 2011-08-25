@@ -5,11 +5,11 @@ Release history for Joose:
     [ENHANCEMENTS]
     
     - detect when a class (a function like: `func.meta.c == func`) has been provided as `init` value for the attribute
-      and do not call it during initialization
+      and do not call it during initialization (use as "value")
     
     [API CHANGES]
 
-    - removed the undocumented namespaces facility (was not in use anyway)
+    - removed the undocumented namespaces facility (not documented, low-level stuff)
     
     [BUG FIXES]
     

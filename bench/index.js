@@ -21,6 +21,13 @@ Harness.configure({
 
 
 Harness.start(
-    '010_basic.js'
+    '010_basic.js',
+    {
+        url     : '020_basic.js',
+        
+        preload : [ '../../ext-4.0.2a/ext-all.js' ]
+    }
+//    ,
+//    '030_basic.js'
 )
 
