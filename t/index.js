@@ -16,6 +16,8 @@ Harness.configure({
 //    cachePreload    : true,
 //    transparentEx   : true,
     
+    keepResults         : false,
+    
     autoCheckGlobals    : true,
     expectedGlobals     : [
         'Joose', 'Class', 'Role', 'Module'
