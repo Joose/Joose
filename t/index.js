@@ -20,7 +20,7 @@ Harness.configure({
     
     autoCheckGlobals    : true,
     expectedGlobals     : [
-        'Joose', 'Class', 'Role', 'Module'
+        'Joose', 'Class', 'Role', 'Module', 'Singleton'
     ],
     
 	preload : [
@@ -84,6 +84,25 @@ Harness.start(
                     '090_sanity_checks.t.js'
                 ]
             }
+        ]
+    },
+    {
+        group       : 'Advanced features of attribute',
+        
+        items       : [
+            'attribute/010_trigger.t.js',
+            'attribute/020_lazy.t.js',
+            'attribute/030_combined.t.js',
+            'attribute/040_delegation.t.js',
+            'attribute/100_all_in_one.t.js'
+        ]
+    },
+    {
+        group       : 'Singleton',
+        
+        items       : [
+            'singleton/010_sanity.t.js',
+            'singleton/020_singleton_with_traits.t.js'
         ]
     }
 )

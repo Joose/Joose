@@ -52,6 +52,15 @@
             
             'Joose.Namespace.Keeper',
             'Joose.Namespace.Manager',
+            
+            'Joose.Attribute.Delegate',
+            'Joose.Attribute.Trigger',
+            'Joose.Attribute.Lazy',
+            'Joose.Attribute.Accessor.Combined',
+            'Joose.Attribute',
+            
+            'Joose.Meta.Singleton',            
+            
             {
                 text    : '})();'
             },
@@ -67,15 +76,6 @@
         contains    : [
             '+All'
         ]
-    },
-    
-    
-    'BackwardCompat' : {
-        
-        saveAs      : 'lib/Task/Joose/Core.js',
-        
-        contains    : [
-            '+All'
-        ]
     }
 }
+
