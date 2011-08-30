@@ -73,7 +73,7 @@ Harness.start(
             '056_arbitrary_object_from_constructor.t.js',
             '057_role_with_tostring.t.js',
             {
-                group       : 'Misc',
+                group       : 'Misc (testing nesting)',
                 
                 items       : [
                     '060_modules.t.js',
