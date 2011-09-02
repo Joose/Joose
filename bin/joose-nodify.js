@@ -31,5 +31,3 @@ var librarian   = new Librarian({
 })
 
 librarian.writeBundleTo(process.stdout, [].concat(argv.require || []))
-
-process.stdout.end()
