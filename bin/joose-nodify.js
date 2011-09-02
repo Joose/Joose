@@ -3,12 +3,14 @@ var argv = require('optimist')
     .wrap(80)
     
     .option('root', {
-        desc    : 'A path directory which will act as a web root. Default is current working directory'
+        desc        : 'A path directory which will act as a web root. Default is current working directory',
+        'default'   : './'
     })
     
     .option('require', {
         alias   : 'r',
-        desc    : 'A file to nodify'
+        desc    : 'A file to nodify (has the same semantic as `require` made in `root` directory. You can specify several `require`',
+        demand  : true
     })
     
     .option('help', {
@@ -17,15 +19,14 @@ var argv = require('optimist')
     })
     .check(function (argv) {
         if (argv.help) throw ''
-        
-        if (!argv.require) throw new Error("At least one `require` option should be provided")
     })
     .argv
 
 
 var path        = require('path')
+var Librarian   = require('librarian')
 
-var librarian   = new require('librarian')({
+var librarian   = new Librarian({
     root        : path.resolve(argv.root || './')
 })
 
