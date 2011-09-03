@@ -1,13 +1,16 @@
 var argv = require('optimist')
     .usage('Usage: $0 {OPTIONS}')
     .wrap(80)
+
     .option('port', {
-        alias   : 'p',
-        desc    : 'The port to listen for connections'
+        alias       : 'p',
+        desc        : 'The port to listen for connections. Default value is 5000',
+        'default'   : 5000
     })
-    .option('webroot', {
-        alias   : 'r',
-        desc    : 'A path directory which will act as a web root. Default is current working directory'
+    
+    .option('root', {
+        desc        : 'A path directory which will act as a web root. Default is current working directory',
+        'default'   : './'
     })
 //    .option('entry', {
 //        alias : 'e',
@@ -25,8 +28,8 @@ var argv = require('optimist')
 //            + 'Example: --plugin \'fileify:["files","."]\''
 //    })
     .option('help', {
-        alias : 'h',
-        desc : 'Show this message'
+        alias   : 'h',
+        desc    : 'Show this message'
     })
     .check(function (argv) {
         if (argv.help) throw ''
@@ -39,12 +42,12 @@ var path        = require('path')
 var http        = require('http')
 var paperboy    = require('paperboy')
 
-var port        = argv.port || 5000
-var webRoot     = path.resolve(argv.webroot || './')
+var Librarian   = require('librarian')
 
-var librarian   = new require('librarian')({
-    
-    webRoot     : webRoot
+var root        = path.resolve(argv.root)
+
+var librarian   = new Librarian({
+    root        : root
 })
 
 
@@ -52,18 +55,16 @@ http.createServer(function(req, res) {
 
     var pathName        = path.normalize(url.parse(req.url).pathname)
     
-    if (/\.\.\//.test(pathName)) throw new Error("Can't serve the files above the webRoot directory")
+    if (/\.\.\//.test(pathName)) throw new Error("Can't serve the files above the root directory")
     
     
-    librarian.find(pathName, function () {
+    librarian.process(pathName, function (fileName, dir) {
         
         var ip = req.connection.remoteAddress;
         
         paperboy
-            .deliver(webRoot, req, res)
+            .deliver(dir, req, res)
             .addHeader('Expires', 300)
-            .addHeader('X-PaperRoute', 'Node')
-            .addHeader('Content-Type', 'text/plain')
             .before(function() {
               console.log('Received Request');
             })
@@ -81,11 +82,11 @@ http.createServer(function(req, res) {
               log(404, req.url, ip, err);
             })
         
-    }, function () {
-        throw new Error("Can't find file: [" + pathName + "] in the webRoot: [" + webRoot + "]")
+    }, function (e) {
+        throw new Error("Can't find file: [" + pathName + "] in the webRoot: [" + root + "], e: " + e)
     })
     
-}).listen(port)
+}).listen(argv.port)
 
 
 var log = function (statCode, url, ip, err) {
