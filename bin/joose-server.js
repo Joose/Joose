@@ -54,6 +54,7 @@ var librarian   = new Librarian({
 http.createServer(function(req, res) {
 
     var pathName        = path.normalize(url.parse(req.url).pathname)
+    pathName            = pathName.replace(/^\//, '')
     
     if (/\.\.\//.test(pathName)) throw new Error("Can't serve the files above the root directory")
     
