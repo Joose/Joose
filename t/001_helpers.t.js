@@ -5,7 +5,6 @@ StartTest(function (t) {
     
 //    var Joose = require('../joose-all')
     
-    
     var counter = 0
     
     var res = Joose.A.each([ 1, 2, 3, 4, 5 ], function (value) {
@@ -13,7 +12,7 @@ StartTest(function (t) {
         t.ok(value == ++counter, 'Joose.A.each works as expected')
     })
     
-    t.ok(res === undefined, 'Result value is correct #1')
+    t.is(res, undefined, 'Result value is correct #1')
 
     
     counter = 0
@@ -22,22 +21,20 @@ StartTest(function (t) {
         
         counter++
         
-        if (value == 3) return false
+        if (value == 5) return false
     })
     
-    t.ok(counter == 3, "Joose.A.each can be stopped by returning a 'false' value")
-    t.ok(res === false, 'Result value is correct #2')
+    t.is(counter, 3, "Joose.A.each can be stopped by returning a 'false' value")
+    t.isStrict(res, false, 'Result value is correct #2')
     
     
     
     var res = Joose.A.map([ 1, 2 ], function (value) {
-        
         return value + 1
     })
     
     
-    t.ok(res[0] == 2, "Joose.A.map works as expected #1")
-    t.ok(res[1] == 3, "Joose.A.map works as expected #2")
+    t.isDeeply(res, [ 2, 3 ], "Joose.A.map works as expected")
   
     
     //==================================================================================================================================================================================
@@ -52,8 +49,7 @@ StartTest(function (t) {
         if (key == 'bar') t.ok(value == 'baz', '2nd key/value is correct')
     })
     
-    t.ok(res === undefined, 'Result value is correct #1')
-
+    t.is(res, undefined, 'Result value is correct #1')
     
     counter = 0
     
@@ -63,14 +59,14 @@ StartTest(function (t) {
         return false
     })
     
-    t.ok(counter == 1, "Joose.O.each can be stopped by returning a 'false' value")
-    t.ok(res === false, 'Result value is correct #2')
+    t.is(counter, 1, "Joose.O.each can be stopped by returning a 'false' value")
+    t.isStrict(res, false, 'Result value is correct #2')
   
     
     //==================================================================================================================================================================================
     t.diag("Joose.I.*")
     
-    t.ok(Joose.I.Function() === Joose.I.Function, 'Correct empty Function initiazer')
+    t.isStrict(Joose.I.Function(), Joose.I.Function, 'Correct empty Function initiazer')
     
     
     //==================================================================================================================================================================================
@@ -78,7 +74,7 @@ StartTest(function (t) {
     
     t.ok(Joose.O.isFunction(function () {}), 'Function detected correctly')
     
-    t.ok(!Joose.O.isFunction(/a/), 'RegExp is not a function')
+    t.notOk(Joose.O.isFunction(/a/), 'RegExp is not a function')
 
     t.done()
 })
