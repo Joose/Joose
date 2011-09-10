@@ -49,8 +49,6 @@ StartTest(function (t) {
         if (key == 'bar') t.ok(value == 'baz', '2nd key/value is correct')
     })
     
-    t.is(res, undefined, 'Result value is correct #1')
-    
     counter = 0
     
     var res = Joose.O.each({ foo : 'bar', bar : 'baz' }, function (value, key) {
