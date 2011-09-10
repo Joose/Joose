@@ -21,7 +21,7 @@ StartTest(function (t) {
         
         counter++
         
-        if (value == 5) return false
+        if (value == 3) return false
     })
     
     t.is(counter, 3, "Joose.A.each can be stopped by returning a 'false' value")
@@ -48,6 +48,8 @@ StartTest(function (t) {
         if (key == 'foo') t.ok(value == 'bar', '1st key/value is correct')
         if (key == 'bar') t.ok(value == 'baz', '2nd key/value is correct')
     })
+    
+    t.is(res, undefined, 'Result value is correct #1')
     
     counter = 0
     
