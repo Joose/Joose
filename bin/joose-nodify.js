@@ -3,18 +3,18 @@ var argv = require('optimist')
     .wrap(80)
     
     .option('root', {
-        desc        : 'A path directory which will act as a web root. Default is current working directory',
+        desc        : 'A directory which will act as a web root. Default is current working directory',
         'default'   : './'
     })
     
     .option('require', {
         alias   : 'r',
-        desc    : 'A file to nodify (has the same semantic as `require` made in `root` directory. You can specify several `require`'
+        desc    : 'A file to nodify (has the same semantic as `require` made in `root` directory. You can specify several `require` options'
     })
     
     .option('file', {
         alias   : 'f',
-        desc    : 'A file to nodify (has the same semantic as `require` made in `root` directory. You can specify several `require`'
+        desc    : 'A file to nodify (relative to  `root` directory). You can specify several `file` options'
     })
     
     .option('help', {
@@ -24,7 +24,7 @@ var argv = require('optimist')
     .check(function (argv) {
         if (argv.help) throw ''
         
-        if (!argv.file && !argv.require) throw 'At least one `require` or `file` is required'
+        if (!argv.file && !argv.require) throw 'At least one `require` or `file` should be provided'
     })
     .argv
 
