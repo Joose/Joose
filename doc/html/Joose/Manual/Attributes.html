@@ -20,7 +20,7 @@ Attributes can be optional, so that we can say "some Person objects have a socia
 
 <p>Attributes are also referred to as slots or properties.</p>
 
-<p>However, all the "attributes magic" is often skipped by beginners, as its generally an advanced topic. Thats why its provided outside of the core, as JooseX.Attribute extension. 
+<p>However, all the "attributes magic" is often skipped by beginners, as its generally an advanced topic. Thats why its provided outside of the core, as Joose.Attribute extension. 
 In this document we'll cover only the base capabilities of attributes, which are included in the core.</p>
 
 <h1 id="basicattribute-havebuilder">BASIC ATTRIBUTE - <code>have</code> builder</h1>
@@ -86,6 +86,8 @@ Write accessor has the name 'setAttributeName'. If you declared your attribute a
 
 <p>If you'll provide a function as the value for <code>init</code>, it will be called during initialization with the following signature:
 <code>func(attributeName, config)</code>, where <code>config</code> is the 1st argument passed to constructor. Function will be called as class's method (in the instance's scope).</p>
+
+<p><strong>The exception</strong> from this rule is the function which represent the constructor of some class. Such function <strong>will not</strong> be called during initialization.</p>
 
 <p>Value, returned from function, will be used for initialization. <strong>Note</strong>, that if there is setter method, it won't be used during initialization - value will be just assigned to instance.</p>
 
@@ -225,7 +227,7 @@ initialization value for it, use its "public" name:</p>
 
 <pre><code>    has : {
         password : {
-            meta        : JooseX.Attribute.Hashed,
+            meta        : Joose.Attribute.Hashed,
 
             init        : '12345',
             hashType    : 'SHA-1',
@@ -234,7 +236,7 @@ initialization value for it, use its "public" name:</p>
     }
 </code></pre>
 
-<p>In this case, the <code>password</code> attribute will be created using hypotetical <code>JooseX.Attribute.Hashed</code> metaclss, which probably will provide a special setter method, which replace the actual attribute value with its hashed version.</p>
+<p>In this case, the <code>password</code> attribute will be created using hypotetical <code>Joose.Attribute.Hashed</code> metaclss, which probably will provide a special setter method, which replace the actual attribute value with its hashed version.</p>
 
 <p>There are a number of JooseX modules on JSAN which provide useful attribute metaclasses. See <a href="JooseX.html">Joose.Manual.JooseX</a> for some examples. You can also write your own metaclasses. 
 See the "Meta" and "Extending" recipes in <a href="../Cookbook.html">Joose.Cookbook</a> for examples.</p>
@@ -247,7 +249,7 @@ See the "Meta" and "Extending" recipes in <a href="../Cookbook.html">Joose.Cookb
 
 <h1 id="moreonattributes">MORE ON ATTRIBUTES</h1>
 
-<p>Joose attributes are a big topic, and this document glosses over a few aspects. We recommend that you read the <a href="http://samuraijack.github.com/JooseX-Attribute">JooseX.Attribute</a> documentation as further reading.</p>
+<p>Joose attributes are a big topic, and this document glosses over a few aspects. We recommend that you read the <a href="http://samuraijack.github.com/JooseX-Attribute">Joose.Attribute</a> documentation as further reading.</p>
 
 <h1 id="author">AUTHOR</h1>
 
