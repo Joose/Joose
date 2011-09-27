@@ -1,9 +1,9 @@
 var Harness
 
 if (typeof process != 'undefined' && process.pid) {
-    Harness = require('test-run')
+    Harness = require('siesta')
 } else
-    Harness = Test.Run.Harness.Browser
+    Harness = Siesta.Harness.Browser
 
     
 Harness.configure({
@@ -73,18 +73,12 @@ Harness.start(
             '055_role_to_instance_application.t.js',
             '056_arbitrary_object_from_constructor.t.js',
             '057_role_with_tostring.t.js',
-            {
-                group       : 'Misc (testing nesting)',
-                
-                items       : [
-                    '060_modules.t.js',
-                    '061_modules.t.js',
-                    '070_reflection.t.js',
-                    '071_reflection_current_method.t.js',
-                    '080_non_joose_inheritance.t.js',
-                    '090_sanity_checks.t.js'
-                ]
-            }
+            '060_modules.t.js',
+            '061_modules.t.js',
+            '070_reflection.t.js',
+            '071_reflection_current_method.t.js',
+            '080_non_joose_inheritance.t.js',
+            '090_sanity_checks.t.js'
         ]
     },
     {
