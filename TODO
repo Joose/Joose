@@ -16,17 +16,17 @@ DOCUMENTATION
 - document internals, notably the introspection API
     -- properties hierarchy (Property -> PropetySet -> Mutable -> Composition -> Stem)
     -- property's life stages (preApply/apply/unapply/postUnApply)
-    
+
     -- brief description of built-in properties (attributes/methods/method modifiers/requirements)
-    
+
     -- meta levels (proto/managed/meta)
         --- reasons for the 3rd level
-        
+
     -- life stages of class
         --- initialize/extractConstructor/adaptConstructor/construct/prepareProps/extractSuperClass/
             processSuperClass/adaptPrototype/finalize/processStem/extend/
         --- class mutation (extend, stem open/closed)
-    
+
     -- namespaces and class declaration
         --- declaration (with helpers, goes trough the Joose.Namespace.Manager)
         --- mutation (bypass the Joose.Namespace.Manager, managed by metaclass)
@@ -37,12 +37,12 @@ DOCUMENTATION
     -- add receipts for:
         --- adding new builder
         --- overriding a default attribute metaclass
-         
-    
-- Joose.Manual 
-   -- Installation 
+
+
+- Joose.Manual
+   -- Installation
         --- check the procedure on Mac OS
-        --- verify that procedure works on several platforms (CPAN Testers at least) especially on Windows  
+        --- verify that procedure works on several platforms (CPAN Testers at least) especially on Windows
 
 
 - document how class can be used as role (w/o inherited properties)
@@ -60,8 +60,8 @@ BENCHMARKING
     -- class declaration time
     -- class mutation time
     -- class instantiation time (notably with traits)
-    
-- track the statistics in Changes file 
+
+- track the statistics in Changes file
 
 - optimize everything! :)
 
@@ -72,7 +72,7 @@ PERFORMANCE (depends on BENCHMARKING)
 
 - convert all OVERRIDE modifiers in core to AROUND? (need to benchmark them 1st)
 
-- implement optimization for methods&OVERRIDE modifiers w/o calls to `SUPER` in body. Inline them directly, w/o wrappers. 
+- implement optimization for methods&OVERRIDE modifiers w/o calls to `SUPER` in body. Inline them directly, w/o wrappers.
   Probably should be configurable, to avoid increasing of startup overhead.
 
 - reduce the core codebase till the 6-7Kb after YUI+gzip (after the core refactoring, see below)
@@ -82,10 +82,10 @@ PERFORMANCE (depends on BENCHMARKING)
 REFACTORING
 ===========
 
-- rewrite the core in a bit more functional style - remove 'unApply/postUnapply' stages 
+- rewrite the core in a bit more functional style - remove 'unApply/postUnapply' stages
     should give noticeable speed-up for class declarations/mutations, as the whole 2 stages won't be
-    propagated across all properties  
-    we'll just clear the prototype and then re-apply it from scratch, 
+    propagated across all properties
+    we'll just clear the prototype and then re-apply it from scratch,
     plus - we'll also receive a noticeable reduce of the codebase
 
 - make `builderClass` and `stemClass` attributes private (as they are checked during normal class mutations also)
@@ -100,7 +100,7 @@ EXTENSIONS
 ==========
 
 
-- JooseX.Builder.Also 
+- JooseX.Builder.Also
     -- should allow implicit ordering of builders, to address the Rhino issues (which iterates over properties randomly)
      and allow multiple modifiers in the same class
 
@@ -116,12 +116,12 @@ EXTENSIONS
     -- traits for attributes (test)
 
 - JooseX.Method.Overloaded (multi-methods, depending from calling signature), depends on JooseX.Type
-    
-        
+
+
 - JooseX.Method.Labeled (attach some meta-info to methods)
     or rather
 - JooseX.Property.Labeled (attach some meta-info to any property (notable attribute))
-    
+
 
 - JooseX.Detach - allow detaching/applying traits at arbitrary run-time moments
     clean implementation requires the `__proto__` support
@@ -131,8 +131,8 @@ IDEAS
 =====
 
 - 'immutable' builder (indicates that class/role won't mutate). Only matter for Roles, as mutation of classes doesn't trigger
-  the changes in sub/super classes. 
-    
+  the changes in sub/super classes.
+
 
 - some kind of obfuscator to reduce the codebase size?? (function () { var a='Joose', b='Managed'; top[a][b] etc })()
 - try Closure compacter
@@ -146,10 +146,10 @@ IDEAS
 - property set & stem should only provide the composition logic, `apply/unapply` logic should be delegated to meta
   (in form of hooks?)
 
-- only schedule the calls to `preApply/postUnApply` when it explicitly asked by attribute? 
+- only schedule the calls to `preApply/postUnApply` when it explicitly asked by attribute?
     (currently just skipped for requirements for example)
 
-- merge advanced attribute Role (Joose.Managed.Attribute.Builder) into bootstrap role (should give small startup boost) 
+- merge advanced attribute Role (Joose.Managed.Attribute.Builder) into bootstrap role (should give small startup boost)
 - merge bootstrap role into managed class
 
 
@@ -168,9 +168,9 @@ DONE
 - add SKIP and TODO methods to Test.Run
 - inter-op with NodeJS
 - ability to specify the method for attribute initialization ("builder" in Moose meaning)
-- alias static methods (not properties) to the constructor (should be delegates to 'my') 
-    Some.Class.method = function () { 
-        this.my.method.apply(this.my, arguments) 
+- alias static methods (not properties) to the constructor (should be delegates to 'my')
+    Some.Class.method = function () {
+        this.my.method.apply(this.my, arguments)
     }
 - allow regexes as initialization values for advanced attributes
 - fix JSAN shell 'install' command (prefix)

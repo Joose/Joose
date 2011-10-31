@@ -7,7 +7,7 @@ var argv = require('optimist')
         desc        : 'The port to listen for connections. Default value is 5000',
         'default'   : 5000
     })
-    
+
     .option('root', {
         desc        : 'A path directory which will act as a web root. Default is current working directory',
         'default'   : './'
@@ -55,14 +55,14 @@ http.createServer(function(req, res) {
 
     var pathName        = path.normalize(url.parse(req.url).pathname)
     pathName            = pathName.replace(/^\//, '')
-    
+
     if (/\.\.\//.test(pathName)) throw new Error("Can't serve the files above the root directory")
-    
-    
+
+
     librarian.process(pathName, function (fileName, dir) {
-        
+
         var ip = req.connection.remoteAddress;
-        
+
         paperboy
             .deliver(dir, req, res)
             .addHeader('Expires', 300)
@@ -82,18 +82,18 @@ http.createServer(function(req, res) {
               res.end("Error 404: File not found");
               log(404, req.url, ip, err);
             })
-        
+
     }, function (e) {
         throw new Error("Can't find file: [" + pathName + "] in the webRoot: [" + root + "], e: " + e)
     })
-    
+
 }).listen(argv.port)
 
 
 var log = function (statCode, url, ip, err) {
     var logStr = statCode + ' - ' + url + ' - ' + ip;
-    
+
     if (err) logStr += ' - ' + err;
-    
+
     console.log(logStr);
 }

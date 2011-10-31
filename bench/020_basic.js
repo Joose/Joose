@@ -2,10 +2,10 @@ StartBenchmark(
     {
         title       : 'ExtJS class creation time',
         id          : 'ext-class-creation-simple',
-        
+
         run         : function () {
             return Ext.define('Class' + Math.round(Math.random() * 1e10), {
-                
+
                 foo     : null,
                 bar     : null,
                 foo1    : null,
@@ -16,7 +16,7 @@ StartBenchmark(
                 bar3    : null,
                 foo4    : null,
                 bar4    : null,
-                
+
                 doThis : function () {},
                 doThat : function () {},
                 doThis1 : function () {},
@@ -29,6 +29,6 @@ StartBenchmark(
                 doThat4 : function () {}
             })
         }
-    
-    } 
-)    
+
+    }
+)

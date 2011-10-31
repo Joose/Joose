@@ -2,30 +2,30 @@ StartBenchmark(
     {
         title       : 'Small class creation time',
         id          : 'class-creation-simple1',
-        
+
         run         : function () {
             return Class({
-                
+
                 has : {
                     foo     : Joose.I.Array,
                     bar     : Joose.I.Object
-                    
+
                 },
-                
+
                 methods : {
                     doThis : function () {},
                     doThat : function () {}
                 }
             })
         }
-    }, 
+    },
     {
         title       : 'Average class creation time',
         id          : 'class-creation-simple2',
-        
+
         run         : function () {
             return Class({
-                
+
                 has : {
                     foo     : Joose.I.Array,
                     bar     : Joose.I.Object,
@@ -37,9 +37,9 @@ StartBenchmark(
                     bar3    : Joose.I.Object,
                     foo4    : Joose.I.Array,
                     bar4    : Joose.I.Object
-                    
+
                 },
-                
+
                 methods : {
                     doThis : function () {},
                     doThat : function () {},
@@ -54,14 +54,14 @@ StartBenchmark(
                 }
             })
         }
-    }, 
+    },
     {
         title       : 'Big class creation time',
         id          : 'class-creation-simple3',
-        
+
         run         : function () {
             return Class({
-                
+
                 has : {
                     foo     : Joose.I.Array,
                     bar     : Joose.I.Object,
@@ -84,7 +84,7 @@ StartBenchmark(
                     foo40   : Joose.I.Array,
                     bar40   : Joose.I.Object
                 },
-                
+
                 methods : {
                     doThis : function () {},
                     doThat : function () {},
@@ -111,4 +111,4 @@ StartBenchmark(
         }
     }
 
-)    
+)

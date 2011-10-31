@@ -4,7 +4,7 @@
         'Joose.Proto.Empty',
         'Joose.Proto.Object',
         'Joose.Proto.Class',
-    
+
         'Joose.Managed.Property',
         'Joose.Managed.Property.ConflictMarker',
         'Joose.Managed.Property.Requirement',
@@ -16,48 +16,48 @@
         'Joose.Managed.Property.MethodModifier.Before',
         'Joose.Managed.Property.MethodModifier.Around',
         'Joose.Managed.Property.MethodModifier.Augment',
-        
+
         'Joose.Managed.PropertySet',
         'Joose.Managed.PropertySet.Mutable',
-        
+
         'Joose.Managed.StemElement.Attributes',
         'Joose.Managed.StemElement.Methods',
         'Joose.Managed.StemElement.Requirements',
         'Joose.Managed.StemElement.MethodModifiers',
-        
+
         'Joose.Managed.PropertySet.Composition',
         'Joose.Managed.Stem',
         'Joose.Managed.Builder',
         'Joose.Managed.Class',
         'Joose.Managed.Role',
-                    
+
         'Joose.Managed.Attribute',
-        
+
         'Joose.Managed.Attribute.Builder',
         'Joose.Managed.My',
         'Joose.Namespace.Able',
-        
+
         'Joose.Managed.Bootstrap',
-        
+
         'Joose.Meta.Object',
         'Joose.Meta.Class',
         'Joose.Meta.Role',
-        
+
         'Joose.Namespace.Keeper',
         'Joose.Namespace.Manager',
-        
+
         'Joose.Attribute.Delegate',
         'Joose.Attribute.Trigger',
         'Joose.Attribute.Lazy',
         'Joose.Attribute.Accessor.Combined',
         'Joose.Attribute',
-        
-        'Joose.Meta.Singleton',            
+
+        'Joose.Meta.Singleton',
     ],
-    
+
     All : {
         saveAs          : 'joose-all.js',
-        
+
         contains        : [
             {
                 text    : ';!function () {'
@@ -68,22 +68,22 @@
             },
         ]
     },
-    
+
     'All-Min' : {
-        
+
         saveAs      : 'joose-all-min.js',
-        
+
         minify      : 'yui',
-        
+
         contains    : [
             '+All'
         ]
     },
-    
-    
+
+
     WebSeed : {
         saveAs          : 'joose-webseed.js',
-        
+
         contains        : [
             {
                 text    : ';require = (function () {'
@@ -95,16 +95,16 @@
             },
         ]
     },
-    
-    
+
+
     AllWeb : {
         saveAs          : 'joose-all-web.js',
-        
+
         contains        : [
             '+All',
         ]
     },
-    
+
 }
 
 

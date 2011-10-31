@@ -5,26 +5,26 @@ if (typeof process != 'undefined' && process.pid) {
 } else
     Harness = Test.Run.Harness.Browser
 
-    
+
 Harness.configure({
 	title           : 'Joose test suite',
-    
+
     verbosity       : 0,
-	
+
 //    cachePreload    : true,
 //    transparentEx   : true,
-    
+
     keepResults         : false,
-    
+
     autoCheckGlobals    : true,
     expectedGlobals     : [
         'Joose', 'Class', 'Role', 'Module', 'Singleton', 'require'
     ],
-    
+
 	preload : [
 //        '../joose-webseed.js',
 //        '../joose-all-web.js'
-        
+
         '../joose-all.js'
     ]
 })
@@ -34,7 +34,7 @@ Harness.start(
     '001_helpers.t.js',
     {
         group       : 'Proto class tests',
-        
+
         items       : [
             '010_proto_class.t.js',
             '011_propertyset.t.js',
@@ -43,7 +43,7 @@ Harness.start(
     },
     {
         group       : 'Managed class tests',
-        
+
         items       : [
             '020_managed_class.t.js',
             '021_method_modifiers.t.js',
@@ -60,7 +60,7 @@ Harness.start(
     },
     {
         group       : 'Meta level',
-        
+
         items       : [
             '050_helpers.t.js',
             '051_advanced_attribute.t.js',
@@ -75,7 +75,7 @@ Harness.start(
             '057_role_with_tostring.t.js',
             {
                 group       : 'Misc (testing nesting)',
-                
+
                 items       : [
                     '060_modules.t.js',
                     '061_modules.t.js',
@@ -89,7 +89,7 @@ Harness.start(
     },
     {
         group       : 'Advanced features of attribute',
-        
+
         items       : [
             'attribute/010_trigger.t.js',
             'attribute/020_lazy.t.js',
@@ -100,7 +100,7 @@ Harness.start(
     },
     {
         group       : 'Singleton',
-        
+
         items       : [
             'singleton/010_sanity.t.js',
             'singleton/020_singleton_with_traits.t.js'
