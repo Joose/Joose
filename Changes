@@ -2,6 +2,19 @@ Release history for Joose:
 
 {{ $NEXT }}
 
+    [ENHANCEMENTS]
+    
+    - none
+    
+    [API CHANGES]
+
+    - none
+    
+    [BUG FIXES]
+    
+    - use feature testing for additional enumeration in Joose.O.each (fixes classes declaration in IE9-Quirks)
+
+
 3.50.0    2011-09-14 13:51
 
     [ENHANCEMENTS]
