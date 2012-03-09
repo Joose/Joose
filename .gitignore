@@ -3,3 +3,4 @@ __buildcache
 //.project
 .externalToolBuilders
 /Joose-*
+.idea
