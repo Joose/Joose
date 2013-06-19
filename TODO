@@ -9,6 +9,7 @@ TASKS
 
 - add simple attribute 'defaultMethodClass' ala 'defaultAttributeClass'
 
+- error when inheriting from module
 
 DOCUMENTATION
 =============
