@@ -60,7 +60,7 @@
         
         contains        : [
             {
-                text    : ';!function () {'
+                text    : ';!function () { if (typeof Joose == \"function\") return;' 
             },
             '+Inner',
             {
